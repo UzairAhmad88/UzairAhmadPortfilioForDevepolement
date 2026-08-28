@@ -14,7 +14,7 @@
     "@splinetool/react-spline": "latest",
     "@splinetool/runtime": "^2.0.8",
     "framer-motion": "latest",
-    "lucide-react": "^0.344.0",
+    "lucide-react": "^0.475.0",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
