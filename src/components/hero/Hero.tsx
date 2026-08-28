@@ -173,29 +173,58 @@ price, delta, gamma, vega = black_scholes_greeks(100.0, 100.0, 1.0, 0.05, 0.20)`
             }}
           />
 
-          {/* Profile Image with Pop-Out Head & Clean Background Blending */}
+          {/* Profile Image Clipped Exactly Inside Reverse Triangle */}
           <div
             style={{
               position: 'absolute',
-              top: '-15px',
+              top: '44px',
               left: '50%',
               transform: 'translateX(-50%)',
               width: '198px',
-              height: '215px',
-              zIndex: 5,
+              height: '158px',
+              clipPath: 'polygon(0% 0%, 100% 0%, 50% 100%)',
+              overflow: 'hidden',
+              zIndex: 4,
             }}
           >
             <Image
               src="/assets/Uzairahamd.jpeg"
-              alt="Uzair Ahmad Profile"
+              alt="Uzair Ahmad Profile Body"
               fill
               sizes="198px"
               priority
               style={{
                 objectFit: 'cover',
-                objectPosition: 'center 5%',
+                objectPosition: 'center 15%',
                 mixBlendMode: 'multiply',
-                filter: 'contrast(1.08) brightness(1.02) drop-shadow(0 10px 20px rgba(27, 50, 64, 0.3))',
+              }}
+            />
+          </div>
+
+          {/* Head Pop-Out Layer (Popping Out Above Top Flat Line) */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '18px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '110px',
+              height: '55px',
+              borderRadius: '55px 55px 0 0',
+              overflow: 'hidden',
+              zIndex: 6,
+            }}
+          >
+            <Image
+              src="/assets/Uzairahamd.jpeg"
+              alt="Uzair Ahmad Head Pop-Out"
+              fill
+              sizes="110px"
+              priority
+              style={{
+                objectFit: 'cover',
+                objectPosition: 'center 2%',
+                mixBlendMode: 'multiply',
               }}
             />
           </div>
