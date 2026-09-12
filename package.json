@@ -1,0 +1,8 @@
+{
+  "name": "uzair-ahmad-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node -e \"console.log('Static portfolio ready for Vercel')\""
+  }
+}
