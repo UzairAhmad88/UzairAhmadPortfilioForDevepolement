@@ -18,6 +18,7 @@ The visual direction is inspired by the supplied Pinterest reference for atmosph
 - `docs/` — product, UX, architecture, 3D, performance, accessibility, testing, content and deployment documentation.
 - `public/assets/` — optimized images, icons and 3D assets.
 - `tests/` — unit and end-to-end test space.
+- `static-export/` — standalone HTML, CSS, JavaScript and preview screenshots generated from the local `D:\web\protfolio` build.
 
 ## Design system
 
