@@ -123,8 +123,10 @@ const { capability } = Astro.props;
 <style>
   .capability-card {
     position: relative;
-    min-height: 660px;
-    padding: 1.35rem;
+    display: flex;
+    flex-direction: column;
+    min-height: clamp(500px, 48vw, 620px);
+    padding: var(--space-card, 1.35rem);
     border: 1px solid rgba(248, 245, 239, 0.13);
     border-radius: 8px;
     background:
@@ -191,8 +193,10 @@ const { capability } = Astro.props;
     position: relative;
     display: grid;
     place-items: center;
-    height: 210px;
-    margin: 1.3rem 0 1.45rem;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 420 / 210;
+    margin: 1.1rem 0 1.25rem;
     border: 1px solid rgba(248, 245, 239, 0.1);
     border-radius: 8px;
     background:
@@ -205,13 +209,14 @@ const { capability } = Astro.props;
 
   .capability-visual svg {
     width: 100%;
-    height: 100%;
+    height: auto;
+    display: block;
   }
 
   .capability-card h3 {
-    margin-bottom: 0.8rem;
-    font-size: 1.42rem;
-    line-height: 1.13;
+    margin-bottom: 0.6rem;
+    font-size: clamp(1.2rem, 1.6vw, 1.4rem);
+    line-height: 1.18;
     transition: color 360ms ease;
   }
 
@@ -222,31 +227,33 @@ const { capability } = Astro.props;
 
   .capability-card p {
     color: rgba(248, 245, 239, 0.68);
-    line-height: 1.68;
+    font-size: 0.925rem;
+    line-height: 1.65;
+    margin-bottom: 1rem;
+    flex-grow: 1;
   }
 
   .capability-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 1.4rem 0;
+    gap: 0.45rem;
+    margin: 0.5rem 0 1.25rem;
   }
 
   .capability-tags span {
-    padding: 0.48rem 0.58rem;
+    padding: 0.35rem 0.55rem;
     border: 1px solid rgba(248, 245, 239, 0.1);
-    border-radius: 999px;
+    border-radius: var(--radius-full, 999px);
     color: rgba(248, 245, 239, 0.64);
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     font-weight: 700;
+    white-space: nowrap;
   }
 
   .capability-card strong {
-    position: absolute;
-    right: 1.35rem;
-    bottom: 1.35rem;
-    left: 1.35rem;
-    padding-top: 1rem;
+    display: block;
+    margin-top: auto;
+    padding-top: 0.85rem;
     border-top: 1px solid rgba(248, 245, 239, 0.12);
     color: #93d6c8;
     font-family: var(--font-mono);
@@ -358,12 +365,12 @@ const { capability } = Astro.props;
   @media (max-width: 640px) {
     .capability-card {
       min-height: auto;
-      padding-bottom: 4.6rem;
     }
 
     .capability-meta {
       align-items: flex-start;
       flex-direction: column;
+      gap: 0.25rem;
     }
 
     .capability-meta small {

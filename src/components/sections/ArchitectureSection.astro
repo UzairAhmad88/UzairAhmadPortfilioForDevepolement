@@ -11,40 +11,47 @@ import { architectureStages } from '@/data/architecturePipeline';
   <div class="architecture-pipeline reveal">
     {
       architectureStages.map((stage) => (
-        <button data-skill={stage.skill}>{stage.label}</button>
+        <button type="button" data-skill={stage.skill} aria-label={`${stage.label}: ${stage.skill}`}>
+          {stage.label}
+        </button>
       ))
     }
   </div>
 
-  <p class="pipeline-note reveal">Hover a layer to reveal the skill behind it.</p>
+  <p class="pipeline-note reveal" aria-live="polite">
+    Tap or hover a layer to reveal the technical competency behind it.
+  </p>
 </section>
 
 <script>
-  const pipelineButtons = document.querySelectorAll<HTMLButtonElement>(
-    '.architecture-pipeline button'
-  );
-  const pipelineNote = document.querySelector<HTMLElement>('.pipeline-note');
+  function setupArchitecturePipeline() {
+    const pipelineButtons = document.querySelectorAll<HTMLButtonElement>(
+      '.architecture-pipeline button'
+    );
+    const pipelineNote = document.querySelector<HTMLElement>('.pipeline-note');
 
-  pipelineButtons.forEach((button) => {
-    const showSkill = () => {
-      if (pipelineNote && button.dataset.skill) {
-        pipelineNote.textContent = button.dataset.skill;
-      }
-    };
+    pipelineButtons.forEach((button) => {
+      const showSkill = () => {
+        if (pipelineNote && button.dataset.skill) {
+          pipelineNote.textContent = button.dataset.skill;
+          pipelineButtons.forEach((b) => b.classList.remove('active-stage'));
+          button.classList.add('active-stage');
+        }
+      };
 
-    button.addEventListener('mouseenter', showSkill);
-    button.addEventListener('focus', showSkill);
-    button.addEventListener('mouseleave', () => {
-      if (pipelineNote) {
-        pipelineNote.textContent = 'Hover a layer to reveal the skill behind it.';
-      }
+      button.addEventListener('click', showSkill);
+      button.addEventListener('mouseenter', showSkill);
+      button.addEventListener('focus', showSkill);
     });
-  });
+  }
+
+  setupArchitecturePipeline();
+  document.addEventListener('astro:after-swap', setupArchitecturePipeline);
 </script>
 
 <style>
   .architecture-section {
-    padding: 6.5rem 0;
+    padding: var(--space-section, 6.5rem) 0;
   }
 
   .architecture-pipeline {
@@ -57,54 +64,46 @@ import { architectureStages } from '@/data/architecturePipeline';
     position: relative;
     display: grid;
     place-items: center;
-    min-height: 5.6rem;
+    min-height: clamp(3.8rem, 8vw, 5.4rem);
+    min-width: var(--touch-target-min, 44px);
+    padding: 0.5rem;
     border: 1px solid var(--line);
     border-radius: 8px;
     color: var(--ink);
     background: rgba(255, 255, 255, 0.055);
     font-family: var(--font-mono);
-    font-weight: 800;
+    font-size: clamp(0.72rem, 1.4vw, 0.88rem);
+    font-weight: 700;
     cursor: pointer;
+    text-align: center;
+    transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
   }
 
-  .architecture-pipeline button::after {
-    content: attr(data-skill);
-    position: absolute;
-    left: 50%;
-    bottom: calc(100% + 0.6rem);
-    width: 12rem;
-    padding: 0.7rem;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    color: var(--muted);
-    background: rgba(7, 17, 15, 0.95);
-    opacity: 0;
-    transform: translate(-50%, 0.5rem);
-    transition: opacity 240ms ease, transform 240ms ease;
-    pointer-events: none;
-    font-family: var(--font-sans);
-    font-size: 0.78rem;
-    line-height: 1.4;
-  }
-
-  .architecture-pipeline button:hover::after,
-  .architecture-pipeline button:focus-visible::after {
-    opacity: 1;
-    transform: translate(-50%, 0);
+  .architecture-pipeline button:hover,
+  .architecture-pipeline button:focus-visible,
+  .architecture-pipeline button.active-stage {
+    background: rgba(126, 216, 196, 0.14);
+    border-color: rgba(126, 216, 196, 0.5);
+    color: #b5eadf;
+    outline: none;
   }
 
   .pipeline-note {
-    margin-top: 1rem;
+    margin-top: 1.25rem;
     color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    min-height: 1.5rem;
   }
 
-  @media (max-width: 920px) {
+  @media (max-width: 1024px) {
     .architecture-pipeline {
       grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.65rem;
     }
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 600px) {
     .architecture-pipeline {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }

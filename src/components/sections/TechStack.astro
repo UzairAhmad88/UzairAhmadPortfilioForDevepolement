@@ -31,13 +31,13 @@ import { stackMap, universeNodes } from '@/data/skills';
 
 <style>
   .technical-map {
-    padding: 6.5rem 0;
+    padding: var(--space-section, 6.5rem) 0;
   }
 
   .universe {
     position: relative;
-    min-height: 460px;
-    margin-bottom: 1rem;
+    min-height: clamp(340px, 48vw, 460px);
+    margin-bottom: 1.25rem;
     border: 1px solid var(--line);
     border-radius: 8px;
     background:
@@ -77,8 +77,9 @@ import { stackMap, universeNodes } from '@/data/skills';
 
   .universe-core {
     inset: 50% auto auto 50%;
-    width: 9rem;
-    height: 9rem;
+    width: clamp(5.5rem, 18vw, 8.5rem);
+    height: clamp(5.5rem, 18vw, 8.5rem);
+    font-size: clamp(0.75rem, 2vw, 1rem);
     color: var(--paper);
     background: var(--ink);
     transform: translate(-50%, -50%);
@@ -88,12 +89,14 @@ import { stackMap, universeNodes } from '@/data/skills';
   .universe span {
     left: var(--x);
     top: var(--y);
-    min-width: 5rem;
-    min-height: 2.5rem;
-    padding: 0.6rem 0.8rem;
+    min-width: clamp(3.5rem, 10vw, 5rem);
+    min-height: 2.25rem;
+    padding: clamp(0.35rem, 1.2vw, 0.6rem) clamp(0.5rem, 1.6vw, 0.85rem);
+    font-size: clamp(0.7rem, 1.6vw, 0.85rem);
     color: var(--ink);
     background: rgba(255, 255, 255, 0.06);
     animation: floatSmall 6s ease-in-out infinite;
+    white-space: nowrap;
   }
 
   .stack-map {
@@ -103,7 +106,7 @@ import { stackMap, universeNodes } from '@/data/skills';
   }
 
   .stack-map article {
-    padding: 1.2rem;
+    padding: 1.25rem;
     border: 1px solid var(--line);
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.045);
@@ -117,6 +120,7 @@ import { stackMap, universeNodes } from '@/data/skills';
   .stack-map p {
     color: var(--muted);
     line-height: 1.65;
+    margin: 0;
   }
 
   @media (max-width: 920px) {
@@ -128,6 +132,10 @@ import { stackMap, universeNodes } from '@/data/skills';
   @media (max-width: 640px) {
     .stack-map {
       grid-template-columns: 1fr;
+    }
+
+    .universe span {
+      transform: scale(0.9);
     }
   }
 </style>

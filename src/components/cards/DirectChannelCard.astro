@@ -59,6 +59,7 @@ const { title, description, actionLabel, href, isExternal = false } = Astro.prop
   .channel-action {
     display: inline-flex;
     align-items: center;
+    min-height: var(--touch-target-min, 44px);
     font-size: 0.9rem;
     font-weight: 600;
     color: var(--color-accent, #60a5fa);

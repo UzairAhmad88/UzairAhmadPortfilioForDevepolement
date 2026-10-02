@@ -107,30 +107,32 @@ const inquiries = [
 
 <style>
   .page-container {
-    width: min(1200px, calc(100% - 2rem));
+    width: min(var(--container-max, 1200px), calc(100% - max(1.5rem, calc(env(safe-area-inset-left) + env(safe-area-inset-right) + 1rem))));
     margin: 0 auto;
     padding: 1rem 0 5rem;
+    padding-left: env(safe-area-inset-left, 0);
+    padding-right: env(safe-area-inset-right, 0);
   }
 
   .research-hero {
-    margin-bottom: 3rem;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
   }
 
   .domains-overview {
-    margin-bottom: 4rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
   }
 
   .domain-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
 
   .domain-box {
     background: var(--bg-surface, #0f172a);
     border: 1px solid var(--border-subtle, #1e293b);
     border-radius: 0.75rem;
-    padding: 1.75rem;
+    padding: clamp(1.25rem, 2.5vw, 1.75rem);
   }
 
   .domain-num {
@@ -145,6 +147,7 @@ const inquiries = [
     font-weight: 700;
     color: var(--text-primary, #f8fafc);
     margin: 0.5rem 0 0.5rem 0;
+    line-height: 1.35;
   }
 
   .domain-desc {
@@ -155,11 +158,11 @@ const inquiries = [
   }
 
   .inquiries-section {
-    margin-bottom: 4rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
   }
 
   .inquiries-heading {
-    font-size: 1.5rem;
+    font-size: clamp(1.35rem, 2.5vw, 1.65rem);
     font-weight: 800;
     color: var(--text-primary, #f8fafc);
     margin: 0 0 1.75rem 0;
@@ -176,12 +179,12 @@ const inquiries = [
     background: var(--bg-surface, #0f172a);
     border: 1px solid var(--border-subtle, #1e293b);
     border-radius: 1rem;
-    padding: 2.5rem;
+    padding: clamp(1.5rem, 3.5vw, 2.5rem);
     margin-bottom: 3.5rem;
   }
 
   .methodology-title {
-    font-size: 1.35rem;
+    font-size: clamp(1.2rem, 2vw + 0.1rem, 1.45rem);
     font-weight: 800;
     color: var(--text-primary, #f8fafc);
     margin: 0 0 1.5rem 0;
@@ -190,7 +193,7 @@ const inquiries = [
   .standards-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
 
   .standard-card h4 {
@@ -207,7 +210,13 @@ const inquiries = [
     margin: 0;
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 1024px) {
+    .domain-grid, .standards-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
     .domain-grid, .standards-grid {
       grid-template-columns: 1fr;
     }

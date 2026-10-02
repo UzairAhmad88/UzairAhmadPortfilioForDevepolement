@@ -272,17 +272,19 @@ const contactPageSchema = JSON.stringify({
   .page-container {
     width: min(1200px, calc(100% - 2rem));
     margin: 0 auto;
-    padding: 1rem 0 5rem;
+    padding: clamp(1rem, 2vw, 2rem) 0 clamp(3rem, 6vw, 5rem);
+    padding-left: max(0.5rem, env(safe-area-inset-left));
+    padding-right: max(0.5rem, env(safe-area-inset-right));
   }
 
   .contact-hero {
-    margin-bottom: 3rem;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
   }
 
   .contact-main-grid {
     display: grid;
     grid-template-columns: 1.35fr 1fr;
-    gap: 2.5rem;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
     align-items: start;
   }
 
@@ -290,7 +292,7 @@ const contactPageSchema = JSON.stringify({
     background: var(--bg-surface, #0f172a);
     border: 1px solid var(--border-subtle, #1e293b);
     border-radius: 1rem;
-    padding: 2.5rem;
+    padding: clamp(1.5rem, 3.5vw, 2.5rem);
   }
 
   .form-header {
@@ -300,10 +302,11 @@ const contactPageSchema = JSON.stringify({
   }
 
   .form-title {
-    font-size: 1.35rem;
+    font-size: clamp(1.15rem, 2vw, 1.35rem);
     font-weight: 800;
     color: var(--text-primary, #f8fafc);
     margin: 0 0 0.5rem 0;
+    text-wrap: balance;
   }
 
   .form-subtitle {
@@ -311,6 +314,7 @@ const contactPageSchema = JSON.stringify({
     color: var(--text-secondary, #cbd5e1);
     line-height: 1.5;
     margin: 0;
+    text-wrap: pretty;
   }
 
   .inquiry-form {
@@ -357,7 +361,8 @@ const contactPageSchema = JSON.stringify({
     border-radius: 0.5rem;
     color: var(--text-primary, #f8fafc);
     font-family: inherit;
-    font-size: 0.95rem;
+    font-size: 1rem; /* 16px to prevent iOS Safari auto-zoom */
+    min-height: var(--touch-target-min, 44px);
     transition: border-color 150ms ease, box-shadow 150ms ease;
   }
 
@@ -392,6 +397,7 @@ const contactPageSchema = JSON.stringify({
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    min-height: var(--touch-target-min, 44px);
     padding: 0.95rem 2rem;
     background: var(--color-accent, #3b82f6);
     color: #ffffff;
@@ -444,7 +450,7 @@ const contactPageSchema = JSON.stringify({
     background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.75));
     border: 1px solid rgba(59, 130, 246, 0.3);
     border-radius: 0.85rem;
-    padding: 1.75rem;
+    padding: clamp(1.25rem, 3vw, 1.75rem);
   }
 
   .status-indicator-box {
@@ -481,6 +487,7 @@ const contactPageSchema = JSON.stringify({
     color: var(--text-secondary, #cbd5e1);
     line-height: 1.5;
     margin: 0 0 1rem 0;
+    text-wrap: pretty;
   }
 
   .direct-fallback {
@@ -488,29 +495,27 @@ const contactPageSchema = JSON.stringify({
     color: var(--text-secondary, #94a3b8);
     border-top: 1px solid var(--border-subtle, #1e293b);
     padding-top: 0.75rem;
+    word-break: break-word;
   }
 
   .direct-fallback a {
     color: var(--color-accent, #60a5fa);
     text-decoration: none;
     font-weight: 600;
+    display: inline-block;
   }
 
   .direct-fallback a:hover {
     text-decoration: underline;
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 1024px) {
     .contact-main-grid {
       grid-template-columns: 1fr;
     }
   }
 
   @media (max-width: 640px) {
-    .form-card {
-      padding: 1.75rem 1.25rem;
-    }
-
     .form-grid-2 {
       grid-template-columns: 1fr;
     }

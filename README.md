@@ -101,6 +101,13 @@ Detailed authoring guides are available at [docs/CONTENT-AUTHORING.md](file:///d
 
 The project includes an extensive engineering and product documentation suite under `docs/`:
 - [docs/README.md](file:///d:/web/protfolio/docs/README.md) — Master Documentation Index
+- [docs/RESPONSIVE-AUDIT.md](file:///d:/web/protfolio/docs/RESPONSIVE-AUDIT.md) — Cross-Screen Responsive Audit
+- [docs/RESPONSIVE-DESIGN-SYSTEM.md](file:///d:/web/protfolio/docs/RESPONSIVE-DESIGN-SYSTEM.md) — Fluid Design Tokens & Responsive System
+- [docs/RESPONSIVE-QA-MATRIX.md](file:///d:/web/protfolio/docs/RESPONSIVE-QA-MATRIX.md) — Comprehensive Device & Viewport QA Matrix
+- [docs/DEVICE-BREAKPOINTS.md](file:///d:/web/protfolio/docs/DEVICE-BREAKPOINTS.md) — Space-Adaptive Breakpoint Hierarchy
+- [docs/MOBILE-UX.md](file:///d:/web/protfolio/docs/MOBILE-UX.md) — Mobile UX, Safe-Area & Touch Specifications
+- [docs/DESKTOP-UX.md](file:///d:/web/protfolio/docs/DESKTOP-UX.md) — Desktop, 4K & Ultrawide UX Specifications
+- [docs/RESPONSIVE-FINAL-REPORT.md](file:///d:/web/protfolio/docs/RESPONSIVE-FINAL-REPORT.md) — Final Responsive Optimization Report
 - [docs/RELEASE-NOTES-V1.md](file:///d:/web/protfolio/docs/RELEASE-NOTES-V1.md) — Release Notes v1.0.0
 - [docs/DEVELOPER-ONBOARDING.md](file:///d:/web/protfolio/docs/DEVELOPER-ONBOARDING.md) — Developer Onboarding Guide
 - [docs/MAINTENANCE-PLAN.md](file:///d:/web/protfolio/docs/MAINTENANCE-PLAN.md) — Long-Term Maintenance Plan

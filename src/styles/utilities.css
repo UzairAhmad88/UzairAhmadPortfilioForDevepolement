@@ -1,49 +1,66 @@
 .section-shell {
   position: relative;
   z-index: 1;
-  width: min(1180px, calc(100% - 2rem));
+  width: min(var(--container-max, 1200px), calc(100% - max(1.5rem, calc(env(safe-area-inset-left) + env(safe-area-inset-right) + 1rem))));
   margin: 0 auto;
+  padding-left: env(safe-area-inset-left, 0);
+  padding-right: env(safe-area-inset-right, 0);
 }
 
 .eyebrow {
-  margin: 0 0 1rem;
+  margin: 0 0 0.85rem;
   color: var(--teal);
   font-family: var(--font-mono);
-  font-size: 0.77rem;
+  font-size: var(--font-size-xs, 0.75rem);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .section-heading {
-  margin-bottom: 2.2rem;
+  margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
 }
 
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 3rem;
-  padding: 0.92rem 1.2rem;
-  border-radius: 999px;
-  font-weight: 800;
-  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+  min-height: var(--touch-target-min, 44px);
+  padding: 0.85rem 1.4rem;
+  border-radius: var(--radius-full, 9999px);
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform var(--transition-fast, 180ms ease), box-shadow var(--transition-fast, 180ms ease), background var(--transition-fast, 180ms ease), border-color var(--transition-fast, 180ms ease);
+  text-align: center;
 }
 
 .button:hover {
   transform: translateY(-2px);
 }
 
+.button:focus-visible {
+  outline: 2px solid var(--color-accent, #3b82f6);
+  outline-offset: 2px;
+}
+
 .primary {
   background: var(--ink);
   color: var(--paper);
   box-shadow: 0 14px 35px rgba(126, 216, 196, 0.16);
+  border: 1px solid transparent;
 }
 
 .ghost {
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.055);
   color: var(--ink);
+}
+
+.ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(246, 241, 232, 0.24);
 }
 
 .whatsapp,
@@ -60,6 +77,7 @@
   width: 1.25rem;
   height: 1.25rem;
   fill: currentColor;
+  flex-shrink: 0;
 }
 
 .email {
@@ -69,13 +87,15 @@
 
 .whatsapp-float {
   position: fixed;
-  right: 1.25rem;
-  bottom: 1.25rem;
-  z-index: 20;
+  right: max(1.25rem, env(safe-area-inset-right));
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
+  z-index: 40;
   display: grid;
   place-items: center;
-  width: 3.35rem;
-  height: 3.35rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  min-width: var(--touch-target-min, 44px);
+  min-height: var(--touch-target-min, 44px);
   border: 1px solid rgba(126, 216, 196, 0.42);
   border-radius: 999px;
   color: var(--paper);
@@ -86,8 +106,8 @@
 
 .whatsapp-float:hover,
 .whatsapp-float:focus-visible {
-  transform: translateY(-3px);
-  box-shadow: 0 22px 55px rgba(126, 216, 196, 0.22);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 22px 55px rgba(126, 216, 196, 0.3);
   outline: none;
 }
 
@@ -129,4 +149,18 @@
 
 .skip-link:focus {
   top: 1rem;
+  outline: 2px solid var(--teal);
+}
+
+@media (max-width: 640px) {
+  .section-shell {
+    width: calc(100% - 1.25rem);
+  }
+
+  .whatsapp-float {
+    right: max(1rem, env(safe-area-inset-right));
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    width: 3.25rem;
+    height: 3.25rem;
+  }
 }

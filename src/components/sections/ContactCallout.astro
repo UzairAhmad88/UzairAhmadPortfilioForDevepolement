@@ -29,24 +29,26 @@ const {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 2rem;
-    padding: 3rem;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    padding: clamp(1.75rem, 4vw, 3rem);
     background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.7));
     border: 1px solid var(--border-subtle, #1e293b);
     border-radius: 1rem;
-    margin: 4rem 0 2rem;
+    margin: clamp(2.5rem, 5vw, 4rem) 0 2rem;
   }
 
   .callout-title {
-    font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+    font-size: clamp(1.25rem, 2.2vw + 0.2rem, 1.85rem);
     font-weight: 800;
     color: var(--text-primary, #f8fafc);
     margin: 0 0 0.5rem 0;
     letter-spacing: -0.02em;
+    line-height: 1.25;
+    text-wrap: balance;
   }
 
   .callout-subtitle {
-    font-size: 1rem;
+    font-size: var(--font-size-body, 0.95rem);
     color: var(--text-secondary, #94a3b8);
     line-height: 1.6;
     margin: 0;
@@ -56,14 +58,17 @@ const {
   .callout-btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    min-height: var(--touch-target-min, 44px);
     white-space: nowrap;
-    padding: 0.875rem 1.75rem;
+    padding: 0.85rem 1.75rem;
     background: var(--color-accent, #3b82f6);
     color: #ffffff;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 0.95rem;
     border-radius: 0.5rem;
     text-decoration: none;
+    text-align: center;
     transition: background 150ms ease, transform 150ms ease;
   }
 
@@ -80,14 +85,13 @@ const {
   @media (max-width: 768px) {
     .contact-callout {
       flex-direction: column;
-      align-items: flex-start;
-      padding: 2rem 1.5rem;
+      align-items: stretch;
+      padding: 1.75rem 1.25rem;
       gap: 1.5rem;
     }
 
     .callout-btn {
       width: 100%;
-      justify-content: center;
     }
   }
 </style>

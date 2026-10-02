@@ -54,25 +54,29 @@ import { featuredProject, projects, projectFilters } from '@/data/projects';
 
 <style>
   #work {
-    padding: 6.5rem 0;
+    padding: var(--space-section, 6.5rem) 0;
   }
 
   .filters {
     display: flex;
     flex-wrap: wrap;
     gap: 0.6rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   .filter {
-    min-height: 2.5rem;
-    padding: 0.65rem 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--touch-target-min, 44px);
+    padding: 0.5rem 1.15rem;
     border: 1px solid var(--line);
-    border-radius: 999px;
+    border-radius: var(--radius-full, 999px);
     color: var(--ink);
     background: rgba(255, 255, 255, 0.045);
     font: inherit;
-    font-weight: 800;
+    font-size: 0.875rem;
+    font-weight: 700;
     cursor: pointer;
     transition: background 240ms ease, border-color 240ms ease, transform 240ms ease;
   }
@@ -89,10 +93,10 @@ import { featuredProject, projects, projectFilters } from '@/data/projects';
   .project-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
+    gap: 1.25rem;
   }
 
-  @media (max-width: 920px) {
+  @media (max-width: 1024px) {
     .project-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }

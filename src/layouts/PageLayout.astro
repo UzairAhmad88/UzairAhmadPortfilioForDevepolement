@@ -13,7 +13,7 @@ const { seo, title, eyebrow, description } = Astro.props;
 ---
 
 <BaseLayout seo={{ ...seo, title: title || seo?.title, description: description || seo?.description }}>
-  <main id="top" class="page-container section-shell">
+  <div class="page-container section-shell">
     {
       (eyebrow || title || description) && (
         <header class="page-header reveal">
@@ -24,23 +24,24 @@ const { seo, title, eyebrow, description } = Astro.props;
       )
     }
     <slot />
-  </main>
+  </div>
 </BaseLayout>
 
 <style>
   .page-container {
     min-height: calc(100vh - 12rem);
-    padding: 5rem 0 3rem;
+    padding: clamp(3rem, 6vw, 5rem) 0 clamp(2rem, 4vw, 3rem);
   }
 
   .page-header {
-    margin-bottom: 3rem;
+    margin-bottom: clamp(1.75rem, 4vw, 3rem);
   }
 
   .page-description {
     max-width: 680px;
     color: var(--muted);
-    font-size: 1.15rem;
+    font-size: clamp(1rem, 1.2vw, 1.15rem);
     line-height: 1.7;
+    text-wrap: pretty;
   }
 </style>

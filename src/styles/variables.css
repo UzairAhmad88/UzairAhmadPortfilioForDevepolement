@@ -22,21 +22,35 @@
   --color-text-primary: #f6f1e8;
   --color-text-secondary: #a9b8b1;
   --color-text-tertiary: rgba(246, 241, 232, 0.58);
+  --color-text-muted: #64748b;
 
   --color-border: rgba(246, 241, 232, 0.12);
   --color-border-subtle: rgba(246, 241, 232, 0.08);
   --color-border-strong: rgba(246, 241, 232, 0.24);
 
+  --color-accent: #3b82f6;
   --color-accent-teal: #7ed8c4;
   --color-accent-deep: #9bd8cf;
   --color-accent-clay: #d2a071;
   --color-accent-lavender: #bda6ff;
   --color-accent-rose: #e0aaa7;
   --color-focus: rgba(126, 216, 196, 0.5);
+  --color-success: #10b981;
 
   /* Typography System */
   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Fluid Typography Tokens (clamp) */
+  --font-size-display: clamp(2.35rem, 5.5vw + 0.75rem, 5.5rem);
+  --font-size-h1: clamp(2.1rem, 4.5vw + 0.5rem, 3.8rem);
+  --font-size-h2: clamp(1.65rem, 3.2vw + 0.35rem, 2.75rem);
+  --font-size-h3: clamp(1.2rem, 1.8vw + 0.25rem, 1.65rem);
+  --font-size-h4: clamp(1.05rem, 1.2vw + 0.15rem, 1.25rem);
+  --font-size-lead: clamp(1.05rem, 1.4vw + 0.2rem, 1.25rem);
+  --font-size-body: clamp(0.95rem, 0.8vw + 0.2rem, 1.05rem);
+  --font-size-sm: 0.875rem;
+  --font-size-xs: 0.75rem;
 
   /* Spacing Scale (4px base) */
   --space-1: 0.25rem;  /* 4px */
@@ -49,6 +63,11 @@
   --space-16: 4rem;    /* 64px */
   --space-20: 5rem;    /* 80px */
   --space-24: 6.5rem;  /* 104px */
+
+  /* Fluid Spacing Tokens */
+  --space-section: clamp(3.5rem, 6vw + 1rem, 6.5rem);
+  --space-gutter: clamp(1rem, 3vw, 2rem);
+  --space-card: clamp(1.25rem, 2.5vw, 2.25rem);
 
   /* Elevation & Shadows */
   --shadow-surface: 0 16px 50px rgba(0, 0, 0, 0.18);
@@ -66,6 +85,11 @@
   --transition-base: 240ms ease;
   --transition-slow: 420ms ease;
 
-  /* Layout */
-  --container-max: 1180px;
+  /* Layout Containers */
+  --container-max: 1200px;
+  --container-reading: 72ch;
+  --container-compact: 900px;
+
+  /* Touch Targets (WCAG 2.5.5 / 2.5.8) */
+  --touch-target-min: 44px;
 }

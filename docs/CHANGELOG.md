@@ -4,6 +4,31 @@ All notable changes to the Uzair Ahmad Personal Professional Platform codebase a
 
 ---
 
+## [1.2.0] — 2026-10-03 — Comprehensive Cross-Screen Responsive Optimization
+
+### Added
+- **Fluid Design Tokens & Responsive Utilities**:
+  - Added fluid typography tokens using CSS `clamp()` (`--font-size-display`, `--font-size-h1`, `--font-size-h2`, `--font-size-h3`, `--font-size-lead`, `--font-size-body`, `--font-size-small`).
+  - Added fluid spacing tokens (`--space-section`, `--space-card`, `--space-gutter`) and `--touch-target-min: 44px`.
+  - Added global responsive media rules (`img, svg, video, canvas { max-width: 100%; height: auto; }`).
+  - Added contained horizontal scrolling for `pre`, `code`, and `table` elements with `-webkit-overflow-scrolling: touch`.
+- **Safe-Area Inset Support**:
+  - Injected `env(safe-area-inset-*)` across fixed header, mobile drawer, floating WhatsApp button, and page container footers.
+- **Touch & Accessibility Enhancements**:
+  - Enforced minimum 44px touch targets across all filter buttons, mobile drawer links, action triggers, and social cards.
+  - Eliminated nested `<main>` tags in `PageLayout.astro` and `ProjectLayout.astro`.
+  - Enforced `16px` (`1rem`) font sizing on form inputs in `src/pages/contact.astro` to eliminate unwanted iOS Safari auto-zoom.
+- **Space-Driven Layout Adaptation**:
+  - Upgraded header collapse breakpoint to `820px` to prevent brand title collisions.
+  - Converted TechStack orbital badges to fluid `clamp(260px, 72vw, 420px)`, eliminating horizontal overflow on iPhone SE (320px).
+  - Transitioned sticky sidebars to stack statically at `<= 1024px` on `/about`, `/work/[slug]`, `/research/[slug]`, and `/contact`.
+  - Structured responsive grid transitions (3 -> 2 -> 1 column) across project, research, and capability showcases.
+- **Responsive Documentation Hub**:
+  - Created `docs/RESPONSIVE-AUDIT.md`, `docs/RESPONSIVE-DESIGN-SYSTEM.md`, `docs/RESPONSIVE-QA-MATRIX.md`, `docs/DEVICE-BREAKPOINTS.md`, `docs/DESKTOP-UX.md`, `docs/PHASE-RESPONSIVE-IMPLEMENTATION.md`, `docs/RESPONSIVE-FINAL-REPORT.md`.
+  - Updated `docs/MOBILE-UX.md`.
+
+---
+
 ## [1.1.0] — 2026-10-03 — Phase 11: Real GitHub + Vercel Project System & Sync Engine
 
 ### Added

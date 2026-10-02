@@ -54,9 +54,9 @@ const personaPoints = [
   .persona-layout {
     display: grid;
     grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
-    gap: 3rem;
+    gap: clamp(2rem, 4vw, 3.5rem);
     align-items: center;
-    padding: 6.5rem 0;
+    padding: var(--space-section, 6.5rem) 0;
   }
 
   .journey {
@@ -69,7 +69,8 @@ const personaPoints = [
     border: 1px solid var(--line);
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.055);
-    font-weight: 800;
+    font-weight: 700;
+    font-size: clamp(0.85rem, 1.5vw, 0.95rem);
   }
 
   .journey i {
@@ -82,7 +83,7 @@ const personaPoints = [
   .persona-copy p:not(.eyebrow) {
     max-width: 680px;
     color: var(--muted);
-    font-size: 1.08rem;
+    font-size: var(--font-size-body, 1.05rem);
     line-height: 1.75;
   }
 
@@ -95,11 +96,12 @@ const personaPoints = [
   }
 
   .persona-points span {
-    padding: 0.9rem 1rem;
+    padding: 0.85rem 1rem;
     border: 1px solid var(--line);
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.055);
-    font-weight: 800;
+    font-weight: 700;
+    font-size: 0.9rem;
   }
 
   @media (max-width: 920px) {
