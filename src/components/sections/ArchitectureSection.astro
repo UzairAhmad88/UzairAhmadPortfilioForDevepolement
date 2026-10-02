@@ -1,0 +1,112 @@
+---
+import { architectureStages } from '@/data/architecturePipeline';
+---
+
+<section class="section-shell architecture-section">
+  <div class="section-heading reveal">
+    <p class="eyebrow">Architecture</p>
+    <h2>A signature path from data to product.</h2>
+  </div>
+
+  <div class="architecture-pipeline reveal">
+    {
+      architectureStages.map((stage) => (
+        <button data-skill={stage.skill}>{stage.label}</button>
+      ))
+    }
+  </div>
+
+  <p class="pipeline-note reveal">Hover a layer to reveal the skill behind it.</p>
+</section>
+
+<script>
+  const pipelineButtons = document.querySelectorAll<HTMLButtonElement>(
+    '.architecture-pipeline button'
+  );
+  const pipelineNote = document.querySelector<HTMLElement>('.pipeline-note');
+
+  pipelineButtons.forEach((button) => {
+    const showSkill = () => {
+      if (pipelineNote && button.dataset.skill) {
+        pipelineNote.textContent = button.dataset.skill;
+      }
+    };
+
+    button.addEventListener('mouseenter', showSkill);
+    button.addEventListener('focus', showSkill);
+    button.addEventListener('mouseleave', () => {
+      if (pipelineNote) {
+        pipelineNote.textContent = 'Hover a layer to reveal the skill behind it.';
+      }
+    });
+  });
+</script>
+
+<style>
+  .architecture-section {
+    padding: 6.5rem 0;
+  }
+
+  .architecture-pipeline {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+
+  .architecture-pipeline button {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 5.6rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    color: var(--ink);
+    background: rgba(255, 255, 255, 0.055);
+    font-family: var(--font-mono);
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .architecture-pipeline button::after {
+    content: attr(data-skill);
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 0.6rem);
+    width: 12rem;
+    padding: 0.7rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    color: var(--muted);
+    background: rgba(7, 17, 15, 0.95);
+    opacity: 0;
+    transform: translate(-50%, 0.5rem);
+    transition: opacity 240ms ease, transform 240ms ease;
+    pointer-events: none;
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    line-height: 1.4;
+  }
+
+  .architecture-pipeline button:hover::after,
+  .architecture-pipeline button:focus-visible::after {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  .pipeline-note {
+    margin-top: 1rem;
+    color: var(--muted);
+  }
+
+  @media (max-width: 920px) {
+    .architecture-pipeline {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .architecture-pipeline {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

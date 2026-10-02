@@ -1,0 +1,46 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { SEOProps } from '@/types/seo';
+
+export interface Props {
+  seo?: SEOProps;
+  title?: string;
+  eyebrow?: string;
+  description?: string;
+}
+
+const { seo, title, eyebrow, description } = Astro.props;
+---
+
+<BaseLayout seo={{ ...seo, title: title || seo?.title, description: description || seo?.description }}>
+  <main id="top" class="page-container section-shell">
+    {
+      (eyebrow || title || description) && (
+        <header class="page-header reveal">
+          {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+          {title && <h1>{title}</h1>}
+          {description && <p class="page-description">{description}</p>}
+        </header>
+      )
+    }
+    <slot />
+  </main>
+</BaseLayout>
+
+<style>
+  .page-container {
+    min-height: calc(100vh - 12rem);
+    padding: 5rem 0 3rem;
+  }
+
+  .page-header {
+    margin-bottom: 3rem;
+  }
+
+  .page-description {
+    max-width: 680px;
+    color: var(--muted);
+    font-size: 1.15rem;
+    line-height: 1.7;
+  }
+</style>

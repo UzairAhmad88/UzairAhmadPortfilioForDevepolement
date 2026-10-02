@@ -1,0 +1,9 @@
+# ==============================================================================
+# Robots.txt for Uzair Ahmad Portfolio
+# ==============================================================================
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://uzairahmad.vercel.app/sitemap-index.xml
+Sitemap: https://uzairahmad.vercel.app/sitemap-0.xml

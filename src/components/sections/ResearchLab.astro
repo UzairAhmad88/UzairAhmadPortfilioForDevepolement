@@ -1,0 +1,41 @@
+---
+import LabCard from '@/components/cards/LabCard.astro';
+import { researchItems } from '@/data/research';
+---
+
+<section id="research" class="lab-section">
+  <div class="section-shell">
+    <div class="section-heading reveal">
+      <p class="eyebrow">Research Lab</p>
+      <h2>Active themes across markets, intelligence, and systems.</h2>
+    </div>
+    <div class="lab-grid">
+      {researchItems.map((item) => <LabCard item={item} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .lab-section {
+    padding: 6.5rem 0;
+    background: rgba(255, 255, 255, 0.035);
+  }
+
+  .lab-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  @media (max-width: 920px) {
+    .lab-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .lab-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

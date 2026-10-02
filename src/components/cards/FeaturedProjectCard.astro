@@ -1,0 +1,119 @@
+---
+import type { Project } from '@/types/project';
+
+export interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const categoryString = project.category.join(' ');
+---
+
+<article class="featured-project reveal" data-category={categoryString}>
+  <div>
+    <p class="eyebrow">{project.featuredSubheading || 'Featured Case Study'}</p>
+    <h3>{project.title}</h3>
+    {
+      project.problem && (
+        <p>
+          <strong>Problem:</strong> {project.problem}
+        </p>
+      )
+    }
+    {
+      project.system && (
+        <p>
+          <strong>System:</strong> {project.system}
+        </p>
+      )
+    }
+    {
+      project.githubUrl && (
+        <a href={project.githubUrl} target="_blank" rel="noreferrer">
+          View repository
+        </a>
+      )
+    }
+  </div>
+  <div class="architecture-mini" aria-label="Data to product architecture">
+    <span>Data</span><i></i>
+    <span>Model</span><i></i>
+    <span>Backend</span><i></i>
+    <span>API</span><i></i>
+    <span>Frontend</span><i></i>
+    <span>User</span>
+  </div>
+</article>
+
+<style>
+  .featured-project {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 1rem;
+    align-items: stretch;
+    margin-bottom: 1rem;
+    padding: 1.2rem;
+    border: 1px solid rgba(126, 216, 196, 0.24);
+    border-radius: 8px;
+    background:
+      linear-gradient(135deg, rgba(126, 216, 196, 0.1), rgba(189, 166, 255, 0.055)),
+      rgba(255, 255, 255, 0.04);
+    box-shadow: var(--shadow);
+    transform-style: preserve-3d;
+    transition: transform 360ms ease, border-color 360ms ease, background 360ms ease;
+  }
+
+  .featured-project:hover {
+    transform: translateY(-4px) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg));
+    border-color: rgba(189, 166, 255, 0.35);
+  }
+
+  .featured-project h3 {
+    font-size: clamp(1.7rem, 3vw, 3rem);
+  }
+
+  .featured-project p {
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .featured-project a {
+    color: var(--teal);
+    font-weight: 800;
+  }
+
+  .architecture-mini {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.55rem;
+    align-content: center;
+  }
+
+  .architecture-mini span {
+    display: grid;
+    place-items: center;
+    min-height: 4.4rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    color: var(--ink);
+    background: rgba(255, 255, 255, 0.055);
+    font-family: var(--font-mono);
+    font-weight: 800;
+  }
+
+  .architecture-mini i {
+    display: none;
+  }
+
+  @media (max-width: 920px) {
+    .featured-project {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .architecture-mini {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

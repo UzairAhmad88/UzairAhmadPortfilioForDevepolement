@@ -1,0 +1,373 @@
+---
+import type { CapabilityItem } from '@/types/capability';
+
+export interface Props {
+  capability: CapabilityItem;
+}
+
+const { capability } = Astro.props;
+---
+
+<article class="capability-card reveal" tabindex="0">
+  <div class="capability-meta">
+    <span>{capability.number}</span>
+    <small>{capability.flow}</small>
+  </div>
+
+  {
+    capability.visualType === 'signal' && (
+      <div class="capability-visual signal-visual" aria-hidden="true">
+        <svg viewBox="0 0 420 210">
+          <path
+            class="grid-line"
+            d="M32 42 H388 M32 88 H388 M32 134 H388 M32 180 H388 M82 24 V190 M164 24 V190 M246 24 V190 M328 24 V190"
+          />
+          <path
+            class="active-line"
+            d="M34 150 C74 122 92 166 128 132 C176 88 205 154 248 112 C292 70 328 120 386 58"
+          />
+          <path
+            class="active-line signal-b"
+            d="M34 172 C88 160 110 142 154 150 C204 160 226 118 272 126 C318 134 344 98 386 106"
+          />
+          <g class="signal-dots">
+            <circle cx="128" cy="132" r="5" />
+            <circle cx="248" cy="112" r="5" />
+            <circle cx="386" cy="58" r="5" />
+          </g>
+        </svg>
+      </div>
+    )
+  }
+
+  {
+    capability.visualType === 'network' && (
+      <div class="capability-visual network-visual" aria-hidden="true">
+        <svg viewBox="0 0 420 210">
+          <path
+            class="network-path"
+            d="M74 106 C118 42 186 62 210 104 C238 154 310 160 350 88"
+          />
+          <path
+            class="network-path secondary"
+            d="M80 154 C132 118 156 158 206 138 C258 116 282 62 342 54"
+          />
+          <path
+            class="network-path secondary"
+            d="M122 62 C164 96 182 116 212 106 C250 92 276 116 322 146"
+          />
+          <g class="node-group">
+            <circle cx="74" cy="106" r="10" />
+            <circle cx="122" cy="62" r="8" />
+            <circle cx="210" cy="104" r="12" />
+            <circle cx="206" cy="138" r="8" />
+            <circle cx="342" cy="54" r="9" />
+            <circle cx="350" cy="88" r="10" />
+            <circle cx="322" cy="146" r="8" />
+          </g>
+          <circle class="travel-particle" cx="74" cy="106" r="4" />
+        </svg>
+      </div>
+    )
+  }
+
+  {
+    capability.visualType === 'architecture' && (
+      <div class="capability-visual product-visual" aria-hidden="true">
+        <svg viewBox="0 0 420 210">
+          <rect class="module large" x="48" y="48" width="120" height="74" rx="8" />
+          <rect class="module" x="214" y="34" width="74" height="48" rx="8" />
+          <rect class="module" x="316" y="48" width="56" height="128" rx="8" />
+          <rect class="module" x="214" y="126" width="74" height="50" rx="8" />
+          <path
+            class="product-path"
+            d="M168 84 H214 M288 58 H316 M288 152 H316 M108 122 V164 H214"
+          />
+          <path
+            class="ui-fragments"
+            d="M70 72 H142 M70 94 H122 M234 54 H268 M234 146 H270 M334 78 H354 M334 102 H354 M334 126 H354"
+          />
+        </svg>
+      </div>
+    )
+  }
+
+  {
+    capability.visualType === 'product' && (
+      <div class="capability-visual product-visual" aria-hidden="true">
+        <svg viewBox="0 0 420 210">
+          <rect class="module" x="54" y="50" width="86" height="110" rx="8" />
+          <rect class="module large" x="172" y="34" width="108" height="142" rx="8" />
+          <rect class="module" x="312" y="68" width="54" height="74" rx="8" />
+          <path
+            class="product-path"
+            d="M140 86 H172 M280 106 H312 M104 160 C150 190 254 190 338 142"
+          />
+          <path
+            class="ui-fragments"
+            d="M74 76 H118 M74 102 H112 M194 66 H254 M194 94 H238 M194 130 H260 M328 94 H350"
+          />
+        </svg>
+      </div>
+    )
+  }
+
+  <h3>{capability.title}</h3>
+  <p>{capability.description}</p>
+  <div class="capability-tags">
+    {capability.tags.map((tag) => <span>{tag}</span>)}
+  </div>
+  <strong>{capability.punchline}</strong>
+</article>
+
+<style>
+  .capability-card {
+    position: relative;
+    min-height: 660px;
+    padding: 1.35rem;
+    border: 1px solid rgba(248, 245, 239, 0.13);
+    border-radius: 8px;
+    background:
+      linear-gradient(180deg, rgba(248, 245, 239, 0.08), rgba(248, 245, 239, 0.035)),
+      rgba(248, 245, 239, 0.035);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.14);
+    outline: none;
+    transition: transform 420ms ease, border-color 420ms ease, background 420ms ease, box-shadow 420ms ease;
+    transform-style: preserve-3d;
+  }
+
+  .capability-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle at 50% 0%, rgba(147, 214, 200, 0.16), transparent 48%);
+    opacity: 0;
+    transition: opacity 420ms ease;
+    pointer-events: none;
+  }
+
+  .capability-card:hover,
+  .capability-card:focus-visible {
+    transform: translateY(-5px) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg));
+    border-color: rgba(147, 214, 200, 0.36);
+    background:
+      linear-gradient(180deg, rgba(248, 245, 239, 0.105), rgba(248, 245, 239, 0.045)),
+      rgba(248, 245, 239, 0.04);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.2);
+  }
+
+  .capability-card:hover::after,
+  .capability-card:focus-visible::after {
+    opacity: 1;
+  }
+
+  .capability-card:focus-visible {
+    box-shadow: 0 0 0 3px rgba(147, 214, 200, 0.2), 0 30px 80px rgba(0, 0, 0, 0.2);
+  }
+
+  .capability-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    color: rgba(248, 245, 239, 0.52);
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .capability-meta span {
+    color: #93d6c8;
+    font-size: 1rem;
+  }
+
+  .capability-meta small {
+    text-align: right;
+  }
+
+  .capability-visual {
+    position: relative;
+    display: grid;
+    place-items: center;
+    height: 210px;
+    margin: 1.3rem 0 1.45rem;
+    border: 1px solid rgba(248, 245, 239, 0.1);
+    border-radius: 8px;
+    background:
+      linear-gradient(rgba(248, 245, 239, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(248, 245, 239, 0.025) 1px, transparent 1px),
+      rgba(0, 0, 0, 0.1);
+    background-size: 24px 24px;
+    overflow: hidden;
+  }
+
+  .capability-visual svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .capability-card h3 {
+    margin-bottom: 0.8rem;
+    font-size: 1.42rem;
+    line-height: 1.13;
+    transition: color 360ms ease;
+  }
+
+  .capability-card:hover h3,
+  .capability-card:focus-visible h3 {
+    color: #b5eadf;
+  }
+
+  .capability-card p {
+    color: rgba(248, 245, 239, 0.68);
+    line-height: 1.68;
+  }
+
+  .capability-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.4rem 0;
+  }
+
+  .capability-tags span {
+    padding: 0.48rem 0.58rem;
+    border: 1px solid rgba(248, 245, 239, 0.1);
+    border-radius: 999px;
+    color: rgba(248, 245, 239, 0.64);
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .capability-card strong {
+    position: absolute;
+    right: 1.35rem;
+    bottom: 1.35rem;
+    left: 1.35rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(248, 245, 239, 0.12);
+    color: #93d6c8;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+  }
+
+  .grid-line,
+  .active-line,
+  .network-path,
+  .module,
+  .product-path,
+  .ui-fragments {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .grid-line {
+    stroke: rgba(248, 245, 239, 0.11);
+    stroke-width: 1;
+    transition: stroke 420ms ease;
+  }
+
+  .active-line,
+  .network-path,
+  .product-path {
+    stroke: #93d6c8;
+    stroke-width: 3;
+    stroke-dasharray: 520;
+    stroke-dashoffset: 230;
+    transition: stroke-dashoffset 600ms ease, opacity 420ms ease;
+  }
+
+  .signal-b,
+  .network-path.secondary {
+    opacity: 0.48;
+  }
+
+  .signal-dots circle,
+  .node-group circle {
+    fill: #93d6c8;
+    opacity: 0.72;
+    transform-origin: center;
+    transition: opacity 420ms ease, transform 420ms ease;
+  }
+
+  .capability-card:hover .grid-line,
+  .capability-card:focus-visible .grid-line {
+    stroke: rgba(248, 245, 239, 0.2);
+  }
+
+  .capability-card:hover .active-line,
+  .capability-card:hover .network-path,
+  .capability-card:hover .product-path,
+  .capability-card:focus-visible .active-line,
+  .capability-card:focus-visible .network-path,
+  .capability-card:focus-visible .product-path {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+
+  .capability-card:hover .signal-dots circle,
+  .capability-card:hover .node-group circle,
+  .capability-card:focus-visible .signal-dots circle,
+  .capability-card:focus-visible .node-group circle {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+
+  .travel-particle {
+    fill: var(--clay);
+    offset-path: path("M74 106 C118 42 186 62 210 104 C238 154 310 160 350 88");
+    animation: travelNode 4s ease-in-out infinite;
+    opacity: 0;
+  }
+
+  .capability-card:hover .travel-particle,
+  .capability-card:focus-visible .travel-particle {
+    opacity: 1;
+  }
+
+  .module {
+    fill: rgba(248, 245, 239, 0.035);
+    stroke: rgba(147, 214, 200, 0.42);
+    stroke-width: 2;
+    transition: transform 420ms ease, fill 420ms ease, stroke 420ms ease;
+  }
+
+  .module.large {
+    stroke: rgba(216, 170, 160, 0.52);
+  }
+
+  .product-path {
+    opacity: 0.58;
+  }
+
+  .ui-fragments {
+    stroke: rgba(248, 245, 239, 0.42);
+    stroke-width: 2;
+  }
+
+  .capability-card:hover .module,
+  .capability-card:focus-visible .module {
+    fill: rgba(147, 214, 200, 0.06);
+    stroke: rgba(147, 214, 200, 0.72);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 640px) {
+    .capability-card {
+      min-height: auto;
+      padding-bottom: 4.6rem;
+    }
+
+    .capability-meta {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .capability-meta small {
+      text-align: left;
+    }
+  }
+</style>

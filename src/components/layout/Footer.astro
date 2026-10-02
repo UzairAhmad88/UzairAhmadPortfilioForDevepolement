@@ -1,0 +1,32 @@
+---
+import { siteConfig } from '@/data/site';
+---
+
+<footer>
+  <p>
+    <strong>{siteConfig.author.title}</strong> · Python · Quant · AI · HFT · Full Stack · Products · <a href={`mailto:${siteConfig.author.email}`}>{siteConfig.author.email}</a>
+  </p>
+  <a href="#top">Back to top</a>
+</footer>
+
+<style>
+  footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 1.4rem 0 2rem;
+    color: var(--muted);
+  }
+
+  footer a {
+    font-weight: 800;
+  }
+
+  @media (max-width: 640px) {
+    footer {
+      flex-direction: column;
+    }
+  }
+</style>

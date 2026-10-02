@@ -1,0 +1,70 @@
+---
+import { timelineItems } from '@/data/timeline';
+---
+
+<section class="section-shell build-log">
+  <div class="section-heading reveal">
+    <p class="eyebrow">Building in Public</p>
+    <h2>Recent work signals.</h2>
+  </div>
+
+  <div class="timeline reveal">
+    {
+      timelineItems.map((item) => (
+        <article>
+          <time>{item.date}</time>
+          <h3>{item.title}</h3>
+          <p>{item.tags}</p>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .build-log {
+    padding: 6.5rem 0;
+  }
+
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .timeline article {
+    padding: 1.2rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.045);
+  }
+
+  .timeline time {
+    color: var(--teal);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .timeline h3 {
+    margin: 0.6rem 0 0.4rem;
+  }
+
+  .timeline p {
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  @media (max-width: 920px) {
+    .timeline {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .timeline {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

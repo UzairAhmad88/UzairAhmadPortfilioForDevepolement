@@ -1,0 +1,54 @@
+---
+import type { ResearchItem } from '@/types/research';
+
+export interface Props {
+  item: ResearchItem;
+}
+
+const { item } = Astro.props;
+---
+
+<article class="lab-card reveal">
+  <span>{item.badge}</span>
+  <h3>{item.title}</h3>
+  <p>
+    <strong>Question:</strong> {item.question}
+  </p>
+  <p>
+    <strong>Approach:</strong> {item.approach}
+  </p>
+</article>
+
+<style>
+  .lab-card {
+    padding: 1.2rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.045);
+    transform-style: preserve-3d;
+    transition: transform 320ms ease, border-color 320ms ease, background 320ms ease;
+  }
+
+  .lab-card:hover {
+    transform: translateY(-4px) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg));
+    border-color: rgba(126, 216, 196, 0.32);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .lab-card span {
+    color: var(--teal);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .lab-card h3 {
+    margin: 0.6rem 0 0.5rem;
+  }
+
+  .lab-card p {
+    color: var(--muted);
+    line-height: 1.65;
+  }
+</style>

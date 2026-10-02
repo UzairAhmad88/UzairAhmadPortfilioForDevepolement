@@ -1,0 +1,83 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { Project } from '@/types/project';
+import type { SEOProps } from '@/types/seo';
+
+export interface Props {
+  project: Project;
+  seo?: SEOProps;
+}
+
+const { project, seo } = Astro.props;
+
+const projectSeo: SEOProps = {
+  title: project.title,
+  description: project.problem || project.system || project.product,
+  og: {
+    title: `${project.title} | Case Study`,
+    description: project.problem || project.system || project.product,
+    type: 'article',
+  },
+  ...seo,
+};
+---
+
+<BaseLayout seo={projectSeo}>
+  <main id="top" class="project-layout-container section-shell">
+    <nav class="breadcrumb-nav" aria-label="Breadcrumbs">
+      <a href="/">Home</a>
+      <span>/</span>
+      <a href="/#work">Work</a>
+      <span>/</span>
+      <span aria-current="page">{project.title}</span>
+    </nav>
+
+    <header class="project-header reveal">
+      <span class="project-type">{project.projectType}</span>
+      <h1>{project.title}</h1>
+      {project.problem && <p class="project-lead">{project.problem}</p>}
+    </header>
+
+    <div class="project-content">
+      <slot />
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .project-layout-container {
+    min-height: calc(100vh - 12rem);
+    padding: 4rem 0 3rem;
+  }
+
+  .breadcrumb-nav {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .breadcrumb-nav a:hover {
+    color: var(--teal);
+  }
+
+  .project-type {
+    color: var(--teal);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .project-header h1 {
+    margin: 0.5rem 0 1rem;
+  }
+
+  .project-lead {
+    max-width: 720px;
+    color: var(--muted);
+    font-size: 1.2rem;
+    line-height: 1.7;
+  }
+</style>

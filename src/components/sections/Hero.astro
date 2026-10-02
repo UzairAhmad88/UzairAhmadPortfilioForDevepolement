@@ -1,0 +1,208 @@
+---
+import { siteConfig } from '@/data/site';
+---
+
+<section class="hero section-shell">
+  <div class="hero-copy reveal">
+    <p class="eyebrow">{siteConfig.author.eyebrow}</p>
+    <h1>I build systems where <span>finance, intelligence, and software meet.</span></h1>
+    <p class="hero-lede">
+      {siteConfig.author.lede}
+    </p>
+    <div class="hero-actions">
+      <a class="button primary" href="#work">View My Work</a>
+      <a class="button ghost" href="#contact">Start a Conversation</a>
+    </div>
+  </div>
+
+  <div class="hero-system reveal" aria-label="Interactive technical system visualization">
+    <svg viewBox="0 0 680 560" role="img">
+      <defs>
+        <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#7ed8c4"></stop>
+          <stop offset="55%" stop-color="#bda6ff"></stop>
+          <stop offset="100%" stop-color="#d2a071"></stop>
+        </linearGradient>
+      </defs>
+      <path
+        class="system-grid"
+        d="M80 90 H600 M80 180 H600 M80 270 H600 M80 360 H600 M80 450 H600 M130 56 V500 M235 56 V500 M340 56 V500 M445 56 V500 M550 56 V500"
+      ></path>
+      <circle class="core-node" cx="340" cy="280" r="62"></circle>
+      <text x="340" y="287" text-anchor="middle">PRODUCT</text>
+      <path class="system-line quant" d="M95 150 C180 98 238 142 283 224"></path>
+      <path class="system-line ai" d="M585 130 C486 106 428 160 386 224"></path>
+      <path class="system-line eng" d="M112 428 C200 396 246 356 286 322"></path>
+      <path class="system-line product" d="M590 420 C494 400 430 354 388 320"></path>
+      <g class="system-labels">
+        <text x="95" y="132">QUANT</text>
+        <text x="548" y="112">AI</text>
+        <text x="96" y="462">ENGINEERING</text>
+        <text x="526" y="462">USERS</text>
+      </g>
+      <g class="system-dots">
+        <circle cx="95" cy="150" r="8"></circle>
+        <circle cx="205" cy="122" r="6"></circle>
+        <circle cx="283" cy="224" r="8"></circle>
+        <circle cx="585" cy="130" r="8"></circle>
+        <circle cx="474" cy="132" r="6"></circle>
+        <circle cx="386" cy="224" r="8"></circle>
+        <circle cx="112" cy="428" r="8"></circle>
+        <circle cx="220" cy="382" r="6"></circle>
+        <circle cx="286" cy="322" r="8"></circle>
+        <circle cx="590" cy="420" r="8"></circle>
+        <circle cx="476" cy="386" r="6"></circle>
+        <circle cx="388" cy="320" r="8"></circle>
+      </g>
+    </svg>
+    <div class="metric-card card-one">
+      <span>Research</span>
+      <p>signals, models, experiments</p>
+    </div>
+    <div class="metric-card card-two">
+      <span>Ship</span>
+      <p>software that becomes usable</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.02fr) minmax(320px, 0.98fr);
+    gap: 2.5rem;
+    align-items: center;
+    min-height: calc(100vh - 5.5rem);
+    padding: 5rem 0 3rem;
+  }
+
+  .hero-lede {
+    max-width: 660px;
+    color: var(--muted);
+    font-size: clamp(1rem, 2vw, 1.24rem);
+    line-height: 1.75;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 2rem;
+  }
+
+  .hero-system {
+    position: relative;
+    min-height: 560px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background:
+      linear-gradient(rgba(246, 241, 232, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(246, 241, 232, 0.035) 1px, transparent 1px),
+      rgba(255, 255, 255, 0.035);
+    background-size: 36px 36px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .hero-system svg {
+    width: 100%;
+    height: 100%;
+    min-height: 560px;
+  }
+
+  .system-grid {
+    fill: none;
+    stroke: rgba(246, 241, 232, 0.08);
+    stroke-width: 1;
+  }
+
+  .core-node {
+    fill: rgba(126, 216, 196, 0.08);
+    stroke: url(#lineGradient);
+    stroke-width: 2;
+    animation: breathe 4s ease-in-out infinite;
+  }
+
+  .hero-system text {
+    fill: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 800;
+  }
+
+  .system-line {
+    fill: none;
+    stroke: url(#lineGradient);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 520;
+    stroke-dashoffset: 520;
+    animation: drawLine 3s ease-in-out infinite alternate;
+  }
+
+  .system-dots circle {
+    fill: var(--teal);
+    animation: pulseDot 2.6s ease-in-out infinite;
+  }
+
+  .system-labels text {
+    fill: rgba(246, 241, 232, 0.58);
+    font-size: 13px;
+  }
+
+  .metric-card {
+    position: absolute;
+    padding: 1rem 1.05rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(18px);
+    box-shadow: var(--shadow);
+  }
+
+  .metric-card span {
+    display: block;
+    font-size: 1.55rem;
+    font-weight: 800;
+  }
+
+  .metric-card p {
+    margin: 0.2rem 0 0;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .card-one {
+    left: 3%;
+    bottom: 16%;
+  }
+
+  .card-two {
+    right: 4%;
+    top: 17%;
+  }
+
+  @media (max-width: 920px) {
+    .hero {
+      grid-template-columns: 1fr;
+      padding-top: 4rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      min-height: auto;
+      padding: 3.25rem 0 2rem;
+    }
+
+    h1 {
+      font-size: 3.15rem;
+    }
+
+    .metric-card {
+      position: static;
+      display: inline-block;
+      margin: 0.4rem;
+    }
+  }
+</style>

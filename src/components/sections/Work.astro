@@ -1,0 +1,106 @@
+---
+import FeaturedProjectCard from '@/components/cards/FeaturedProjectCard.astro';
+import ProjectCard from '@/components/cards/ProjectCard.astro';
+import { featuredProject, projects, projectFilters } from '@/data/projects';
+---
+
+<section id="work" class="section-shell">
+  <div class="section-heading reveal">
+    <p class="eyebrow">Things I've Built</p>
+    <h2>Projects framed as systems, not just repositories.</h2>
+  </div>
+
+  <div class="filters reveal" aria-label="Project filters">
+    {
+      projectFilters.map((f, index) => (
+        <button
+          class={`filter ${index === 0 ? 'active' : ''}`}
+          data-filter={f.id}
+        >
+          {f.label}
+        </button>
+      ))
+    }
+  </div>
+
+  <FeaturedProjectCard project={featuredProject} />
+
+  <div class="project-grid">
+    {projects.map((project) => <ProjectCard project={project} />)}
+  </div>
+</section>
+
+<script>
+  const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter');
+  const projectCards = document.querySelectorAll<HTMLElement>('.project-card');
+
+  filterButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const filter = button.dataset.filter || 'all';
+
+      filterButtons.forEach((item) => item.classList.remove('active'));
+      button.classList.add('active');
+
+      projectCards.forEach((card) => {
+        const categories = card.dataset.category || '';
+        card.classList.toggle(
+          'hidden-project',
+          filter !== 'all' && !categories.includes(filter)
+        );
+      });
+    });
+  });
+</script>
+
+<style>
+  #work {
+    padding: 6.5rem 0;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .filter {
+    min-height: 2.5rem;
+    padding: 0.65rem 0.9rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink);
+    background: rgba(255, 255, 255, 0.045);
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background 240ms ease, border-color 240ms ease, transform 240ms ease;
+  }
+
+  .filter:hover,
+  .filter:focus-visible,
+  .filter.active {
+    border-color: rgba(126, 216, 196, 0.5);
+    background: rgba(126, 216, 196, 0.12);
+    transform: translateY(-1px);
+    outline: none;
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  @media (max-width: 920px) {
+    .project-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

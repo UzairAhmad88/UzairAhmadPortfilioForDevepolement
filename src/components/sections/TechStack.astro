@@ -1,0 +1,133 @@
+---
+import { stackMap, universeNodes } from '@/data/skills';
+---
+
+<section id="stack" class="section-shell technical-map">
+  <div class="section-heading reveal">
+    <p class="eyebrow">My Technical Universe</p>
+    <h2>Python connects my quantitative, AI, and product work.</h2>
+  </div>
+
+  <div class="universe reveal">
+    <div class="universe-core">PYTHON</div>
+    {
+      universeNodes.map((node) => (
+        <span style={`--x:${node.x};--y:${node.y}`}>{node.label}</span>
+      ))
+    }
+  </div>
+
+  <div class="stack-map reveal">
+    {
+      stackMap.map((category) => (
+        <article>
+          <h3>{category.title}</h3>
+          <p>{category.description}</p>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .technical-map {
+    padding: 6.5rem 0;
+  }
+
+  .universe {
+    position: relative;
+    min-height: 460px;
+    margin-bottom: 1rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background:
+      radial-gradient(circle at center, rgba(126, 216, 196, 0.12), transparent 32%),
+      linear-gradient(rgba(246, 241, 232, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(246, 241, 232, 0.03) 1px, transparent 1px),
+      rgba(255, 255, 255, 0.035);
+    background-size: auto, 42px 42px, 42px 42px, auto;
+    overflow: hidden;
+  }
+
+  .universe::before,
+  .universe::after {
+    content: "";
+    position: absolute;
+    inset: 18%;
+    border: 1px solid rgba(246, 241, 232, 0.1);
+    border-radius: 50%;
+  }
+
+  .universe::after {
+    inset: 30%;
+    border-color: rgba(126, 216, 196, 0.16);
+  }
+
+  .universe-core,
+  .universe span {
+    position: absolute;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-weight: 800;
+  }
+
+  .universe-core {
+    inset: 50% auto auto 50%;
+    width: 9rem;
+    height: 9rem;
+    color: var(--paper);
+    background: var(--ink);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 70px rgba(126, 216, 196, 0.18);
+  }
+
+  .universe span {
+    left: var(--x);
+    top: var(--y);
+    min-width: 5rem;
+    min-height: 2.5rem;
+    padding: 0.6rem 0.8rem;
+    color: var(--ink);
+    background: rgba(255, 255, 255, 0.06);
+    animation: floatSmall 6s ease-in-out infinite;
+  }
+
+  .stack-map {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .stack-map article {
+    padding: 1.2rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.045);
+  }
+
+  .stack-map article:first-child,
+  .stack-map article:nth-child(2) {
+    grid-column: span 1;
+  }
+
+  .stack-map p {
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  @media (max-width: 920px) {
+    .stack-map {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .stack-map {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

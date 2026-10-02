@@ -1,0 +1,116 @@
+---
+const journeySteps = [
+  'Quantitative Finance',
+  'Financial Engineering',
+  'Python & Systems',
+  'AI / ML / DL',
+  'Generative & Agentic AI',
+  'Full Stack Engineering',
+  'Product Development',
+];
+
+const personaPoints = [
+  'Research Before Building',
+  'Systems Over Features',
+  'Useful Intelligence',
+  'Prototype Quickly',
+  'Ship',
+];
+---
+
+<section id="about" class="persona-section">
+  <div class="section-shell persona-layout">
+    <div class="journey reveal">
+      {
+        journeySteps.map((step, index) => (
+          <>
+            <span>{step}</span>
+            {index < journeySteps.length - 1 && <i />}
+          </>
+        ))
+      }
+    </div>
+    <div class="persona-copy reveal">
+      <p class="eyebrow">How I Think</p>
+      <h2>Research. Build. Ship.</h2>
+      <p>
+        I like difficult technical problems where mathematics, data, intelligence, and software engineering intersect. The goal is not only a smart model or a clean interface, but a reliable system that becomes useful.
+      </p>
+      <div class="persona-points">
+        {personaPoints.map((point) => <span>{point}</span>)}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .persona-section {
+    overflow: hidden;
+    background:
+      linear-gradient(90deg, rgba(126, 216, 196, 0.08), transparent 44%),
+      rgba(255, 255, 255, 0.035);
+  }
+
+  .persona-layout {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
+    gap: 3rem;
+    align-items: center;
+    padding: 6.5rem 0;
+  }
+
+  .journey {
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  .journey span {
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.055);
+    font-weight: 800;
+  }
+
+  .journey i {
+    width: 1px;
+    height: 1.2rem;
+    margin-left: 1rem;
+    background: var(--line);
+  }
+
+  .persona-copy p:not(.eyebrow) {
+    max-width: 680px;
+    color: var(--muted);
+    font-size: 1.08rem;
+    line-height: 1.75;
+  }
+
+  .persona-points {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    max-width: 620px;
+    margin-top: 1.6rem;
+  }
+
+  .persona-points span {
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.055);
+    font-weight: 800;
+  }
+
+  @media (max-width: 920px) {
+    .persona-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .persona-points {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

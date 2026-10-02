@@ -1,0 +1,71 @@
+---
+import CapabilityCard from '@/components/cards/CapabilityCard.astro';
+import { capabilities } from '@/data/capabilities';
+---
+
+<section id="systems" class="systems-section">
+  <div class="section-shell capabilities-layout">
+    <div class="section-heading reveal">
+      <p class="eyebrow">What I Build</p>
+      <h2>Four connected disciplines define how I approach technical problems.</h2>
+    </div>
+    <div class="capability-grid four">
+      {capabilities.map((cap) => <CapabilityCard capability={cap} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .systems-section {
+    position: relative;
+    overflow: hidden;
+    background:
+      linear-gradient(180deg, rgba(23, 33, 31, 0.98), rgba(27, 39, 36, 0.98)),
+      var(--ink);
+    color: var(--paper);
+  }
+
+  .systems-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(rgba(248, 245, 239, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(248, 245, 239, 0.035) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+  }
+
+  .capabilities-layout {
+    position: relative;
+    padding: 6.5rem 0;
+  }
+
+  .systems-section .eyebrow {
+    color: #93d6c8;
+  }
+
+  .capability-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .capability-grid.four {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  @media (max-width: 920px) {
+    .capability-grid,
+    .capability-grid.four {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .capability-grid,
+    .capability-grid.four {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
