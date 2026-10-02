@@ -31,16 +31,17 @@ const {
     justify-content: space-between;
     gap: clamp(1.5rem, 3vw, 2.5rem);
     padding: clamp(1.75rem, 4vw, 3rem);
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.7));
-    border: 1px solid var(--border-subtle, #1e293b);
+    background: linear-gradient(135deg, rgba(16, 26, 23, 0.95), rgba(11, 20, 18, 0.85));
+    border: 1px solid rgba(126, 216, 196, 0.22);
     border-radius: 1rem;
     margin: clamp(2.5rem, 5vw, 4rem) 0 2rem;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
   }
 
   .callout-title {
     font-size: clamp(1.25rem, 2.2vw + 0.2rem, 1.85rem);
     font-weight: 800;
-    color: var(--text-primary, #f8fafc);
+    color: var(--ink, #f6f1e8);
     margin: 0 0 0.5rem 0;
     letter-spacing: -0.02em;
     line-height: 1.25;
@@ -49,7 +50,7 @@ const {
 
   .callout-subtitle {
     font-size: var(--font-size-body, 0.95rem);
-    color: var(--text-secondary, #94a3b8);
+    color: var(--muted, #a9b8b1);
     line-height: 1.6;
     margin: 0;
     max-width: 600px;
@@ -62,23 +63,24 @@ const {
     min-height: var(--touch-target-min, 44px);
     white-space: nowrap;
     padding: 0.85rem 1.75rem;
-    background: var(--color-accent, #3b82f6);
-    color: #ffffff;
-    font-weight: 700;
+    background: var(--teal, #7ed8c4);
+    color: #07110f;
+    font-weight: 800;
     font-size: 0.95rem;
     border-radius: 0.5rem;
     text-decoration: none;
     text-align: center;
-    transition: background 150ms ease, transform 150ms ease;
+    transition: background 150ms ease, transform 150ms ease, box-shadow 150ms ease;
   }
 
   .callout-btn:hover {
-    background: #2563eb;
+    background: #9bd8cf;
     transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(126, 216, 196, 0.35);
   }
 
   .callout-btn:focus-visible {
-    outline: 2px solid #60a5fa;
+    outline: 2px solid var(--teal, #7ed8c4);
     outline-offset: 2px;
   }
 

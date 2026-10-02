@@ -60,16 +60,16 @@ const detailUrl = `/work/${project.slug}`;
     flex-direction: column;
     justify-content: space-between;
     padding: var(--space-card, 1.5rem);
-    background: var(--bg-surface, #0f172a);
-    border: 1px solid var(--border-subtle, #1e293b);
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(246, 241, 232, 0.09);
     border-radius: 0.75rem;
     transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
   }
 
   .project-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(59, 130, 246, 0.4);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    border-color: rgba(126, 216, 196, 0.35);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35), 0 0 24px rgba(126, 216, 196, 0.06);
   }
 
   .card-header {
@@ -82,7 +82,7 @@ const detailUrl = `/work/${project.slug}`;
   }
 
   .project-type {
-    color: var(--color-accent, #60a5fa);
+    color: var(--teal, #7ed8c4);
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -98,15 +98,15 @@ const detailUrl = `/work/${project.slug}`;
   }
 
   .status-active {
-    background: rgba(59, 130, 246, 0.15);
-    color: #93c5fd;
-    border: 1px solid rgba(59, 130, 246, 0.3);
+    background: rgba(126, 216, 196, 0.12);
+    color: var(--teal, #7ed8c4);
+    border: 1px solid rgba(126, 216, 196, 0.28);
   }
 
   .status-academic {
-    background: rgba(168, 85, 247, 0.15);
+    background: rgba(189, 166, 255, 0.15);
     color: #d8b4fe;
-    border: 1px solid rgba(168, 85, 247, 0.3);
+    border: 1px solid rgba(189, 166, 255, 0.3);
   }
 
   .status-completed {
@@ -123,18 +123,18 @@ const detailUrl = `/work/${project.slug}`;
   }
 
   .title-link {
-    color: var(--text-primary, #f8fafc);
+    color: var(--ink, #f6f1e8);
     text-decoration: none;
     transition: color 150ms ease;
   }
 
   .title-link:hover,
   .title-link:focus-visible {
-    color: var(--color-accent, #60a5fa);
+    color: var(--teal, #7ed8c4);
   }
 
   .project-summary {
-    color: var(--text-secondary, #94a3b8);
+    color: var(--muted, #a9b8b1);
     font-size: 0.925rem;
     line-height: 1.6;
     margin: 0 0 1.25rem 0;
@@ -153,9 +153,9 @@ const detailUrl = `/work/${project.slug}`;
   .tech-tag {
     font-size: 0.75rem;
     font-weight: 500;
-    color: var(--text-muted, #94a3b8);
+    color: var(--muted, #a9b8b1);
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(246, 241, 232, 0.08);
     padding: 0.2rem 0.55rem;
     border-radius: 0.25rem;
     white-space: nowrap;
@@ -167,7 +167,7 @@ const detailUrl = `/work/${project.slug}`;
     align-items: center;
     gap: 0.75rem 1rem;
     padding-top: 1rem;
-    border-top: 1px solid var(--border-subtle, #1e293b);
+    border-top: 1px solid rgba(246, 241, 232, 0.08);
   }
 
   .action-link {
@@ -182,20 +182,20 @@ const detailUrl = `/work/${project.slug}`;
   }
 
   .action-link.primary {
-    color: var(--color-accent, #60a5fa);
+    color: var(--teal, #7ed8c4);
   }
 
   .action-link.primary:hover {
-    color: #93c5fd;
+    color: #9bd8cf;
     text-decoration: underline;
   }
 
   .action-link.secondary {
-    color: var(--text-muted, #64748b);
+    color: var(--muted, #a9b8b1);
   }
 
   .action-link.secondary:hover {
-    color: var(--text-primary, #f8fafc);
+    color: var(--ink, #f6f1e8);
     text-decoration: underline;
   }
 

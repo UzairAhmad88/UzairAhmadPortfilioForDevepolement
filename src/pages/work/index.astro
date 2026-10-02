@@ -95,9 +95,9 @@ const otherProjects = projects.filter((p) => p.slug !== featuredProject.slug);
     min-height: var(--touch-target-min, 44px);
     padding: 0.5rem 1.15rem;
     border-radius: var(--radius-full, 9999px);
-    border: 1px solid var(--border-subtle, #334155);
-    background: var(--bg-surface, #0f172a);
-    color: var(--text-secondary, #94a3b8);
+    border: 1px solid rgba(246, 241, 232, 0.12);
+    background: rgba(16, 26, 23, 0.75);
+    color: var(--color-text-muted, #a9b8b1);
     font-size: 0.875rem;
     font-weight: 600;
     cursor: pointer;
@@ -106,21 +106,21 @@ const otherProjects = projects.filter((p) => p.slug !== featuredProject.slug);
 
   .filter-pill:hover,
   .filter-pill:focus-visible {
-    color: var(--text-primary, #f8fafc);
-    border-color: var(--color-accent, #3b82f6);
+    color: var(--color-text, #f6f1e8);
+    border-color: var(--color-accent, #7ed8c4);
     outline: none;
   }
 
   .filter-pill.active {
-    background: rgba(59, 130, 246, 0.15);
-    border-color: var(--color-accent, #3b82f6);
-    color: #93c5fd;
+    background: rgba(126, 216, 196, 0.15);
+    border-color: var(--color-accent, #7ed8c4);
+    color: var(--color-accent, #7ed8c4);
   }
 
   .catalog-heading {
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--text-primary, #f8fafc);
+    color: var(--color-text, #f6f1e8);
     margin: 2.5rem 0 1.25rem 0;
   }
 
@@ -133,22 +133,27 @@ const otherProjects = projects.filter((p) => p.slug !== featuredProject.slug);
   .empty-state {
     text-align: center;
     padding: 3rem 1rem;
-    background: var(--bg-surface, #0f172a);
-    border: 1px dashed var(--border-subtle, #334155);
+    background: var(--bg-surface, #101a17);
+    border: 1px dashed rgba(246, 241, 232, 0.15);
     border-radius: 0.75rem;
-    color: var(--text-secondary, #94a3b8);
+    color: var(--color-text-muted, #a9b8b1);
   }
 
   .reset-btn {
     margin-top: 1rem;
     min-height: var(--touch-target-min, 44px);
     padding: 0.5rem 1.25rem;
-    background: var(--color-accent, #3b82f6);
-    color: #ffffff;
+    background: var(--color-accent, #7ed8c4);
+    color: #07110f;
     border: none;
     border-radius: 0.375rem;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
+    transition: background 150ms ease;
+  }
+
+  .reset-btn:hover {
+    background: #9bd8cf;
   }
 
   @media (max-width: 820px) {

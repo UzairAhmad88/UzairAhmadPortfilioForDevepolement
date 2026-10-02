@@ -56,19 +56,20 @@ const badgeColors = {
 
 <style>
   .inquiry-card {
-    background: var(--bg-surface, #0f172a);
-    border: 1px solid var(--border-subtle, #1e293b);
+    background: rgba(16, 26, 23, 0.8);
+    border: 1px solid rgba(246, 241, 232, 0.1);
     border-radius: 0.75rem;
     padding: 1.75rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: transform 200ms ease, border-color 200ms ease;
+    transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
   }
 
   .inquiry-card:hover {
     transform: translateY(-3px);
-    border-color: rgba(59, 130, 246, 0.4);
+    border-color: rgba(126, 216, 196, 0.4);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
   }
 
   .inquiry-header {
@@ -85,40 +86,40 @@ const badgeColors = {
   }
 
   .badge-exploring {
-    background: rgba(168, 85, 247, 0.15);
-    color: #c084fc;
-    border: 1px solid rgba(168, 85, 247, 0.3);
+    background: rgba(189, 166, 255, 0.15);
+    color: #bda6ff;
+    border: 1px solid rgba(189, 166, 255, 0.3);
   }
 
   .badge-experimenting {
-    background: rgba(59, 130, 246, 0.15);
-    color: #93c5fd;
-    border: 1px solid rgba(59, 130, 246, 0.3);
+    background: rgba(210, 160, 113, 0.15);
+    color: #d2a071;
+    border: 1px solid rgba(210, 160, 113, 0.3);
   }
 
   .badge-building {
-    background: rgba(16, 185, 129, 0.15);
-    color: #6ee7b7;
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    background: rgba(126, 216, 196, 0.15);
+    color: #7ed8c4;
+    border: 1px solid rgba(126, 216, 196, 0.3);
   }
 
   .inquiry-title {
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--text-primary, #f8fafc);
+    color: var(--ink, #f6f1e8);
     line-height: 1.35;
     margin: 0 0 1rem 0;
   }
 
   .inquiry-question {
     font-size: 0.95rem;
-    color: var(--text-secondary, #cbd5e1);
+    color: var(--muted, #a9b8b1);
     line-height: 1.6;
     margin: 0 0 1.25rem 0;
   }
 
   .inquiry-question strong {
-    color: var(--color-accent, #60a5fa);
+    color: var(--teal, #7ed8c4);
   }
 
   .methods-section {
@@ -129,7 +130,7 @@ const badgeColors = {
     display: block;
     font-size: 0.8rem;
     font-weight: 600;
-    color: var(--text-muted, #94a3b8);
+    color: var(--muted, #a9b8b1);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-bottom: 0.5rem;
@@ -146,23 +147,23 @@ const badgeColors = {
 
   .method-tag {
     font-size: 0.75rem;
-    color: var(--text-secondary, #cbd5e1);
+    color: var(--muted, #a9b8b1);
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(246, 241, 232, 0.08);
     padding: 0.2rem 0.5rem;
     border-radius: 0.25rem;
   }
 
   .status-note {
     font-size: 0.85rem;
-    color: var(--text-muted, #94a3b8);
+    color: var(--muted, #a9b8b1);
     margin: 0;
   }
 
   .inquiry-footer {
     padding-top: 1.25rem;
     margin-top: 1.25rem;
-    border-top: 1px solid var(--border-subtle, #1e293b);
+    border-top: 1px solid rgba(246, 241, 232, 0.1);
   }
 
   .repo-link {
@@ -171,13 +172,14 @@ const badgeColors = {
     min-height: var(--touch-target-min, 44px);
     font-size: 0.875rem;
     font-weight: 600;
-    color: var(--color-accent, #60a5fa);
+    color: var(--teal, #7ed8c4);
     text-decoration: none;
     transition: color 150ms ease;
   }
 
   .repo-link:hover,
   .repo-link:focus-visible {
-    color: #93c5fd;
+    color: #9bd8cf;
+    text-decoration: underline;
   }
 </style>

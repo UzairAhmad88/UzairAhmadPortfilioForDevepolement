@@ -14,7 +14,8 @@
   /* Semantic Color System */
   --color-canvas: #07110f;
   --color-canvas-subtle: #101a17;
-  --color-canvas-card: #17211f;
+  --color-canvas-card: #101a17;
+  --bg-surface: #101a17;
   --color-surface: rgba(255, 255, 255, 0.035);
   --color-surface-hover: rgba(255, 255, 255, 0.06);
   --color-surface-elevated: rgba(255, 255, 255, 0.08);
@@ -22,13 +23,13 @@
   --color-text-primary: #f6f1e8;
   --color-text-secondary: #a9b8b1;
   --color-text-tertiary: rgba(246, 241, 232, 0.58);
-  --color-text-muted: #64748b;
+  --color-text-muted: #83968e;
 
   --color-border: rgba(246, 241, 232, 0.12);
   --color-border-subtle: rgba(246, 241, 232, 0.08);
   --color-border-strong: rgba(246, 241, 232, 0.24);
 
-  --color-accent: #3b82f6;
+  --color-accent: #7ed8c4;
   --color-accent-teal: #7ed8c4;
   --color-accent-deep: #9bd8cf;
   --color-accent-clay: #d2a071;

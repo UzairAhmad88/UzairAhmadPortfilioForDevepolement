@@ -27,31 +27,32 @@ const { title, description, actionLabel, href, isExternal = false } = Astro.prop
 
 <style>
   .channel-card {
-    background: var(--bg-surface, #0f172a);
-    border: 1px solid var(--border-subtle, #1e293b);
+    background: rgba(16, 26, 23, 0.8);
+    border: 1px solid rgba(246, 241, 232, 0.1);
     border-radius: 0.75rem;
     padding: 1.75rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: transform 150ms ease, border-color 150ms ease;
+    transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
   }
 
   .channel-card:hover {
     transform: translateY(-3px);
-    border-color: rgba(59, 130, 246, 0.4);
+    border-color: rgba(126, 216, 196, 0.4);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
   }
 
   .channel-title {
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--text-primary, #f8fafc);
+    color: var(--ink, #f6f1e8);
     margin: 0 0 0.5rem 0;
   }
 
   .channel-description {
     font-size: 0.925rem;
-    color: var(--text-secondary, #94a3b8);
+    color: var(--muted, #a9b8b1);
     line-height: 1.5;
     margin: 0 0 1.5rem 0;
   }
@@ -62,13 +63,14 @@ const { title, description, actionLabel, href, isExternal = false } = Astro.prop
     min-height: var(--touch-target-min, 44px);
     font-size: 0.9rem;
     font-weight: 600;
-    color: var(--color-accent, #60a5fa);
+    color: var(--teal, #7ed8c4);
     text-decoration: none;
     transition: color 150ms ease;
   }
 
   .channel-action:hover,
   .channel-action:focus-visible {
-    color: #93c5fd;
+    color: #9bd8cf;
+    text-decoration: underline;
   }
 </style>
