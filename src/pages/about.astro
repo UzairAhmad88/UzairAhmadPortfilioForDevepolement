@@ -1,0 +1,251 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
+import SectionHeader from '@/components/common/SectionHeader.astro';
+import ContactCallout from '@/components/sections/ContactCallout.astro';
+import { siteConfig } from '@/data/site';
+import { skills } from '@/data/skills';
+
+const seo = {
+  title: 'About — Uzair Ahmad | Background, Values & Technical Stack',
+  description: 'Learn about Uzair Ahmad, a Quantitative AI and Product Engineer building reliable systems at the intersection of finance, machine learning, and modern web architectures.',
+  canonical: `${siteConfig.url}/about`,
+};
+---
+
+<BaseLayout seo={seo}>
+  <div class="page-container">
+    <Breadcrumbs items={[{ label: 'About', href: '/about' }]} />
+
+    <section class="about-hero">
+      <SectionHeader
+        eyebrow="Background & Philosophy"
+        title="Engineering Systems with Quantitative Rigor & Production Craft"
+        subtitle="Bridging statistical intelligence, financial modeling, and end-to-end web engineering."
+      />
+    </section>
+
+    <div class="about-grid">
+      <main class="about-narrative">
+        <section class="narrative-block">
+          <h2 class="subhead">The Journey & Core Focus</h2>
+          <p>
+            I am a Quantitative AI and Product Engineer focused on designing systems where statistical rigor and software engineering meet. My work spans from deep learning return prediction models to full-stack web platforms and operations software.
+          </p>
+          <p>
+            Rather than treating machine learning as an isolated academic sandbox, I focus on the end-to-end engineering lifecycle: data ingestion, feature normalization, model execution, API architecture, and high-performance user interfaces.
+          </p>
+        </section>
+
+        <section class="narrative-block">
+          <h2 class="subhead">Engineering Philosophy</h2>
+          <div class="principles-stack">
+            <div class="principle-item">
+              <h3 class="principle-title">01 — Verifiable Evidence Over Abstract Claims</h3>
+              <p>
+                Working code, public repositories, and reproducible pipelines speak louder than inflated buzzwords. Every project in this portfolio represents actual software with source code.
+              </p>
+            </div>
+            <div class="principle-item">
+              <h3 class="principle-title">02 — Production-Minded Research</h3>
+              <p>
+                Models are only as valuable as their stability in production. I build research tools designed to withstand regime shifts, data anomalies, and strict latency requirements.
+              </p>
+            </div>
+            <div class="principle-item">
+              <h3 class="principle-title">03 — Full-Stack Architectural Ownership</h3>
+              <p>
+                Understanding the entire stack—from PyTorch tensor pipelines down to DOM rendering performance and semantic HTML—enables lean, cohesive architectures with zero bloat.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="narrative-block">
+          <h2 class="subhead">Current Explorations</h2>
+          <p>
+            Currently, my active research centers on <strong>Unsupervised Market Regime Classification</strong> using Gaussian Mixture Models and <strong>Deterministic Guardrails for Agentic Execution Workflows</strong>.
+          </p>
+        </section>
+      </main>
+
+      <aside class="about-sidebar">
+        <div class="toolkit-card">
+          <h3 class="toolkit-heading">Technical Toolkit</h3>
+
+          <div class="toolkit-category">
+            <h4 class="category-title">Quantitative & AI</h4>
+            <div class="tags-wrap">
+              <span class="tech-badge">Python</span>
+              <span class="tech-badge">PyTorch</span>
+              <span class="tech-badge">Pandas</span>
+              <span class="tech-badge">NumPy</span>
+              <span class="tech-badge">Scikit-Learn</span>
+              <span class="tech-badge">Time-Series</span>
+            </div>
+          </div>
+
+          <div class="toolkit-category">
+            <h4 class="category-title">Backend & Systems</h4>
+            <div class="tags-wrap">
+              <span class="tech-badge">Node.js</span>
+              <span class="tech-badge">Express</span>
+              <span class="tech-badge">TypeScript</span>
+              <span class="tech-badge">PostgreSQL</span>
+              <span class="tech-badge">REST APIs</span>
+            </div>
+          </div>
+
+          <div class="toolkit-category">
+            <h4 class="category-title">Frontend & Web</h4>
+            <div class="tags-wrap">
+              <span class="tech-badge">Astro</span>
+              <span class="tech-badge">React</span>
+              <span class="tech-badge">TypeScript</span>
+              <span class="tech-badge">Semantic HTML5</span>
+              <span class="tech-badge">Modern CSS</span>
+            </div>
+          </div>
+
+          <div class="toolkit-category">
+            <h4 class="category-title">Tooling & DevOps</h4>
+            <div class="tags-wrap">
+              <span class="tech-badge">Git & GitHub</span>
+              <span class="tech-badge">Linux</span>
+              <span class="tech-badge">Vercel</span>
+              <span class="tech-badge">CI/CD</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <ContactCallout />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-container {
+    width: min(1200px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 1rem 0 5rem;
+  }
+
+  .about-hero {
+    margin-bottom: 3.5rem;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3.5rem;
+  }
+
+  .narrative-block {
+    margin-bottom: 3.5rem;
+  }
+
+  .subhead {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-primary, #f8fafc);
+    margin: 0 0 1.25rem 0;
+    letter-spacing: -0.02em;
+  }
+
+  .narrative-block p {
+    font-size: 1.05rem;
+    color: var(--text-secondary, #cbd5e1);
+    line-height: 1.75;
+    margin: 0 0 1.25rem 0;
+  }
+
+  .narrative-block p strong {
+    color: var(--text-primary, #f8fafc);
+  }
+
+  .principles-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .principle-item {
+    background: var(--bg-surface, #0f172a);
+    border: 1px solid var(--border-subtle, #1e293b);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+  }
+
+  .principle-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-accent, #60a5fa);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .principle-item p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--text-secondary, #94a3b8);
+    line-height: 1.6;
+  }
+
+  .toolkit-card {
+    position: sticky;
+    top: 5rem;
+    background: var(--bg-surface, #0f172a);
+    border: 1px solid var(--border-subtle, #1e293b);
+    border-radius: 0.75rem;
+    padding: 2rem;
+  }
+
+  .toolkit-heading {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-primary, #f8fafc);
+    margin: 0 0 1.5rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-subtle, #1e293b);
+  }
+
+  .toolkit-category {
+    margin-bottom: 1.5rem;
+  }
+
+  .category-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted, #94a3b8);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .tags-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tech-badge {
+    font-size: 0.8rem;
+    color: var(--text-secondary, #cbd5e1);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.25rem 0.6rem;
+    border-radius: 0.25rem;
+  }
+
+  @media (max-width: 900px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .toolkit-card {
+      position: static;
+    }
+  }
+</style>

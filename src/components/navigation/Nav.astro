@@ -1,11 +1,66 @@
 ---
 import { primaryNavigation } from '@/data/navigation';
+
+export interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = '' } = Astro.props;
 ---
 
-<nav aria-label="Primary navigation">
+<nav class="main-nav" aria-label="Primary navigation">
   {
-    primaryNavigation.map((item) => (
-      <a href={item.href}>{item.label}</a>
-    ))
+    primaryNavigation.map((item) => {
+      const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
+      return (
+        <a
+          href={item.href}
+          class:list={['nav-link', { active: isActive }]}
+          aria-current={isActive ? 'page' : undefined}
+        >
+          {item.label}
+        </a>
+      );
+    })
   }
 </nav>
+
+<style>
+  .main-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .nav-link {
+    padding: 0.5rem 0.85rem;
+    color: var(--text-secondary, #94a3b8);
+    font-size: 0.925rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 9999px;
+    transition: color 150ms ease, background 150ms ease;
+  }
+
+  .nav-link:hover {
+    color: var(--text-primary, #f8fafc);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .nav-link:focus-visible {
+    outline: 2px solid var(--color-accent, #3b82f6);
+    outline-offset: 2px;
+  }
+
+  .nav-link.active {
+    color: var(--text-primary, #f8fafc);
+    background: rgba(59, 130, 246, 0.15);
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    .main-nav {
+      display: none;
+    }
+  }
+</style>

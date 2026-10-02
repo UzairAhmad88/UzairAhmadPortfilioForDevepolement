@@ -1,0 +1,579 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
+import ProjectCard from '@/components/cards/ProjectCard.astro';
+import ContactCallout from '@/components/sections/ContactCallout.astro';
+import { projects } from '@/data/projects';
+import { siteConfig } from '@/data/site';
+import type { Project } from '@/types/project';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+export interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const caseStudy = project.caseStudy;
+
+const seo = {
+  title: `${project.title} — Uzair Ahmad | Case Study`,
+  description: project.problem || `${project.title} architecture and technical case study by Uzair Ahmad.`,
+  canonical: `${siteConfig.url}/work/${project.slug}`,
+};
+
+const relatedProjects = projects
+  .filter((p) => p.slug !== project.slug)
+  .slice(0, 2);
+---
+
+<BaseLayout seo={seo}>
+  <div class="case-study-page">
+    <Breadcrumbs
+      items={[
+        { label: 'Work', href: '/work' },
+        { label: project.title, href: `/work/${project.slug}` },
+      ]}
+    />
+
+    <article class="case-study-container">
+      <header class="case-study-header">
+        <div class="badge-row">
+          <span class="category-pill">{project.projectType}</span>
+          {project.status && (
+            <span class="status-pill">
+              {project.status === 'active' ? 'Active Research' : 'Completed'}
+            </span>
+          )}
+        </div>
+        <h1 class="project-headline">{project.title}</h1>
+        {project.solution && <p class="lead-summary">{project.solution}</p>}
+
+        <div class="meta-strip">
+          {project.role && (
+            <div class="meta-block">
+              <span class="meta-label">Role</span>
+              <span class="meta-val">{project.role}</span>
+            </div>
+          )}
+          {project.timeline && (
+            <div class="meta-block">
+              <span class="meta-label">Timeline</span>
+              <span class="meta-val">{project.timeline}</span>
+            </div>
+          )}
+          {project.technologies && (
+            <div class="meta-block full-width">
+              <span class="meta-label">Core Stack</span>
+              <div class="tech-pill-list">
+                {project.technologies.map((t) => (
+                  <span class="tech-tag">{t}</span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div class="header-action-links">
+          {project.githubUrl && (
+            <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" class="cta-primary">
+              View Repository on GitHub ↗
+            </a>
+          )}
+          {project.liveUrl && (
+            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" class="cta-secondary">
+              Launch Live Demo ↗
+            </a>
+          )}
+        </div>
+      </header>
+
+      <div class="case-study-grid">
+        <main class="case-study-main">
+          {caseStudy?.overview && (
+            <section class="study-section">
+              <h2 class="section-title">01 — Executive Overview</h2>
+              <p>{caseStudy.overview}</p>
+            </section>
+          )}
+
+          {caseStudy?.context && (
+            <section class="study-section">
+              <h2 class="section-title">02 — Context & Problem Statement</h2>
+              <p>{caseStudy.context}</p>
+            </section>
+          )}
+
+          {caseStudy?.objectives && caseStudy.objectives.length > 0 && (
+            <section class="study-section">
+              <h2 class="section-title">03 — Key Objectives</h2>
+              <ul class="bullet-list">
+                {caseStudy.objectives.map((obj) => (
+                  <li>{obj}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {caseStudy?.architectureDiagram && (
+            <section class="study-section">
+              <h2 class="section-title">04 — System Architecture</h2>
+              <pre class="diagram-block" aria-label="System Architecture Diagram"><code>{caseStudy.architectureDiagram}</code></pre>
+              {caseStudy.architectureNotes && <p class="caption-text">{caseStudy.architectureNotes}</p>}
+            </section>
+          )}
+
+          {caseStudy?.implementationHighlights && caseStudy.implementationHighlights.length > 0 && (
+            <section class="study-section">
+              <h2 class="section-title">05 — Implementation Highlights</h2>
+              <ul class="bullet-list">
+                {caseStudy.implementationHighlights.map((hl) => (
+                  <li>{hl}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {caseStudy?.challenges && caseStudy.challenges.length > 0 && (
+            <section class="study-section">
+              <h2 class="section-title">06 — Technical Challenges & Solutions</h2>
+              <div class="challenge-stack">
+                {caseStudy.challenges.map((item) => (
+                  <div class="challenge-item">
+                    <h3 class="challenge-heading">Challenge: {item.challenge}</h3>
+                    <p class="challenge-body"><strong>Solution:</strong> {item.solution}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {caseStudy?.keyDecisions && caseStudy.keyDecisions.length > 0 && (
+            <section class="study-section">
+              <h2 class="section-title">07 — Key Engineering Decisions</h2>
+              <div class="decision-stack">
+                {caseStudy.keyDecisions.map((dec) => (
+                  <div class="decision-item">
+                    <h3 class="decision-heading">{dec.decision}</h3>
+                    <p class="decision-body">{dec.rationale || (dec as any).solution}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {caseStudy?.outcomes && caseStudy.outcomes.length > 0 && (
+            <section class="study-section">
+              <h2 class="section-title">08 — Verifiable Outcomes</h2>
+              <ul class="bullet-list">
+                {caseStudy.outcomes.map((out) => (
+                  <li>{out}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {caseStudy?.lessonsLearned && caseStudy.lessonsLearned.length > 0 && (
+            <section class="study-section">
+              <h2 class="section-title">09 — Lessons Learned & Retrospective</h2>
+              <ul class="bullet-list">
+                {caseStudy.lessonsLearned.map((lesson) => (
+                  <li>{lesson}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+        </main>
+
+        <aside class="case-study-sidebar">
+          <div class="sticky-sidebar-card">
+            <h3 class="sidebar-heading">Project Metadata</h3>
+            <dl class="sidebar-specs">
+              <dt>Classification</dt>
+              <dd>{project.projectType}</dd>
+              <dt>Status</dt>
+              <dd>{project.status === 'active' ? 'Active Research' : 'Completed'}</dd>
+              <dt>Source Code</dt>
+              <dd>
+                {project.githubUrl ? (
+                  <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" class="ext-link">
+                    Public GitHub Repository ↗
+                  </a>
+                ) : (
+                  'Private'
+                )}
+              </dd>
+            </dl>
+
+            <div class="sidebar-cta-box">
+              <p class="sidebar-cta-text">Interested in discussing this system's architecture?</p>
+              <a href="/contact" class="sidebar-btn">
+                Contact Uzair →
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <section class="related-work-section">
+        <h2 class="related-heading">Related Systems & Projects</h2>
+        <div class="related-grid">
+          {relatedProjects.map((rel) => (
+            <ProjectCard project={rel} />
+          ))}
+        </div>
+      </section>
+
+      <ContactCallout />
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .case-study-page {
+    width: min(1200px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 1rem 0 5rem;
+  }
+
+  .case-study-header {
+    padding: 2rem 0 3rem;
+    border-bottom: 1px solid var(--border-subtle, #1e293b);
+    margin-bottom: 3.5rem;
+  }
+
+  .badge-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .category-pill {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-accent, #60a5fa);
+  }
+
+  .status-pill {
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(59, 130, 246, 0.15);
+    color: #93c5fd;
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+  }
+
+  .project-headline {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    color: var(--text-primary, #f8fafc);
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    margin: 0 0 1.25rem 0;
+  }
+
+  .lead-summary {
+    font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+    color: var(--text-secondary, #cbd5e1);
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 0 2rem 0;
+  }
+
+  .meta-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    background: var(--bg-surface, #0f172a);
+    border: 1px solid var(--border-subtle, #1e293b);
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .meta-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .meta-block.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .meta-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted, #94a3b8);
+  }
+
+  .meta-val {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary, #f8fafc);
+  }
+
+  .tech-pill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.25rem;
+  }
+
+  .tech-tag {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-secondary, #cbd5e1);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.2rem 0.55rem;
+    border-radius: 0.25rem;
+  }
+
+  .header-action-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .cta-primary {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-accent, #3b82f6);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background 150ms ease;
+  }
+
+  .cta-primary:hover {
+    background: #2563eb;
+  }
+
+  .cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    color: var(--text-primary, #f8fafc);
+    border: 1px solid var(--border-subtle, #334155);
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: border-color 150ms ease;
+  }
+
+  .cta-secondary:hover {
+    border-color: var(--color-accent, #3b82f6);
+  }
+
+  .case-study-grid {
+    display: grid;
+    grid-template-columns: 2.2fr 1fr;
+    gap: 3.5rem;
+    align-items: start;
+  }
+
+  .study-section {
+    margin-bottom: 3.5rem;
+  }
+
+  .section-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--text-primary, #f8fafc);
+    margin: 0 0 1.25rem 0;
+    letter-spacing: -0.015em;
+  }
+
+  .study-section p {
+    font-size: 1.05rem;
+    color: var(--text-secondary, #cbd5e1);
+    line-height: 1.75;
+    margin: 0 0 1rem 0;
+  }
+
+  .bullet-list {
+    padding-left: 1.5rem;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .bullet-list li {
+    font-size: 1.025rem;
+    color: var(--text-secondary, #cbd5e1);
+    line-height: 1.65;
+  }
+
+  .diagram-block {
+    background: #060911;
+    border: 1px solid var(--border-subtle, #1e293b);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    overflow-x: auto;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.85rem;
+    color: #60a5fa;
+    line-height: 1.5;
+  }
+
+  .caption-text {
+    font-size: 0.85rem;
+    color: var(--text-muted, #94a3b8);
+    margin-top: 0.5rem;
+    font-style: italic;
+  }
+
+  .challenge-stack, .decision-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .challenge-item, .decision-item {
+    background: var(--bg-surface, #0f172a);
+    border: 1px solid var(--border-subtle, #1e293b);
+    border-radius: 0.5rem;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .challenge-heading, .decision-heading {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary, #f8fafc);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .challenge-body, .decision-body {
+    font-size: 0.95rem;
+    color: var(--text-secondary, #94a3b8);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .sticky-sidebar-card {
+    position: sticky;
+    top: 5rem;
+    background: var(--bg-surface, #0f172a);
+    border: 1px solid var(--border-subtle, #1e293b);
+    border-radius: 0.75rem;
+    padding: 1.75rem;
+  }
+
+  .sidebar-heading {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary, #f8fafc);
+    margin: 0 0 1.25rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-subtle, #1e293b);
+  }
+
+  .sidebar-specs {
+    margin: 0 0 1.5rem 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .sidebar-specs dt {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted, #94a3b8);
+  }
+
+  .sidebar-specs dd {
+    font-size: 0.95rem;
+    color: var(--text-primary, #f8fafc);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .ext-link {
+    color: var(--color-accent, #60a5fa);
+    text-decoration: none;
+  }
+
+  .ext-link:hover {
+    text-decoration: underline;
+  }
+
+  .sidebar-cta-box {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-subtle, #1e293b);
+  }
+
+  .sidebar-cta-text {
+    font-size: 0.9rem;
+    color: var(--text-secondary, #94a3b8);
+    margin-bottom: 1rem;
+  }
+
+  .sidebar-btn {
+    display: block;
+    text-align: center;
+    padding: 0.75rem 1rem;
+    background: rgba(59, 130, 246, 0.15);
+    color: var(--color-accent, #60a5fa);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: background 150ms ease, color 150ms ease;
+  }
+
+  .sidebar-btn:hover {
+    background: var(--color-accent, #3b82f6);
+    color: #ffffff;
+  }
+
+  .related-work-section {
+    margin: 5rem 0 3rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--border-subtle, #1e293b);
+  }
+
+  .related-heading {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-primary, #f8fafc);
+    margin: 0 0 2rem 0;
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .case-study-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .sticky-sidebar-card {
+      position: static;
+    }
+
+    .related-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

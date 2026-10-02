@@ -2,6 +2,22 @@ export type ProjectCategory = 'quant' | 'ai' | 'engineering' | 'product';
 
 export type ProjectStatus = 'completed' | 'active' | 'research' | 'archived';
 
+export interface ProjectCaseStudy {
+  overview?: string;
+  context?: string;
+  objectives?: string[];
+  role?: string;
+  timeline?: string;
+  approach?: string;
+  architectureDiagram?: string;
+  architectureNotes?: string;
+  implementationHighlights?: string[];
+  challenges?: { challenge: string; solution: string }[];
+  keyDecisions?: { decision: string; rationale: string }[];
+  outcomes?: string[];
+  lessonsLearned?: string[];
+}
+
 export interface Project {
   slug: string;
   title: string;
@@ -20,6 +36,8 @@ export interface Project {
   technologies?: string[];
   tags?: string[];
   role?: string;
+  timeline?: string;
   status?: ProjectStatus;
   order?: number;
+  caseStudy?: ProjectCaseStudy;
 }

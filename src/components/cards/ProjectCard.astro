@@ -3,107 +3,185 @@ import type { Project } from '@/types/project';
 
 export interface Props {
   project: Project;
+  viewMode?: 'grid' | 'compact';
 }
 
-const { project } = Astro.props;
+const { project, viewMode = 'grid' } = Astro.props;
 const categoryString = project.category.join(' ');
+const detailUrl = `/work/${project.slug}`;
 ---
 
-<article class="project-card reveal" data-category={categoryString}>
-  <span class="project-type">{project.projectType}</span>
-  <h3>{project.title}</h3>
+<article class:list={['project-card', `mode-${viewMode}`]} data-category={categoryString}>
+  <div class="card-header">
+    <span class="project-type">{project.projectType}</span>
+    {project.status && (
+      <span class:list={['status-badge', `status-${project.status}`]}>
+        {project.status === 'active' ? 'Active Research' : 'Completed'}
+      </span>
+    )}
+  </div>
 
-  {
-    project.problem && (
-      <p>
-        <strong>
-          {project.category.includes('quant') && project.slug.includes('regime') ? 'Research:' : 'Problem:'}
-        </strong>{' '}
-        {project.problem}
-      </p>
-    )
-  }
+  <h3 class="project-title">
+    <a href={detailUrl} class="title-link">{project.title}</a>
+  </h3>
 
-  {
-    project.system && (
-      <p>
-        <strong>System:</strong> {project.system}
-      </p>
-    )
-  }
+  <p class="project-summary">
+    {project.problem}
+  </p>
 
-  {
-    project.product && (
-      <p>
-        <strong>Product:</strong> {project.product}
-      </p>
-    )
-  }
+  {project.technologies && project.technologies.length > 0 && (
+    <ul class="tech-tag-list" aria-label="Technologies used">
+      {project.technologies.slice(0, 4).map((tech) => (
+        <li class="tech-tag">{tech}</li>
+      ))}
+    </ul>
+  )}
 
-  {
-    project.outcome && (
-      <p>
-        <strong>Outcome:</strong> {project.outcome}
-      </p>
-    )
-  }
-
-  {
-    project.githubUrl && (
-      <a href={project.githubUrl} target="_blank" rel="noreferrer">
-        View repository
+  <div class="card-actions">
+    <a href={detailUrl} class="action-link primary">
+      Inspect Case Study →
+    </a>
+    {project.githubUrl && (
+      <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" class="action-link secondary">
+        GitHub ↗
       </a>
-    )
-  }
+    )}
+  </div>
 </article>
 
 <style>
   .project-card {
-    min-height: 290px;
-    padding: 1.3rem;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.035)),
-      rgba(255, 255, 255, 0.03);
-    box-shadow: 0 16px 50px rgba(0, 0, 0, 0.18);
-    transition: transform 220ms ease, border-color 220ms ease, background 220ms ease;
-    transform-style: preserve-3d;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.75rem;
+    background: var(--bg-surface, #0f172a);
+    border: 1px solid var(--border-subtle, #1e293b);
+    border-radius: 0.75rem;
+    transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
   }
 
   .project-card:hover {
-    transform: translateY(-6px) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg));
-    border-color: rgba(14, 124, 102, 0.42);
-    background:
-      linear-gradient(180deg, rgba(126, 216, 196, 0.1), rgba(255, 255, 255, 0.045)),
-      rgba(255, 255, 255, 0.045);
+    transform: translateY(-4px);
+    border-color: rgba(59, 130, 246, 0.4);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
   }
 
   .project-type {
-    color: var(--teal);
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    font-weight: 800;
+    color: var(--color-accent, #60a5fa);
+    font-size: 0.75rem;
+    font-weight: 700;
     text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
-  .project-card h3 {
-    margin: 1rem 0 0.75rem;
+  .status-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 9999px;
   }
 
-  .project-card p {
-    color: var(--muted);
-    line-height: 1.65;
+  .status-active {
+    background: rgba(59, 130, 246, 0.15);
+    color: #93c5fd;
+    border: 1px solid rgba(59, 130, 246, 0.3);
   }
 
-  .project-card a {
-    display: inline-flex;
-    margin-top: 1rem;
-    color: var(--deep);
-    font-weight: 800;
+  .status-completed {
+    background: rgba(16, 185, 129, 0.12);
+    color: #6ee7b7;
+    border: 1px solid rgba(16, 185, 129, 0.25);
   }
 
-  :global(.project-card.hidden-project) {
-    display: none !important;
+  .project-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem 0;
+    line-height: 1.35;
+  }
+
+  .title-link {
+    color: var(--text-primary, #f8fafc);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .title-link:hover,
+  .title-link:focus-visible {
+    color: var(--color-accent, #60a5fa);
+  }
+
+  .project-summary {
+    color: var(--text-secondary, #94a3b8);
+    font-size: 0.925rem;
+    line-height: 1.6;
+    margin: 0 0 1.25rem 0;
+    flex-grow: 1;
+  }
+
+  .tech-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+  }
+
+  .tech-tag {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted, #94a3b8);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.2rem 0.55rem;
+    border-radius: 0.25rem;
+  }
+
+  .card-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-subtle, #1e293b);
+  }
+
+  .action-link {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .action-link.primary {
+    color: var(--color-accent, #60a5fa);
+  }
+
+  .action-link.primary:hover {
+    color: #93c5fd;
+  }
+
+  .action-link.secondary {
+    color: var(--text-muted, #64748b);
+  }
+
+  .action-link.secondary:hover {
+    color: var(--text-primary, #f8fafc);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-card {
+      transition: none !important;
+    }
   }
 </style>

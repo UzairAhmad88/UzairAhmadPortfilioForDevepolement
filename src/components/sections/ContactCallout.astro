@@ -1,0 +1,93 @@
+---
+export interface Props {
+  title?: string;
+  subtitle?: string;
+  buttonText?: string;
+  buttonHref?: string;
+}
+
+const {
+  title = 'Have a complex problem or an ambitious project?',
+  subtitle = 'Open to high-impact technical roles, quantitative AI research, and specialized full-stack engineering collaboration.',
+  buttonText = 'Start a Conversation',
+  buttonHref = '/contact',
+} = Astro.props;
+---
+
+<aside class="contact-callout" aria-labelledby="callout-heading">
+  <div class="callout-content">
+    <h2 id="callout-heading" class="callout-title">{title}</h2>
+    <p class="callout-subtitle">{subtitle}</p>
+  </div>
+  <a href={buttonHref} class="callout-btn">
+    {buttonText} →
+  </a>
+</aside>
+
+<style>
+  .contact-callout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 3rem;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.7));
+    border: 1px solid var(--border-subtle, #1e293b);
+    border-radius: 1rem;
+    margin: 4rem 0 2rem;
+  }
+
+  .callout-title {
+    font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+    font-weight: 800;
+    color: var(--text-primary, #f8fafc);
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.02em;
+  }
+
+  .callout-subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary, #94a3b8);
+    line-height: 1.6;
+    margin: 0;
+    max-width: 600px;
+  }
+
+  .callout-btn {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    padding: 0.875rem 1.75rem;
+    background: var(--color-accent, #3b82f6);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background 150ms ease, transform 150ms ease;
+  }
+
+  .callout-btn:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+  }
+
+  .callout-btn:focus-visible {
+    outline: 2px solid #60a5fa;
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 768px) {
+    .contact-callout {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 2rem 1.5rem;
+      gap: 1.5rem;
+    }
+
+    .callout-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>

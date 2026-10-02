@@ -1,0 +1,180 @@
+---
+export interface Props {
+  badge: 'Exploring' | 'Experimenting' | 'Building';
+  title: string;
+  inquiry: string;
+  methods: string[];
+  statusNote?: string;
+  githubUrl?: string;
+}
+
+const { badge, title, inquiry, methods, statusNote, githubUrl } = Astro.props;
+
+const badgeColors = {
+  Exploring: 'badge-exploring',
+  Experimenting: 'badge-experimenting',
+  Building: 'badge-building',
+};
+---
+
+<article class="inquiry-card">
+  <div class="inquiry-header">
+    <span class:list={['inquiry-badge', badgeColors[badge]]}>{badge}</span>
+  </div>
+
+  <h3 class="inquiry-title">{title}</h3>
+
+  <div class="inquiry-body">
+    <p class="inquiry-question">
+      <strong>Core Inquiry:</strong> {inquiry}
+    </p>
+
+    <div class="methods-section">
+      <span class="methods-label">Methods & Toolkit:</span>
+      <ul class="methods-list">
+        {methods.map((method) => (
+          <li class="method-tag">{method}</li>
+        ))}
+      </ul>
+    </div>
+
+    {statusNote && (
+      <p class="status-note">
+        <em>Status:</em> {statusNote}
+      </p>
+    )}
+  </div>
+
+  {githubUrl && (
+    <div class="inquiry-footer">
+      <a href={githubUrl} target="_blank" rel="noopener noreferrer" class="repo-link">
+        View Research Artifacts on GitHub ↗
+      </a>
+    </div>
+  )}
+</article>
+
+<style>
+  .inquiry-card {
+    background: var(--bg-surface, #0f172a);
+    border: 1px solid var(--border-subtle, #1e293b);
+    border-radius: 0.75rem;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 200ms ease, border-color 200ms ease;
+  }
+
+  .inquiry-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(59, 130, 246, 0.4);
+  }
+
+  .inquiry-header {
+    margin-bottom: 1rem;
+  }
+
+  .inquiry-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.6rem;
+    border-radius: 0.25rem;
+  }
+
+  .badge-exploring {
+    background: rgba(168, 85, 247, 0.15);
+    color: #c084fc;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+  }
+
+  .badge-experimenting {
+    background: rgba(59, 130, 246, 0.15);
+    color: #93c5fd;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  .badge-building {
+    background: rgba(16, 185, 129, 0.15);
+    color: #6ee7b7;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+
+  .inquiry-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary, #f8fafc);
+    line-height: 1.35;
+    margin: 0 0 1rem 0;
+  }
+
+  .inquiry-question {
+    font-size: 0.95rem;
+    color: var(--text-secondary, #cbd5e1);
+    line-height: 1.6;
+    margin: 0 0 1.25rem 0;
+  }
+
+  .inquiry-question strong {
+    color: var(--color-accent, #60a5fa);
+  }
+
+  .methods-section {
+    margin-bottom: 1.25rem;
+  }
+
+  .methods-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted, #94a3b8);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .methods-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .method-tag {
+    font-size: 0.75rem;
+    color: var(--text-secondary, #cbd5e1);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+  }
+
+  .status-note {
+    font-size: 0.85rem;
+    color: var(--text-muted, #94a3b8);
+    margin: 0;
+  }
+
+  .inquiry-footer {
+    padding-top: 1.25rem;
+    margin-top: 1.25rem;
+    border-top: 1px solid var(--border-subtle, #1e293b);
+  }
+
+  .repo-link {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-accent, #60a5fa);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .repo-link:hover,
+  .repo-link:focus-visible {
+    color: #93c5fd;
+  }
+</style>

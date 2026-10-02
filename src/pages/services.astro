@@ -1,0 +1,261 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
+import SectionHeader from '@/components/common/SectionHeader.astro';
+import ContactCallout from '@/components/sections/ContactCallout.astro';
+import { siteConfig } from '@/data/site';
+
+const seo = {
+  title: 'Services & Collaboration — Uzair Ahmad | Technical Consulting',
+  description: 'Specialized engineering consulting in full-stack web platforms, AI/ML model integration, and quantitative data architectures.',
+  canonical: `${siteConfig.url}/services`,
+};
+
+const capabilities = [
+  {
+    num: '01',
+    title: 'Full-Stack Web Applications',
+    description: 'Engineering responsive, accessible, high-performance web products using Astro, React, TypeScript, Node.js, and modern SQL/NoSQL databases.',
+    deliverables: ['Custom Web Applications', 'Accessible Component Systems', 'REST/GraphQL API Services', 'State Architecture'],
+  },
+  {
+    num: '02',
+    title: 'AI & Machine Learning System Integration',
+    description: 'Transitioning machine learning models and predictive pipelines into production environments with robust data validation and monitoring.',
+    deliverables: ['PyTorch Model Deployment', 'Feature Ingestion Pipelines', 'Predictive Decision Support', 'Deterministic Agent Guardrails'],
+  },
+  {
+    num: '03',
+    title: 'Quantitative Data & Time-Series Pipelines',
+    description: 'Architecting time-series ingestion, statistical moment calculations, and backtest infrastructure for financial and analytical platforms.',
+    deliverables: ['Time-Series Feature Extraction', 'Data Cleaning & Normalization', 'Empirical Statistical Analysis', 'Custom Analytical Tooling'],
+  },
+  {
+    num: '04',
+    title: 'Technical MVP Prototyping & Architecture',
+    description: 'Rapid, disciplined engineering of 0-to-1 software products for founders and teams requiring clean, scalable code from day one.',
+    deliverables: ['Rapid System Scoping', 'Modular Architecture Design', 'Production Deployment Setup', 'Technical Documentation'],
+  },
+];
+---
+
+<BaseLayout seo={seo}>
+  <div class="page-container">
+    <Breadcrumbs items={[{ label: 'Services', href: '/services' }]} />
+
+    <section class="services-hero">
+      <SectionHeader
+        eyebrow="Technical Capabilities"
+        title="Engineering Consulting & Product Collaboration"
+        subtitle="Specialized technical execution for ambitious products, AI pipelines, and high-performance web systems."
+      />
+    </section>
+
+    <section class="capabilities-grid-section">
+      <div class="cap-grid">
+        {capabilities.map((cap) => (
+          <article class="cap-card">
+            <span class="cap-num">{cap.num}</span>
+            <h3 class="cap-title">{cap.title}</h3>
+            <p class="cap-desc">{cap.description}</p>
+            <div class="deliverables-box">
+              <span class="del-label">Key Deliverables:</span>
+              <ul class="del-list">
+                {cap.deliverables.map((del) => (
+                  <li>{del}</li>
+                ))}
+              </ul>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="process-section">
+      <h2 class="process-title">Collaboration Workflow</h2>
+      <div class="process-steps">
+        <div class="step-card">
+          <span class="step-badge">Phase 1</span>
+          <h4>Scoping & Technical Architecture</h4>
+          <p>Defining exact requirements, data contracts, and architectural diagrams before code is written.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-badge">Phase 2</span>
+          <h4>Iterative Milestone Engineering</h4>
+          <p>Transparent development with regular milestone reviews, code inspections, and continuous testing.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-badge">Phase 3</span>
+          <h4>Production Hardening & Verification</h4>
+          <p>Accessibility auditing, performance optimization, error handling, and security review.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-badge">Phase 4</span>
+          <h4>Documentation & Handoff</h4>
+          <p>Clear documentation, typed APIs, and clean repository handoff for your team.</p>
+        </div>
+      </div>
+    </section>
+
+    <ContactCallout
+      title="Ready to discuss your project requirements?"
+      subtitle="Reach out with your problem scope and timeline to start a conversation."
+    />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-container {
+    width: min(1200px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 1rem 0 5rem;
+  }
+
+  .services-hero {
+    margin-bottom: 3.5rem;
+  }
+
+  .cap-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-bottom: 4.5rem;
+  }
+
+  .cap-card {
+    background: var(--bg-surface, #0f172a);
+    border: 1px solid var(--border-subtle, #1e293b);
+    border-radius: 0.85rem;
+    padding: 2.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 150ms ease, border-color 150ms ease;
+  }
+
+  .cap-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(59, 130, 246, 0.4);
+  }
+
+  .cap-num {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--color-accent, #60a5fa);
+    font-family: var(--font-mono, monospace);
+    margin-bottom: 0.75rem;
+  }
+
+  .cap-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--text-primary, #f8fafc);
+    margin: 0 0 0.75rem 0;
+    line-height: 1.3;
+  }
+
+  .cap-desc {
+    font-size: 0.95rem;
+    color: var(--text-secondary, #cbd5e1);
+    line-height: 1.6;
+    margin: 0 0 1.5rem 0;
+  }
+
+  .deliverables-box {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-subtle, #1e293b);
+  }
+
+  .del-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted, #94a3b8);
+    margin-bottom: 0.5rem;
+  }
+
+  .del-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .del-list li {
+    font-size: 0.875rem;
+    color: var(--text-secondary, #94a3b8);
+    position: relative;
+    padding-left: 1rem;
+  }
+
+  .del-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--color-accent, #60a5fa);
+  }
+
+  .process-section {
+    background: var(--bg-surface, #0f172a);
+    border: 1px solid var(--border-subtle, #1e293b);
+    border-radius: 1rem;
+    padding: 3rem;
+    margin-bottom: 4rem;
+  }
+
+  .process-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-primary, #f8fafc);
+    margin: 0 0 2rem 0;
+  }
+
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+
+  .step-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .step-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-accent, #60a5fa);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .step-card h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary, #f8fafc);
+    margin: 0;
+  }
+
+  .step-card p {
+    font-size: 0.875rem;
+    color: var(--text-secondary, #94a3b8);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .cap-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .process-steps {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+</style>

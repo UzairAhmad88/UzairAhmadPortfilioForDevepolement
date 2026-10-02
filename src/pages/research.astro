@@ -1,0 +1,215 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
+import SectionHeader from '@/components/common/SectionHeader.astro';
+import ResearchInquiryCard from '@/components/cards/ResearchInquiryCard.astro';
+import ContactCallout from '@/components/sections/ContactCallout.astro';
+import { siteConfig } from '@/data/site';
+
+const seo = {
+  title: 'Research Lab & Technical Inquiries — Uzair Ahmad',
+  description: 'Hypothesis-driven explorations across quantitative finance, machine learning models, and intelligent system architectures.',
+  canonical: `${siteConfig.url}/research`,
+};
+
+const inquiries = [
+  {
+    badge: 'Exploring' as const,
+    title: 'Predictive Feature Extraction in Non-Stationary Financial Series',
+    inquiry: 'Which statistical features (e.g. fractional differentiation, realized volatility moments) preserve long memory while satisfying stationarity constraints for deep neural networks?',
+    methods: ['Time-Series Analysis', 'PyTorch', 'Fractional Calculus', 'Walk-Forward CV'],
+    statusNote: 'Active empirical testing on cross-asset historical series.',
+    githubUrl: 'https://github.com/UzairAhmad88/Deep-Learning-Based-Stock-Return-Prediction---Quantitative-Trading-System-ByUzaii',
+  },
+  {
+    badge: 'Experimenting' as const,
+    title: 'Unsupervised Market Regime Transition Clustering',
+    inquiry: 'Can Gaussian Mixture Models and Hidden Markov Models reliably partition macro volatility regimes and provide early warning signals before drawdown cascades?',
+    methods: ['Gaussian Mixture Models (GMM)', 'Hidden Markov Models (HMM)', 'Scikit-Learn', 'Pandas'],
+    statusNote: 'Prototype engine complete; evaluating transition matrices.',
+    githubUrl: 'https://github.com/UzairAhmad88/Develop-Market-Regime--Engine-byUzaii',
+  },
+  {
+    badge: 'Building' as const,
+    title: 'Deterministic Guardrails & State Machines for LLM Workflows',
+    inquiry: 'How can autonomous agent execution pipelines be bounded with deterministic state machines to ensure zero hallucinations in automated data pipelines?',
+    methods: ['TypeScript', 'Finite State Machines', 'LangGraph Patterns', 'JSON Schema Validation'],
+    statusNote: 'Architecting modular framework for verifiable data extraction.',
+  },
+];
+---
+
+<BaseLayout seo={seo}>
+  <div class="page-container">
+    <Breadcrumbs items={[{ label: 'Research', href: '/research' }]} />
+
+    <section class="research-hero">
+      <SectionHeader
+        eyebrow="Research Lab"
+        title="Hypothesis-Driven Technical Inquiries"
+        subtitle="Exploring open questions at the frontier of quantitative finance, machine learning models, and autonomous system architectures."
+      />
+    </section>
+
+    <section class="domains-overview">
+      <div class="domain-grid">
+        <div class="domain-box">
+          <span class="domain-num">01</span>
+          <h3 class="domain-title">Signal & Series Research</h3>
+          <p class="domain-desc">Feature engineering, stationarity transformations, and neural time-series forecasting.</p>
+        </div>
+        <div class="domain-box">
+          <span class="domain-num">02</span>
+          <h3 class="domain-title">Market Regime Intelligence</h3>
+          <p class="domain-desc">Unsupervised clustering and statistical moment tracking for volatility transitions.</p>
+        </div>
+        <div class="domain-box">
+          <span class="domain-num">03</span>
+          <h3 class="domain-title">Agentic Workflow Systems</h3>
+          <p class="domain-desc">Deterministic execution boundaries for LLM and automated research pipelines.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="inquiries-section">
+      <h2 class="inquiries-heading">Active Inquiries & Experiments</h2>
+      <div class="inquiries-grid">
+        {inquiries.map((inq) => (
+          <ResearchInquiryCard {...inq} />
+        ))}
+      </div>
+    </section>
+
+    <section class="methodology-standards">
+      <h2 class="methodology-title">Research Integrity & Methodology Standards</h2>
+      <div class="standards-grid">
+        <div class="standard-card">
+          <h4>No Lookahead Bias</h4>
+          <p>All feature normalization and statistical parameters are calculated strictly on expanding historical windows.</p>
+        </div>
+        <div class="standard-card">
+          <h4>Out-of-Sample Discipline</h4>
+          <p>Models are evaluated on unseen temporal data partitions to guard against in-sample noise overfitting.</p>
+        </div>
+        <div class="standard-card">
+          <h4>Verifiable Code</h4>
+          <p>Research artifacts, notebooks, and models are backed by reproducible code on GitHub.</p>
+        </div>
+      </div>
+    </section>
+
+    <ContactCallout
+      title="Interested in collaborating on research?"
+      subtitle="Open to discussing quantitative modeling, empirical findings, and machine learning architectures."
+    />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-container {
+    width: min(1200px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 1rem 0 5rem;
+  }
+
+  .research-hero {
+    margin-bottom: 3rem;
+  }
+
+  .domains-overview {
+    margin-bottom: 4rem;
+  }
+
+  .domain-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .domain-box {
+    background: var(--bg-surface, #0f172a);
+    border: 1px solid var(--border-subtle, #1e293b);
+    border-radius: 0.75rem;
+    padding: 1.75rem;
+  }
+
+  .domain-num {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--color-accent, #60a5fa);
+    font-family: var(--font-mono, monospace);
+  }
+
+  .domain-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary, #f8fafc);
+    margin: 0.5rem 0 0.5rem 0;
+  }
+
+  .domain-desc {
+    font-size: 0.925rem;
+    color: var(--text-secondary, #94a3b8);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .inquiries-section {
+    margin-bottom: 4rem;
+  }
+
+  .inquiries-heading {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-primary, #f8fafc);
+    margin: 0 0 1.75rem 0;
+    letter-spacing: -0.015em;
+  }
+
+  .inquiries-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
+
+  .methodology-standards {
+    background: var(--bg-surface, #0f172a);
+    border: 1px solid var(--border-subtle, #1e293b);
+    border-radius: 1rem;
+    padding: 2.5rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .methodology-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--text-primary, #f8fafc);
+    margin: 0 0 1.5rem 0;
+  }
+
+  .standards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .standard-card h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-accent, #60a5fa);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .standard-card p {
+    font-size: 0.925rem;
+    color: var(--text-secondary, #94a3b8);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .domain-grid, .standards-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

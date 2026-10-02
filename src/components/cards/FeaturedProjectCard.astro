@@ -6,114 +6,215 @@ export interface Props {
 }
 
 const { project } = Astro.props;
-const categoryString = project.category.join(' ');
+const detailUrl = `/work/${project.slug}`;
 ---
 
-<article class="featured-project reveal" data-category={categoryString}>
-  <div>
-    <p class="eyebrow">{project.featuredSubheading || 'Featured Case Study'}</p>
-    <h3>{project.title}</h3>
-    {
-      project.problem && (
-        <p>
-          <strong>Problem:</strong> {project.problem}
-        </p>
-      )
-    }
-    {
-      project.system && (
-        <p>
-          <strong>System:</strong> {project.system}
-        </p>
-      )
-    }
-    {
-      project.githubUrl && (
-        <a href={project.githubUrl} target="_blank" rel="noreferrer">
-          View repository
-        </a>
-      )
-    }
+<article class="featured-card">
+  <div class="card-badge-row">
+    <span class="eyebrow-badge">★ Flagship Engineering System</span>
+    <span class="status-badge">Active Research</span>
   </div>
-  <div class="architecture-mini" aria-label="Data to product architecture">
-    <span>Data</span><i></i>
-    <span>Model</span><i></i>
-    <span>Backend</span><i></i>
-    <span>API</span><i></i>
-    <span>Frontend</span><i></i>
-    <span>User</span>
+
+  <div class="card-content-grid">
+    <div class="card-main">
+      <h3 class="featured-title">
+        <a href={detailUrl} class="title-link">{project.title}</a>
+      </h3>
+
+      <p class="featured-description">
+        {project.problem}
+      </p>
+
+      {project.solution && (
+        <p class="featured-solution">
+          <strong>Engineering Approach:</strong> {project.solution}
+        </p>
+      )}
+
+      {project.technologies && (
+        <ul class="tech-tags" aria-label="Key Technologies">
+          {project.technologies.map((tech) => (
+            <li class="tech-pill">{tech}</li>
+          ))}
+        </ul>
+      )}
+
+      <div class="card-action-row">
+        <a href={detailUrl} class="btn-primary">
+          Inspect Case Study →
+        </a>
+        {project.githubUrl && (
+          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" class="btn-secondary">
+            View Source Code on GitHub ↗
+          </a>
+        )}
+      </div>
+    </div>
   </div>
 </article>
 
 <style>
-  .featured-project {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 1rem;
-    align-items: stretch;
+  .featured-card {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.85));
+    border: 1px solid rgba(59, 130, 246, 0.35);
+    border-radius: 1rem;
+    padding: 2.25rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+    margin-bottom: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-badge-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .eyebrow-badge {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-accent, #60a5fa);
+  }
+
+  .status-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    background: rgba(59, 130, 246, 0.15);
+    color: #93c5fd;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  .featured-title {
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 800;
+    line-height: 1.25;
+    margin: 0 0 1rem 0;
+    letter-spacing: -0.02em;
+  }
+
+  .title-link {
+    color: var(--text-primary, #f8fafc);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .title-link:hover,
+  .title-link:focus-visible {
+    color: var(--color-accent, #60a5fa);
+  }
+
+  .featured-description {
+    font-size: 1.05rem;
+    color: var(--text-secondary, #cbd5e1);
+    line-height: 1.6;
     margin-bottom: 1rem;
-    padding: 1.2rem;
-    border: 1px solid rgba(126, 216, 196, 0.24);
-    border-radius: 8px;
-    background:
-      linear-gradient(135deg, rgba(126, 216, 196, 0.1), rgba(189, 166, 255, 0.055)),
-      rgba(255, 255, 255, 0.04);
-    box-shadow: var(--shadow);
-    transform-style: preserve-3d;
-    transition: transform 360ms ease, border-color 360ms ease, background 360ms ease;
   }
 
-  .featured-project:hover {
-    transform: translateY(-4px) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg));
-    border-color: rgba(189, 166, 255, 0.35);
+  .featured-solution {
+    font-size: 0.95rem;
+    color: var(--text-secondary, #94a3b8);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
   }
 
-  .featured-project h3 {
-    font-size: clamp(1.7rem, 3vw, 3rem);
+  .featured-solution strong {
+    color: var(--text-primary, #f8fafc);
   }
 
-  .featured-project p {
-    color: var(--muted);
-    line-height: 1.65;
+  .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
   }
 
-  .featured-project a {
-    color: var(--teal);
-    font-weight: 800;
+  .tech-pill {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-primary, #f8fafc);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 0.3rem 0.75rem;
+    border-radius: 0.375rem;
   }
 
-  .architecture-mini {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 0.55rem;
-    align-content: center;
+  .card-action-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
   }
 
-  .architecture-mini span {
-    display: grid;
-    place-items: center;
-    min-height: 4.4rem;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    color: var(--ink);
-    background: rgba(255, 255, 255, 0.055);
-    font-family: var(--font-mono);
-    font-weight: 800;
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-accent, #3b82f6);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background 150ms ease, transform 150ms ease;
   }
 
-  .architecture-mini i {
-    display: none;
+  .btn-primary:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
   }
 
-  @media (max-width: 920px) {
-    .featured-project {
-      grid-template-columns: 1fr;
-    }
+  .btn-primary:focus-visible {
+    outline: 2px solid #60a5fa;
+    outline-offset: 2px;
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    color: var(--text-secondary, #94a3b8);
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid var(--border-subtle, #334155);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+  }
+
+  .btn-secondary:hover {
+    color: var(--text-primary, #f8fafc);
+    border-color: var(--color-accent, #3b82f6);
+    background: rgba(59, 130, 246, 0.05);
+  }
+
+  .btn-secondary:focus-visible {
+    outline: 2px solid #60a5fa;
+    outline-offset: 2px;
   }
 
   @media (max-width: 640px) {
-    .architecture-mini {
-      grid-template-columns: repeat(3, 1fr);
+    .featured-card {
+      padding: 1.5rem;
+    }
+
+    .card-action-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .btn-primary, .btn-secondary {
+      justify-content: center;
+      text-align: center;
     }
   }
 </style>

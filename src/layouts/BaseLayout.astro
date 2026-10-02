@@ -13,6 +13,7 @@ export interface Props {
 }
 
 const { seo = {} } = Astro.props;
+const currentPath = Astro.url.pathname;
 ---
 
 <!doctype html>
@@ -29,11 +30,40 @@ const { seo = {} } = Astro.props;
     />
   </head>
   <body>
-    <a href="#top" class="skip-link">Skip to main content</a>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <BackgroundEffects />
-    <Header />
-    <slot />
+    <Header currentPath={currentPath} />
+    <main id="main-content" class="page-main">
+      <slot />
+    </main>
     <WhatsAppFloat />
     <Footer />
   </body>
 </html>
+
+<style>
+  .skip-link {
+    position: absolute;
+    top: -999px;
+    left: 1rem;
+    z-index: 1000;
+    padding: 0.75rem 1.25rem;
+    background: var(--color-accent, #3b82f6);
+    color: #ffffff;
+    font-weight: 700;
+    border-radius: 0.375rem;
+    text-decoration: none;
+    transition: top 150ms ease;
+  }
+
+  .skip-link:focus {
+    top: 1rem;
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+  }
+
+  .page-main {
+    min-height: calc(100vh - 350px);
+    width: 100%;
+  }
+</style>
