@@ -10,7 +10,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "test": "node --test tests/unit/seo.test.ts tests/unit/projects.test.ts tests/unit/research.test.ts tests/unit/contact.test.ts tests/unit/production.test.ts",
+    "test": "node --test tests/unit/seo.test.ts tests/unit/projects.test.ts tests/unit/research.test.ts tests/unit/contact.test.ts tests/unit/production.test.ts tests/unit/github-sync.test.ts",
+    "projects:sync": "node scripts/sync-projects.mjs",
+    "sync:github": "node scripts/sync-projects.mjs",
     "lint": "eslint . --ext .js,.ts,.astro",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

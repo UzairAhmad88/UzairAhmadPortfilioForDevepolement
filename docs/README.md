@@ -83,7 +83,17 @@ Welcome to the comprehensive documentation suite for Uzair Ahmad's personal prof
 
 ---
 
-## 10. Phase Execution Reports
+## 10. GitHub & Vercel Project System (Phase 11)
+- [docs/GITHUB-INTEGRATION.md](GITHUB-INTEGRATION.md) — GitHub repository discovery & evidence architecture
+- [docs/VERCEL-INTEGRATION.md](VERCEL-INTEGRATION.md) — Vercel deployment verification architecture
+- [docs/PROJECT-SYNC.md](PROJECT-SYNC.md) — Project synchronization CLI manual
+- [docs/PROJECT-SOURCE-MAPPING.md](PROJECT-SOURCE-MAPPING.md) — Project source mapping & provenance registry
+- [docs/PROJECT-PUBLISHING-WORKFLOW.md](PROJECT-PUBLISHING-WORKFLOW.md) — 10-step project publishing workflow
+- [docs/PROJECT-SOURCE-HEALTH.md](PROJECT-SOURCE-HEALTH.md) — Project source health audit matrix
+
+---
+
+## 11. Phase Execution Reports
 - [docs/PHASE-01-REPORT.md](PHASE-01-REPORT.md) — Phase 01: Engineering Foundation
 - [docs/PHASE-02-REPORT.md](PHASE-02-REPORT.md) — Phase 02: Brand & UX Strategy
 - [docs/PHASE-03-REPORT.md](PHASE-03-REPORT.md) — Phase 03: Page Architecture & Wireframes
@@ -94,3 +104,4 @@ Welcome to the comprehensive documentation suite for Uzair Ahmad's personal prof
 - [docs/PHASE-08-REPORT.md](PHASE-08-REPORT.md) — Phase 08: Technical SEO & Structured Data
 - [docs/PHASE-09-REPORT.md](PHASE-09-REPORT.md) — Phase 09: Observability, Performance & Testing
 - [docs/PHASE-10-REPORT.md](PHASE-10-REPORT.md) — Phase 10: Final Product Polish & Launch
+- [docs/PHASE-11-REPORT.md](PHASE-11-REPORT.md) — Phase 11: Real GitHub + Vercel Project System

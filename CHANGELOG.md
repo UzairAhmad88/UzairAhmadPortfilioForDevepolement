@@ -4,6 +4,32 @@ All notable changes to the Uzair Ahmad Personal Professional Platform codebase a
 
 ---
 
+## [1.1.0] — 2026-10-03 — Phase 11: Real GitHub + Vercel Project System & Sync Engine
+
+### Added
+- **GitHub Integration Layer (`src/lib/github/`)**:
+  - `types.ts`: Strongly typed schemas for GitHub API entities, classifications, and sync reports.
+  - `normalizer.ts`: Technology dictionary normalization, classification heuristics, and URL validator.
+  - `matcher.ts`: Known project mapping registry and update-freshness detection.
+  - `client.ts`: Resilient GitHub HTTP client with rate-limit header handling and baseline fallbacks.
+  - `sync.ts`: In-memory diffing engine, markdown report generator, and draft scaffold generator.
+- **Vercel Integration Layer (`src/lib/vercel/`)**:
+  - `index.ts`: Verified Vercel deployment registry and project matcher.
+- **CLI Synchronization Tooling**:
+  - `scripts/sync-projects.mjs`: CLI script for `--dry-run` and active repository synchronization (`npm run projects:sync`).
+  - Added npm scripts `"projects:sync"` and `"sync:github"`.
+- **Enriched Project Metadata**:
+  - Extended `Project` interface with `source`, `githubRepo`, `vercelUrl`, `liveUrl`, `repositoryStatus`, `deploymentStatus`, `repositoryUpdatedAt`, `isLatest`, and `publishedAt`.
+  - Added `getFeaturedProjects()`, `getLatestProjects()`, and `getProjectBySlug()` helpers in `src/data/projects.ts`.
+- **UI Enhancements**:
+  - Updated `ProjectCard.astro` to display verified `Live Demo ↗` links when available.
+- **Unit Testing**:
+  - Added `tests/unit/github-sync.test.ts` bringing total unit tests to 37 (100% passing).
+- **Phase 11 Documentation**:
+  - `docs/GITHUB-INTEGRATION.md`, `docs/VERCEL-INTEGRATION.md`, `docs/PROJECT-SYNC.md`, `docs/PROJECT-SOURCE-MAPPING.md`, `docs/PROJECT-PUBLISHING-WORKFLOW.md`, `docs/PROJECT-SOURCE-HEALTH.md`, `docs/PHASE-11-IMPLEMENTATION.md`, `docs/PHASE-11-REPORT.md`.
+
+---
+
 ## [1.0.0] — 2026-10-02 — Phase 10: Final Product Polish + Production Launch
 
 ### Added

@@ -13,6 +13,12 @@ export type ProjectStatus = 'completed' | 'active' | 'research' | 'academic' | '
 
 export type PresentationLevel = 'A' | 'B' | 'C' | 'D'; // A: Flagship Case Study, B: Detailed Project, C: Standard Entry, D: Archive
 
+export type RepositoryStatus = 'public' | 'private' | 'archived' | 'not_applicable';
+
+export type DeploymentStatus = 'production' | 'preview' | 'not_deployed' | 'unknown' | 'failed';
+
+export type ProjectSource = 'manual' | 'github' | 'vercel' | 'github+vercel';
+
 export interface TechnicalDecision {
   decision: string;
   context?: string;
@@ -50,6 +56,19 @@ export interface ProjectCaseStudy {
   futureWork?: string[];
 }
 
+export interface ProjectSourceMetadata {
+  github?: boolean;
+  vercel?: boolean;
+  manuallyVerified?: boolean;
+  lastSyncedAt?: string;
+  lastKnownPushedAt?: string;
+  defaultBranch?: string;
+  stars?: number;
+  forks?: number;
+  openIssues?: number;
+  license?: string;
+}
+
 export interface Project {
   id?: string;
   slug: string;
@@ -68,9 +87,23 @@ export interface Project {
   outcome?: string;
   featured?: boolean;
   featuredSubheading?: string;
+  isLatest?: boolean;
+  publishedAt?: string;
+  updatedAt?: string;
+  
+  // Provenance & Source Evidence
+  source?: ProjectSource;
   githubUrl?: string;
+  githubRepo?: string;
+  vercelUrl?: string;
   liveUrl?: string;
   documentationUrl?: string;
+  repositoryStatus?: RepositoryStatus;
+  deploymentStatus?: DeploymentStatus;
+  repositoryUpdatedAt?: string;
+  deploymentUpdatedAt?: string;
+  sourceMetadata?: ProjectSourceMetadata;
+  
   image?: string;
   technologies?: string[];
   tools?: string[];
