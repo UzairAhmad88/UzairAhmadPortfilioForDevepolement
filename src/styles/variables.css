@@ -1,4 +1,5 @@
 :root {
+  /* Legacy Token Aliases (Preserved for 100% Fidelity) */
   --paper: #07110f;
   --ink: #f6f1e8;
   --muted: #a9b8b1;
@@ -10,6 +11,61 @@
   --white: rgba(255, 255, 255, 0.08);
   --shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
 
+  /* Semantic Color System */
+  --color-canvas: #07110f;
+  --color-canvas-subtle: #101a17;
+  --color-canvas-card: #17211f;
+  --color-surface: rgba(255, 255, 255, 0.035);
+  --color-surface-hover: rgba(255, 255, 255, 0.06);
+  --color-surface-elevated: rgba(255, 255, 255, 0.08);
+
+  --color-text-primary: #f6f1e8;
+  --color-text-secondary: #a9b8b1;
+  --color-text-tertiary: rgba(246, 241, 232, 0.58);
+
+  --color-border: rgba(246, 241, 232, 0.12);
+  --color-border-subtle: rgba(246, 241, 232, 0.08);
+  --color-border-strong: rgba(246, 241, 232, 0.24);
+
+  --color-accent-teal: #7ed8c4;
+  --color-accent-deep: #9bd8cf;
+  --color-accent-clay: #d2a071;
+  --color-accent-lavender: #bda6ff;
+  --color-accent-rose: #e0aaa7;
+  --color-focus: rgba(126, 216, 196, 0.5);
+
+  /* Typography System */
   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+
+  /* Spacing Scale (4px base) */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-12: 3rem;    /* 48px */
+  --space-16: 4rem;    /* 64px */
+  --space-20: 5rem;    /* 80px */
+  --space-24: 6.5rem;  /* 104px */
+
+  /* Elevation & Shadows */
+  --shadow-surface: 0 16px 50px rgba(0, 0, 0, 0.18);
+  --shadow-card: 0 24px 80px rgba(0, 0, 0, 0.32);
+  --shadow-glow: 0 0 70px rgba(126, 216, 196, 0.18);
+
+  /* Radii */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-full: 9999px;
+
+  /* Transitions & Motion */
+  --transition-fast: 180ms ease;
+  --transition-base: 240ms ease;
+  --transition-slow: 420ms ease;
+
+  /* Layout */
+  --container-max: 1180px;
 }
