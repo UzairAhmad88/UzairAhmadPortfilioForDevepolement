@@ -1,3 +1,12 @@
+# Project Data Model Specification
+
+This document defines the complete TypeScript interfaces, validation contracts, and field definitions governing all project content.
+
+---
+
+## 1. Complete Interface Reference
+
+```typescript
 export type ProjectCategory = 'quant' | 'ai' | 'engineering' | 'product';
 
 export type ProjectType = 'Product' | 'System' | 'Research' | 'Academic' | 'Prototype' | 'Experiment';
@@ -11,7 +20,7 @@ export type ProjectDomain =
 
 export type ProjectStatus = 'completed' | 'active' | 'research' | 'academic' | 'prototype' | 'archived';
 
-export type PresentationLevel = 'A' | 'B' | 'C' | 'D'; // A: Flagship Case Study, B: Detailed Project, C: Standard Entry, D: Archive
+export type PresentationLevel = 'A' | 'B' | 'C' | 'D';
 
 export interface TechnicalDecision {
   decision: string;
@@ -82,3 +91,4 @@ export interface Project {
   relatedResearch?: string[];
   caseStudy?: ProjectCaseStudy;
 }
+```
