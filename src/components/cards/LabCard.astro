@@ -9,46 +9,93 @@ const { item } = Astro.props;
 ---
 
 <article class="lab-card reveal">
-  <span>{item.badge}</span>
+  <div class="card-top">
+    <span class="badge">{item.badge}</span>
+    <span class="index-num">INQ // {item.slug}</span>
+  </div>
   <h3>{item.title}</h3>
-  <p>
-    <strong>Question:</strong> {item.question}
+  <p class="question-text">
+    <strong>Inquiry:</strong> {item.question}
   </p>
-  <p>
-    <strong>Approach:</strong> {item.approach}
+  <p class="approach-text">
+    <strong>Methodology:</strong> {item.approach}
   </p>
+  <a href={`/research/${item.slug}`} class="explore-link">
+    Inspect Inquiry & Findings →
+  </a>
 </article>
 
 <style>
   .lab-card {
-    padding: 1.2rem;
-    border: 1px solid var(--line);
+    padding: 1.35rem;
+    border: 1px solid rgba(246, 241, 232, 0.09);
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.045);
-    transform-style: preserve-3d;
-    transition: transform 320ms ease, border-color 320ms ease, background 320ms ease;
+    background: rgba(16, 26, 23, 0.75);
+    display: flex;
+    flex-direction: column;
+    transition: transform 200ms ease, border-color 200ms ease, background 200ms ease;
   }
 
   .lab-card:hover {
-    transform: translateY(-4px) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg));
-    border-color: rgba(126, 216, 196, 0.32);
-    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-3px);
+    border-color: rgba(126, 216, 196, 0.35);
+    background: rgba(16, 26, 23, 0.9);
   }
 
-  .lab-card span {
-    color: var(--teal);
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .badge {
+    color: #7ed8c4;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.75rem;
     font-weight: 800;
     text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .index-num {
+    color: #83968e;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.7rem;
   }
 
   .lab-card h3 {
-    margin: 0.6rem 0 0.5rem;
+    margin: 0 0 0.75rem 0;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--color-text, #f6f1e8);
+    line-height: 1.35;
   }
 
-  .lab-card p {
-    color: var(--muted);
-    line-height: 1.65;
+  .question-text, .approach-text {
+    color: var(--color-text-muted, #a9b8b1);
+    font-size: 0.925rem;
+    line-height: 1.6;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .question-text strong, .approach-text strong {
+    color: var(--color-text, #f6f1e8);
+  }
+
+  .explore-link {
+    margin-top: auto;
+    padding-top: 0.85rem;
+    border-top: 1px solid rgba(246, 241, 232, 0.08);
+    color: #7ed8c4;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .explore-link:hover {
+    color: #9bd8cf;
+    text-decoration: underline;
   }
 </style>

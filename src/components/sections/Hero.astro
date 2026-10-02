@@ -1,67 +1,118 @@
 ---
-import { siteConfig } from '@/data/site';
+// Hero.astro
 ---
 
 <section class="hero section-shell">
   <div class="hero-copy reveal">
-    <p class="eyebrow">{siteConfig.author.eyebrow}</p>
-    <h1>I build systems where <span>finance, intelligence, and software meet.</span></h1>
+    <div class="hero-badge-strip">
+      <span class="status-pulse-dot" aria-hidden="true"></span>
+      <span class="hero-badge-text">Available for select engineering & quant collaborations</span>
+    </div>
+
+    <h1 class="hero-title">
+      Engineering systems where <span class="highlight-text">statistical rigor</span>, <span class="highlight-alt">AI models</span>, and <span class="highlight-eng">production code</span> meet.
+    </h1>
+
     <p class="hero-lede">
-      {siteConfig.author.lede}
+      I am <strong>Uzair Ahmad</strong>, an engineer building end-to-end software—from deep learning return prediction pipelines and market regime detection models to resilient full-stack platforms. Every featured project includes public, inspectable code.
     </p>
+
+    <!-- Technical Metadata Strip -->
+    <div class="hero-meta-grid" aria-label="Core Engineering Attributes">
+      <div class="meta-item">
+        <span class="meta-k">Core Focus</span>
+        <span class="meta-v">PyTorch · Time-Series · Full-Stack</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-k">Verification</span>
+        <span class="meta-v">Public Code & Open Architecture</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-k">Base</span>
+        <span class="meta-v">Pakistan · Remote Worldwide</span>
+      </div>
+    </div>
+
     <div class="hero-actions">
-      <a class="button primary" href="#work">View My Work</a>
-      <a class="button ghost" href="#contact">Start a Conversation</a>
+      <a class="button primary" href="#work">Explore Verified Systems →</a>
+      <a class="button secondary" href="/research">Read Research Inquiries</a>
+      <a class="button ghost" href="/contact">Start Conversation</a>
     </div>
   </div>
 
-  <div class="hero-system reveal" aria-label="Interactive technical system visualization">
-    <svg viewBox="0 0 680 560" role="img">
-      <defs>
-        <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#7ed8c4"></stop>
-          <stop offset="55%" stop-color="#bda6ff"></stop>
-          <stop offset="100%" stop-color="#d2a071"></stop>
-        </linearGradient>
-      </defs>
-      <path
-        class="system-grid"
-        d="M80 90 H600 M80 180 H600 M80 270 H600 M80 360 H600 M80 450 H600 M130 56 V500 M235 56 V500 M340 56 V500 M445 56 V500 M550 56 V500"
-      ></path>
-      <circle class="core-node" cx="340" cy="280" r="62"></circle>
-      <text x="340" y="287" text-anchor="middle">PRODUCT</text>
-      <path class="system-line quant" d="M95 150 C180 98 238 142 283 224"></path>
-      <path class="system-line ai" d="M585 130 C486 106 428 160 386 224"></path>
-      <path class="system-line eng" d="M112 428 C200 396 246 356 286 322"></path>
-      <path class="system-line product" d="M590 420 C494 400 430 354 388 320"></path>
-      <g class="system-labels">
-        <text x="95" y="132">QUANT</text>
-        <text x="548" y="112">AI</text>
-        <text x="96" y="462">ENGINEERING</text>
-        <text x="526" y="462">USERS</text>
-      </g>
-      <g class="system-dots">
-        <circle cx="95" cy="150" r="8"></circle>
-        <circle cx="205" cy="122" r="6"></circle>
-        <circle cx="283" cy="224" r="8"></circle>
-        <circle cx="585" cy="130" r="8"></circle>
-        <circle cx="474" cy="132" r="6"></circle>
-        <circle cx="386" cy="224" r="8"></circle>
-        <circle cx="112" cy="428" r="8"></circle>
-        <circle cx="220" cy="382" r="6"></circle>
-        <circle cx="286" cy="322" r="8"></circle>
-        <circle cx="590" cy="420" r="8"></circle>
-        <circle cx="476" cy="386" r="6"></circle>
-        <circle cx="388" cy="320" r="8"></circle>
-      </g>
-    </svg>
-    <div class="metric-card card-one">
-      <span>Research</span>
-      <p>signals, models, experiments</p>
+  <div class="hero-system reveal" aria-label="Interactive quantitative architecture diagram">
+    <div class="system-header">
+      <span class="sys-dot red"></span>
+      <span class="sys-dot yellow"></span>
+      <span class="sys-dot green"></span>
+      <span class="sys-title">SYSTEM_ARCHITECTURE // PIPELINE_TOPOLOGY</span>
     </div>
-    <div class="metric-card card-two">
-      <span>Ship</span>
-      <p>software that becomes usable</p>
+
+    <div class="topology-container">
+      <svg viewBox="0 0 580 440" role="img" class="topology-svg">
+        <defs>
+          <linearGradient id="quantGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#7ed8c4"></stop>
+            <stop offset="100%" stop-color="#3ca691"></stop>
+          </linearGradient>
+          <linearGradient id="aiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#bda6ff"></stop>
+            <stop offset="100%" stop-color="#8c6eff"></stop>
+          </linearGradient>
+          <linearGradient id="prodGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#d2a071"></stop>
+            <stop offset="100%" stop-color="#b88350"></stop>
+          </linearGradient>
+        </defs>
+
+        <!-- Subtle Grid Matrix -->
+        <path class="sys-grid-lines" d="M40 70 H540 M40 150 H540 M40 230 H540 M40 310 H540 M40 390 H540 M100 40 V410 M220 40 V410 M340 40 V410 M460 40 V410" />
+
+        <!-- Connecting Data Flows -->
+        <path class="flow-line flow-1" d="M120 120 C220 90 260 180 290 220" />
+        <path class="flow-line flow-2" d="M460 120 C380 90 320 180 290 220" />
+        <path class="flow-line flow-3" d="M120 340 C200 360 260 280 290 220" />
+        <path class="flow-line flow-4" d="M460 340 C380 360 320 280 290 220" />
+
+        <!-- Core Production Node -->
+        <circle class="core-hub" cx="290" cy="220" r="48" />
+        <text x="290" y="216" class="hub-text main" text-anchor="middle">VERIFIABLE</text>
+        <text x="290" y="232" class="hub-text sub" text-anchor="middle">SYSTEMS</text>
+
+        <!-- Node 1: Quant Research -->
+        <g class="topology-node" transform="translate(120, 120)">
+          <rect x="-65" y="-24" width="130" height="48" rx="6" class="node-box quant-box" />
+          <text x="0" y="-4" class="node-title" text-anchor="middle">QUANT RESEARCH</text>
+          <text x="0" y="12" class="node-sub" text-anchor="middle">Signal & Regime</text>
+        </g>
+
+        <!-- Node 2: Deep Learning -->
+        <g class="topology-node" transform="translate(460, 120)">
+          <rect x="-65" y="-24" width="130" height="48" rx="6" class="node-box ai-box" />
+          <text x="0" y="-4" class="node-title" text-anchor="middle">AI & NEURAL</text>
+          <text x="0" y="12" class="node-sub" text-anchor="middle">PyTorch · Agents</text>
+        </g>
+
+        <!-- Node 3: Full Stack Systems -->
+        <g class="topology-node" transform="translate(120, 340)">
+          <rect x="-65" y="-24" width="130" height="48" rx="6" class="node-box eng-box" />
+          <text x="0" y="-4" class="node-title" text-anchor="middle">ARCHITECTURE</text>
+          <text x="0" y="12" class="node-sub" text-anchor="middle">TypeScript · APIs</text>
+        </g>
+
+        <!-- Node 4: Product Delivery -->
+        <g class="topology-node" transform="translate(460, 340)">
+          <rect x="-65" y="-24" width="130" height="48" rx="6" class="node-box prod-box" />
+          <text x="0" y="-4" class="node-title" text-anchor="middle">PRODUCTION</text>
+          <text x="0" y="12" class="node-sub" text-anchor="middle">Vercel · SaaS UX</text>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Live Status Strip -->
+    <div class="system-footer">
+      <span class="footer-tag">STATUS: 100% OPERATIONAL</span>
+      <span class="footer-tag">PIPELINES: DETERMINISTIC</span>
     </div>
   </div>
 </section>
@@ -69,154 +120,306 @@ import { siteConfig } from '@/data/site';
 <style>
   .hero {
     display: grid;
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-    gap: clamp(1.5rem, 4vw, 3rem);
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(2rem, 4.5vw, 4rem);
     align-items: center;
-    min-height: calc(100vh - 6rem);
-    padding: clamp(3rem, 6vw + 1rem, 5.5rem) 0 clamp(2rem, 4vw, 3.5rem);
+    min-height: calc(100vh - 6.5rem);
+    padding: clamp(3rem, 6vw + 1rem, 5.5rem) 0 clamp(2.5rem, 4vw, 4rem);
+  }
+
+  .hero-badge-strip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.35rem 0.85rem;
+    background: rgba(126, 216, 196, 0.08);
+    border: 1px solid rgba(126, 216, 196, 0.25);
+    border-radius: var(--radius-full, 9999px);
+    margin-bottom: 1.5rem;
+  }
+
+  .status-pulse-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: #7ed8c4;
+    box-shadow: 0 0 10px #7ed8c4;
+    animation: pulseGlow 2s ease-in-out infinite;
+  }
+
+  .hero-badge-text {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #7ed8c4;
+    letter-spacing: 0.02em;
+  }
+
+  .hero-title {
+    font-size: var(--font-size-display, clamp(2.25rem, 4.5vw + 0.5rem, 3.85rem));
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+    font-weight: 800;
+    color: var(--color-text, #f6f1e8);
+    margin: 0 0 1.5rem 0;
+    text-wrap: balance;
+  }
+
+  .highlight-text {
+    color: #7ed8c4;
+  }
+
+  .highlight-alt {
+    color: #bda6ff;
+  }
+
+  .highlight-eng {
+    color: #d2a071;
   }
 
   .hero-lede {
-    max-width: 660px;
-    color: var(--muted);
-    font-size: var(--font-size-lead, 1.15rem);
+    max-width: 640px;
+    color: var(--color-text-muted, #a9b8b1);
+    font-size: var(--font-size-lead, 1.125rem);
     line-height: 1.75;
+    margin: 0 0 2rem 0;
+  }
+
+  .hero-lede strong {
+    color: var(--color-text, #f6f1e8);
+  }
+
+  .hero-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    padding: 1rem;
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(246, 241, 232, 0.09);
+    border-radius: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .meta-k {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #83968e;
+  }
+
+  .meta-v {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text, #f6f1e8);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 0.85rem;
-    margin-top: 2rem;
   }
 
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--touch-target-min, 44px);
+    padding: 0.75rem 1.4rem;
+    border-radius: 0.5rem;
+    font-size: 0.925rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 150ms ease, border-color 150ms ease, color 150ms ease, transform 150ms ease;
+  }
+
+  .button.primary {
+    background: #7ed8c4;
+    color: #07110f;
+  }
+
+  .button.primary:hover {
+    background: #9bd8cf;
+    transform: translateY(-1px);
+  }
+
+  .button.secondary {
+    background: rgba(189, 166, 255, 0.12);
+    border: 1px solid rgba(189, 166, 255, 0.3);
+    color: #bda6ff;
+  }
+
+  .button.secondary:hover {
+    background: rgba(189, 166, 255, 0.2);
+    border-color: #bda6ff;
+    transform: translateY(-1px);
+  }
+
+  .button.ghost {
+    background: rgba(16, 26, 23, 0.6);
+    border: 1px solid rgba(246, 241, 232, 0.12);
+    color: var(--color-text, #f6f1e8);
+  }
+
+  .button.ghost:hover {
+    border-color: #7ed8c4;
+    color: #7ed8c4;
+    transform: translateY(-1px);
+  }
+
+  /* Topology Visual Card */
   .hero-system {
     position: relative;
     width: 100%;
-    max-width: 680px;
+    max-width: 580px;
     margin: 0 auto;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background:
-      linear-gradient(rgba(246, 241, 232, 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(246, 241, 232, 0.035) 1px, transparent 1px),
-      rgba(255, 255, 255, 0.035);
-    background-size: 36px 36px;
+    background: rgba(16, 26, 23, 0.85);
+    border: 1px solid rgba(246, 241, 232, 0.1);
+    border-radius: 0.875rem;
     overflow: hidden;
-    box-shadow: var(--shadow);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
   }
 
-  .hero-system svg {
+  .system-header {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.75rem 1rem;
+    background: rgba(7, 17, 15, 0.95);
+    border-bottom: 1px solid rgba(246, 241, 232, 0.08);
+  }
+
+  .sys-dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+  }
+
+  .sys-dot.red { background: #ef4444; opacity: 0.75; }
+  .sys-dot.yellow { background: #f59e0b; opacity: 0.75; }
+  .sys-dot.green { background: #10b981; opacity: 0.75; }
+
+  .sys-title {
+    margin-left: 0.4rem;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #83968e;
+    letter-spacing: 0.05em;
+  }
+
+  .topology-container {
+    padding: 1.25rem;
+  }
+
+  .topology-svg {
     display: block;
     width: 100%;
     height: auto;
-    aspect-ratio: 680 / 560;
+    aspect-ratio: 580 / 440;
   }
 
-  .system-grid {
+  .sys-grid-lines {
     fill: none;
-    stroke: rgba(246, 241, 232, 0.08);
+    stroke: rgba(246, 241, 232, 0.04);
     stroke-width: 1;
   }
 
-  .core-node {
-    fill: rgba(126, 216, 196, 0.08);
-    stroke: url(#lineGradient);
-    stroke-width: 2;
-    animation: breathe 4s ease-in-out infinite;
-  }
-
-  .hero-system text {
-    fill: var(--ink);
-    font-family: var(--font-mono);
-    font-size: 16px;
-    font-weight: 800;
-  }
-
-  .system-line {
+  .flow-line {
     fill: none;
-    stroke: url(#lineGradient);
-    stroke-width: 4;
-    stroke-linecap: round;
-    stroke-dasharray: 520;
-    stroke-dashoffset: 520;
-    animation: drawLine 3s ease-in-out infinite alternate;
+    stroke-width: 2.5;
+    stroke-dasharray: 8 6;
+    animation: dashFlow 20s linear infinite;
   }
 
-  .system-dots circle {
-    fill: var(--teal);
-    animation: pulseDot 2.6s ease-in-out infinite;
+  .flow-1 { stroke: rgba(126, 216, 196, 0.4); }
+  .flow-2 { stroke: rgba(189, 166, 255, 0.4); }
+  .flow-3 { stroke: rgba(210, 160, 113, 0.4); }
+  .flow-4 { stroke: rgba(126, 216, 196, 0.4); }
+
+  .core-hub {
+    fill: rgba(7, 17, 15, 0.95);
+    stroke: #7ed8c4;
+    stroke-width: 2;
+    filter: drop-shadow(0 0 12px rgba(126, 216, 196, 0.25));
   }
 
-  .system-labels text {
-    fill: rgba(246, 241, 232, 0.58);
-    font-size: 13px;
-  }
-
-  .metric-card {
-    position: absolute;
-    padding: clamp(0.65rem, 1.5vw, 1rem) clamp(0.75rem, 2vw, 1.15rem);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    box-shadow: var(--shadow);
-  }
-
-  .metric-card span {
-    display: block;
-    font-size: clamp(1.15rem, 2vw, 1.55rem);
+  .hub-text {
+    font-family: var(--font-mono, monospace);
     font-weight: 800;
+    fill: #f6f1e8;
   }
 
-  .metric-card p {
-    margin: 0.2rem 0 0;
-    color: var(--muted);
-    font-size: clamp(0.75rem, 1.2vw, 0.85rem);
+  .hub-text.main { font-size: 11px; letter-spacing: 0.05em; }
+  .hub-text.sub { font-size: 9px; fill: #7ed8c4; }
+
+  .node-box {
+    stroke-width: 1.5;
+    fill: rgba(7, 17, 15, 0.9);
   }
 
-  .card-one {
-    left: 4%;
-    bottom: 12%;
+  .quant-box { stroke: rgba(126, 216, 196, 0.6); }
+  .ai-box { stroke: rgba(189, 166, 255, 0.6); }
+  .eng-box { stroke: rgba(210, 160, 113, 0.6); }
+  .prod-box { stroke: rgba(126, 216, 196, 0.6); }
+
+  .node-title {
+    font-family: var(--font-mono, monospace);
+    font-size: 10px;
+    font-weight: 800;
+    fill: #f6f1e8;
   }
 
-  .card-two {
-    right: 4%;
-    top: 14%;
+  .node-sub {
+    font-family: var(--font-sans, sans-serif);
+    font-size: 9px;
+    font-weight: 500;
+    fill: #a9b8b1;
   }
 
-  @media (max-width: 920px) {
+  .system-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.65rem 1rem;
+    background: rgba(7, 17, 15, 0.95);
+    border-top: 1px solid rgba(246, 241, 232, 0.08);
+  }
+
+  .footer-tag {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #7ed8c4;
+    letter-spacing: 0.04em;
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+  }
+
+  @keyframes dashFlow {
+    to { stroke-dashoffset: -200; }
+  }
+
+  @media (max-width: 980px) {
     .hero {
       grid-template-columns: 1fr;
       min-height: auto;
-      padding-top: 3.5rem;
+      padding-top: 3rem;
     }
 
-    .hero-actions {
-      justify-content: flex-start;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .hero {
-      padding: 2.5rem 0 2rem;
-      gap: 2rem;
-    }
-
-    .hero-actions {
-      flex-direction: column;
-      width: 100%;
-    }
-
-    .hero-actions .button {
-      width: 100%;
-    }
-
-    .metric-card {
-      position: static;
-      display: block;
-      margin: 0.5rem;
+    .hero-meta-grid {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
     }
   }
 </style>

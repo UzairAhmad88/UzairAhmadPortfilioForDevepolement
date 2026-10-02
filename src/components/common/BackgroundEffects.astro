@@ -1,22 +1,11 @@
 ---
-// BackgroundEffects.astro
+// BackgroundEffects.astro - High-Performance Editorial Technical Background
 ---
 
-<canvas class="three-field" aria-hidden="true"></canvas>
-<div class="cursor-glow" aria-hidden="true"></div>
+<div class="technical-grid-bg" aria-hidden="true"></div>
 
 <script>
-  import * as THREE from 'three';
-
-  // 1. Cursor Glow
-  const glow = document.querySelector<HTMLElement>('.cursor-glow');
-  window.addEventListener('pointermove', (event) => {
-    if (!glow) return;
-    glow.style.left = `${event.clientX}px`;
-    glow.style.top = `${event.clientY}px`;
-  });
-
-  // 2. Intersection Observer for reveal animations
+  // 1. Intersection Observer for reveal animations
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -26,145 +15,58 @@
         }
       });
     },
-    { threshold: 0.16 }
+    { threshold: 0.12 }
   );
 
-  document.querySelectorAll('.reveal').forEach((item) => observer.observe(item));
+  function initReveals() {
+    document.querySelectorAll('.reveal').forEach((item) => observer.observe(item));
+  }
 
-  // 3. Tilt Cards Interaction
-  const tiltCards = document.querySelectorAll<HTMLElement>(
-    '.capability-card, .project-card, .featured-project, .lab-card'
-  );
+  // 2. Subtle Micro-Tilt Card Interaction for desktop pointers
+  function initTilt() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia('(pointer: coarse)').matches) return;
 
-  tiltCards.forEach((card) => {
-    card.addEventListener('pointermove', (event) => {
-      const rect = card.getBoundingClientRect();
-      const x = (event.clientX - rect.left) / rect.width - 0.5;
-      const y = (event.clientY - rect.top) / rect.height - 0.5;
-      card.style.setProperty('--tilt-x', `${x * 3.5}deg`);
-      card.style.setProperty('--tilt-y', `${y * -3.5}deg`);
-    });
+    const tiltCards = document.querySelectorAll<HTMLElement>(
+      '.capability-card, .project-card, .featured-project-card, .lab-card, .standard-card, .domain-box'
+    );
 
-    card.addEventListener('pointerleave', () => {
-      card.style.removeProperty('--tilt-x');
-      card.style.removeProperty('--tilt-y');
-    });
-  });
-
-  // 4. Three.js Particle Background
-  const canvas = document.querySelector<HTMLCanvasElement>('.three-field');
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (canvas && !reduceMotion) {
-    const renderer = new THREE.WebGLRenderer({
-      canvas,
-      antialias: true,
-      alpha: true,
-      preserveDrawingBuffer: true,
-    });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.8));
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-    camera.position.set(0, 0, 8);
-
-    const group = new THREE.Group();
-    scene.add(group);
-
-    const teal = new THREE.Color('#7ed8c4');
-    const lavender = new THREE.Color('#bda6ff');
-    const clay = new THREE.Color('#d2a071');
-
-    const nodeGeometry = new THREE.IcosahedronGeometry(0.06, 1);
-    const lineMaterial = new THREE.LineBasicMaterial({
-      color: teal,
-      transparent: true,
-      opacity: 0.18,
-    });
-
-    const nodeMaterials = [
-      new THREE.MeshBasicMaterial({ color: teal, transparent: true, opacity: 0.72 }),
-      new THREE.MeshBasicMaterial({ color: lavender, transparent: true, opacity: 0.62 }),
-      new THREE.MeshBasicMaterial({ color: clay, transparent: true, opacity: 0.58 }),
-    ];
-
-    const points: THREE.Vector3[] = [];
-    const nodeCount = 44;
-
-    for (let index = 0; index < nodeCount; index += 1) {
-      const radius = 1.5 + (index % 7) * 0.28;
-      const angle = index * 0.78;
-      const depth = Math.sin(index * 1.7) * 1.4;
-      const point = new THREE.Vector3(
-        Math.cos(angle) * radius,
-        Math.sin(angle) * radius * 0.62,
-        depth
-      );
-      points.push(point);
-
-      const node = new THREE.Mesh(nodeGeometry, nodeMaterials[index % nodeMaterials.length]);
-      node.position.copy(point);
-      group.add(node);
-    }
-
-    for (let index = 0; index < points.length - 1; index += 1) {
-      if (index % 3 === 0 || index % 5 === 0) {
-        const geometry = new THREE.BufferGeometry().setFromPoints([
-          points[index],
-          points[(index + 7) % points.length],
-        ]);
-        group.add(new THREE.Line(geometry, lineMaterial));
-      }
-    }
-
-    const ringGeometry = new THREE.TorusGeometry(1.2, 0.004, 8, 96);
-    const ringMaterial = new THREE.MeshBasicMaterial({
-      color: lavender,
-      transparent: true,
-      opacity: 0.18,
-    });
-    const rings = [0, 1, 2].map((index) => {
-      const ring = new THREE.Mesh(ringGeometry, ringMaterial);
-      ring.rotation.set(index * 0.7, index * 0.4, index * 0.9);
-      ring.scale.setScalar(1 + index * 0.55);
-      group.add(ring);
-      return ring;
-    });
-
-    let mouseX = 0;
-    let mouseY = 0;
-
-    window.addEventListener('pointermove', (event) => {
-      mouseX = (event.clientX / window.innerWidth - 0.5) * 0.5;
-      mouseY = (event.clientY / window.innerHeight - 0.5) * 0.5;
-    });
-
-    const resize = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      renderer.setSize(width, height, false);
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-    };
-
-    window.addEventListener('resize', resize);
-    resize();
-
-    const animate = () => {
-      group.rotation.y += 0.0018;
-      group.rotation.x += 0.0007;
-      group.position.x += (mouseX - group.position.x) * 0.025;
-      group.position.y += (-mouseY - group.position.y) * 0.025;
-
-      rings.forEach((ring, index) => {
-        ring.rotation.x += 0.001 + index * 0.0004;
-        ring.rotation.z -= 0.0012 + index * 0.0002;
+    tiltCards.forEach((card) => {
+      card.addEventListener('pointermove', (event) => {
+        const rect = card.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width - 0.5;
+        const y = (event.clientY - rect.top) / rect.height - 0.5;
+        card.style.setProperty('--tilt-x', `${x * 2.5}deg`);
+        card.style.setProperty('--tilt-y', `${y * -2.5}deg`);
       });
 
-      renderer.render(scene, camera);
-      requestAnimationFrame(animate);
-    };
-
-    animate();
+      card.addEventListener('pointerleave', () => {
+        card.style.removeProperty('--tilt-x');
+        card.style.removeProperty('--tilt-y');
+      });
+    });
   }
+
+  initReveals();
+  initTilt();
+  document.addEventListener('astro:after-swap', () => {
+    initReveals();
+    initTilt();
+  });
 </script>
+
+<style>
+  .technical-grid-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, rgba(246, 241, 232, 0.025) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(246, 241, 232, 0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(circle at 50% 30%, black 40%, transparent 95%);
+    -webkit-mask-image: radial-gradient(circle at 50% 30%, black 40%, transparent 95%);
+    opacity: 0.8;
+  }
+</style>

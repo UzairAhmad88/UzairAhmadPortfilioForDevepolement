@@ -1,28 +1,67 @@
 ---
-import { stackMap, universeNodes } from '@/data/skills';
+import { universeNodes } from '@/data/skills';
+
+const roleStack = [
+  {
+    role: 'Quantitative & Mathematical Systems',
+    focus: 'Time-series forecasting, statistical stationarity, and algorithmic backtesting.',
+    skills: ['Python', 'PyTorch', 'Pandas', 'NumPy', 'Scikit-Learn', 'Statsmodels', 'Walk-Forward CV'],
+  },
+  {
+    role: 'AI & Intelligent Systems',
+    focus: 'Neural return prediction, regime transition clustering, and deterministic agent execution.',
+    skills: ['Deep Learning', 'GMM & HMM', 'LangGraph', 'Agentic Systems', 'State Machines'],
+  },
+  {
+    role: 'Backend & Data Infrastructure',
+    focus: 'Resilient REST APIs, relational schemas, secure endpoints, and data validation.',
+    skills: ['Node.js', 'Express', 'TypeScript', 'PostgreSQL', 'RESTful APIs', 'Data Cleaning'],
+  },
+  {
+    role: 'Frontend & Product Experience',
+    focus: 'Accessible interfaces, sub-second performance, design systems, and mobile-first layouts.',
+    skills: ['Astro', 'React', 'Modern CSS', 'Semantic HTML5', 'WCAG AA', 'TypeScript'],
+  },
+  {
+    role: 'Engineering Discipline & Delivery',
+    focus: 'Version control, reproducible research notebooks, automated testing, and CI/CD.',
+    skills: ['Git & GitHub', 'Linux', 'Vercel', 'CI/CD Pipelines', 'Node Test Runner', 'Automated QA'],
+  },
+];
 ---
 
 <section id="stack" class="section-shell technical-map">
   <div class="section-heading reveal">
-    <p class="eyebrow">My Technical Universe</p>
-    <h2>Python connects my quantitative, AI, and product work.</h2>
+    <p class="eyebrow">Practical Technology Stack</p>
+    <h2>Organized by Engineering Role & System Responsibility</h2>
+    <p class="section-subtitle">
+      I use tools for their reliability, mathematical capabilities, and performance—never for vanity.
+    </p>
   </div>
 
-  <div class="universe reveal">
-    <div class="universe-core">PYTHON</div>
+  <div class="universe reveal" aria-label="Technical Discipline Universe Map">
+    <div class="universe-core">
+      <span class="core-label">CORE ENGINE</span>
+      <span class="core-lang">PYTHON & TS</span>
+    </div>
     {
       universeNodes.map((node) => (
-        <span style={`--x:${node.x};--y:${node.y}`}>{node.label}</span>
+        <span class="universe-tag" style={`--x:${node.x};--y:${node.y}`}>{node.label}</span>
       ))
     }
   </div>
 
-  <div class="stack-map reveal">
+  <div class="role-stack-grid reveal">
     {
-      stackMap.map((category) => (
-        <article>
-          <h3>{category.title}</h3>
-          <p>{category.description}</p>
+      roleStack.map((category) => (
+        <article class="stack-card">
+          <h3 class="stack-role-title">{category.role}</h3>
+          <p class="stack-focus-text">{category.focus}</p>
+          <div class="skill-pills-wrap">
+            {category.skills.map((skill) => (
+              <span class="skill-pill">{skill}</span>
+            ))}
+          </div>
         </article>
       ))
     }
@@ -34,18 +73,26 @@ import { stackMap, universeNodes } from '@/data/skills';
     padding: var(--space-section, 6.5rem) 0;
   }
 
+  .section-subtitle {
+    max-width: 660px;
+    color: var(--color-text-muted, #a9b8b1);
+    font-size: var(--font-size-body, 1.05rem);
+    line-height: 1.65;
+    margin: 0.5rem 0 2.5rem 0;
+  }
+
   .universe {
     position: relative;
-    min-height: clamp(340px, 48vw, 460px);
-    margin-bottom: 1.25rem;
-    border: 1px solid var(--line);
-    border-radius: 8px;
+    min-height: clamp(320px, 42vw, 420px);
+    margin-bottom: 2rem;
+    border: 1px solid rgba(246, 241, 232, 0.1);
+    border-radius: 0.875rem;
     background:
-      radial-gradient(circle at center, rgba(126, 216, 196, 0.12), transparent 32%),
-      linear-gradient(rgba(246, 241, 232, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(246, 241, 232, 0.03) 1px, transparent 1px),
-      rgba(255, 255, 255, 0.035);
-    background-size: auto, 42px 42px, 42px 42px, auto;
+      radial-gradient(circle at center, rgba(126, 216, 196, 0.08), transparent 45%),
+      linear-gradient(rgba(246, 241, 232, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(246, 241, 232, 0.025) 1px, transparent 1px),
+      rgba(16, 26, 23, 0.75);
+    background-size: auto, 36px 36px, 36px 36px, auto;
     overflow: hidden;
   }
 
@@ -54,88 +101,143 @@ import { stackMap, universeNodes } from '@/data/skills';
     content: "";
     position: absolute;
     inset: 18%;
-    border: 1px solid rgba(246, 241, 232, 0.1);
+    border: 1px solid rgba(246, 241, 232, 0.06);
     border-radius: 50%;
+    pointer-events: none;
   }
 
   .universe::after {
-    inset: 30%;
-    border-color: rgba(126, 216, 196, 0.16);
-  }
-
-  .universe-core,
-  .universe span {
-    position: absolute;
-    z-index: 1;
-    display: grid;
-    place-items: center;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    font-family: var(--font-mono);
-    font-weight: 800;
+    inset: 32%;
+    border-color: rgba(126, 216, 196, 0.12);
   }
 
   .universe-core {
+    position: absolute;
     inset: 50% auto auto 50%;
-    width: clamp(5.5rem, 18vw, 8.5rem);
-    height: clamp(5.5rem, 18vw, 8.5rem);
-    font-size: clamp(0.75rem, 2vw, 1rem);
-    color: var(--paper);
-    background: var(--ink);
     transform: translate(-50%, -50%);
-    box-shadow: 0 0 70px rgba(126, 216, 196, 0.18);
+    width: clamp(6.5rem, 16vw, 8.5rem);
+    height: clamp(6.5rem, 16vw, 8.5rem);
+    border-radius: 50%;
+    background: #07110f;
+    border: 1px solid rgba(126, 216, 196, 0.4);
+    box-shadow: 0 0 40px rgba(126, 216, 196, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 2;
   }
 
-  .universe span {
+  .core-label {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #83968e;
+    letter-spacing: 0.06em;
+  }
+
+  .core-lang {
+    font-family: var(--font-mono, monospace);
+    font-size: clamp(0.75rem, 1.8vw, 0.95rem);
+    font-weight: 800;
+    color: #7ed8c4;
+    margin-top: 0.15rem;
+  }
+
+  .universe-tag {
+    position: absolute;
     left: var(--x);
     top: var(--y);
-    min-width: clamp(3.5rem, 10vw, 5rem);
-    min-height: 2.25rem;
-    padding: clamp(0.35rem, 1.2vw, 0.6rem) clamp(0.5rem, 1.6vw, 0.85rem);
-    font-size: clamp(0.7rem, 1.6vw, 0.85rem);
-    color: var(--ink);
-    background: rgba(255, 255, 255, 0.06);
-    animation: floatSmall 6s ease-in-out infinite;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.3rem 0.65rem;
+    border: 1px solid rgba(246, 241, 232, 0.1);
+    border-radius: var(--radius-full, 9999px);
+    background: rgba(7, 17, 15, 0.85);
+    color: var(--color-text, #f6f1e8);
+    font-family: var(--font-mono, monospace);
+    font-size: clamp(0.7rem, 1.2vw, 0.8rem);
+    font-weight: 700;
     white-space: nowrap;
+    z-index: 1;
+    transition: transform 150ms ease, border-color 150ms ease;
   }
 
-  .stack-map {
+  .universe-tag:hover {
+    border-color: #7ed8c4;
+    transform: scale(1.06);
+  }
+
+  .role-stack-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
+    gap: 1.25rem;
   }
 
-  .stack-map article {
-    padding: 1.25rem;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.045);
+  .stack-card {
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(246, 241, 232, 0.09);
+    border-radius: 0.875rem;
+    padding: clamp(1.25rem, 2.5vw, 1.6rem);
+    display: flex;
+    flex-direction: column;
+    transition: border-color 150ms ease;
   }
 
-  .stack-map article:first-child,
-  .stack-map article:nth-child(2) {
+  .stack-card:hover {
+    border-color: rgba(126, 216, 196, 0.3);
+  }
+
+  .stack-card:nth-child(4),
+  .stack-card:nth-child(5) {
     grid-column: span 1;
   }
 
-  .stack-map p {
-    color: var(--muted);
-    line-height: 1.65;
-    margin: 0;
+  .stack-role-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--color-text, #f6f1e8);
+    line-height: 1.3;
+    margin: 0 0 0.5rem 0;
   }
 
-  @media (max-width: 920px) {
-    .stack-map {
+  .stack-focus-text {
+    font-size: 0.9rem;
+    color: var(--color-text-muted, #a9b8b1);
+    line-height: 1.55;
+    margin: 0 0 1rem 0;
+    flex-grow: 1;
+  }
+
+  .skill-pills-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: auto;
+  }
+
+  .skill-pill {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #7ed8c4;
+    background: rgba(126, 216, 196, 0.08);
+    border: 1px solid rgba(126, 216, 196, 0.2);
+    padding: 0.2rem 0.55rem;
+    border-radius: 0.25rem;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 980px) {
+    .role-stack-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
   @media (max-width: 640px) {
-    .stack-map {
+    .role-stack-grid {
       grid-template-columns: 1fr;
-    }
-
-    .universe span {
-      transform: scale(0.9);
     }
   }
 </style>
