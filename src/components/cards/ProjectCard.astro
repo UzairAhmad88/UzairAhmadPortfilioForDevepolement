@@ -16,7 +16,7 @@ const detailUrl = `/work/${project.slug}`;
     <span class="project-type">{project.projectType}</span>
     {project.status && (
       <span class:list={['status-badge', `status-${project.status}`]}>
-        {project.status === 'active' ? 'Active Research' : 'Completed'}
+        {project.status === 'active' ? 'Active Research' : project.status === 'academic' ? 'Academic Project' : 'Completed'}
       </span>
     )}
   </div>
@@ -94,6 +94,12 @@ const detailUrl = `/work/${project.slug}`;
     background: rgba(59, 130, 246, 0.15);
     color: #93c5fd;
     border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  .status-academic {
+    background: rgba(168, 85, 247, 0.15);
+    color: #d8b4fe;
+    border: 1px solid rgba(168, 85, 247, 0.3);
   }
 
   .status-completed {

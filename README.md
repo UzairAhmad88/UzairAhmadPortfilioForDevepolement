@@ -1,74 +1,57 @@
-# Uzair Ahmad — Quantitative AI & Product Engineer Portfolio
+# Uzair Ahmad — Quantitative AI & Product Engineer Platform
 
-> Production-quality personal developer and systems portfolio built with Astro, TypeScript, and zero-runtime framework overhead.
+> Production-quality personal developer and research platform built with Astro, strict TypeScript, and zero-runtime framework overhead.
 
 ---
 
 ## Overview
 
-This repository houses the personal portfolio, engineering showcase, and research lab index of **Uzair Ahmad**, a Quantitative AI & Product Engineer building systems where finance, intelligence, and software meet.
+This repository houses the personal professional website, engineering case studies, and research lab index of **Uzair Ahmad**, a Quantitative AI & Product Engineer building systems where finance, intelligence, and software meet.
+
+- **Production URL**: [https://uzairahmad.vercel.app](https://uzairahmad.vercel.app)
+- **GitHub Repository**: [github.com/UzairAhmad88/UzairAhmadPortfilioForDevepolement](https://github.com/UzairAhmad88/UzairAhmadPortfilioForDevepolement)
+- **Version**: `v1.0.0` (All 10 Engineering Phases Completed)
 
 ---
 
-## Purpose
+## Technical Stack
 
-1. Showcase technical capability across **Quantitative Finance**, **HFT / Algorithmic Trading**, **AI / ML / DL**, **Agentic Systems**, **Full Stack Software**, and **Product Engineering**.
-2. Provide a scalable, type-safe, and search-engine-optimized web architecture capable of hosting deep-dive case studies, research papers, and technical articles.
-3. Establish a baseline for web performance, accessibility, and clean code architecture.
-
----
-
-## Tech Stack
-
-- **Core Framework**: [Astro](https://astro.build/) (Static Site Generation / Zero-JS by default)
-- **Language**: [TypeScript](https://www.typescriptlang.org/) (Strict Mode)
-- **Styling**: Modular Vanilla CSS with CSS Custom Properties and Scoped Styles
-- **3D & Graphics**: [Three.js](https://threejs.org/) (Isolated client WebGL canvas)
-- **SEO & Sitemaps**: `@astrojs/sitemap`, Open Graph, Twitter Cards, Schema.org JSON-LD
-- **CI / DevOps**: GitHub Actions CI, Vercel Edge Hosting
+- **Core Framework**: [Astro 5](https://astro.build/) (Pure Static Site Generation — Zero client-side JS bloat)
+- **Language**: [TypeScript](https://www.typescriptlang.org/) (Strict Mode across 100% of files)
+- **Styling**: Vanilla CSS Design Tokens with CSS Custom Properties and Scoped Styles
+- **SEO & Structured Data**: `@astrojs/sitemap`, Open Graph, Twitter Cards, Schema.org JSON-LD (`Person`, `WebSite`, `ProfilePage`, `TechArticle`, `SoftwareApplication`, `BreadcrumbList`)
+- **Testing & QA**: Node.js native test runner (`node:test`) with 31 unit tests across 6 suites
+- **DevOps & CI/CD**: GitHub Actions CI (`.github/workflows/ci.yml`), Vercel Edge Hosting with strict security headers (`vercel.json`)
 
 ---
 
-## Architecture
+## Architecture & Codebase Layout
 
-The project adheres to strict separation of presentation and domain data:
-- **Presentation**: Modular Astro components in `src/components/` and `src/layouts/`.
-- **Domain Data**: Strongly typed static data in `src/data/` adhering to schemas in `src/types/`.
-- **SEO**: Reusable metadata builder in `src/lib/seo/` generating canonical tags, structured data, and robots directives.
-
-For a full breakdown, see [docs/ARCHITECTURE.md](file:///d:/web/protfolio/docs/ARCHITECTURE.md).
-
----
-
-## Project Structure
-
-```
+```text
 portfolio/
-├── .github/workflows/ci.yml       # GitHub Actions CI pipeline
-├── docs/                          # Comprehensive engineering documentation & ADRs
-├── public/                        # Static assets, sitemaps, robots.txt, manifest
+├── .github/workflows/ci.yml       # Automated CI pipeline (Test -> Check -> Build)
+├── docs/                          # Comprehensive documentation index (docs/README.md)
+├── public/                        # Static assets, sitemaps, robots.txt, icons
 ├── src/
 │   ├── components/                # Modular UI components (cards, sections, layout, SEO)
 │   ├── data/                      # Strongly-typed static content and site data
-│   ├── layouts/                   # Base, Page, and Project layouts
-│   ├── lib/                       # SEO, constants, and utilities
-│   ├── pages/                     # File-based routes (/, /404)
-│   ├── styles/                    # Global, variable, and utility stylesheets
-│   └── types/                     # TypeScript domain models
-├── tests/unit/                    # SEO and metadata unit tests
-├── astro.config.mjs               # Astro configuration with sitemap integration
+│   ├── layouts/                   # Base and page layouts (BaseLayout.astro)
+│   ├── lib/                       # Analytics, contact helpers, and Schema.org builders
+│   ├── pages/                     # 17 Astro file-based static routes
+│   ├── styles/                    # Global design tokens and typography
+│   └── types/                     # TypeScript domain models and interfaces
+├── tests/unit/                    # 31 unit tests (SEO, projects, research, contact, analytics)
+├── astro.config.mjs               # Astro static build configuration
 ├── tsconfig.json                  # Strict TypeScript configuration
-├── package.json                   # Dependencies and npm scripts
+├── package.json                   # Scripts and project dependencies
+├── vercel.json                    # HTTP security headers and caching configuration
 └── README.md
 ```
 
-For detailed directory descriptions, see [docs/PROJECT-STRUCTURE.md](file:///d:/web/protfolio/docs/PROJECT-STRUCTURE.md).
-
 ---
 
-## Local Development
+## Local Development & Quickstart
 
-### Installation
 ```bash
 # 1. Clone repository
 git clone https://github.com/UzairAhmad88/UzairAhmadPortfilioForDevepolement.git
@@ -83,53 +66,53 @@ cp .env.example .env
 # 4. Start local development server
 npm run dev
 ```
-Open `http://localhost:4321` in your browser.
+
+Open [http://localhost:4321](http://localhost:4321) in your browser.
 
 ---
 
 ## Available Commands
 
 | Command | Description |
-|---|---|
+| :--- | :--- |
 | `npm run dev` | Start local development server on port 4321. |
-| `npm run build` | Build static production assets into `dist/`. |
-| `npm run preview` | Preview the local production build. |
-| `npm run check` | Run Astro and TypeScript diagnostic type checks. |
-| `npm test` | Run Node.js unit tests. |
+| `npm test` | Run all 31 unit tests across 6 suites via `node:test`. |
+| `npm run check` | Run Astro and TypeScript diagnostic type checks across all 77 files. |
+| `npm run build` | Build static production assets and XML sitemaps into `dist/`. |
+| `npm run preview` | Preview the generated production build locally. |
 | `npm run lint` | Run ESLint across `.astro`, `.ts`, and `.js` files. |
-| `npm run format` | Format files using Prettier. |
+| `npm run format` | Format codebase using Prettier. |
 
 ---
 
-## Content Management
+## Content Collections & Authoring
 
-To add or update projects, capabilities, research themes, or contact info, simply edit the corresponding file in `src/data/` without modifying component markup. See [docs/CONTENT-MANAGEMENT.md](file:///d:/web/protfolio/docs/CONTENT-MANAGEMENT.md).
+To add or update projects, research inquiries, services, or contact info:
+- Edit `src/data/projects.ts` for project case studies.
+- Edit `src/data/research.ts` for research inquiries and mathematical formulas.
+- Edit `src/data/site.ts` for profile info, biography, and social links.
+- Edit `src/data/opportunities.ts` for services and collaboration offerings.
 
----
-
-## Technical SEO & Structured Data
-
-The site automatically provides:
-- Clean XML sitemaps at `/sitemap-index.xml`.
-- Canonical URLs matching the production domain `https://uzairahmad.vercel.app`.
-- Full Open Graph and Twitter Card social metadata.
-- Schema.org JSON-LD structured data for `Person`, `WebSite`, and `ProfilePage`.
-
-See [docs/SEO.md](file:///d:/web/protfolio/docs/SEO.md).
+Detailed authoring guides are available at [docs/CONTENT-AUTHORING.md](file:///d:/web/protfolio/docs/CONTENT-AUTHORING.md).
 
 ---
 
-## Deployment
+## Documentation Suite
 
-Deployments are automated via Vercel on push to `main` branch.
-- **Build Command**: `npm run build`
-- **Output Directory**: `dist`
-- **Node Version**: `20.x` or higher
-
-See [docs/DEPLOYMENT.md](file:///d:/web/protfolio/docs/DEPLOYMENT.md).
+The project includes an extensive engineering and product documentation suite under `docs/`:
+- [docs/README.md](file:///d:/web/protfolio/docs/README.md) — Master Documentation Index
+- [docs/RELEASE-NOTES-V1.md](file:///d:/web/protfolio/docs/RELEASE-NOTES-V1.md) — Release Notes v1.0.0
+- [docs/DEVELOPER-ONBOARDING.md](file:///d:/web/protfolio/docs/DEVELOPER-ONBOARDING.md) — Developer Onboarding Guide
+- [docs/MAINTENANCE-PLAN.md](file:///d:/web/protfolio/docs/MAINTENANCE-PLAN.md) — Long-Term Maintenance Plan
+- [docs/LAUNCH-CHECKLIST.md](file:///d:/web/protfolio/docs/LAUNCH-CHECKLIST.md) — Launch Verification Checklist
+- [docs/PRODUCTION-SMOKE-TEST.md](file:///d:/web/protfolio/docs/PRODUCTION-SMOKE-TEST.md) — 14-Point Smoke Test Protocol
+- [docs/SECURITY-AUDIT.md](file:///d:/web/protfolio/docs/SECURITY-AUDIT.md) — Security & Privacy Audit
 
 ---
 
-## Roadmap
+## Deployment & Edge Hosting
 
-This codebase represents **Phase 01: Architecture & Engineering Foundation**. For upcoming phases (Design System, Case Studies, Technical Blog, Lead Gen), see [docs/ROADMAP.md](file:///d:/web/protfolio/docs/ROADMAP.md).
+- **Platform**: Vercel Edge Hosting
+- **Build Output**: Static HTML (`dist/`)
+- **Security Headers**: HSTS, `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Permissions-Policy`, immutable asset caching
+- **Domain**: `https://uzairahmad.vercel.app`
