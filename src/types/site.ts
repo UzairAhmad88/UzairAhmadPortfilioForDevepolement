@@ -39,6 +39,7 @@ export interface SiteConfig {
   description: string;
   keywords: string[];
   url: string;
+  email: string;
   author: AuthorInfo;
   navigation: NavigationItem[];
   socialLinks: Record<string, SocialLink>;

@@ -17,6 +17,7 @@ export const siteConfig: SiteConfig = {
     'Product Engineer',
   ],
   url: 'https://uzairahmad.vercel.app',
+  email: 'imuzairahmad8@gmail.com',
   author: {
     name: 'Uzair Ahmad',
     title: 'Quantitative AI & Product Engineer',
