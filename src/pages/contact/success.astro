@@ -1,0 +1,217 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
+import { siteConfig } from '@/data/site';
+
+const seo = {
+  title: 'Inquiry Received — Uzair Ahmad',
+  description: 'Thank you for reaching out. Your message has been received and will be reviewed shortly.',
+  canonical: `${siteConfig.url}/contact/success`,
+  noindex: true,
+};
+---
+
+<BaseLayout seo={seo}>
+  <div class="page-container">
+    <Breadcrumbs
+      items={[
+        { label: 'Contact', href: '/contact' },
+        { label: 'Confirmation', href: '/contact/success' },
+      ]}
+    />
+
+    <section class="success-card">
+      <div class="success-icon-wrapper" aria-hidden="true">
+        <svg
+          class="success-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+      </div>
+
+      <h1 class="success-title">Message Received</h1>
+      <p class="success-subtitle">
+        Thank you for starting a conversation. Your inquiry has been delivered directly to my inbox.
+      </p>
+
+      <div class="next-steps-box">
+        <h2 class="next-steps-title">What Happens Next:</h2>
+        <ul class="next-steps-list">
+          <li>
+            <strong>Review:</strong> I review all technical and professional inquiries personally.
+          </li>
+          <li>
+            <strong>Turnaround:</strong> Expect a direct email response within <strong>24–48 business hours</strong>.
+          </li>
+          <li>
+            <strong>Preparation:</strong> If you requested a technical discussion, I will review the relevant repository or paper beforehand.
+          </li>
+        </ul>
+      </div>
+
+      <div class="action-row">
+        <a href="/work" class="btn btn-primary">Explore Verified Projects →</a>
+        <a href="/research" class="btn btn-secondary">Read Research Inquiries</a>
+        <a href="/" class="btn btn-tertiary">Return Home</a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-container {
+    width: min(900px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 1rem 0 5rem;
+  }
+
+  .success-card {
+    background: var(--bg-surface, #0f172a);
+    border: 1px solid var(--border-subtle, #1e293b);
+    border-radius: 1rem;
+    padding: 3.5rem 2.5rem;
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .success-icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: var(--color-success, #10b981);
+    margin-bottom: 1.5rem;
+  }
+
+  .success-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .success-title {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: 800;
+    color: var(--text-primary, #f8fafc);
+    margin: 0 0 0.75rem 0;
+    letter-spacing: -0.02em;
+  }
+
+  .success-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-secondary, #cbd5e1);
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.6;
+  }
+
+  .next-steps-box {
+    text-align: left;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid var(--border-subtle, #1e293b);
+    border-radius: 0.75rem;
+    padding: 1.75rem 2rem;
+    max-width: 650px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .next-steps-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary, #f8fafc);
+    margin: 0 0 1rem 0;
+  }
+
+  .next-steps-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .next-steps-list li {
+    font-size: 0.95rem;
+    color: var(--text-secondary, #cbd5e1);
+    line-height: 1.5;
+  }
+
+  .next-steps-list strong {
+    color: var(--color-accent, #60a5fa);
+  }
+
+  .action-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: background 150ms ease, transform 150ms ease;
+  }
+
+  .btn-primary {
+    background: var(--color-accent, #3b82f6);
+    color: #ffffff;
+  }
+
+  .btn-primary:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid var(--border-subtle, #1e293b);
+    color: var(--text-primary, #f8fafc);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(51, 65, 85, 0.8);
+    border-color: #64748b;
+  }
+
+  .btn-tertiary {
+    color: var(--text-secondary, #94a3b8);
+  }
+
+  .btn-tertiary:hover {
+    color: var(--text-primary, #f8fafc);
+  }
+
+  @media (max-width: 640px) {
+    .success-card {
+      padding: 2rem 1.25rem;
+    }
+
+    .action-row {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>

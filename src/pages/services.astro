@@ -6,8 +6,8 @@ import ContactCallout from '@/components/sections/ContactCallout.astro';
 import { siteConfig } from '@/data/site';
 
 const seo = {
-  title: 'Services & Collaboration — Uzair Ahmad | Technical Consulting',
-  description: 'Specialized engineering consulting in full-stack web platforms, AI/ML model integration, and quantitative data architectures.',
+  title: 'Engineering Capabilities & Technical Collaboration — Uzair Ahmad',
+  description: 'Specialized engineering consulting across full-stack web platforms, AI/ML model integration, and quantitative data architectures.',
   canonical: `${siteConfig.url}/services`,
 };
 
@@ -17,24 +17,36 @@ const capabilities = [
     title: 'Full-Stack Web Applications',
     description: 'Engineering responsive, accessible, high-performance web products using Astro, React, TypeScript, Node.js, and modern SQL/NoSQL databases.',
     deliverables: ['Custom Web Applications', 'Accessible Component Systems', 'REST/GraphQL API Services', 'State Architecture'],
+    evidenceSlug: 'curasphere-hms',
+    evidenceLabel: 'CuraSphere HMS Case Study',
+    contactType: 'project',
   },
   {
     num: '02',
     title: 'AI & Machine Learning System Integration',
     description: 'Transitioning machine learning models and predictive pipelines into production environments with robust data validation and monitoring.',
     deliverables: ['PyTorch Model Deployment', 'Feature Ingestion Pipelines', 'Predictive Decision Support', 'Deterministic Agent Guardrails'],
+    evidenceSlug: 'multi-agent-prospect-intelligence',
+    evidenceLabel: 'Multi-Agent Intelligence Case Study',
+    contactType: 'consulting',
   },
   {
     num: '03',
     title: 'Quantitative Data & Time-Series Pipelines',
     description: 'Architecting time-series ingestion, statistical moment calculations, and backtest infrastructure for financial and analytical platforms.',
     deliverables: ['Time-Series Feature Extraction', 'Data Cleaning & Normalization', 'Empirical Statistical Analysis', 'Custom Analytical Tooling'],
+    evidenceSlug: 'deep-learning-stock-return-prediction',
+    evidenceLabel: 'Stock Return Prediction Case Study',
+    contactType: 'research',
   },
   {
     num: '04',
     title: 'Technical MVP Prototyping & Architecture',
     description: 'Rapid, disciplined engineering of 0-to-1 software products for founders and teams requiring clean, scalable code from day one.',
     deliverables: ['Rapid System Scoping', 'Modular Architecture Design', 'Production Deployment Setup', 'Technical Documentation'],
+    evidenceSlug: 'market-regime-engine',
+    evidenceLabel: 'Market Regime Engine Case Study',
+    contactType: 'project',
   },
 ];
 ---
@@ -46,7 +58,7 @@ const capabilities = [
     <section class="services-hero">
       <SectionHeader
         eyebrow="Technical Capabilities"
-        title="Engineering Consulting & Product Collaboration"
+        title="Engineering Consulting & Collaboration"
         subtitle="Specialized technical execution for ambitious products, AI pipelines, and high-performance web systems."
       />
     </section>
@@ -55,16 +67,30 @@ const capabilities = [
       <div class="cap-grid">
         {capabilities.map((cap) => (
           <article class="cap-card">
-            <span class="cap-num">{cap.num}</span>
-            <h3 class="cap-title">{cap.title}</h3>
-            <p class="cap-desc">{cap.description}</p>
-            <div class="deliverables-box">
-              <span class="del-label">Key Deliverables:</span>
-              <ul class="del-list">
-                {cap.deliverables.map((del) => (
-                  <li>{del}</li>
-                ))}
-              </ul>
+            <div>
+              <span class="cap-num">{cap.num}</span>
+              <h3 class="cap-title">{cap.title}</h3>
+              <p class="cap-desc">{cap.description}</p>
+              <div class="deliverables-box">
+                <span class="del-label">Key Deliverables:</span>
+                <ul class="del-list">
+                  {cap.deliverables.map((del) => (
+                    <li>{del}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div class="cap-footer">
+              <div class="evidence-link-box">
+                <span class="evidence-label">Demonstrated In:</span>
+                <a href={`/work/${cap.evidenceSlug}`} class="evidence-link">
+                  {cap.evidenceLabel} →
+                </a>
+              </div>
+              <a href={`/contact?type=${cap.contactType}`} class="cap-cta-btn">
+                Discuss This Capability →
+              </a>
             </div>
           </article>
         ))}
@@ -130,6 +156,7 @@ const capabilities = [
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 1.5rem;
     transition: transform 150ms ease, border-color 150ms ease;
   }
 
@@ -197,6 +224,60 @@ const capabilities = [
     position: absolute;
     left: 0;
     color: var(--color-accent, #60a5fa);
+  }
+
+  .cap-footer {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-subtle, #1e293b);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .evidence-link-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .evidence-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted, #64748b);
+  }
+
+  .evidence-link {
+    font-size: 0.875rem;
+    color: var(--color-accent, #60a5fa);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .evidence-link:hover {
+    text-decoration: underline;
+  }
+
+  .cap-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 1.25rem;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: var(--color-accent, #60a5fa);
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+  }
+
+  .cap-cta-btn:hover {
+    background: var(--color-accent, #3b82f6);
+    color: #ffffff;
+    border-color: var(--color-accent, #3b82f6);
   }
 
   .process-section {
