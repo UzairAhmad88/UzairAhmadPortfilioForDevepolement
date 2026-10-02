@@ -10,7 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "test": "node --test tests/unit/seo.test.ts tests/unit/projects.test.ts",
+    "test": "node --test tests/unit/seo.test.ts tests/unit/projects.test.ts tests/unit/research.test.ts",
     "lint": "eslint . --ext .js,.ts,.astro",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
