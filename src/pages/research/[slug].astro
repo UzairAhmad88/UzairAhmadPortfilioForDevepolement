@@ -5,7 +5,9 @@ import ProjectCard from '@/components/cards/ProjectCard.astro';
 import RelatedKnowledgeGrid from '@/components/knowledge/RelatedKnowledgeGrid.astro';
 import ContactCallout from '@/components/sections/ContactCallout.astro';
 import GitHubEvidenceBadge from '@/components/github/GitHubEvidenceBadge.astro';
+import VercelEvidenceBadge from '@/components/vercel/VercelEvidenceBadge.astro';
 import { getResearchGitHubEvidence } from '@/lib/github/evidence';
+import { getVercelEvidenceForResearch } from '@/lib/vercel/evidence';
 import { researchItems } from '@/data/research';
 import { projects } from '@/data/projects';
 import { technologies } from '@/data/technologies';
@@ -54,6 +56,7 @@ const linkedTechnologies = (inquiry.technologies || [])
   .filter((t) => Boolean(t));
 
 const gitHubEvidence = getResearchGitHubEvidence(inquiry);
+const vercelEvidence = getVercelEvidenceForResearch(inquiry.id || inquiry.slug);
 ---
 
 <BaseLayout seo={seo}>
@@ -343,7 +346,10 @@ const gitHubEvidence = getResearchGitHubEvidence(inquiry);
               </dd>
             </dl>
 
-            <div class="sidebar-evidence-wrapper" style="margin-top: 1.25rem;">
+            <div class="sidebar-evidence-wrapper" style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem;">
+              {vercelEvidence && (
+                <VercelEvidenceBadge evidence={vercelEvidence} showGitLink={false} />
+              )}
               <GitHubEvidenceBadge
                 evidence={gitHubEvidence}
                 entityTitle={inquiry.title}

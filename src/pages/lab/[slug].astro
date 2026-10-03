@@ -2,6 +2,8 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import ProjectVisualization from '@/components/visualizations/ProjectVisualization.astro';
 import RelatedKnowledgeGrid from '@/components/knowledge/RelatedKnowledgeGrid.astro';
+import VercelEvidenceBadge from '@/components/vercel/VercelEvidenceBadge.astro';
+import { getVercelEvidenceForLab } from '@/lib/vercel/evidence';
 import { getAllLabItems } from '@/data/lab';
 import { projects } from '@/data/projects';
 import { getTechnologyById } from '@/data/technologies';
@@ -50,6 +52,8 @@ const seo = {
   description: item.shortDescription,
   canonical: `${siteConfig.url}/lab/${item.slug}`,
 };
+
+const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
 ---
 
 <BaseLayout seo={seo}>
@@ -101,6 +105,12 @@ const seo = {
             <a href={`/work/${promotedProject.slug}`} class="text-emerald-400 underline font-semibold hover:text-emerald-300 shrink-0">
               Inspect Project Case Study →
             </a>
+          </div>
+        )}
+
+        {vercelEvidence && (
+          <div class="mt-6">
+            <VercelEvidenceBadge evidence={vercelEvidence} showGitLink={true} />
           </div>
         )}
 

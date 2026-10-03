@@ -7,7 +7,9 @@ import ProjectCard from '@/components/cards/ProjectCard.astro';
 import RelatedKnowledgeGrid from '@/components/knowledge/RelatedKnowledgeGrid.astro';
 import ContactCallout from '@/components/sections/ContactCallout.astro';
 import GitHubEvidenceBadge from '@/components/github/GitHubEvidenceBadge.astro';
+import VercelEvidenceBadge from '@/components/vercel/VercelEvidenceBadge.astro';
 import { getProjectGitHubEvidence } from '@/lib/github/evidence';
+import { getVercelEvidenceForProject } from '@/lib/vercel/evidence';
 import { projects } from '@/data/projects';
 import { siteConfig } from '@/data/site';
 import type { Project } from '@/types/project';
@@ -55,6 +57,7 @@ const fallbackRelated = projects.filter((p) => p.slug !== project.slug).slice(0,
 const finalRelatedProjects = relatedProjects.length > 0 ? relatedProjects : fallbackRelated;
 
 const gitHubEvidence = getProjectGitHubEvidence(project);
+const vercelEvidence = getVercelEvidenceForProject(project.slug, project.githubRepo);
 const isPrivateRepo = project.repositoryStatus === 'private';
 ---
 
@@ -280,7 +283,10 @@ const isPrivateRepo = project.repositoryStatus === 'private';
               </dd>
             </dl>
 
-            <div class="sidebar-evidence-wrapper" style="margin-top: 1.25rem;">
+            <div class="sidebar-evidence-wrapper" style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem;">
+              {vercelEvidence && (
+                <VercelEvidenceBadge evidence={vercelEvidence} showGitLink={false} />
+              )}
               <GitHubEvidenceBadge
                 evidence={gitHubEvidence}
                 entityTitle={project.title}
