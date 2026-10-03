@@ -59,6 +59,7 @@ const finalRelatedProjects = relatedProjects.length > 0 ? relatedProjects : fall
 const gitHubEvidence = getProjectGitHubEvidence(project);
 const vercelEvidence = getVercelEvidenceForProject(project.slug, project.githubRepo);
 const isPrivateRepo = project.repositoryStatus === 'private';
+const isArchived = project.archive?.state && project.archive.state !== 'active';
 ---
 
 <BaseLayout seo={seo}>
@@ -66,12 +67,42 @@ const isPrivateRepo = project.repositoryStatus === 'private';
     <Breadcrumbs
       items={[
         { label: 'Work', href: '/work' },
+        ...(isArchived ? [{ label: 'Archive', href: '/archive' }] : []),
         { label: project.title, href: `/work/${project.slug}` },
       ]}
     />
 
     <article class="case-study-container">
       <header class="case-study-header">
+        {isArchived && (
+          <div class="historical-archive-banner" role="status" aria-label="Historical Archive Project Notice">
+            <div class="banner-top">
+              <span class="banner-badge">HISTORICAL ARCHIVE RECORD</span>
+              <span class="banner-state">State: {project.archive?.state?.toUpperCase()}</span>
+              {project.archive?.originalYear && <span class="banner-year">Originated: {project.archive.originalYear}</span>}
+            </div>
+            <p class="banner-desc">
+              {project.archive?.archiveNote || 'This project is preserved as part of the engineering history to document technical evolution, early architectural decisions, and learning progression.'}
+            </p>
+            {project.archive?.successorProjectId && (
+              <div class="banner-evolution">
+                <span class="evo-label">↳ Evolved into subsequent system:</span>
+                <a href={`/work/${project.archive.successorProjectId}`} class="evo-link">
+                  {project.archive.successorProjectTitle || project.archive.successorProjectId} →
+                </a>
+              </div>
+            )}
+            {project.archive?.predecessorProjectId && (
+              <div class="banner-evolution">
+                <span class="evo-label">↰ Evolved from earlier system:</span>
+                <a href={`/work/${project.archive.predecessorProjectId}`} class="evo-link">
+                  {project.archive.predecessorProjectTitle || project.archive.predecessorProjectId} →
+                </a>
+              </div>
+            )}
+          </div>
+        )}
+
         <h1 class="project-headline">{project.title}</h1>
         {project.solution && <p class="lead-summary">{project.solution}</p>}
 
@@ -90,6 +121,7 @@ const isPrivateRepo = project.repositoryStatus === 'private';
           )}
         </div>
       </header>
+
 
       <div class="case-study-grid">
         <main class="case-study-main">
@@ -252,7 +284,8 @@ const isPrivateRepo = project.repositoryStatus === 'private';
               <dt>Domain</dt>
               <dd>{project.domain || 'Software Engineering'}</dd>
               <dt>Lifecycle Status</dt>
-              <dd>{project.status === 'active' ? 'Active Research' : project.status === 'academic' ? 'Academic FYP' : 'Completed'}</dd>
+              <dd>{project.archive?.state === 'superseded' ? 'Superseded (Historical)' : project.archive?.state === 'legacy' ? 'Legacy Architecture' : project.archive?.state === 'archived' ? 'Completed (Archived)' : project.status === 'active' ? 'Active Research' : project.status === 'academic' ? 'Academic FYP' : 'Completed'}</dd>
+
               {project.role && (
                 <>
                   <dt>Role</dt>
@@ -341,6 +374,78 @@ const isPrivateRepo = project.repositoryStatus === 'private';
     border-bottom: 1px solid rgba(246, 241, 232, 0.1);
     margin-bottom: clamp(2rem, 4vw, 3.5rem);
   }
+
+  .historical-archive-banner {
+    background: rgba(189, 166, 255, 0.08);
+    border: 1px solid rgba(189, 166, 255, 0.25);
+    border-left: 4px solid #bda6ff;
+    border-radius: 0.65rem;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .banner-top {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .banner-badge {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: rgba(189, 166, 255, 0.2);
+    color: #c4b5fd;
+    padding: 0.2rem 0.55rem;
+    border-radius: var(--radius-full, 9999px);
+  }
+
+  .banner-state, .banner-year {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.75rem;
+    color: var(--color-text-muted, #a9b8b1);
+  }
+
+  .banner-desc {
+    font-size: 0.95rem;
+    color: var(--color-text, #f6f1e8);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .banner-evolution {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(189, 166, 255, 0.15);
+    font-size: 0.875rem;
+  }
+
+  .evo-label {
+    color: var(--color-text-muted, #a9b8b1);
+    font-weight: 500;
+  }
+
+  .evo-link {
+    color: #c4b5fd;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .evo-link:hover {
+    color: #e9d5ff;
+    text-decoration: underline;
+  }
+
 
   .project-headline {
     font-size: var(--font-size-h1, clamp(2rem, 4vw, 3rem));

@@ -96,10 +96,24 @@ export function getProjectDNA(project: Project): ProjectDNAMetadata {
     verified: Boolean(project.caseStudy)
   });
 
+  const archiveState = project.archive?.state;
+  if (archiveState === 'superseded') {
+    statusText = 'Superseded';
+  } else if (archiveState === 'legacy') {
+    statusText = 'Legacy System';
+  } else if (archiveState === 'paused') {
+    statusText = 'Paused';
+  } else if (archiveState === 'abandoned') {
+    statusText = 'Historical Experiment';
+  } else if (archiveState === 'archived') {
+    statusText = 'Archived';
+  }
+
   const baseDNA: ProjectDNAMetadata = {
     type: project.projectType || project.type || 'System',
     status: statusText,
     rawStatus: project.status,
+    archiveState: archiveState || (project.status === 'archived' ? 'archived' : 'active'),
     timeline: project.timeline || (project.publishedAt ? new Date(project.publishedAt).getFullYear().toString() : undefined),
     year: project.publishedAt ? new Date(project.publishedAt).getFullYear().toString() : undefined,
     role: project.role,
@@ -115,3 +129,4 @@ export function getProjectDNA(project: Project): ProjectDNAMetadata {
     ...(project.dna || {}),
   };
 }
+

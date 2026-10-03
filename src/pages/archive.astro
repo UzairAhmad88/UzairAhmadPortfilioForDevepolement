@@ -1,0 +1,323 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
+import SectionHeader from '@/components/common/SectionHeader.astro';
+import ArchiveCard from '@/components/cards/ArchiveCard.astro';
+import ContactCallout from '@/components/sections/ContactCallout.astro';
+import { projects } from '@/data/projects';
+import { getArchivedProjects, getArchiveCatalogSummary } from '@/lib/archive';
+import { siteConfig } from '@/data/site';
+
+const seo = {
+  title: 'Project Archive & Historical Systems — Uzair Ahmad',
+  description: 'Historical archive of earlier software architectures, superseded web applications, and exploratory experiments by Uzair Ahmad.',
+  canonical: `${siteConfig.url}/archive`,
+};
+
+const archivedProjects = getArchivedProjects(projects);
+const summary = getArchiveCatalogSummary(projects);
+
+const archiveFilters = [
+  { id: 'all', label: 'All Archive', count: archivedProjects.length },
+  { id: 'superseded', label: 'Superseded', count: summary.supersededCount },
+  { id: 'legacy', label: 'Legacy Systems', count: summary.legacyCount },
+  { id: 'archived', label: 'Historical Completed', count: summary.archivedCount },
+];
+---
+
+<BaseLayout seo={seo}>
+  <div class="page-container">
+    <Breadcrumbs
+      items={[
+        { label: 'Work', href: '/work' },
+        { label: 'Archive', href: '/archive' },
+      ]}
+    />
+
+    <section class="archive-hero-section">
+      <SectionHeader
+        eyebrow="Historical Engineering Layer"
+        title="Project Archive & System Evolution"
+        subtitle="A record of earlier systems, prototypes, and technical architectures that shaped my engineering practice. Preserved for architectural retrospect, learning progression, and historical transparency."
+      />
+
+      <div class="archive-summary-ribbon" aria-label="Archive Summary Statistics">
+        <div class="summary-metric">
+          <span class="metric-value">{archivedProjects.length}</span>
+          <span class="metric-label">Historical Records</span>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-value">{summary.supersededCount}</span>
+          <span class="metric-label">Superseded</span>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-value">{summary.legacyCount}</span>
+          <span class="metric-label">Legacy Stacks</span>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-value">{summary.activeCount}</span>
+          <span class="metric-label">Active Flagships</span>
+        </div>
+      </div>
+
+      <div class="filters-container" aria-label="Filter archived projects by lifecycle state">
+        {
+          archiveFilters.map((f, index) => (
+            <button
+              type="button"
+              class:list={['filter-pill', { active: index === 0 }]}
+              data-filter={f.id}
+              aria-pressed={index === 0 ? 'true' : 'false'}
+            >
+              {f.label} ({f.count})
+            </button>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="archive-catalog-section" aria-label="Archived Projects List">
+      {archivedProjects.length > 0 ? (
+        <>
+          <div class="archive-grid" id="archive-grid">
+            {archivedProjects.map((project) => (
+              <ArchiveCard project={project} />
+            ))}
+          </div>
+
+          <div id="no-archive-message" class="empty-state" style="display: none;">
+            <p>No archived projects match this filter selection.</p>
+            <button type="button" id="reset-archive-filters" class="reset-btn">Reset Filter</button>
+          </div>
+        </>
+      ) : (
+        <div class="empty-state">
+          <p>No archived projects currently in the catalog. The archive will preserve older work as systems evolve.</p>
+        </div>
+      )}
+    </section>
+
+    <section class="philosophy-note-section" aria-label="Archive Philosophy">
+      <div class="philosophy-card">
+        <h3 class="philosophy-title">Why Maintain a Public Project Archive?</h3>
+        <p class="philosophy-body">
+          Engineering is an iterative discipline. Earlier projects—even when superseded by modern frameworks or retired from active maintenance—contain genuine lessons regarding architectural trade-offs, state management, database schemas, and problem-solving progression.
+        </p>
+        <p class="philosophy-body">
+          Rather than discarding previous work, this archive preserves inspectable codebases and retrospective notes to communicate how my engineering standards and technical decisions evolved over time.
+        </p>
+      </div>
+    </section>
+
+    <ContactCallout
+      title="Interested in system architecture or technical evolution?"
+      subtitle="Open to discussing architectural migrations, modern full-stack development, and quantitative AI systems."
+    />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-container {
+    width: min(var(--container-max, 1200px), calc(100% - max(1.5rem, calc(env(safe-area-inset-left) + env(safe-area-inset-right) + 1rem))));
+    margin: 0 auto;
+    padding: 1rem 0 4rem;
+    padding-left: env(safe-area-inset-left, 0);
+    padding-right: env(safe-area-inset-right, 0);
+  }
+
+  .archive-hero-section {
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+
+  .archive-summary-ribbon {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0 2rem 0;
+    padding: 1.25rem 1.5rem;
+    background: rgba(16, 26, 23, 0.6);
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 0.65rem;
+  }
+
+  .summary-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .metric-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-text, #f6f1e8);
+    font-family: var(--font-mono, monospace);
+  }
+
+  .metric-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted, #83968e);
+  }
+
+  .filters-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
+  }
+
+  .filter-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--touch-target-min, 44px);
+    padding: 0.5rem 1.15rem;
+    border-radius: var(--radius-full, 9999px);
+    border: 1px solid rgba(246, 241, 232, 0.12);
+    background: rgba(16, 26, 23, 0.75);
+    color: var(--color-text-muted, #a9b8b1);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+  }
+
+  .filter-pill:hover,
+  .filter-pill:focus-visible {
+    color: var(--color-text, #f6f1e8);
+    border-color: var(--color-accent, #7ed8c4);
+    outline: none;
+  }
+
+  .filter-pill.active {
+    background: rgba(126, 216, 196, 0.15);
+    border-color: var(--color-accent, #7ed8c4);
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .archive-catalog-section {
+    margin-bottom: 3.5rem;
+  }
+
+  .archive-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    background: var(--bg-surface, #101a17);
+    border: 1px dashed rgba(246, 241, 232, 0.15);
+    border-radius: 0.75rem;
+    color: var(--color-text-muted, #a9b8b1);
+  }
+
+  .reset-btn {
+    margin-top: 1rem;
+    min-height: var(--touch-target-min, 44px);
+    padding: 0.5rem 1.25rem;
+    background: var(--color-accent, #7ed8c4);
+    color: #07110f;
+    border: none;
+    border-radius: 0.375rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 150ms ease;
+  }
+
+  .reset-btn:hover {
+    background: #9bd8cf;
+  }
+
+  .philosophy-note-section {
+    margin-bottom: 4rem;
+  }
+
+  .philosophy-card {
+    background: rgba(7, 17, 15, 0.65);
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 0.75rem;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  .philosophy-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-text, #f6f1e8);
+    margin: 0 0 1rem 0;
+  }
+
+  .philosophy-body {
+    font-size: 0.95rem;
+    color: var(--color-text-muted, #a9b8b1);
+    line-height: 1.7;
+    margin: 0 0 0.85rem 0;
+  }
+
+  .philosophy-body:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 820px) {
+    .archive-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  function setupArchiveFilters() {
+    const pills = document.querySelectorAll<HTMLButtonElement>('.filter-pill');
+    const cards = document.querySelectorAll<HTMLElement>('.archive-card');
+    const emptyState = document.getElementById('no-archive-message');
+    const resetBtn = document.getElementById('reset-archive-filters');
+
+    function applyFilter(filterId: string) {
+      let visibleCount = 0;
+      pills.forEach((p) => {
+        const isActive = p.dataset.filter === filterId;
+        p.classList.toggle('active', isActive);
+        p.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+
+      cards.forEach((card) => {
+        const state = card.dataset.state || 'archived';
+        let matches = false;
+
+        if (filterId === 'all') {
+          matches = true;
+        } else if (filterId === 'superseded') {
+          matches = state === 'superseded';
+        } else if (filterId === 'legacy') {
+          matches = state === 'legacy';
+        } else if (filterId === 'archived') {
+          matches = state === 'archived';
+        }
+
+        card.style.display = matches ? 'flex' : 'none';
+        if (matches) visibleCount++;
+      });
+
+      if (emptyState) {
+        emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+    }
+
+    pills.forEach((pill) => {
+      pill.addEventListener('click', () => {
+        applyFilter(pill.dataset.filter || 'all');
+      });
+    });
+
+    resetBtn?.addEventListener('click', () => {
+      applyFilter('all');
+    });
+  }
+
+  setupArchiveFilters();
+  document.addEventListener('astro:after-swap', setupArchiveFilters);
+</script>

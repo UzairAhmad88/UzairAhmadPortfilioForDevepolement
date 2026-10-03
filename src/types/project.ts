@@ -1,4 +1,8 @@
 import type { ProjectVisualization } from './visualization';
+import type { ProjectArchiveMetadata, ArchiveState } from './archive';
+
+export * from './archive';
+
 
 export type ProjectCategory = 'quant' | 'ai' | 'engineering' | 'product';
 
@@ -41,6 +45,7 @@ export interface ProjectDNAMetadata {
   type: string;
   status: string;
   rawStatus: ProjectStatus;
+  archiveState?: ArchiveState;
   year?: string;
   timeline?: string;
   role?: string;
@@ -125,6 +130,9 @@ export interface Project {
   publishedAt?: string;
   updatedAt?: string;
   
+  // Archive & Historical Layer
+  archive?: ProjectArchiveMetadata;
+  
   // Provenance & Source Evidence
   source?: ProjectSource;
   githubUrl?: string;
@@ -155,4 +163,5 @@ export interface Project {
   caseStudy?: ProjectCaseStudy;
   dna?: Partial<ProjectDNAMetadata>;
 }
+
 

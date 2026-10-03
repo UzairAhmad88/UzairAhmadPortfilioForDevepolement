@@ -5,8 +5,10 @@ import SectionHeader from '@/components/common/SectionHeader.astro';
 import FeaturedProjectCard from '@/components/cards/FeaturedProjectCard.astro';
 import ProjectCard from '@/components/cards/ProjectCard.astro';
 import ContactCallout from '@/components/sections/ContactCallout.astro';
-import { featuredProject, projects, projectFilters } from '@/data/projects';
+import { featuredProject, projectFilters, getActiveProjects } from '@/data/projects';
 import { siteConfig } from '@/data/site';
+
+
 
 const seo = {
   title: 'Work & Systems — Uzair Ahmad | Engineering Portfolio',
@@ -14,7 +16,8 @@ const seo = {
   canonical: `${siteConfig.url}/work`,
 };
 
-const otherProjects = projects.filter((p) => p.slug !== featuredProject.slug);
+const activeProjects = getActiveProjects();
+const otherProjects = activeProjects.filter((p) => p.slug !== featuredProject.slug);
 ---
 
 <BaseLayout seo={seo}>
@@ -49,7 +52,7 @@ const otherProjects = projects.filter((p) => p.slug !== featuredProject.slug);
     </section>
 
     <section class="projects-catalog-section" aria-label="All Projects Catalog">
-      <h3 class="catalog-heading">All Verified Projects</h3>
+      <h3 class="catalog-heading">Current Active Systems</h3>
       <div class="project-grid" id="project-grid">
         {otherProjects.map((project) => (
           <ProjectCard project={project} />
@@ -59,6 +62,17 @@ const otherProjects = projects.filter((p) => p.slug !== featuredProject.slug);
         <p>No projects found in this category.</p>
         <button type="button" id="reset-filters-btn" class="reset-btn">Reset Filters</button>
       </div>
+
+      <div class="archive-access-card">
+        <div class="archive-access-info">
+          <span class="archive-access-eyebrow">HISTORICAL ENGINEERING RECORD</span>
+          <h4 class="archive-access-title">Looking for earlier architectures & legacy systems?</h4>
+          <p class="archive-access-desc">Explore the Project Archive for superseded prototypes, completed historical web platforms, and system evolution retrospectives.</p>
+        </div>
+        <a href="/archive" class="archive-access-btn">
+          Browse Project Archive →
+        </a>
+      </div>
     </section>
 
     <ContactCallout
@@ -67,6 +81,7 @@ const otherProjects = projects.filter((p) => p.slug !== featuredProject.slug);
     />
   </div>
 </BaseLayout>
+
 
 <style>
   .page-container {
@@ -156,11 +171,86 @@ const otherProjects = projects.filter((p) => p.slug !== featuredProject.slug);
     background: #9bd8cf;
   }
 
+  .archive-access-card {
+    margin-top: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    padding: clamp(1.25rem, 2.5vw, 1.75rem);
+    background: rgba(16, 26, 23, 0.7);
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 0.75rem;
+  }
+
+  .archive-access-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    max-width: 650px;
+  }
+
+  .archive-access-eyebrow {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .archive-access-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-text, #f6f1e8);
+    margin: 0;
+  }
+
+  .archive-access-desc {
+    font-size: 0.9rem;
+    color: var(--color-text-muted, #a9b8b1);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .archive-access-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--touch-target-min, 44px);
+    padding: 0.65rem 1.25rem;
+    background: rgba(126, 216, 196, 0.12);
+    color: var(--color-accent, #7ed8c4);
+    border: 1px solid rgba(126, 216, 196, 0.3);
+    border-radius: 0.5rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 150ms ease, color 150ms ease;
+  }
+
+  .archive-access-btn:hover {
+    background: var(--color-accent, #7ed8c4);
+    color: #07110f;
+  }
+
   @media (max-width: 820px) {
     .project-grid {
       grid-template-columns: 1fr;
     }
+
+    .archive-access-card {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .archive-access-btn {
+      width: 100%;
+    }
   }
+
 </style>
 
 <script>

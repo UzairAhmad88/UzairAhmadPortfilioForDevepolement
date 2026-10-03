@@ -103,7 +103,16 @@ export function buildKnowledgeGraph(): KnowledgeGraph {
         addEdge(nodeId, `project:${otherProjSlug}`, 'RELATED_TO', 'Related Project');
       }
     }
+
+    if (project.archive?.successorProjectId) {
+      addEdge(nodeId, `project:${project.archive.successorProjectId}`, 'SUPERSEDED_BY', 'Superseded by Subsequent Architecture');
+    }
+
+    if (project.archive?.predecessorProjectId) {
+      addEdge(nodeId, `project:${project.archive.predecessorProjectId}`, 'EVOLVED_FROM', 'Evolved from Precursor Architecture');
+    }
   }
+
 
   // 2. Research
   for (const research of researchItems) {
@@ -347,7 +356,10 @@ export function validateKnowledgeGraph(graph: KnowledgeGraph): GraphValidationRe
     IMPLEMENTS: 0,
     VALIDATES: 0,
     USES_METHOD: 0,
+    SUPERSEDED_BY: 0,
+    EVOLVED_FROM: 0,
   };
+
 
   for (const node of graph.nodes) {
     nodeMap.set(node.id, node);

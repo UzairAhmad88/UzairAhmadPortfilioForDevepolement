@@ -16,7 +16,10 @@ export type KnowledgeRelationshipType =
   | 'RELATED_TO'       // General meaningful relationship
   | 'IMPLEMENTS'       // Project implements a research inquiry/lab prototype
   | 'VALIDATES'        // Experiment validates a model/assumption
-  | 'USES_METHOD';     // Entity utilizes a methodology step
+  | 'USES_METHOD'      // Entity utilizes a methodology step
+  | 'SUPERSEDED_BY'    // Project superseded by an evolved architecture
+  | 'EVOLVED_FROM';    // Project evolved from an earlier prototype/system
+
 
 export interface KnowledgeNode {
   id: string;          // Prefixed unique ID (e.g., 'project:deep-learning-stock-return-prediction')

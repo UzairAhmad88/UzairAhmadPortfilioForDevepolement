@@ -76,6 +76,24 @@ export const projectSyncCurationRegistry: ProjectSyncCurationEntry[] = [
     verifiedAt: '2026-10-04T02:00:00Z',
   },
   {
+    projectId: 'online-complaint-system',
+    projectSlug: 'online-complaint-system',
+    githubRepositoryFullName: 'UzairAhmad88/Online_complaint_Mangnment_System_in_flask',
+    publishGithubEvidence: true,
+    publishDeploymentEvidence: false,
+    notes: 'Superseded Python/Flask complaint tracking application. Public repository.',
+    verifiedAt: '2026-10-04T02:30:00Z',
+  },
+  {
+    projectId: 'event-management-system',
+    projectSlug: 'event-management-system',
+    githubRepositoryFullName: 'UzairAhmad88/Event_Mangment_System_in_flask',
+    publishGithubEvidence: true,
+    publishDeploymentEvidence: false,
+    notes: 'Legacy Python/Flask event booking application. Public repository.',
+    verifiedAt: '2026-10-04T02:30:00Z',
+  },
+  {
     projectId: 'portfolio-website',
     projectSlug: 'portfolio-website',
     githubRepositoryFullName: 'UzairAhmad88/UzairAhmadPortfilioForDevepolement',
@@ -88,6 +106,7 @@ export const projectSyncCurationRegistry: ProjectSyncCurationEntry[] = [
     verifiedAt: '2026-10-04T02:00:00Z',
   },
 ];
+
 
 /**
  * Retrieves a curated sync entry by project ID or slug.

@@ -50,6 +50,10 @@ export function buildDiscoveryIndex(): DiscoveryIndexPayload {
 
   // 1. Projects
   for (const proj of projects) {
+    if (proj.archive?.state === 'unpublished' || proj.archive?.state === 'excluded') {
+      continue;
+    }
+
     const nodeId = `project:${proj.slug}`;
     const techIds = (proj.technologies || []).map((t) => {
       const canonical = technologies.find(
@@ -61,15 +65,19 @@ export function buildDiscoveryIndex(): DiscoveryIndexPayload {
       return canonical ? canonical.id : t.toLowerCase().trim();
     });
 
+    const archiveState = proj.archive?.state || 'active';
+    const archiveLabel = archiveState === 'superseded' ? 'Superseded' : archiveState === 'legacy' ? 'Legacy System' : archiveState === 'archived' ? 'Archived' : undefined;
+
     const topics: string[] = [
       proj.domain,
       proj.projectType,
       proj.type,
+      ...(archiveLabel ? [archiveLabel] : []),
       proj.dna?.architecturePattern,
       ...(proj.technologies || []),
     ].filter((t): t is string => typeof t === 'string' && t.length > 0);
 
-    const year = proj.dna?.year ? String(proj.dna.year) : '2024';
+    const year = proj.archive?.originalYear || (proj.dna?.year ? String(proj.dna.year) : '2024');
 
     items.push({
       id: nodeId,
@@ -81,8 +89,8 @@ export function buildDiscoveryIndex(): DiscoveryIndexPayload {
       topics: Array.from(new Set(topics)),
       technologies: Array.from(new Set(techIds)),
       year,
-      status: proj.status,
-      badge: proj.projectType,
+      status: archiveLabel || proj.status,
+      badge: archiveLabel || proj.projectType,
       searchableText: [
         proj.title,
         proj.shortDescription,
@@ -91,6 +99,9 @@ export function buildDiscoveryIndex(): DiscoveryIndexPayload {
         proj.domain,
         proj.projectType,
         proj.type,
+        archiveLabel,
+        proj.archive?.archiveNote,
+        proj.archive?.successorProjectTitle,
         ...(proj.technologies || []),
         ...(proj.outcome ? [proj.outcome] : []),
       ]
@@ -100,9 +111,12 @@ export function buildDiscoveryIndex(): DiscoveryIndexPayload {
       metadata: {
         domain: proj.domain,
         featured: proj.featured,
+        archiveState,
+        successorProjectId: proj.archive?.successorProjectId,
       },
     });
   }
+
 
   // 2. Research Inquiries
   for (const res of researchItems) {

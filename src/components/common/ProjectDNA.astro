@@ -289,6 +289,25 @@ const dna = getProjectDNA(project);
     border: 1px solid rgba(210, 160, 113, 0.3);
   }
 
+  .status-superseded {
+    background: rgba(189, 166, 255, 0.12);
+    color: #c4b5fd;
+    border: 1px solid rgba(189, 166, 255, 0.28);
+  }
+
+  .status-legacy {
+    background: rgba(148, 163, 184, 0.12);
+    color: #cbd5e1;
+    border: 1px solid rgba(148, 163, 184, 0.25);
+  }
+
+  .status-archived, .status-paused, .status-abandoned {
+    background: rgba(120, 144, 156, 0.12);
+    color: #94a3b8;
+    border: 1px solid rgba(120, 144, 156, 0.25);
+  }
+
+
   .dna-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));

@@ -21,6 +21,10 @@ export const featuredProject: Project = {
   isLatest: true,
   publishedAt: '2024-09-01',
   updatedAt: '2025-01-15',
+  archive: {
+    state: 'active',
+    originalYear: '2024',
+  },
   source: 'github',
   githubUrl: 'https://github.com/UzairAhmad88/Deep-Learning-Based-Stock-Return-Prediction---Quantitative-Trading-System-ByUzaii',
   githubRepo: 'UzairAhmad88/Deep-Learning-Based-Stock-Return-Prediction---Quantitative-Trading-System-ByUzaii',
@@ -188,6 +192,11 @@ export const fypProject: Project = {
   isLatest: true,
   publishedAt: '2024-11-01',
   updatedAt: '2025-02-15',
+  archive: {
+    state: 'active',
+    reason: 'ACADEMIC_HISTORY',
+    originalYear: '2024',
+  },
   source: 'github',
   githubUrl: 'https://github.com/UzairAhmad88',
   githubRepo: 'UzairAhmad88/Multi-Modal-Quantitative-AI-Development',
@@ -356,6 +365,13 @@ export const projects: Project[] = [
     outcome: 'Delivered an intuitive, responsive web application streamlining patient registration, consultation tracking, and billing operations.',
     publishedAt: '2024-06-12',
     updatedAt: '2024-12-18',
+    archive: {
+      state: 'active',
+      reason: 'COMPLETED_HISTORICAL',
+      originalYear: '2024',
+      predecessorProjectId: 'restaurant-pos',
+      predecessorProjectTitle: 'Restaurant POS & Management System',
+    },
     source: 'github+vercel',
     githubUrl: 'https://github.com/UzairAhmad88/-CuraSphere-HMS-DevelopbyUzaii',
     githubRepo: 'UzairAhmad88/-CuraSphere-HMS-DevelopbyUzaii',
@@ -491,6 +507,10 @@ export const projects: Project[] = [
     publishedAt: '2024-10-05',
     updatedAt: '2025-02-01',
     isLatest: true,
+    archive: {
+      state: 'active',
+      originalYear: '2024',
+    },
     source: 'github',
     githubUrl: 'https://github.com/UzairAhmad88/Develop-Market-Regime--Engine-byUzaii',
     githubRepo: 'UzairAhmad88/Develop-Market-Regime--Engine-byUzaii',
@@ -625,6 +645,15 @@ export const projects: Project[] = [
     outcome: 'Shipped a full-featured restaurant operations tool simplifying order lifecycle and kitchen communication.',
     publishedAt: '2024-03-20',
     updatedAt: '2024-09-10',
+    archive: {
+      state: 'legacy',
+      reason: 'LEGACY',
+      originalYear: '2024',
+      archivedAt: '2024-09',
+      archiveNote: 'Early POS and local persistence system exploring order management workflows; predecessor to subsequent role-based healthcare architectures.',
+      successorProjectId: 'curasphere-hms',
+      successorProjectTitle: 'CuraSphere HMS',
+    },
     source: 'github',
     githubUrl: 'https://github.com/UzairAhmad88/Resturent-Managment-System---POS',
     githubRepo: 'UzairAhmad88/Resturent-Managment-System---POS',
@@ -752,6 +781,135 @@ export const projects: Project[] = [
       outcomes: [
         'Deployed responsive gym website with seamless inquiry navigation.'
       ]
+    },
+    archive: {
+      state: 'archived',
+      reason: 'COMPLETED_HISTORICAL',
+      originalYear: '2023',
+      archivedAt: '2024-04',
+      archiveNote: 'Completed client brand portal and gym membership inquiry website built with semantic HTML5 and CSS3.'
+    }
+  },
+  {
+    id: 'online-complaint-system',
+    slug: 'online-complaint-system',
+    title: 'Online Complaint Management System in Flask',
+    shortDescription: 'Server-side Python/Flask web portal for citizen complaint tracking and departmental ticket dispatching.',
+    category: ['engineering', 'product'],
+    projectType: 'Python Web Application',
+    domain: 'Full-Stack Engineering',
+    type: 'System',
+    status: 'completed',
+    presentationLevel: 'D',
+    problem: 'Public services and organizations require structured digital intake, ticket dispatching, and resolution auditing for user grievances.',
+    solution: 'Engineered a lightweight server-rendered web portal using Python and Flask with session authentication, ticket status workflows, and SQLite database persistence.',
+    product: 'Web-based ticketing and complaint tracking portal with administrator and submitter views.',
+    system: 'Server-side rendered MVC application built with Python Flask, Jinja2 templates, and relational record models.',
+    outcome: 'Delivered an early functional prototype demonstrating relational CRUD workflows and authentication lifecycle.',
+    publishedAt: '2023-08-10',
+    updatedAt: '2023-11-20',
+    source: 'github',
+    githubUrl: 'https://github.com/UzairAhmad88/Online_complaint_Mangnment_System_in_flask',
+    githubRepo: 'UzairAhmad88/Online_complaint_Mangnment_System_in_flask',
+    repositoryStatus: 'public',
+    deploymentStatus: 'not_deployed',
+    repositoryUpdatedAt: '2023-11-20T10:00:00Z',
+    technologies: ['Python', 'HTML5', 'CSS3', 'Bootstrap'],
+    tools: ['Git', 'VS Code'],
+    role: 'Sole Developer',
+    team: 'Individual Project',
+    timeline: 'Completed Historical Project',
+    context: 'Personal Engineering',
+    deployment: 'Local Execution / Flask Server',
+    order: 7,
+    relatedProjects: ['curasphere-hms', 'event-management-system'],
+    caseStudy: {
+      overview: 'An early Python/Flask web portal designed for logging, categorizing, and tracking citizen or customer complaints with relational state storage.',
+      context: 'Demonstrates foundational backend engineering principles including MVC route separation, server-side template rendering, and database migrations.',
+      objectives: [
+        'Build a functional CRUD ticketing pipeline with session authentication.',
+        'Implement status progression (Submitted -> In Progress -> Resolved).'
+      ],
+      role: 'Sole Developer.',
+      team: 'Individual Project',
+      results: [
+        {
+          status: 'Implemented',
+          description: 'Working Flask web application with user registration, ticket management, and admin dispatching.'
+        }
+      ],
+      outcomes: [
+        'Validated early server-rendered backend patterns; lessons directly informed subsequent TypeScript API designs in CuraSphere HMS.'
+      ]
+    },
+    archive: {
+      state: 'superseded',
+      reason: 'SUPERSEDED',
+      originalYear: '2023',
+      archivedAt: '2024-01',
+      archiveNote: 'Early Python/Flask server-rendered application with SQLite storage; superseded by modern TypeScript/React + PostgreSQL full-stack architectures in CuraSphere HMS.',
+      successorProjectId: 'curasphere-hms',
+      successorProjectTitle: 'CuraSphere HMS'
+    }
+  },
+  {
+    id: 'event-management-system',
+    slug: 'event-management-system',
+    title: 'Event Management & Ticketing System in Flask',
+    shortDescription: 'Event ticketing, attendee registration, and venue scheduling application built with Python Flask.',
+    category: ['engineering', 'product'],
+    projectType: 'Python Web Application',
+    domain: 'Full-Stack Engineering',
+    type: 'Product',
+    status: 'completed',
+    presentationLevel: 'D',
+    problem: 'Event coordinators need streamlined registration, ticketing management, and attendee roster tracking.',
+    solution: 'Developed an event scheduling and ticketing system with dynamic attendee quotas, date-filtered booking, and admin confirmation portals.',
+    product: 'Accessible event booking portal with ticket reservation and attendance auditing.',
+    system: 'Python Flask web application with relational database models and Jinja2 views.',
+    outcome: 'Shipped a functional booking portal proving state validation and registration bounds.',
+    publishedAt: '2023-05-15',
+    updatedAt: '2023-09-02',
+    source: 'github',
+    githubUrl: 'https://github.com/UzairAhmad88/Event_Mangment_System_in_flask',
+    githubRepo: 'UzairAhmad88/Event_Mangment_System_in_flask',
+    repositoryStatus: 'public',
+    deploymentStatus: 'not_deployed',
+    repositoryUpdatedAt: '2023-09-02T14:30:00Z',
+    technologies: ['Python', 'HTML5', 'CSS3', 'Bootstrap'],
+    tools: ['Git', 'VS Code'],
+    role: 'Sole Developer',
+    team: 'Individual Project',
+    timeline: 'Completed Historical Project',
+    context: 'Personal Engineering',
+    deployment: 'Local Execution / Flask Server',
+    order: 8,
+    relatedProjects: ['online-complaint-system', 'restaurant-pos'],
+    caseStudy: {
+      overview: 'A Python Flask application managing event calendars, ticket allocations, and user reservations.',
+      context: 'Exploration of transactional state updates and reservation limits in web applications.',
+      objectives: [
+        'Support event listing, date filtering, and registration workflows.',
+        'Enforce attendee capacity boundaries during booking.'
+      ],
+      role: 'Sole Developer.',
+      team: 'Individual Project',
+      results: [
+        {
+          status: 'Implemented',
+          description: 'Working event portal with dynamic ticket quotas and booking confirmations.'
+        }
+      ],
+      outcomes: [
+        'Preserved as foundational evidence of earlier full-stack Python architectures.'
+      ]
+    },
+    archive: {
+      state: 'legacy',
+      reason: 'LEGACY',
+      originalYear: '2023',
+      archivedAt: '2023-12',
+      archiveNote: 'Early exploration of event registration state machines and relational schemas in Python/Flask.'
     }
   }
 ];
@@ -775,4 +933,20 @@ export function getLatestProjects(): Project[] {
 export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
 }
+
+export function getActiveProjects(): Project[] {
+  return projects.filter((p) => {
+    const state = p.archive?.state || (p.status === 'archived' ? 'archived' : 'active');
+    return state === 'active';
+  });
+}
+
+export function getArchivedProjects(): Project[] {
+  return projects.filter((p) => {
+    const state = p.archive?.state || (p.status === 'archived' ? 'archived' : 'active');
+    return state === 'archived' || state === 'superseded' || state === 'legacy' || state === 'paused' || state === 'abandoned';
+  });
+}
+
+
 
