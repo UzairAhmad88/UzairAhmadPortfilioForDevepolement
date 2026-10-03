@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
 import ProjectCard from '@/components/cards/ProjectCard.astro';
+import RelatedKnowledgeGrid from '@/components/knowledge/RelatedKnowledgeGrid.astro';
 import ContactCallout from '@/components/sections/ContactCallout.astro';
 import { researchItems } from '@/data/research';
 import { projects } from '@/data/projects';
@@ -371,6 +372,13 @@ const linkedTechnologies = (inquiry.technologies || [])
           </div>
         </section>
       )}
+
+      <RelatedKnowledgeGrid
+        type="research"
+        slug={inquiry.slug}
+        title="Knowledge Graph & Empirical Connections"
+        subtitle="Connected software implementations, laboratory experiments, engineering decision logs, and foundational technologies."
+      />
 
       <ContactCallout
         title="Explore collaborating on this research?"

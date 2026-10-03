@@ -3,6 +3,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
 import ProjectCard from '@/components/cards/ProjectCard.astro';
 import ResearchInquiryCard from '@/components/cards/ResearchInquiryCard.astro';
+import RelatedKnowledgeGrid from '@/components/knowledge/RelatedKnowledgeGrid.astro';
 import ContactCallout from '@/components/sections/ContactCallout.astro';
 import { engineeringNotes } from '@/data/notes';
 import { projects } from '@/data/projects';
@@ -260,6 +261,13 @@ const linkedTechnologies = (note.technologies || [])
           </div>
         </section>
       )}
+
+      <RelatedKnowledgeGrid
+        type="note"
+        slug={note.slug}
+        title="Knowledge Graph & System References"
+        subtitle="Connected software systems, research investigations, lab workbench experiments, and technologies."
+      />
 
       <ContactCallout
         title="Discuss technical implementations or architecture?"

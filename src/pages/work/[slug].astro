@@ -4,6 +4,7 @@ import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
 import ProjectDNA from '@/components/common/ProjectDNA.astro';
 import ProjectVisualization from '@/components/visualizations/ProjectVisualization.astro';
 import ProjectCard from '@/components/cards/ProjectCard.astro';
+import RelatedKnowledgeGrid from '@/components/knowledge/RelatedKnowledgeGrid.astro';
 import ContactCallout from '@/components/sections/ContactCallout.astro';
 import { projects } from '@/data/projects';
 import { siteConfig } from '@/data/site';
@@ -292,6 +293,13 @@ const finalRelatedProjects = relatedProjects.length > 0 ? relatedProjects : fall
           ))}
         </div>
       </section>
+
+      <RelatedKnowledgeGrid
+        type="project"
+        slug={project.slug}
+        title="Knowledge Graph & System Connections"
+        subtitle="Explore connected research investigations, lab prototypes, engineering notes, and technologies."
+      />
 
       <ContactCallout />
     </article>

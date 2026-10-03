@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import RelatedKnowledgeGrid from '@/components/knowledge/RelatedKnowledgeGrid.astro';
 import {
   technologies,
   technologyCategories,
@@ -318,6 +319,17 @@ const seo = {
         </section>
       )
     }
+    <!-- Knowledge Graph Connection Matrix -->
+    <section class="section-shell">
+      <div class="container">
+        <RelatedKnowledgeGrid
+          type="technology"
+          slug={tech.id}
+          title={`${tech.name} — Knowledge Graph Network`}
+          subtitle={`Deterministic cross-system usage of ${tech.name} across production projects, research inquiries, workbench experiments, and engineering notes.`}
+        />
+      </div>
+    </section>
 
     <!-- Bottom Navigation -->
     <section class="section-shell bottom-nav-section">

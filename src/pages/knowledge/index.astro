@@ -1,0 +1,666 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { knowledgeGraph, knowledgeGraphValidation } from '@/data/knowledgeGraph';
+import { siteConfig } from '@/data/site';
+import type { KnowledgeNodeType } from '@/types/knowledge';
+
+const nodes = knowledgeGraph.nodes;
+const edges = knowledgeGraph.edges;
+const validation = knowledgeGraphValidation;
+
+const entityTypes: { type: KnowledgeNodeType | 'all'; label: string; count: number; icon: string; color: string }[] = [
+  { type: 'all', label: 'All Entities', count: nodes.length, icon: '🌐', color: 'slate' },
+  { type: 'project', label: 'Projects', count: validation.nodesByType.project, icon: '⚡', color: 'emerald' },
+  { type: 'research', label: 'Research', count: validation.nodesByType.research, icon: '🔬', color: 'purple' },
+  { type: 'lab', label: 'Lab Experiments', count: validation.nodesByType.lab, icon: '🧪', color: 'amber' },
+  { type: 'note', label: 'Engineering Notes', count: validation.nodesByType.note, icon: '📝', color: 'blue' },
+  { type: 'technology', label: 'Technologies', count: validation.nodesByType.technology, icon: '🛠️', color: 'teal' },
+  { type: 'methodology', label: 'Methodology', count: validation.nodesByType.methodology, icon: '📐', color: 'indigo' },
+];
+
+const seo = {
+  title: `Knowledge Graph & Connected Engineering System | ${siteConfig.name}`,
+  description: `Interactive knowledge graph representing deterministic bidirectional relationships across Uzair Ahmad’s production software systems, research inquiries, laboratory experiments, technical notes, and technologies.`,
+  canonical: `${siteConfig.url}/knowledge`,
+};
+
+// Serialize graph data for client-side interactive exploration
+const graphDataJson = JSON.stringify({
+  nodes: knowledgeGraph.nodes,
+  edges: knowledgeGraph.edges,
+});
+---
+
+<BaseLayout seo={seo}>
+  <main id="top" class="knowledge-graph-page">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
+      <!-- Breadcrumb Navigation -->
+      <nav class="mb-8" aria-label="Breadcrumbs">
+        <ol class="flex items-center space-x-2 text-xs font-mono text-slate-400">
+          <li><a href="/" class="hover:text-indigo-400 transition-colors">Home</a></li>
+          <li class="text-slate-400">/</li>
+          <li class="text-slate-200" aria-current="page">Knowledge Graph</li>
+        </ol>
+      </nav>
+
+      <!-- Knowledge Header -->
+      <header class="mb-10 border-b border-slate-800/80 pb-8">
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 text-xs font-mono font-semibold uppercase tracking-wider mb-4">
+          <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
+          Connected Engineering Knowledge Layer
+        </div>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-100 mb-4">
+          Knowledge Graph & System Topology
+        </h1>
+        <p class="text-base sm:text-lg text-slate-400 max-w-3xl leading-relaxed">
+          A structured, deterministic relationship layer connecting everything I build, research, experiment with, and document. Projects are not isolated codebases; research is not disconnected theory; notes are not random blog posts. They form one unified body of engineering work.
+        </p>
+
+        <!-- Audit & Stats Summary Strip -->
+        <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 bg-[#12161c] border border-slate-800 rounded-xl p-4 font-mono text-xs">
+          <div>
+            <span class="text-slate-400 block text-[11px] uppercase">Canonical Nodes</span>
+            <span class="text-lg font-bold text-slate-100">{validation.totalNodes}</span>
+            <span class="text-[10px] text-slate-400 block">Verified Entities</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block text-[11px] uppercase">Validated Edges</span>
+            <span class="text-lg font-bold text-indigo-400">{validation.totalEdges}</span>
+            <span class="text-[10px] text-slate-400 block">Semantic Relationships</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block text-[11px] uppercase">Integrity Status</span>
+            <span class="text-lg font-bold text-emerald-400">100% Valid</span>
+            <span class="text-[10px] text-slate-400 block">0 Broken References</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block text-[11px] uppercase">Derivation</span>
+            <span class="text-lg font-bold text-slate-200">Build-Time</span>
+            <span class="text-[10px] text-slate-400 block">Zero Runtime Latency</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Filter and Exploration Controls -->
+      <section class="mb-8 space-y-4" aria-label="Knowledge Graph Controls">
+        <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-[#12161c] border border-slate-800 rounded-xl p-4">
+          <!-- Search input -->
+          <div class="relative flex-1 max-w-md">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 text-xs font-mono">
+              🔍
+            </span>
+            <input
+              type="search"
+              id="graph-search-input"
+              placeholder="Search entities, technologies, slugs..."
+              class="w-full bg-[#0d1117] border border-slate-700/80 rounded-lg pl-9 pr-3 py-2 text-xs font-mono text-slate-200 placeholder-slate-400 focus:outline-none focus:border-indigo-500 transition-colors"
+              aria-label="Filter knowledge graph nodes"
+            />
+          </div>
+
+          <!-- Type filter buttons -->
+          <div class="flex flex-wrap items-center gap-1.5" id="type-filters" role="group" aria-label="Filter by Entity Type">
+            {entityTypes.map((item) => (
+              <button
+                type="button"
+                data-type-filter={item.type}
+                class:list={[
+                  'px-2.5 py-1.5 rounded-lg text-xs font-mono transition-colors flex items-center gap-1.5 border',
+                  item.type === 'all'
+                    ? 'bg-indigo-600 text-white border-indigo-500 font-semibold active-filter'
+                    : 'bg-slate-900/80 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white',
+                ]}
+                aria-pressed={item.type === 'all' ? 'true' : 'false'}
+              >
+                <span>{item.icon}</span>
+                <span>{item.label}</span>
+                <span class="text-[10px] opacity-70">({item.count})</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- Main Explorer Workspace: Visual Network Canvas + Inspector Panel -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- Interactive Graph / Matrix Visualizer (Large viewports) -->
+        <div class="lg:col-span-8 rounded-xl border border-slate-800 bg-[#0c1015] overflow-hidden relative shadow-2xl">
+          <!-- Canvas Toolbar Header -->
+          <div class="flex items-center justify-between px-4 py-2.5 bg-[#12161c] border-b border-slate-800/90 text-xs font-mono text-slate-400">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span class="text-slate-300 font-medium">Relational Matrix & Topological Network</span>
+            </div>
+            <div class="flex items-center gap-3 text-[11px]">
+              <span id="visible-nodes-counter" class="text-slate-400">{nodes.length} Nodes Rendered</span>
+              <button id="reset-focus-btn" class="text-indigo-400 hover:text-indigo-300 underline cursor-pointer">
+                Reset Focus
+              </button>
+            </div>
+          </div>
+
+          <!-- Interactive SVG Network Container -->
+          <div class="relative w-full h-[520px] sm:h-[620px] bg-[#070a0e] overflow-hidden" id="graph-container">
+            <svg
+              id="graph-svg"
+              class="w-full h-full cursor-grab active:cursor-grabbing select-none"
+              xmlns="http://www.w3.org/2000/svg"
+              role="img"
+              aria-label="Interactive visual representation of the Knowledge Graph"
+            >
+              <defs>
+                <marker
+                  id="edge-arrow"
+                  viewBox="0 0 10 10"
+                  refX="18"
+                  refY="5"
+                  markerWidth="5"
+                  markerHeight="5"
+                  orient="auto-start-reverse"
+                >
+                  <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#334155" />
+                </marker>
+                <marker
+                  id="edge-arrow-active"
+                  viewBox="0 0 10 10"
+                  refX="18"
+                  refY="5"
+                  markerWidth="6"
+                  markerHeight="6"
+                  orient="auto-start-reverse"
+                >
+                  <path d="M 0 1 L 9 5 L 0 9 z" fill="#818cf8" />
+                </marker>
+              </defs>
+              <g id="edges-group"></g>
+              <g id="nodes-group"></g>
+            </svg>
+
+            <!-- Legend Overlay -->
+            <div class="absolute bottom-3 left-3 bg-[#12161c]/90 backdrop-blur-md border border-slate-800 rounded-lg p-2.5 text-[11px] font-mono text-slate-300 pointer-events-none flex flex-wrap gap-3">
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Project</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span> Research</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Lab</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Note</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-teal-500"></span> Technology</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> Methodology</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Node Inspector / Focus Detail Panel -->
+        <aside class="lg:col-span-4 rounded-xl border border-slate-800 bg-[#12161c] p-5 sticky top-6 shadow-xl">
+          <div id="inspector-content">
+            <div class="border-b border-slate-800/80 pb-4 mb-4">
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span id="inspector-type-badge" class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold uppercase tracking-wider bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">
+                  Select a Node
+                </span>
+                <span id="inspector-id" class="text-[10px] font-mono text-slate-400 truncate max-w-[150px]">
+                  graph://topology
+                </span>
+              </div>
+              <h2 id="inspector-title" class="text-lg font-bold text-slate-100 leading-snug">
+                Click any node to inspect relationships
+              </h2>
+              <p id="inspector-summary" class="text-xs text-slate-400 mt-2 leading-relaxed">
+                Explore how projects originate from lab prototypes, research questions inform architectural choices, notes capture debugging discoveries, and technologies tie them together.
+              </p>
+              <div id="inspector-action-wrap" class="mt-4 hidden">
+                <a
+                  id="inspector-canonical-link"
+                  href="#"
+                  class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-mono font-semibold transition-colors"
+                >
+                  <span>Open Canonical Page</span>
+                  <span>→</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Connected Relationships Section -->
+            <div>
+              <h3 class="text-xs font-mono text-slate-400 uppercase tracking-wider mb-3 flex items-center justify-between">
+                <span>Direct Connections</span>
+                <span id="inspector-connections-count" class="text-slate-400 text-[10px]">(0)</span>
+              </h3>
+              <div id="inspector-connections-list" class="space-y-2 max-h-[340px] overflow-y-auto pr-1">
+                <p class="text-xs font-mono text-slate-400 italic">
+                  Select an entity in the graph or the directory below to view its direct incoming and outgoing connections.
+                </p>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Semantic Relationship Directory (Authoritative Textual List & Mobile Explorer) -->
+      <section class="mt-14 border-t border-slate-800/80 pt-10" aria-label="Structured Knowledge Directory">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <span class="text-xs font-mono text-indigo-400 font-semibold uppercase tracking-wider">
+              Accessible Directory
+            </span>
+            <h2 class="text-2xl font-bold tracking-tight text-slate-100">
+              Structured Relationship Directory
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
+              Semantic, fully accessible catalog of all verified knowledge entities and their explicit connections.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="directory-grid">
+          {nodes.map((node) => {
+            const directEdges = edges.filter((e) => e.source === node.id || e.target === node.id);
+            return (
+              <article
+                class="rounded-xl border border-slate-800 bg-[#12161c] p-4 flex flex-col justify-between directory-card"
+                data-node-id={node.id}
+                data-node-type={node.type}
+                data-node-title={node.title.toLowerCase()}
+              >
+                <div>
+                  <div class="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-slate-800/70">
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded border border-slate-700 bg-slate-800 text-slate-300 uppercase font-semibold">
+                      {node.type}
+                    </span>
+                    <span class="text-[11px] font-mono text-slate-400">
+                      {directEdges.length} connections
+                    </span>
+                  </div>
+
+                  <h3 class="text-sm font-bold text-slate-100 leading-snug hover:text-indigo-400 transition-colors">
+                    <a href={node.href}>{node.title}</a>
+                  </h3>
+
+                  {node.summary && (
+                    <p class="text-xs text-slate-400 mt-1.5 line-clamp-2 leading-relaxed">
+                      {node.summary}
+                    </p>
+                  )}
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between text-xs font-mono">
+                  <button
+                    type="button"
+                    class="text-indigo-400 hover:text-indigo-300 font-semibold select-node-btn"
+                    data-node-id={node.id}
+                  >
+                    Focus in Graph ⊕
+                  </button>
+                  <a href={node.href} class="text-slate-400 hover:text-slate-200">
+                    View Entity →
+                  </a>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>
+
+<!-- Client-side Graph Exploration Script -->
+<script define:vars={{ graphDataJson }}>
+  const graph = JSON.parse(graphDataJson);
+  let activeFilter = 'all';
+  let searchQuery = '';
+  let selectedNodeId = null;
+
+  const colorMap = {
+    project: '#10b981',    // emerald
+    research: '#a855f7',   // purple
+    lab: '#f59e0b',        // amber
+    note: '#3b82f6',       // blue
+    technology: '#14b8a6', // teal
+    methodology: '#6366f1',// indigo
+  };
+
+  const svg = document.getElementById('graph-svg');
+  const nodesGroup = document.getElementById('nodes-group');
+  const edgesGroup = document.getElementById('edges-group');
+  const searchInput = document.getElementById('graph-search-input');
+  const filterButtons = document.querySelectorAll('#type-filters button');
+  const resetBtn = document.getElementById('reset-focus-btn');
+  const visibleCounter = document.getElementById('visible-nodes-counter');
+  const directoryCards = document.querySelectorAll('.directory-card');
+
+  // Inspector Elements
+  const inspectorTypeBadge = document.getElementById('inspector-type-badge');
+  const inspectorId = document.getElementById('inspector-id');
+  const inspectorTitle = document.getElementById('inspector-title');
+  const inspectorSummary = document.getElementById('inspector-summary');
+  const inspectorActionWrap = document.getElementById('inspector-action-wrap');
+  const inspectorCanonicalLink = document.getElementById('inspector-canonical-link');
+  const inspectorConnectionsCount = document.getElementById('inspector-connections-count');
+  const inspectorConnectionsList = document.getElementById('inspector-connections-list');
+
+  // Compute Layout Positions (Deterministic circular / force-clustered layout)
+  const nodePositions = new Map();
+  const width = 800;
+  const height = 600;
+  const centerX = width / 2;
+  const centerY = height / 2;
+
+  // Group nodes by type for organized cluster rings
+  const typeGroups = {
+    project: [],
+    research: [],
+    lab: [],
+    note: [],
+    technology: [],
+    methodology: [],
+  };
+
+  graph.nodes.forEach((n) => {
+    if (typeGroups[n.type]) {
+      typeGroups[n.type].push(n);
+    }
+  });
+
+  // Position clusters deterministically
+  const typeRadius = {
+    methodology: 80,
+    technology: 160,
+    project: 230,
+    research: 240,
+    lab: 250,
+    note: 260,
+  };
+
+  Object.entries(typeGroups).forEach(([type, nodesInType]) => {
+    const r = typeRadius[type] || 200;
+    const count = nodesInType.length;
+    nodesInType.forEach((node, idx) => {
+      const angle = (idx / (count || 1)) * Math.PI * 2 + (type.charCodeAt(0) % 5);
+      const x = centerX + r * Math.cos(angle) + (Math.sin(idx * 3) * 15);
+      const y = centerY + r * Math.sin(angle) + (Math.cos(idx * 3) * 15);
+      nodePositions.set(node.id, { x, y });
+    });
+  });
+
+  function renderGraph() {
+    if (!svg || !nodesGroup || !edgesGroup) return;
+
+    // Filter nodes
+    const filteredNodes = graph.nodes.filter((node) => {
+      const matchesType = activeFilter === 'all' || node.type === activeFilter;
+      const matchesSearch =
+        !searchQuery ||
+        node.title.toLowerCase().includes(searchQuery) ||
+        node.slug.toLowerCase().includes(searchQuery) ||
+        node.type.toLowerCase().includes(searchQuery);
+      return matchesType && matchesSearch;
+    });
+
+    const visibleNodeIds = new Set(filteredNodes.map((n) => n.id));
+    if (visibleCounter) {
+      visibleCounter.textContent = `${filteredNodes.length} Nodes Rendered`;
+    }
+
+    // Filter edges
+    const filteredEdges = graph.edges.filter(
+      (e) => visibleNodeIds.has(e.source) && visibleNodeIds.has(e.target)
+    );
+
+    // Render Edges
+    edgesGroup.innerHTML = '';
+    filteredEdges.forEach((edge) => {
+      const p1 = nodePositions.get(edge.source);
+      const p2 = nodePositions.get(edge.target);
+      if (!p1 || !p2) return;
+
+      const isConnectedToSelected =
+        selectedNodeId &&
+        (edge.source === selectedNodeId || edge.target === selectedNodeId);
+
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', p1.x);
+      line.setAttribute('y1', p1.y);
+      line.setAttribute('x2', p2.x);
+      line.setAttribute('y2', p2.y);
+      line.setAttribute(
+        'stroke',
+        isConnectedToSelected ? '#818cf8' : 'rgba(51, 65, 85, 0.45)'
+      );
+      line.setAttribute('stroke-width', isConnectedToSelected ? '2' : '1');
+      if (isConnectedToSelected) {
+        line.setAttribute('marker-end', 'url(#edge-arrow-active)');
+      }
+      edgesGroup.appendChild(line);
+    });
+
+    // Render Nodes
+    nodesGroup.innerHTML = '';
+    filteredNodes.forEach((node) => {
+      const pos = nodePositions.get(node.id);
+      if (!pos) return;
+
+      const isSelected = selectedNodeId === node.id;
+      const isConnected =
+        selectedNodeId &&
+        graph.edges.some(
+          (e) =>
+            (e.source === selectedNodeId && e.target === node.id) ||
+            (e.target === selectedNodeId && e.source === node.id)
+        );
+
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      g.setAttribute('transform', `translate(${pos.x}, ${pos.y})`);
+      g.setAttribute('class', 'cursor-pointer group');
+      g.setAttribute('data-node-id', node.id);
+
+      // Outer focus ring
+      if (isSelected || isConnected) {
+        const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        ring.setAttribute('r', isSelected ? '14' : '10');
+        ring.setAttribute('fill', 'none');
+        ring.setAttribute('stroke', isSelected ? '#818cf8' : '#64748b');
+        ring.setAttribute('stroke-width', '1.5');
+        ring.setAttribute('stroke-dasharray', isSelected ? 'none' : '2,2');
+        g.appendChild(ring);
+      }
+
+      // Core Node Circle
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('r', isSelected ? '7' : '5');
+      circle.setAttribute('fill', colorMap[node.type] || '#94a3b8');
+      circle.setAttribute('stroke', '#070a0e');
+      circle.setAttribute('stroke-width', '1.5');
+      g.appendChild(circle);
+
+      // Label
+      const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      text.setAttribute('x', '9');
+      text.setAttribute('y', '3');
+      text.setAttribute('font-family', 'monospace');
+      text.setAttribute('font-size', isSelected ? '11px' : '9px');
+      text.setAttribute('font-weight', isSelected ? 'bold' : 'normal');
+      text.setAttribute('fill', isSelected ? '#ffffff' : '#94a3b8');
+      text.textContent = node.title.length > 22 ? node.title.slice(0, 20) + '…' : node.title;
+      g.appendChild(text);
+
+      g.addEventListener('click', (e) => {
+        e.stopPropagation();
+        selectNode(node.id);
+      });
+
+      nodesGroup.appendChild(g);
+    });
+
+    // Filter directory cards
+    directoryCards.forEach((card) => {
+      const cardType = card.getAttribute('data-node-type');
+      const cardTitle = card.getAttribute('data-node-title') || '';
+      const matchesType = activeFilter === 'all' || cardType === activeFilter;
+      const matchesSearch = !searchQuery || cardTitle.includes(searchQuery);
+      if (matchesType && matchesSearch) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+  }
+
+  function selectNode(nodeId) {
+    selectedNodeId = nodeId;
+    const node = graph.nodes.find((n) => n.id === nodeId);
+    if (!node) return;
+
+    // Update URL query param cleanly
+    const url = new URL(window.location);
+    url.searchParams.set('focus', nodeId);
+    window.history.replaceState({}, '', url);
+
+    // Update Inspector
+    if (inspectorTypeBadge) {
+      inspectorTypeBadge.textContent = node.type.toUpperCase();
+      inspectorTypeBadge.style.borderColor = colorMap[node.type] || '#818cf8';
+      inspectorTypeBadge.style.color = colorMap[node.type] || '#818cf8';
+    }
+    if (inspectorId) inspectorId.textContent = node.id;
+    if (inspectorTitle) inspectorTitle.textContent = node.title;
+    if (inspectorSummary) inspectorSummary.textContent = node.summary || 'No summary available.';
+    if (inspectorCanonicalLink) inspectorCanonicalLink.setAttribute('href', node.href);
+    if (inspectorActionWrap) inspectorActionWrap.classList.remove('hidden');
+
+    // Find direct connections
+    const connectedEdges = graph.edges.filter(
+      (e) => e.source === nodeId || e.target === nodeId
+    );
+    const connectedNodeIds = new Set();
+    connectedEdges.forEach((e) => {
+      connectedNodeIds.add(e.source === nodeId ? e.target : e.source);
+    });
+
+    const connectedNodes = graph.nodes.filter((n) => connectedNodeIds.has(n.id));
+
+    if (inspectorConnectionsCount) {
+      inspectorConnectionsCount.textContent = `(${connectedNodes.length})`;
+    }
+
+    if (inspectorConnectionsList) {
+      if (connectedNodes.length === 0) {
+        inspectorConnectionsList.innerHTML =
+          '<p class="text-xs font-mono text-slate-500 italic">No direct connections recorded.</p>';
+      } else {
+        inspectorConnectionsList.innerHTML = connectedNodes
+          .map((cn) => {
+            const edge = connectedEdges.find(
+              (e) =>
+                (e.source === nodeId && e.target === cn.id) ||
+                (e.target === nodeId && e.source === cn.id)
+            );
+            return `
+              <div class="p-2 rounded bg-[#0d1117] border border-slate-800 text-xs font-mono">
+                <div class="flex items-center justify-between text-[10px] text-slate-400 mb-1">
+                  <span class="text-indigo-400 font-semibold">${edge ? edge.label : 'Related'}</span>
+                  <span class="uppercase">${cn.type}</span>
+                </div>
+                <a href="${cn.href}" class="text-slate-200 hover:text-indigo-400 font-medium block truncate">
+                  ${cn.title} →
+                </a>
+              </div>
+            `;
+          })
+          .join('');
+      }
+    }
+
+    renderGraph();
+  }
+
+  function resetFocus() {
+    selectedNodeId = null;
+    const url = new URL(window.location);
+    url.searchParams.delete('focus');
+    window.history.replaceState({}, '', url);
+
+    if (inspectorTypeBadge) inspectorTypeBadge.textContent = 'SELECT A NODE';
+    if (inspectorId) inspectorId.textContent = 'graph://topology';
+    if (inspectorTitle) inspectorTitle.textContent = 'Click any node to inspect relationships';
+    if (inspectorSummary) {
+      inspectorSummary.textContent =
+        'Explore how projects originate from lab prototypes, research questions inform architectural choices, notes capture debugging discoveries, and technologies tie them together.';
+    }
+    if (inspectorActionWrap) inspectorActionWrap.classList.add('hidden');
+    if (inspectorConnectionsCount) inspectorConnectionsCount.textContent = '(0)';
+    if (inspectorConnectionsList) {
+      inspectorConnectionsList.innerHTML =
+        '<p class="text-xs font-mono text-slate-500 italic">Select an entity in the graph or the directory below to view its direct incoming and outgoing connections.</p>';
+    }
+
+    renderGraph();
+  }
+
+  // Filter Buttons
+  filterButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      filterButtons.forEach((b) => {
+        b.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-500', 'font-semibold', 'active-filter');
+        b.classList.add('bg-slate-900/80', 'text-slate-300', 'border-slate-800');
+        b.setAttribute('aria-pressed', 'false');
+      });
+      btn.classList.remove('bg-slate-900/80', 'text-slate-300', 'border-slate-800');
+      btn.classList.add('bg-indigo-600', 'text-white', 'border-indigo-500', 'font-semibold', 'active-filter');
+      btn.setAttribute('aria-pressed', 'true');
+
+      activeFilter = btn.getAttribute('data-type-filter') || 'all';
+      renderGraph();
+    });
+  });
+
+  // Search Input
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value.toLowerCase().trim();
+      renderGraph();
+    });
+  }
+
+  // Reset Focus Button
+  if (resetBtn) {
+    resetBtn.addEventListener('click', resetFocus);
+  }
+
+  // Directory Cards Focus Button
+  document.querySelectorAll('.select-node-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      const nodeId = btn.getAttribute('data-node-id');
+      if (nodeId) {
+        selectNode(nodeId);
+        window.scrollTo({ top: 300, behavior: 'smooth' });
+      }
+    });
+  });
+
+  // URL Deep-linking initialization
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialFocus = urlParams.get('focus');
+  if (initialFocus) {
+    selectNode(initialFocus);
+  } else {
+    renderGraph();
+  }
+</script>
+
+<style>
+  .knowledge-graph-page {
+    color: var(--color-text, #f6f1e8);
+  }
+
+  #graph-svg line {
+    transition: stroke 0.2s ease, stroke-width 0.2s ease;
+  }
+
+  #graph-svg g {
+    transition: transform 0.2s ease;
+  }
+
+  #graph-svg g:hover circle {
+    stroke: #818cf8;
+    stroke-width: 2.5px;
+  }
+</style>

@@ -1,0 +1,115 @@
+---
+import { knowledgeGraph, getFocusedGraph, getNodeBySlug } from '@/data/knowledgeGraph';
+import type { KnowledgeNodeType, KnowledgeNode, KnowledgeEdge } from '@/types/knowledge';
+
+export interface Props {
+  nodeId?: string;
+  type?: KnowledgeNodeType;
+  slug?: string;
+  title?: string;
+  subtitle?: string;
+}
+
+const {
+  nodeId,
+  type,
+  slug,
+  title = 'Connected Knowledge & Systems',
+  subtitle = 'Deterministic bidirectional relationships across projects, research, experiments, and technical notes.',
+} = Astro.props;
+
+let targetNodeId = nodeId;
+if (!targetNodeId && type && slug) {
+  const foundNode = getNodeBySlug(knowledgeGraph, type, slug);
+  if (foundNode) {
+    targetNodeId = foundNode.id;
+  }
+}
+
+const focused = targetNodeId ? getFocusedGraph(knowledgeGraph, targetNodeId, 1) : null;
+const grouped = focused?.groupedByType;
+
+const typeLabels: Record<KnowledgeNodeType, { name: string; icon: string }> = {
+  project: { name: 'Projects & Systems', icon: '⚡' },
+  research: { name: 'Research Inquiries', icon: '🔬' },
+  lab: { name: 'Lab Experiments & Prototypes', icon: '🧪' },
+  note: { name: 'Engineering Notes', icon: '📝' },
+  technology: { name: 'Technologies', icon: '🛠️' },
+  methodology: { name: 'Methodology Steps', icon: '📐' },
+};
+
+function getEdgeLabel(sourceId: string, targetId: string): string {
+  const edge = focused?.directEdges.find(
+    (e: KnowledgeEdge) =>
+      (e.source === sourceId && e.target === targetId) ||
+      (e.source === targetId && e.target === sourceId)
+  );
+  return edge ? edge.label : 'Related';
+}
+---
+
+{focused && focused.connectedNodes.length > 0 && (
+  <section class="related-knowledge-section border-t border-slate-800/80 pt-10 mt-12">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div>
+        <p class="text-xs font-mono text-indigo-400 font-semibold uppercase tracking-wider">
+          Knowledge Graph Layer
+        </p>
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-100">
+          {title}
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
+          {subtitle}
+        </p>
+      </div>
+      <a
+        href={`/knowledge?focus=${focused.focusNode.id}`}
+        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded border border-indigo-500/40 bg-indigo-500/10 text-xs font-mono font-semibold text-indigo-300 hover:bg-indigo-500/20 hover:text-white transition-colors shrink-0"
+      >
+        <span>Explore Graph ({focused.connectedNodes.length} connections)</span>
+        <span>→</span>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <!-- Group by entity types -->
+      {(Object.keys(grouped || {}) as KnowledgeNodeType[]).map((groupType) => {
+        const nodesInGroup = grouped ? grouped[groupType] : [];
+        if (!nodesInGroup || nodesInGroup.length === 0) return null;
+        const meta = typeLabels[groupType] || { name: groupType, icon: '•' };
+
+        return (
+          <div class="rounded-xl border border-slate-800 bg-[#12161c] p-4 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-1.5 text-xs font-mono text-slate-400 uppercase tracking-wider pb-2.5 border-b border-slate-800/80">
+                <span>{meta.icon}</span>
+                <span class="font-semibold text-slate-300">{meta.name}</span>
+                <span class="text-[10px] ml-auto text-slate-400">({nodesInGroup.length})</span>
+              </div>
+
+              <ul class="mt-3 space-y-2.5 text-xs font-mono">
+                {nodesInGroup.map((node: KnowledgeNode) => {
+                  const edgeLabel = getEdgeLabel(focused.focusNode.id, node.id);
+                  return (
+                    <li class="group">
+                      <div class="flex items-center justify-between gap-2 text-[10px] text-slate-400 mb-0.5">
+                        <span class="text-indigo-400/90 font-semibold">{edgeLabel}</span>
+                        {node.badge && <span class="truncate max-w-[120px]">{node.badge}</span>}
+                      </div>
+                      <a
+                        href={node.href}
+                        class="text-slate-200 hover:text-indigo-400 font-medium block transition-colors leading-snug"
+                      >
+                        {node.title} →
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </section>
+)}
