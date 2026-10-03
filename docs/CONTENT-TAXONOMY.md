@@ -1,44 +1,80 @@
-# Content Taxonomy
+# Content Taxonomy Specification
 
-This document establishes the official topic taxonomy and content classification rules for technical knowledge on the website.
+**Platform:** Uzair Ahmad — Personal Engineering & Research Platform  
+**Phase:** 03 — Information Architecture + Content Architecture  
+**Status:** Approved  
 
-## 1. Domain Taxonomy
+---
 
-Only domains supported by authentic code, research, or documented implementation are included in the taxonomy.
+## 1. Separation of Concerns: Content Type vs Topic
+
+A critical foundation of Information Architecture 2.0 is the strict separation between **What form the content takes** (`ContentType`) and **What subject area it addresses** (`Topic`).
 
 ```
-Knowledge Taxonomy
-├── Quantitative Finance & Time Series
-│   ├── Stationarity & Fractional Differentiation
-│   ├── Volatility Clustering & Regime Detection
-│   ├── Feature Engineering & Lookahead Prevention
-│   └── Risk Metrics & Backtesting Architecture
-│
-├── Machine Learning & Intelligent Systems
-│   ├── Multi-Agent Deterministic Orchestration
-│   ├── Graph-Based State Machines (LangGraph)
-│   ├── Structured Schema Validation (Pydantic / Instructor)
-│   └── Model Evaluation & Drift Detection
-│
-└── Software Engineering & Systems Architecture
-    ├── High-Throughput REST / Async APIs (FastAPI)
-    ├── Static Site Generation & Semantic HTML (Astro)
-    ├── Containerization & Microservice Topologies (Docker)
-    └── Zero-JS Performance & Core Web Vitals
+┌────────────────────────────────────────────────────────────────────────┐
+│                        TWO-DIMENSIONAL TAXONOMY                        │
+├───────────────────────────────────┬────────────────────────────────────┤
+│ CONTENT TYPE (Form & Depth)       │ TOPIC (Domain & Subject)           │
+├───────────────────────────────────┼────────────────────────────────────┤
+│ • Project (Production software)   │ • Quantitative Finance             │
+│ • Case Study (In-depth analysis)  │ • Machine Learning & AI            │
+│ • Research (Formal study/inquiry) │ • Deep Learning & Neural Nets      │
+│ • Note (Engineering insight)      │ • Multi-Agent Systems              │
+│ • Experiment (Lab prototype)      │ • Full-Stack Web Engineering       │
+│ • Tool / Utility (Micro-script)   │ • Cloud & Systems Architecture     │
+│ • Tutorial (Methodology guide)    │ • UI/UX & Design Systems           │
+└───────────────────────────────────┴────────────────────────────────────┘
 ```
 
-## 2. Separation of Topic vs. Content Type
+---
 
-To maintain clarity, topics (subject matter) are strictly decoupled from content types (methodology/format):
+## 2. Content Type Definitions
 
-| Field | Definition | Permitted Values |
-|---|---|---|
-| **Topic / Domain** | The technical subject domain | `Quantitative Finance`, `Machine Learning`, `Multi-Agent Systems`, `Time Series Analysis`, `System Architecture` |
-| **Content Type** | The structural format and intent of the document | `Research`, `Technical Article`, `Technical Note`, `Project Case Study`, `Concept Breakdown` |
-| **Depth Level** | Technical depth and scope | `Level 1` (Short Note), `Level 2` (Explanation), `Level 3` (Deep Article), `Level 4` (Empirical Research), `Level 5` (Long-Form Case Study) |
+### 2.1 Project (`project`)
+- **Definition:** Deployed or structured software designed to execute an end-to-end task.
+- **Key Attributes:** Public repository, live URL (where deployed), technology stack, problem/solution statement, architecture diagram.
+- **Route:** `/work/[slug]`
 
-## 3. Taxonomy Governance Rules
+### 2.2 Case Study (`case-study`)
+- **Definition:** Exhaustive architectural writeup of a flagship project.
+- **Key Attributes:** Context, objectives, technical challenges, key decisions with tradeoffs, empirical results, lessons learned.
+- **Route:** `/work/[slug]`
 
-- **No Empty Categories**: Topic hub pages are only indexed when at least two substantive content pieces exist within that category.
-- **Tag Discipline**: Maximum 4–6 tags per piece. Tags must represent concrete technologies, methodologies, or theorems (e.g., `ADF Test`, `LangGraph`, `GMM`).
-- **No Filler Tags**: Broad buzzwords (`#Tech`, `#Innovation`, `#AI2026`) are prohibited.
+### 2.3 Research Inquiry (`research`)
+- **Definition:** Methodological exploration of a mathematical or statistical question.
+- **Key Attributes:** Core question, hypothesis, methodology, dataset, mathematical formulation, findings, limitations, cited papers.
+- **Route:** `/research/[slug]`
+
+### 2.4 Lab Entry (`lab`)
+- **Definition:** Exploratory prototype or technical proof-of-concept.
+- **Key Attributes:** Objective, experiment script, live playground/demo, repository, status (Experiment, Prototype, Promoted, Archived).
+- **Route:** `/lab/[slug]`
+
+### 2.5 Engineering Note (`note`)
+- **Definition:** Concise, reusable architectural or implementation insight.
+- **Key Attributes:** Code snippet, decision rationale, benchmark comparison.
+
+---
+
+## 3. Topic Taxonomies & Mapping
+
+| Topic Key | Display Label | Primary Associated Technologies |
+| :--- | :--- | :--- |
+| `quant` | Quantitative Finance | Python, Pandas, NumPy, Statsmodels, Walk-Forward CV |
+| `ai-ml` | Machine Learning & AI | PyTorch, Scikit-Learn, GMM, HMM, Neural Networks |
+| `agents` | Multi-Agent Systems | LangGraph, State Machines, Deterministic Guardrails |
+| `web` | Full-Stack Web | Astro, React, TypeScript, Node.js, Express, Tailwind/CSS |
+| `data-systems`| Data Infrastructure | PostgreSQL, REST APIs, JSON Validation, Data Cleaning |
+| `systems` | Systems & DevOps | Linux, Git, GitHub Actions, Vercel, Automated QA |
+| `ui-ux` | UI/UX & Design Systems | Semantic HTML5, CSS Tokens, WCAG 2.1 AA, Responsive |
+
+---
+
+## 4. Status Taxonomy
+
+- `active`: Currently maintained, expanding, or under live research.
+- `completed`: Successfully engineered, verified, and shipped.
+- `academic`: University / FYP research project with academic rigor.
+- `prototype`: Functional proof-of-concept in the exploratory phase.
+- `promoted`: Lab experiment that matured into a full Work project.
+- `archived`: Historical codebase preserved for reference.

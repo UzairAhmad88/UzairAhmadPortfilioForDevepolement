@@ -1,108 +1,120 @@
-# User Journeys Specification
+# User Journey Maps: Engineering & Research Platform
 
-This document maps out the end-to-end navigational flows for each core visitor persona.
-
----
-
-## Journey 1: Organic Search Visitor (Discovery via Google / DuckDuckGo)
-**Scenario**: A search user looks up *"Uzair Ahmad developer"* or *"Deep Learning Stock Return Prediction Quantitative Trading"*.
-
-```
-[ Search Engine Result ]
-          │
-          ▼
-[ Landing Page: / or /work/deep-learning-stock-return-prediction ]
-          │
-          ├─► Reads problem statement & research methodology
-          ├─► Inspects verified GitHub source code
-          │
-          ▼
-[ About Summary / Capabilities ]
-          │
-          ▼
-[ Conversion: Reach out via LinkedIn or Email ]
-```
+**Platform:** Uzair Ahmad — Personal Engineering & Research Platform  
+**Phase:** 03 — Information Architecture + Content Architecture  
+**Status:** Approved  
 
 ---
 
-## Journey 2: Technical Recruiter / Engineering Hiring Manager
-**Scenario**: A recruiter receives a resume or GitHub profile and evaluates candidate competency.
+## 1. Journey 1: Technical Recruiter / Talent Lead
+
+**Goal:** Rapidly determine technical competency, stack fit, and communication clarity.
 
 ```
-[ Entry via LinkedIn or direct link ( / ) ]
-          │
-          ▼
-[ Hero: 05-second comprehension of Quantitative AI & Product Engineer ]
-          │
-          ▼
-[ Technical Map / Universe: Python, HFT, ML, Full Stack, SQL ]
-          │
-          ▼
-[ Projects Grid: Filter by 'Quant' or 'Engineering' ]
-          │
-          ▼
-[ Code Verification: Clicks repository link to review code quality ]
-          │
-          ▼
-[ Conversion: Starts LinkedIn conversation or copies email ]
+[Entry: Home (/)]
+       │
+       ▼
+[Discovery: Hero & Core Attributes] (PyTorch · Time-Series · Full-Stack)
+       │
+       ▼
+[Exploration: Click "Explore Verified Systems →"] (/work)
+       │
+       ▼
+[Evidence: Inspect Flagship Case Study] (/work/deep-learning-stock-return-prediction)
+       │
+       ▼
+[Action: Initiate Candidate Outreach via LinkedIn or Email] (/contact)
 ```
+
+- **Friction Points Eliminated:** No hidden resumes, no vague buzzwords, immediate links to public GitHub code and verified live applications.
 
 ---
 
-## Journey 3: Startup Founder / Client (Seeking Product Engineering / MVP)
-**Scenario**: A founder seeks an engineer capable of turning a complex idea or data pipeline into a full-stack SaaS product.
+## 2. Journey 2: Startup Founder / Potential Client
+
+**Goal:** Evaluate system delivery capabilities, architecture maturity, and reliability.
 
 ```
-[ Entry via direct recommendation or social link ( / ) ]
-          │
-          ▼
-[ Capability Discipline 03 & 04: Full Stack & Product Engineering ]
-          │
-          ▼
-[ Project Proof: CuraSphere HMS (Healthcare SaaS) & Restaurant POS ]
-          │
-          ▼
-[ Architecture Pipeline: Understands end-to-end Data → Backend → API → Product path ]
-          │
-          ▼
-[ Conversion: Direct message via WhatsApp floating action or Email ]
+[Entry: Home (/) or Services (/services)]
+       │
+       ▼
+[Discovery: Review Core Disciplines & Capability Cards]
+       │
+       ▼
+[Exploration: CuraSphere HMS or Market Regime Engine Case Study] (/work/curasphere-hms)
+       │
+       ▼
+[Evidence: Architecture Diagrams, Deliverables, and Tradeoff Notes]
+       │
+       ▼
+[Action: Submit Structured Scoping Inquiry or Direct WhatsApp] (/contact)
 ```
+
+- **Friction Points Eliminated:** Clear scoping milestones, transparent communication expectations, direct WhatsApp floating access.
 
 ---
 
-## Journey 4: Quantitative / AI Researcher
-**Scenario**: A quantitative researcher or data scientist evaluates signal research and algorithmic trading systems.
+## 3. Journey 3: Senior Software Engineer / Technical Peer
+
+**Goal:** Review code quality, framework choices, and engineering discipline.
 
 ```
-[ Entry via Research link or direct case study ]
-          │
-          ▼
-[ Systems: 01 Quantitative Research & Trading ]
-          │
-          ▼
-[ Research Lab: Signal Research & Market Regime Engine ]
-          │
-          ▼
-[ Deep Learning Stock Return Prediction pipeline ]
-          │
-          ▼
-[ Conversion: Reaches out for technical discussion or research collaboration ]
+[Entry: Direct Project URL or Home] (/work)
+       │
+       ▼
+[Discovery: Technical Map & Role Responsibilities]
+       │
+       ▼
+[Exploration: Inspect Architecture Section & Decisions]
+       │
+       ▼
+[Evidence: Review GitHub Repositories & Automated Test Suites]
+       │
+       ▼
+[Action: Star Repo, Follow on GitHub, or Connect on LinkedIn]
 ```
+
+- **Friction Points Eliminated:** Clean semantic HTML, 100% inspectable code bases, zero artificial vanity metrics.
 
 ---
 
-## Journey 5: Returning Visitor
-**Scenario**: A past contact or collaborator returns to see recent updates and signals.
+## 4. Journey 4: Quantitative / ML Researcher
+
+**Goal:** Understand mathematical formulation, stationarity tests, and model validation.
 
 ```
-[ Entry via bookmark or search ( / ) ]
-          │
-          ▼
-[ Building in Public: Scans timeline for latest monthly milestones ]
-          │
-          ▼
-[ Jump to newly updated project repository ]
-          │
-          ▼
-[ Direct engagement ]
+[Entry: Research Hub] (/research)
+       │
+       ▼
+[Discovery: Active Inquiry Cards (Signal & Regimes)]
+       │
+       ▼
+[Exploration: Read Deep Inquiry Formulation] (/research/signal-research)
+       │
+       ▼
+[Evidence: Mathematical Models, Hypotheses, Walk-Forward Metrics]
+       │
+       ▼
+[Action: Cross-reference Corresponding Implementation in /work]
+```
+
+- **Friction Points Eliminated:** Mathematical precision preserved, explicit discussion of model limitations and experimental constraints.
+
+---
+
+## 5. Journey 5: General Technical Visitor
+
+**Goal:** Learn who Uzair is, understand his mindset, and explore his projects.
+
+```
+[Entry: Home (/)]
+       │
+       ▼
+[Discovery: Read "How I Think" & Professional Direction]
+       │
+       ▼
+[Exploration: Browse About Page] (/about)
+       │
+       ▼
+[Action: Explore Open Source Work or Connect]
 ```
