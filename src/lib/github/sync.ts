@@ -1,32 +1,62 @@
 import type { Project } from '../../types/project.ts';
-import type { NormalizedRepository, RepositorySyncResult, SyncReport, SyncStatus } from './types.ts';
+import type {
+  RepositorySyncResult,
+  GitHubSyncReport,
+  SyncStatus,
+  CurationLifecycleState,
+} from '../../types/github.ts';
+import { githubConfig } from '../../config/github.ts';
 import { listGithubRepositories } from './client.ts';
 import { findMatchingProject, isUpdateAvailable } from './matcher.ts';
+import { getCurationByRepo } from '../../data/github/curation.ts';
 import { findVercelDeployment } from '../vercel/index.ts';
 
 /**
- * Runs the project synchronization diff between GitHub repositories, Vercel deployments,
- * and curated portfolio projects in memory.
+ * Executes a full repository synchronization and change detection audit
  */
-export async function runProjectSync(
+export async function runGitHubSync(
   curatedProjects: Project[],
-  options: { githubToken?: string; dryRun?: boolean } = {}
-): Promise<SyncReport> {
-  const { repositories } = await listGithubRepositories('UzairAhmad88', options.githubToken);
+  options: {
+    username?: string;
+    token?: string;
+    dryRun?: boolean;
+  } = {}
+): Promise<GitHubSyncReport> {
+  const username = options.username || githubConfig.username;
+  const { repositories, error } = await listGithubRepositories({
+    username,
+    token: options.token,
+  });
 
   const results: RepositorySyncResult[] = [];
+  const warnings: string[] = [];
+  if (error) {
+    warnings.push(`Fetch warning: ${error}`);
+  }
+
   let publishedCount = 0;
   let updateAvailableCount = 0;
   let newDiscoveredCount = 0;
   let unchangedCount = 0;
+  let archivedCount = 0;
+  let unmatchedCount = 0;
 
   for (const repo of repositories) {
     const matchedProject = findMatchingProject(repo, curatedProjects);
+    const curation = getCurationByRepo(repo.fullName);
     const vercelMatch = findVercelDeployment(repo.fullName, matchedProject?.slug);
 
     let syncStatus: SyncStatus = 'DISCOVERED';
+    let curationState: CurationLifecycleState = curation?.curationState || 'discovered';
     let requiresReview = false;
     let updateDetails: string | undefined;
+    const repoWarnings: string[] = [];
+
+    if (repo.archived) {
+      archivedCount++;
+      curationState = 'archived';
+      repoWarnings.push('Repository is archived on GitHub.');
+    }
 
     if (matchedProject) {
       if (isUpdateAvailable(repo, matchedProject)) {
@@ -41,108 +71,83 @@ export async function runProjectSync(
     } else {
       syncStatus = 'DISCOVERED';
       newDiscoveredCount++;
+      unmatchedCount++;
       requiresReview = true;
       updateDetails = `New repository discovered: ${repo.name}`;
+      repoWarnings.push('No matching curated portfolio project configured.');
     }
 
     results.push({
       repository: repo,
       syncStatus,
-      matchedProjectSlug: matchedProject?.slug,
+      curationState,
+      matchedProjectSlug: matchedProject?.slug || curation?.projectId,
+      matchedResearchSlug: curation?.researchId,
+      matchedLabSlug: curation?.labId,
       possibleVercelDeployment: vercelMatch?.productionUrl,
       updateDetails,
       requiresReview,
+      warnings: repoWarnings.length > 0 ? repoWarnings : undefined,
     });
   }
 
   return {
     timestamp: new Date().toISOString(),
+    username,
     totalDiscovered: repositories.length,
     publishedCount,
     updateAvailableCount,
     newDiscoveredCount,
     unchangedCount,
+    archivedCount,
+    unmatchedCount,
     results,
+    warnings,
   };
 }
 
 /**
- * Generates markdown documentation report from a sync execution
+ * Generates a structured Markdown report from a sync execution
  */
-export function generateSyncMarkdownReport(report: SyncReport): string {
+export function generateGitHubSyncReport(report: GitHubSyncReport, isDryRun: boolean = false): string {
   const lines: string[] = [
-    '# GitHub & Vercel Project Synchronization Report',
+    '# GitHub Intelligence & Project Synchronization Report',
     '',
+    `**Target Account**: \`https://github.com/${report.username}\`  `,
     `**Execution Timestamp**: ${report.timestamp}  `,
+    `**Execution Mode**: ${isDryRun ? 'DRY-RUN (Zero Files Modified)' : 'LIVE SYNC'}  `,
     `**Total Repositories Discovered**: ${report.totalDiscovered}  `,
-    `**Published Portfolio Projects**: ${report.publishedCount}  `,
+    `**Published Portfolio Mappings**: ${report.publishedCount}  `,
     `**Updates Available**: ${report.updateAvailableCount}  `,
-    `**New Repositories Discovered**: ${report.newDiscoveredCount}  `,
+    `**New / Unmatched Repositories**: ${report.unmatchedCount}  `,
+    `**Archived Repositories**: ${report.archivedCount}  `,
     '',
     '---',
     '',
-    '## Repository Status Table',
+    '## Discovered Repositories & Evidence Status',
     '',
-    '| Repository Name | Classification | Matched Project | Vercel Deployment | Sync Status | Action Needed |',
-    '| :--- | :--- | :--- | :--- | :--- | :--- |',
+    '| Repository Name | Classification | Matched Project | Evidence Status | Vercel Deployment | Sync State | Action |',
+    '| :--- | :--- | :--- | :--- | :--- | :--- | :--- |',
   ];
 
   for (const res of report.results) {
-    const matched = res.matchedProjectSlug ? `[\`${res.matchedProjectSlug}\`](/work/${res.matchedProjectSlug})` : '—';
-    const vercel = res.possibleVercelDeployment ? `[Vercel ↗](${res.possibleVercelDeployment})` : '—';
+    const matched = res.matchedProjectSlug ? `[\`${res.matchedProjectSlug}\`](/work/${res.matchedProjectSlug})` : '*(Unmatched)*';
+    const vercel = res.possibleVercelDeployment ? `[Live ↗](${res.possibleVercelDeployment})` : '—';
     const action = res.requiresReview ? '**Review & Curate**' : res.syncStatus === 'UPDATE_AVAILABLE' ? 'Metadata Update' : 'None';
+    const evidenceStatus = res.repository.visibility === 'public' ? 'Public Verified' : 'Private (Protected)';
 
     lines.push(
-      `| \`${res.repository.name}\` | ${res.repository.classification} | ${matched} | ${vercel} | **${res.syncStatus}** | ${action} |`
+      `| [\`${res.repository.name}\`](${res.repository.htmlUrl}) | \`${res.repository.detectedTechnologies[0] || 'Software'}\` | ${matched} | ${evidenceStatus} | ${vercel} | **${res.syncStatus}** | ${action} |`
     );
   }
 
   lines.push('');
   lines.push('---');
   lines.push('');
-  lines.push('## Data Governance Note');
-  lines.push('- **Curated Content Protected**: Syncing NEVER overwrites manual case study narrative, architecture diagrams, or trade-offs.');
-  lines.push('- **No Auto-Publishing**: Newly discovered repositories remain in `DISCOVERED` status until explicitly curated.');
+  lines.push('## Governance & Publishing Rules');
+  lines.push('1. **Zero Auto-Publishing**: Repositories on GitHub never automatically create or alter public portfolio project narratives.');
+  lines.push('2. **Curated Separation**: Automatic repository facts (stars, dates, forks) remain external evidence; problem statements and architecture remain human-curated.');
+  lines.push('3. **No Metric Ranking**: Star and fork counts are metadata attributes, never quality or proficiency rankings.');
 
   return lines.join('\n');
-}
-
-/**
- * Generates an un-published project draft scaffold for a newly discovered repository
- */
-export function generateProjectDraftScaffold(repo: NormalizedRepository): string {
-  const slug = repo.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-
-  return `// DRAFT SCAFFOLD - NOT YET PUBLISHED
-import type { Project } from '@/types/project';
-
-export const ${slug.replace(/-/g, '_')}: Project = {
-  id: '${slug}',
-  slug: '${slug}',
-  title: '${repo.name.replace(/-/g, ' ')}',
-  shortDescription: '${repo.description.replace(/'/g, "\\'")}',
-  category: ['engineering'],
-  projectType: 'Software Project',
-  domain: 'Full-Stack Engineering',
-  type: 'Product',
-  status: 'active',
-  presentationLevel: 'C',
-  problem: 'TODO: Define the core engineering problem addressed by this project.',
-  solution: 'TODO: Define the technical solution and architecture.',
-  githubUrl: '${repo.htmlUrl}',
-  githubRepo: '${repo.fullName}',
-  repositoryStatus: '${repo.isArchived ? 'archived' : 'public'}',
-  deploymentStatus: 'unknown',
-  repositoryUpdatedAt: '${repo.pushedAt}',
-  source: 'github',
-  technologies: ${JSON.stringify(repo.detectedTechnologies)},
-  caseStudy: {
-    overview: '${repo.description.replace(/'/g, "\\'")}',
-    role: 'Sole Architect & Developer',
-    challenges: [],
-    keyDecisions: [],
-    results: [],
-  }
-};
-`;
 }

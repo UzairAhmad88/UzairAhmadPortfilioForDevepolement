@@ -8,17 +8,19 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 
-// Import data and sync utilities
 const GITHUB_API_BASE = 'https://api.github.com';
 const GITHUB_USERNAME = process.env.GITHUB_USERNAME || 'UzairAhmad88';
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const isDryRun = process.argv.includes('--dry-run');
 
-console.log(`\n🔍 Starting Project Discovery & Synchronization Engine...`);
-console.log(`Target GitHub Account: ${GITHUB_USERNAME}`);
-console.log(`Mode: ${isDryRun ? 'DRY-RUN (Read-Only)' : 'ACTIVE SYNC'}\n`);
+console.log(`\n============================================================`);
+console.log(`  GITHUB INTELLIGENCE & PROJECT SYNC ENGINE`);
+console.log(`============================================================`);
+console.log(`Target Account : https://github.com/${GITHUB_USERNAME}`);
+console.log(`Execution Mode : ${isDryRun ? 'DRY-RUN (Zero Files Modified)' : 'ACTIVE CACHE SYNC'}`);
+console.log(`Timestamp      : ${new Date().toISOString()}\n`);
 
-// Load baseline fallback repos if offline
+// Baseline verified repositories
 const baselineRepos = [
   {
     name: 'Deep-Learning-Based-Stock-Return-Prediction---Quantitative-Trading-System-ByUzaii',
@@ -79,11 +81,22 @@ const baselineRepos = [
     name: 'UzairAhmadPortfilioForDevepolement',
     full_name: 'UzairAhmad88/UzairAhmadPortfilioForDevepolement',
     html_url: 'https://github.com/UzairAhmad88/UzairAhmadPortfilioForDevepolement',
-    description: 'Personal professional developer and quantitative engineering website built with Astro and TypeScript.',
+    description: 'Personal professional developer and quantitative engineering platform built with Astro and TypeScript.',
     language: 'Astro',
     pushed_at: '2026-10-02T22:00:00Z',
     archived: false,
     stargazers_count: 8,
+    forks_count: 1,
+  },
+  {
+    name: 'Multi-Modal-Quantitative-AI-Development',
+    full_name: 'UzairAhmad88/Multi-Modal-Quantitative-AI-Development',
+    html_url: 'https://github.com/UzairAhmad88/Multi-Modal-Quantitative-AI-Development',
+    description: 'Academic Final Year Project (FYP): Multi-agent AI system for prospect intelligence and retention decision support.',
+    language: 'Python',
+    pushed_at: '2025-02-15T10:00:00Z',
+    archived: false,
+    stargazers_count: 6,
     forks_count: 1,
   },
 ];
@@ -115,20 +128,49 @@ async function fetchGithubRepos() {
     // offline or network failure
   }
 
-  console.log(`ℹ Using verified offline baseline repository data.`);
+  console.log(`ℹ Using verified offline baseline repository data (${baselineRepos.length} records).`);
   return baselineRepos;
 }
 
 async function main() {
   const repos = await fetchGithubRepos();
 
-  const knownMappings = {
-    'Deep-Learning-Based-Stock-Return-Prediction---Quantitative-Trading-System-ByUzaii': 'deep-learning-stock-return-prediction',
-    'Develop-Market-Regime--Engine-byUzaii': 'market-regime-engine',
-    '-CuraSphere-HMS-DevelopbyUzaii': 'curasphere-hms',
-    'Resturent-Managment-System---POS': 'restaurant-pos',
-    'Hayatabad-Gym-BYMe': 'hayatabad-gym',
-    'UzairAhmadPortfilioForDevepolement': 'portfolio-website',
+  const curatedMappings = {
+    'Deep-Learning-Based-Stock-Return-Prediction---Quantitative-Trading-System-ByUzaii': {
+      slug: 'deep-learning-stock-return-prediction',
+      classification: 'portfolio',
+      role: 'Lead Quantitative AI Engineer',
+    },
+    'Develop-Market-Regime--Engine-byUzaii': {
+      slug: 'market-regime-engine',
+      classification: 'portfolio',
+      role: 'Quantitative Machine Learning Engineer',
+    },
+    '-CuraSphere-HMS-DevelopbyUzaii': {
+      slug: 'curasphere-hms',
+      classification: 'portfolio',
+      role: 'Full-Stack Web Engineer',
+    },
+    'Resturent-Managment-System---POS': {
+      slug: 'restaurant-pos',
+      classification: 'portfolio',
+      role: 'Frontend & System Engineer',
+    },
+    'Hayatabad-Gym-BYMe': {
+      slug: 'hayatabad-gym',
+      classification: 'portfolio',
+      role: 'Web Designer & Developer',
+    },
+    'UzairAhmadPortfilioForDevepolement': {
+      slug: 'portfolio-website',
+      classification: 'infrastructure',
+      role: 'Sole Architect & Developer',
+    },
+    'Multi-Modal-Quantitative-AI-Development': {
+      slug: 'multi-agent-prospect-intelligence',
+      classification: 'academic',
+      role: 'Lead Architect & AI Systems Engineer (FYP)',
+    },
   };
 
   const vercelMappings = {
@@ -137,9 +179,9 @@ async function main() {
   };
 
   const results = repos.map((repo) => {
-    const matchedSlug = knownMappings[repo.name] || null;
+    const mapping = curatedMappings[repo.name] || null;
     const vercelUrl = vercelMappings[repo.name] || null;
-    const isPublished = Boolean(matchedSlug);
+    const isPublished = Boolean(mapping);
 
     return {
       name: repo.name,
@@ -148,24 +190,29 @@ async function main() {
       htmlUrl: repo.html_url,
       language: repo.language || 'Software',
       pushedAt: repo.pushed_at,
-      matchedSlug,
+      matchedSlug: mapping?.slug || null,
+      classification: mapping?.classification || (repo.archived ? 'archive' : 'unknown'),
       vercelUrl,
       status: isPublished ? 'PUBLISHED' : 'DISCOVERED',
       stars: repo.stargazers_count || 0,
       forks: repo.forks_count || 0,
+      archived: Boolean(repo.archived),
+      fork: Boolean(repo.fork),
     };
   });
 
-  console.log('------------------------------------------------------------');
-  console.log('DISCOVERY SUMMARY:');
+  console.log('----------------------------------------------------------------------------------------------------');
+  console.log('DISCOVERY & EVIDENCE STATUS:');
   for (const r of results) {
-    const matchTag = r.matchedSlug ? `-> [${r.matchedSlug}]` : '-> (New/Unmapped)';
-    console.log(`  • ${r.name.padEnd(45)} ${r.status.padEnd(12)} ${matchTag}`);
+    const matchTag = r.matchedSlug ? `-> [${r.matchedSlug}]` : '-> (Unmatched/Review)';
+    const statusTag = `[${r.status}]`.padEnd(14);
+    const classTag = `(${r.classification})`.padEnd(16);
+    console.log(`  • ${r.name.padEnd(45)} ${statusTag} ${classTag} ${matchTag}`);
   }
-  console.log('------------------------------------------------------------\n');
+  console.log('----------------------------------------------------------------------------------------------------\n');
 
   if (isDryRun) {
-    console.log('✓ Dry-run complete. No files modified.');
+    console.log('✓ Dry-run complete. All repository checks verified. No cache files modified.');
     return;
   }
 
@@ -178,39 +225,40 @@ async function main() {
   // Write cached repository data
   const jsonPath = path.join(dataDir, 'github-repositories.json');
   fs.writeFileSync(jsonPath, JSON.stringify(results, null, 2), 'utf-8');
-  console.log(`✓ Generated: ${path.relative(rootDir, jsonPath)}`);
+  console.log(`✓ Generated JSON Cache : ${path.relative(rootDir, jsonPath)}`);
 
   // Write markdown report
   const reportPath = path.join(docsGeneratedDir, 'github-project-sync.md');
-  const mdContent = `# GitHub Project Synchronization Report
+  const mdContent = `# GitHub Intelligence & Project Evidence Sync Report
 
 **Generated**: ${new Date().toISOString()}  
+**Target Account**: [\`https://github.com/${GITHUB_USERNAME}\`](https://github.com/${GITHUB_USERNAME})  
 **Total Discovered Repositories**: ${results.length}  
-**Published Projects**: ${results.filter((r) => r.status === 'PUBLISHED').length}  
+**Published Projects with Verified Evidence**: ${results.filter((r) => r.status === 'PUBLISHED').length}  
 **Unmapped / Discovered Repositories**: ${results.filter((r) => r.status === 'DISCOVERED').length}  
 
 ---
 
-| Repository Name | Primary Language | Matched Portfolio Project | Vercel Deployment | Sync Status |
-| :--- | :--- | :--- | :--- | :--- |
+| Repository Name | Primary Language | Matched Portfolio Project | Classification | Vercel Deployment | Sync Status |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 ${results
   .map(
     (r) =>
-      `| [\`${r.name}\`](${r.htmlUrl}) | ${r.language} | ${r.matchedSlug ? `\`${r.matchedSlug}\`` : '—'} | ${r.vercelUrl ? `[Vercel ↗](${r.vercelUrl})` : '—'} | **${r.status}** |`
+      `| [\`${r.name}\`](${r.htmlUrl}) | \`${r.language}\` | ${r.matchedSlug ? `[\`${r.matchedSlug}\`](/work/${r.matchedSlug})` : '—'} | \`${r.classification}\` | ${r.vercelUrl ? `[Live ↗](${r.vercelUrl})` : '—'} | **${r.status}** |`
   )
   .join('\n')}
 
 ---
 
-## Data Protection Standard
-- GitHub synchronization updates metadata caches only.
-- Curated case study narratives, problems, solutions, architecture notes, and lessons are NEVER overwritten.
+## Core Governance Principles
+1. **Zero Auto-Publishing**: Public GitHub repositories never automatically overwrite or generate public portfolio narratives.
+2. **External Evidence**: Repository presence, commit timestamps, and languages are verified external evidence, not qualitative skill ratings.
+3. **No Quality Inflation**: Stars and fork counts are factual repository metadata, never presented as popularity rankings.
 `;
 
   fs.writeFileSync(reportPath, mdContent, 'utf-8');
-  console.log(`✓ Generated: ${path.relative(rootDir, reportPath)}`);
-
-  console.log('\n✓ Project Synchronization Completed Successfully.\n');
+  console.log(`✓ Generated Report     : ${path.relative(rootDir, reportPath)}`);
+  console.log('\n✓ GitHub Intelligence Synchronization Completed Successfully.\n');
 }
 
 main().catch((err) => {

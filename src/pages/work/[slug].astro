@@ -6,6 +6,8 @@ import ProjectVisualization from '@/components/visualizations/ProjectVisualizati
 import ProjectCard from '@/components/cards/ProjectCard.astro';
 import RelatedKnowledgeGrid from '@/components/knowledge/RelatedKnowledgeGrid.astro';
 import ContactCallout from '@/components/sections/ContactCallout.astro';
+import GitHubEvidenceBadge from '@/components/github/GitHubEvidenceBadge.astro';
+import { getProjectGitHubEvidence } from '@/lib/github/evidence';
 import { projects } from '@/data/projects';
 import { siteConfig } from '@/data/site';
 import type { Project } from '@/types/project';
@@ -51,6 +53,9 @@ const relatedProjects = (project.relatedProjects || [])
 
 const fallbackRelated = projects.filter((p) => p.slug !== project.slug).slice(0, 2);
 const finalRelatedProjects = relatedProjects.length > 0 ? relatedProjects : fallbackRelated;
+
+const gitHubEvidence = getProjectGitHubEvidence(project);
+const isPrivateRepo = project.repositoryStatus === 'private';
 ---
 
 <BaseLayout seo={seo}>
@@ -274,6 +279,14 @@ const finalRelatedProjects = relatedProjects.length > 0 ? relatedProjects : fall
                 )}
               </dd>
             </dl>
+
+            <div class="sidebar-evidence-wrapper" style="margin-top: 1.25rem;">
+              <GitHubEvidenceBadge
+                evidence={gitHubEvidence}
+                entityTitle={project.title}
+                isPrivateOrUnavailable={isPrivateRepo || !project.githubUrl}
+              />
+            </div>
 
             <div class="sidebar-cta-box">
               <p class="sidebar-cta-text">Have questions or want to discuss this architecture?</p>

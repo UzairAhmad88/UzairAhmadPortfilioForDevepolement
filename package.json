@@ -13,6 +13,9 @@
     "test": "node --test tests/unit/seo.test.ts tests/unit/projects.test.ts tests/unit/research.test.ts tests/unit/contact.test.ts tests/unit/production.test.ts tests/unit/github-sync.test.ts tests/unit/project-dna.test.ts tests/unit/visualizations.test.ts tests/unit/methodology.test.ts tests/unit/technologies.test.ts tests/unit/notes.test.ts tests/unit/lab.test.ts tests/unit/knowledge-graph.test.ts tests/unit/discovery.test.ts",
     "projects:sync": "node scripts/sync-projects.mjs",
     "sync:github": "node scripts/sync-projects.mjs",
+    "github:sync": "node scripts/sync-projects.mjs",
+    "github:sync:dry": "node scripts/sync-projects.mjs --dry-run",
+    "github:validate": "node scripts/validate-github.mjs",
     "lint": "eslint . --ext .js,.ts,.astro",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

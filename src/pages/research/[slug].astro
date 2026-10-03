@@ -4,6 +4,8 @@ import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
 import ProjectCard from '@/components/cards/ProjectCard.astro';
 import RelatedKnowledgeGrid from '@/components/knowledge/RelatedKnowledgeGrid.astro';
 import ContactCallout from '@/components/sections/ContactCallout.astro';
+import GitHubEvidenceBadge from '@/components/github/GitHubEvidenceBadge.astro';
+import { getResearchGitHubEvidence } from '@/lib/github/evidence';
 import { researchItems } from '@/data/research';
 import { projects } from '@/data/projects';
 import { technologies } from '@/data/technologies';
@@ -50,6 +52,8 @@ const relatedProjects = (inquiry.relatedProjects || [])
 const linkedTechnologies = (inquiry.technologies || [])
   .map((techId) => technologies.find((t) => t.id === techId))
   .filter((t) => Boolean(t));
+
+const gitHubEvidence = getResearchGitHubEvidence(inquiry);
 ---
 
 <BaseLayout seo={seo}>
@@ -338,6 +342,14 @@ const linkedTechnologies = (inquiry.technologies || [])
                 )}
               </dd>
             </dl>
+
+            <div class="sidebar-evidence-wrapper" style="margin-top: 1.25rem;">
+              <GitHubEvidenceBadge
+                evidence={gitHubEvidence}
+                entityTitle={inquiry.title}
+                isPrivateOrUnavailable={!inquiry.githubUrl && !gitHubEvidence}
+              />
+            </div>
 
             {linkedTechnologies.length > 0 && (
               <div class="sidebar-tech-list">

@@ -1,0 +1,346 @@
+---
+import type { GitHubEvidence } from '@/types/github';
+
+interface Props {
+  evidence: GitHubEvidence | null;
+  entityTitle?: string;
+  isPrivateOrUnavailable?: boolean;
+}
+
+const { evidence, isPrivateOrUnavailable = false } = Astro.props;
+---
+
+{evidence ? (
+  <div class="github-evidence-card" aria-labelledby="github-evidence-heading">
+    <div class="evidence-header">
+      <div class="provenance-badge-group">
+        <span class="github-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+          </svg>
+        </span>
+        <span class="provenance-tag">
+          {evidence.provenance === 'Verified' ? 'Verified GitHub Evidence' : 'Cached Evidence'}
+        </span>
+      </div>
+      <span class="visibility-tag">{evidence.archived ? 'Archived' : 'Public Repository'}</span>
+    </div>
+
+    <div class="evidence-body">
+      <div class="repo-meta-row">
+        <span class="meta-label">Repository</span>
+        <a
+          href={evidence.repositoryUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="repo-name-link"
+          aria-label={`View ${evidence.fullName} repository on GitHub (opens in new tab)`}
+        >
+          {evidence.fullName}
+          <span class="ext-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+
+      <div class="meta-grid">
+        <div class="meta-item">
+          <span class="item-label">Primary Language</span>
+          <span class="item-value font-mono">{evidence.language}</span>
+        </div>
+
+        <div class="meta-item">
+          <span class="item-label">Default Branch</span>
+          <span class="item-value font-mono">{evidence.defaultBranch}</span>
+        </div>
+
+        {evidence.license && (
+          <div class="meta-item">
+            <span class="item-label">License</span>
+            <span class="item-value">{evidence.license}</span>
+          </div>
+        )}
+
+        <div class="meta-item">
+          <span class="item-label">Last Verified</span>
+          <span class="item-value font-mono">{evidence.lastVerifiedAt.slice(0, 10)}</span>
+        </div>
+      </div>
+
+      {evidence.topics.length > 0 && (
+        <div class="topics-row">
+          <span class="topics-label">Detected Topics:</span>
+          <div class="topics-list">
+            {evidence.topics.map((t) => (
+              <span class="topic-chip font-mono">#{t}</span>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+
+    <div class="evidence-footer">
+      <div class="action-links">
+        <a
+          href={evidence.codeUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="sub-link"
+          aria-label={`Browse code tree for ${evidence.repositoryName} on GitHub`}
+        >
+          Browse Tree
+        </a>
+        <span class="link-divider" aria-hidden="true">·</span>
+        <a
+          href={evidence.commitsUrl || `${evidence.repositoryUrl}/commits`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="sub-link"
+          aria-label={`View commit history for ${evidence.repositoryName} on GitHub`}
+        >
+          Commit Log
+        </a>
+        {evidence.issuesUrl && (
+          <>
+            <span class="link-divider" aria-hidden="true">·</span>
+            <a
+              href={evidence.issuesUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="sub-link"
+              aria-label={`View issues for ${evidence.repositoryName} on GitHub`}
+            >
+              Issue Tracker
+            </a>
+          </>
+        )}
+      </div>
+
+      <span class="evidence-note">Evidence verified directly from public repository metadata.</span>
+    </div>
+  </div>
+) : isPrivateOrUnavailable ? (
+  <div class="github-evidence-unavailable" role="status">
+    <div class="unavailable-header">
+      <span class="github-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+        </svg>
+      </span>
+      <span class="unavailable-title">Source Repository</span>
+    </div>
+    <p class="unavailable-text">
+      Source repository is private, proprietary, or client-managed and not published publicly.
+    </p>
+  </div>
+) : null}
+
+<style>
+  .github-evidence-card {
+    background: var(--color-surface, #0c1815);
+    border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.08));
+    border-radius: var(--radius-md, 8px);
+    padding: var(--space-4, 1rem) var(--space-5, 1.25rem);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3, 0.75rem);
+  }
+
+  .evidence-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-2, 0.5rem);
+    padding-bottom: var(--space-2, 0.5rem);
+    border-bottom: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.05));
+  }
+
+  .provenance-badge-group {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2, 0.5rem);
+  }
+
+  .github-icon {
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-text-secondary, #94a3b8);
+  }
+
+  .provenance-tag {
+    font-size: var(--text-xs, 0.75rem);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-accent-teal, #14b8a6);
+  }
+
+  .visibility-tag {
+    font-size: var(--text-xs, 0.75rem);
+    color: var(--color-text-tertiary, #64748b);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.06));
+  }
+
+  .evidence-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3, 0.75rem);
+  }
+
+  .repo-meta-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .meta-label {
+    font-size: var(--text-xs, 0.75rem);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-tertiary, #64748b);
+  }
+
+  .repo-name-link {
+    font-size: var(--text-sm, 0.875rem);
+    font-weight: 600;
+    color: var(--color-text-primary, #f8fafc);
+    text-decoration: none;
+    word-break: break-all;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.15s ease;
+  }
+
+  .repo-name-link:hover {
+    color: var(--color-accent-teal, #14b8a6);
+    text-decoration: underline;
+  }
+
+  .ext-arrow {
+    font-size: 0.9em;
+    color: var(--color-text-tertiary, #64748b);
+  }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: var(--space-3, 0.75rem);
+    background: rgba(0, 0, 0, 0.2);
+    padding: var(--space-2, 0.5rem) var(--space-3, 0.75rem);
+    border-radius: 4px;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .item-label {
+    font-size: var(--text-2xs, 0.6875rem);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-tertiary, #64748b);
+  }
+
+  .item-value {
+    font-size: var(--text-xs, 0.75rem);
+    color: var(--color-text-secondary, #cbd5e1);
+  }
+
+  .topics-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2, 0.5rem);
+  }
+
+  .topics-label {
+    font-size: var(--text-2xs, 0.6875rem);
+    color: var(--color-text-tertiary, #64748b);
+  }
+
+  .topics-list {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .topic-chip {
+    font-size: var(--text-2xs, 0.6875rem);
+    background: rgba(20, 184, 166, 0.08);
+    color: var(--color-accent-teal, #2dd4bf);
+    border: 1px solid rgba(20, 184, 166, 0.2);
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+
+  .evidence-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-2, 0.5rem);
+    padding-top: var(--space-2, 0.5rem);
+    border-top: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.05));
+  }
+
+  .action-links {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2, 0.5rem);
+  }
+
+  .sub-link {
+    font-size: var(--text-xs, 0.75rem);
+    color: var(--color-text-secondary, #94a3b8);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .sub-link:hover {
+    color: var(--color-text-primary, #f8fafc);
+    text-decoration: underline;
+  }
+
+  .link-divider {
+    color: var(--color-text-tertiary, #475569);
+  }
+
+  .evidence-note {
+    font-size: var(--text-2xs, 0.6875rem);
+    color: var(--color-text-tertiary, #64748b);
+    font-style: italic;
+  }
+
+  .github-evidence-unavailable {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px dashed var(--color-border-subtle, rgba(255, 255, 255, 0.1));
+    border-radius: var(--radius-md, 8px);
+    padding: var(--space-3, 0.75rem) var(--space-4, 1rem);
+  }
+
+  .unavailable-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2, 0.5rem);
+    margin-bottom: 4px;
+  }
+
+  .unavailable-title {
+    font-size: var(--text-xs, 0.75rem);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-tertiary, #94a3b8);
+  }
+
+  .unavailable-text {
+    font-size: var(--text-xs, 0.75rem);
+    color: var(--color-text-tertiary, #64748b);
+    margin: 0;
+  }
+</style>
