@@ -127,6 +127,7 @@ export interface Project {
   featured?: boolean;
   featuredSubheading?: string;
   isLatest?: boolean;
+  year?: number | string;
   publishedAt?: string;
   updatedAt?: string;
   

@@ -1,0 +1,125 @@
+---
+import { buildTimelineEvents } from '@/lib/timeline';
+import TimelineEventCard from '@/components/cards/TimelineEventCard.astro';
+
+const allEvents = buildTimelineEvents();
+// Select a curated sequence of 4 featured milestone events across projects, research, and lab
+const previewEvents = allEvents
+  .filter((e) => e.featured || e.type === 'research' || e.type === 'project')
+  .slice(0, 4);
+---
+
+<section id="timeline" class="section-shell timeline-preview-section">
+  <div class="section-heading reveal">
+    <div class="heading-row">
+      <p class="eyebrow"><span class="section-number">09 /</span> Engineering Timeline</p>
+      <a href="/timeline" class="timeline-link-pill">
+        Full Timeline ({allEvents.length} Milestones) →
+      </a>
+    </div>
+    <h2>Chronological Evolution of My Work & Research</h2>
+    <p class="section-subtitle">
+      Trace how projects, mathematical models, laboratory prototypes, and architectural patterns have evolved across time.
+    </p>
+  </div>
+
+  <div class="timeline-preview-grid reveal">
+    {previewEvents.map((evt) => (
+      <TimelineEventCard event={evt} />
+    ))}
+  </div>
+
+  <div class="timeline-cta-row reveal">
+    <a href="/timeline" class="btn-timeline-full">
+      <span>Explore Complete Engineering Timeline (2024 – 2026)</span>
+      <span class="btn-arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .timeline-preview-section {
+    padding: clamp(3rem, 6vw, 5.5rem) 0;
+    border-bottom: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
+  }
+
+  .heading-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline-link-pill {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.775rem;
+    font-weight: 700;
+    color: var(--color-accent-teal, #7ed8c4);
+    background: rgba(126, 216, 196, 0.08);
+    border: 1px solid rgba(126, 216, 196, 0.24);
+    padding: 0.3rem 0.75rem;
+    border-radius: var(--radius-full, 9999px);
+    text-decoration: none;
+    transition: all var(--transition-fast, 150ms ease);
+  }
+
+  .timeline-link-pill:hover {
+    background: rgba(126, 216, 196, 0.16);
+    border-color: rgba(126, 216, 196, 0.45);
+  }
+
+  .section-subtitle {
+    max-width: 700px;
+    color: var(--color-text-secondary, #a9b8b1);
+    font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+    line-height: 1.65;
+    margin: 0.5rem 0 2rem 0;
+  }
+
+  .timeline-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .timeline-cta-row {
+    margin-top: 2.5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .btn-timeline-full {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #07110f;
+    background: var(--color-accent-teal, #7ed8c4);
+    padding: 0.75rem 1.75rem;
+    border-radius: var(--radius-sm, 4px);
+    text-decoration: none;
+    transition: transform var(--transition-fast, 150ms ease), opacity var(--transition-fast, 150ms ease);
+  }
+
+  .btn-timeline-full:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+  }
+
+  .btn-arrow {
+    transition: transform var(--transition-fast, 150ms ease);
+  }
+
+  .btn-timeline-full:hover .btn-arrow {
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 860px) {
+    .timeline-preview-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

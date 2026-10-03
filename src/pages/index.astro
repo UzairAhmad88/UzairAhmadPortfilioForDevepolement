@@ -9,7 +9,7 @@ import ResearchLab from '@/components/sections/ResearchLab.astro';
 import LabSection from '@/components/sections/LabSection.astro';
 import ArchitectureSection from '@/components/sections/ArchitectureSection.astro';
 import About from '@/components/sections/About.astro';
-import Timeline from '@/components/sections/Timeline.astro';
+import TimelinePreview from '@/components/sections/TimelinePreview.astro';
 import Contact from '@/components/sections/Contact.astro';
 import { getProfilePageSchema, getWebSiteSchema } from '@/lib/seo/jsonld';
 import { siteConfig } from '@/data/site';
@@ -34,7 +34,7 @@ const seo = {
     <LabSection />
     <ArchitectureSection />
     <About />
-    <Timeline />
+    <TimelinePreview />
     <Contact />
   </main>
 </BaseLayout>

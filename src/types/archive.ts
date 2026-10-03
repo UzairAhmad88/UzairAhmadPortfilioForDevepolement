@@ -31,6 +31,8 @@ export interface ProjectArchiveMetadata {
   predecessorProjectId?: string;   // Slug of predecessor project
   predecessorProjectTitle?: string;// Title of predecessor project for direct display
   historicalSignificance?: string; // Summary of lessons / architectural legacy
+  lessonsLearned?: string[];       // Technical takeaways from the project
+  retrospectiveSummary?: string;   // Retrospective notes
   preserveEvidence?: boolean;      // Whether repository/deployment evidence should be surfaced
 }
 
