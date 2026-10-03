@@ -41,6 +41,8 @@ export const featuredProject: Project = {
     'fractional-differentiation-memory-stationarity',
     'gmm-state-flipping-variance-ordering',
   ],
+  relatedLab: ['fractional-diff-cli', 'streaming-orderbook-sse'],
+  originatedFromLab: 'fractional-diff-cli',
   caseStudy: {
     overview: 'A deep-learning-based quantitative system designed to evaluate predictive structure in financial asset returns. The project explores neural time-series modeling, custom loss formulations, and rigorous backtest validation.',
     context: 'Financial market prediction is inherently challenging due to low signal-to-noise ratio, regime changes, and lookahead bias risks. Standard naive machine learning approaches frequently overfit in-sample data while collapsing out-of-sample.',
@@ -206,6 +208,8 @@ export const fypProject: Project = {
     'async-sqlalchemy-session-lifecycle',
     'deterministic-state-graph-pydantic-guardrails',
   ],
+  relatedLab: ['multi-agent-pydantic-state-machine'],
+  originatedFromLab: 'multi-agent-pydantic-state-machine',
   caseStudy: {
     overview: 'A Final Year Project (FYP) exploring collaborative multi-agent architectures to streamline business prospect research, automated data synthesis, and client retention decision support.',
     context: 'Traditional CRM systems store static data but lack active intelligence. Sales and customer success teams spend hours conducting manual online research to qualify leads and detect churn signals.',
@@ -507,6 +511,8 @@ export const projects: Project[] = [
       'fractional-differentiation-memory-stationarity',
       'gmm-state-flipping-variance-ordering',
     ],
+    relatedLab: ['fractional-diff-cli', 'gmm-regime-stability-probe'],
+    originatedFromLab: 'gmm-regime-stability-probe',
     caseStudy: {
       overview: 'An algorithmic framework for discovering latent market states (Low-volatility bull, High-volatility bear, Sideways consolidation) using unsupervised statistical clustering.',
       context: 'Single-strategy trading systems struggle across changing macro environments. Identifying regime transitions enables dynamic parameter adaptation and risk throttle control.',

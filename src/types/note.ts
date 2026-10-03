@@ -59,6 +59,7 @@ export interface EngineeringNote {
   technologies: string[]; // Canonical IDs from Phase 09
   relatedProjects?: string[]; // Canonical project slugs from Phase 05
   relatedResearch?: string[]; // Canonical research slugs from Phase 10
+  relatedLab?: string[]; // Canonical lab experiment slugs from Phase 12
   sources?: NoteSource[];
   
   // Metadata & Timestamps

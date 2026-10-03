@@ -25,6 +25,7 @@ export interface Technology {
   projectSlugs: string[];
   researchSlugs?: string[];
   noteSlugs?: string[];
+  labSlugs?: string[];
   aliases?: string[];
   website?: string;
   documentationUrl?: string;

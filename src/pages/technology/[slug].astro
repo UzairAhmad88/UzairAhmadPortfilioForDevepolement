@@ -8,9 +8,11 @@ import type { Technology, TechnologyCategory } from '@/types/technology';
 import type { Project } from '@/types/project';
 import type { ResearchItem } from '@/types/research';
 import type { EngineeringNote } from '@/types/note';
+import type { LabItem } from '@/types/lab';
 import { projects } from '@/data/projects';
 import { researchItems } from '@/data/research';
 import { engineeringNotes } from '@/data/notes';
+import { labItems } from '@/data/lab';
 import { siteConfig } from '@/data/site';
 
 export function getStaticPaths() {
@@ -37,6 +39,10 @@ const evidenceResearch: ResearchItem[] = (tech.researchSlugs || [])
 const evidenceNotes: EngineeringNote[] = (tech.noteSlugs || [])
   .map((slug: string) => engineeringNotes.find((n) => n.slug === slug))
   .filter((n): n is EngineeringNote => Boolean(n));
+
+const evidenceLab: LabItem[] = (tech.labSlugs || [])
+  .map((slug: string) => labItems.find((l) => l.slug === slug))
+  .filter((l): l is LabItem => Boolean(l));
 
 const seo = {
   title: `${tech.name} — Technical Role & Projects | ${siteConfig.name}`,
@@ -267,6 +273,43 @@ const seo = {
                   <p class="research-summary">{note.summary}</p>
                   <a href={`/notes/${note.slug}`} class="research-view-link">
                     Read Engineering Note →
+                  </a>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Related Lab Experiments -->
+    {
+      evidenceLab.length > 0 && (
+        <section class="section-shell lab-evidence-section">
+          <div class="container">
+            <div class="section-header">
+              <p class="eyebrow">Experimental Workbench & Prototypes</p>
+              <h2 class="section-title">Lab Experiments & Explorations</h2>
+              <p class="section-desc">
+                Hands-on technical explorations, algorithmic prototypes, and tool sandboxes utilizing {tech.name}.
+              </p>
+            </div>
+
+            <div class="research-grid">
+              {evidenceLab.map((item: LabItem) => (
+                <article class="research-card">
+                  <div class="research-top">
+                    <span class="research-badge">{item.type}</span>
+                    <span class="research-domain">{item.status.toUpperCase()}</span>
+                  </div>
+                  <h3 class="research-title">
+                    <a href={`/lab/${item.slug}`} class="research-link">
+                      {item.title}
+                    </a>
+                  </h3>
+                  <p class="research-summary">{item.shortDescription}</p>
+                  <a href={`/lab/${item.slug}`} class="research-view-link">
+                    Inspect Experiment & Code →
                   </a>
                 </article>
               ))}

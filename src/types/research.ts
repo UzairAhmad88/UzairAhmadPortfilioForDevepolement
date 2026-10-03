@@ -92,6 +92,7 @@ export interface ResearchItem {
   relatedProjects?: string[]; // Canonical project slugs from Phase 05
   relatedResearch?: string[]; // Slugs of related research items
   relatedNotes?: string[]; // Slugs of related engineering notes from Phase 11
+  relatedLab?: string[]; // Slugs of related lab experiments from Phase 12
   references?: ResearchReference[];
   githubUrl?: string;
   featured?: boolean;

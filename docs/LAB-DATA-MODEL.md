@@ -1,3 +1,15 @@
+# Lab Data Model & TypeScript Contracts
+
+**Uzair Ahmad — Personal Engineering & Research Platform**  
+**Phase 12 Specification**
+
+---
+
+## 1. Centralized TypeScript Interface
+
+Located at `src/types/lab.ts`:
+
+```typescript
 import type { ProjectVisualization } from './visualization';
 
 export type LabType =
@@ -99,3 +111,26 @@ export interface LabItem {
   relatedTechnologies?: string[]; // Canonical tech IDs
   promotedToProject?: string;     // Project slug if promoted
 }
+```
+
+---
+
+## 2. Cross-System Entity Extensions
+
+1. **`Project` (`src/types/project.ts`):**
+   - `relatedLab?: string[]` — Slugs of related Lab experiments.
+   - `originatedFromLab?: string` — Lab slug if this project evolved directly from a prototype.
+2. **`ResearchItem` (`src/types/research.ts`):**
+   - `relatedLab?: string[]` — Slugs of Lab experiments conducting empirical tests for this inquiry.
+3. **`EngineeringNote` (`src/types/note.ts`):**
+   - `relatedLab?: string[]` — Slugs of Lab experiments where debugging/architecture observations occurred.
+4. **`Technology` (`src/types/technology.ts`):**
+   - `labSlugs?: string[]` — Slugs of Lab experiments validating the technology.
+
+---
+
+## 3. Data Integrity & Validation
+
+1. **Unique IDs and Slugs:** Guaranteed uniqueness across `src/data/lab.ts`.
+2. **Bidirectional Referential Integrity:** Tested by `tests/unit/lab.test.ts`. Every referenced project slug, research slug, note slug, and technology ID must resolve to an existing entity.
+3. **No Fabricated Data:** Prohibits artificial quality metrics, fake stars, or hypothetical benchmark figures.

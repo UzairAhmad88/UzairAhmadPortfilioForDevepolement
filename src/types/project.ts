@@ -150,6 +150,8 @@ export interface Project {
   relatedProjects?: string[];
   relatedResearch?: string[];
   relatedNotes?: string[];
+  relatedLab?: string[];
+  originatedFromLab?: string;
   caseStudy?: ProjectCaseStudy;
   dna?: Partial<ProjectDNAMetadata>;
 }

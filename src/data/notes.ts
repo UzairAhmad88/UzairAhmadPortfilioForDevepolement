@@ -67,6 +67,7 @@ async def get_company(company_id: str, db: AsyncSession = Depends(get_db)):
     technologies: ['python', 'fastapi', 'postgresql', 'pydantic'],
     relatedProjects: ['multi-agent-prospect-intelligence', 'curasphere-hms'],
     relatedResearch: ['agentic-systems'],
+    relatedLab: ['streaming-orderbook-sse'],
     sources: [
       {
         title: 'SQLAlchemy 2.0 Asyncio Extension Documentation',
@@ -125,6 +126,7 @@ def get_fractional_weights(d: float, size: int, threshold: float = 1e-4) -> np.n
     technologies: ['python', 'numpy', 'pandas', 'pytorch'],
     relatedProjects: ['deep-learning-stock-return-prediction', 'market-regime-engine'],
     relatedResearch: ['signal-research'],
+    relatedLab: ['fractional-diff-cli'],
     sources: [
       {
         title: 'Advances in Financial Machine Learning (Marcos López de Prado)',
@@ -186,6 +188,7 @@ def fit_stabilized_gmm(X: np.ndarray, n_components: int = 3) -> GaussianMixture:
     technologies: ['python', 'scikit-learn', 'numpy', 'pandas'],
     relatedProjects: ['market-regime-engine', 'deep-learning-stock-return-prediction'],
     relatedResearch: ['market-regimes'],
+    relatedLab: ['gmm-regime-stability-probe'],
     sources: [
       {
         title: 'Pattern Recognition and Machine Learning (Christopher Bishop)',
@@ -248,6 +251,7 @@ def research_node_handler(state: AgentWorkflowState) -> AgentWorkflowState:
     technologies: ['python', 'langgraph', 'pydantic', 'fastapi'],
     relatedProjects: ['multi-agent-prospect-intelligence'],
     relatedResearch: ['agentic-systems'],
+    relatedLab: ['multi-agent-pydantic-state-machine'],
     sources: [
       {
         title: 'LangGraph State Graph Documentation',
@@ -303,6 +307,7 @@ def research_node_handler(state: AgentWorkflowState) -> AgentWorkflowState:
     ],
     technologies: ['astro', 'html5-css3', 'tailwindcss'],
     relatedProjects: ['curasphere-hms'],
+    relatedLab: ['css-subgrid-editorial-alignment'],
     sources: [
       {
         title: 'Web.dev: Cumulative Layout Shift (CLS) Optimization Guide',

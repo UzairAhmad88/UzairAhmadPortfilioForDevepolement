@@ -1,0 +1,194 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import LabItemCard from '@/components/cards/LabItemCard.astro';
+import { getAllLabItems } from '@/data/lab';
+import { siteConfig } from '@/data/site';
+
+const labItems = getAllLabItems();
+
+const allTypes = ['All', ...Array.from(new Set(labItems.map((item) => item.type)))];
+
+const promotedItems = labItems.filter((item) => Boolean(item.promotedToProject));
+
+const seo = {
+  title: `Lab & Experimental Workbench | ${siteConfig.name}`,
+  description: 'Public engineering workbench of Uzair Ahmad: prototypes, quantitative algorithm explorations, multi-agent state machines, and proof-of-concepts.',
+  canonical: `${siteConfig.url}/lab`,
+};
+---
+
+<BaseLayout seo={seo}>
+  <main id="top" class="lab-index-page">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-6xl">
+      <!-- Breadcrumb Navigation -->
+      <nav class="mb-8" aria-label="Breadcrumbs">
+        <ol class="flex items-center space-x-2 text-xs font-mono text-slate-400">
+          <li><a href="/" class="hover:text-indigo-400 transition-colors">Home</a></li>
+          <li class="text-slate-400">/</li>
+          <li class="text-slate-200" aria-current="page">Lab</li>
+        </ol>
+      </nav>
+
+      <!-- Workbench Header -->
+      <header class="mb-12 border-b border-slate-800/80 pb-10">
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 text-xs font-mono font-semibold uppercase tracking-wider mb-4">
+          <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
+          Experimental Workbench
+        </div>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-100 mb-4">
+          The Engineering Lab
+        </h1>
+        <p class="text-base sm:text-lg text-slate-400 max-w-3xl leading-relaxed">
+          A dedicated workspace for hands-on experiments, algorithmic prototypes, mathematical explorations, and intentional technical tests. Here, ideas are built to test hypotheses, understand complex systems, and determine what is worth engineering further.
+        </p>
+
+        <!-- Workbench Philosophy Callout -->
+        <div class="mt-6 rounded-lg border border-slate-800 bg-[#12161c] p-4 text-xs text-slate-400 leading-relaxed font-mono flex items-start gap-3">
+          <span class="text-indigo-400 text-base">ℹ</span>
+          <div>
+            <strong class="text-slate-200">The Workbench Principle:</strong> Not every experiment needs to become a production product. Some exist to test an algorithm, explore memory vs. stationarity, isolate an async runtime failure, or evaluate state machine guardrails. Unfinished or abandoned experiments are documented with equal technical honesty.
+          </div>
+        </div>
+      </header>
+
+      <!-- Filter Controls -->
+      <section class="mb-8" aria-label="Filter Workbench Items">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/60 pb-4">
+          <div class="flex flex-wrap items-center gap-2" id="type-filter-group">
+            <span class="text-xs font-mono text-slate-400 uppercase mr-1">Type:</span>
+            {allTypes.map((type) => (
+              <button
+                type="button"
+                data-filter-type={type}
+                class:list={[
+                  'px-2.5 py-1 rounded text-xs font-mono transition-all border',
+                  type === 'All'
+                    ? 'bg-indigo-600 text-white border-indigo-500 font-semibold active-filter'
+                    : 'bg-slate-800/60 text-slate-300 border-slate-700/50 hover:bg-slate-700/80 hover:text-slate-100'
+                ]}
+              >
+                {type}
+              </button>
+            ))}
+          </div>
+
+          <div class="text-xs font-mono text-slate-400">
+            Showing <span id="item-count" class="text-slate-200 font-semibold">{labItems.length}</span> active experiments
+          </div>
+        </div>
+      </section>
+
+      <!-- Workbench Experiments Grid -->
+      <section class="mb-16" aria-label="Lab Experiments">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="lab-items-grid">
+          {labItems.map((item) => (
+            <div data-item-type={item.type} data-item-status={item.status} class="lab-item-wrapper">
+              <LabItemCard item={item} />
+            </div>
+          ))}
+        </div>
+        <div id="empty-state" class="hidden text-center py-16 border border-dashed border-slate-800 rounded-xl bg-[#12161c]/50">
+          <p class="text-sm font-mono text-slate-400">No experiments match the selected filter.</p>
+        </div>
+      </section>
+
+      <!-- Graduated Systems Section -->
+      {promotedItems.length > 0 && (
+        <section class="border-t border-slate-800/80 pt-10">
+          <div class="mb-6">
+            <p class="text-xs font-mono text-indigo-400 font-semibold uppercase tracking-wider">Evolution Lifecycle</p>
+            <h2 class="text-2xl font-bold tracking-tight text-slate-100">
+              Experiments Promoted to Production Systems
+            </h2>
+            <p class="text-sm text-slate-400 mt-1 max-w-2xl">
+              When an algorithmic prototype or architectural exploration proves successful, its patterns are integrated into primary projects.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {promotedItems.map((item) => (
+              <div class="rounded-lg border border-slate-800 bg-[#12161c] p-4 text-xs font-mono flex flex-col justify-between">
+                <div>
+                  <span class="text-indigo-400 text-[11px] font-semibold">{item.type}</span>
+                  <h3 class="text-sm font-bold text-slate-200 mt-1">{item.title.split(':')[0]}</h3>
+                  <p class="text-slate-400 text-[11px] mt-2 line-clamp-2">{item.shortDescription}</p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
+                  <a href={`/lab/${item.slug}`} class="text-indigo-400 hover:underline">
+                    View Experiment →
+                  </a>
+                  <a href={`/work/${item.promotedToProject}`} class="text-emerald-400 hover:underline">
+                    View Project ↗
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  function setupFilters() {
+    const filterButtons = document.querySelectorAll('[data-filter-type]');
+    const items = document.querySelectorAll<HTMLElement>('.lab-item-wrapper');
+    const countDisplay = document.getElementById('item-count');
+    const emptyState = document.getElementById('empty-state');
+
+    function applyFilter(selectedType: string) {
+      let visibleCount = 0;
+
+      filterButtons.forEach((btn) => {
+        if (btn.getAttribute('data-filter-type') === selectedType) {
+          btn.classList.add('bg-indigo-600', 'text-white', 'border-indigo-500', 'font-semibold', 'active-filter');
+          btn.classList.remove('bg-slate-800/60', 'text-slate-300', 'border-slate-700/50');
+        } else {
+          btn.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-500', 'font-semibold', 'active-filter');
+          btn.classList.add('bg-slate-800/60', 'text-slate-300', 'border-slate-700/50');
+        }
+      });
+
+      items.forEach((item) => {
+        const itemType = item.getAttribute('data-item-type');
+        if (selectedType === 'All' || itemType === selectedType) {
+          item.style.display = 'block';
+          visibleCount++;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+
+      if (countDisplay) countDisplay.textContent = visibleCount.toString();
+      if (emptyState) emptyState.classList.toggle('hidden', visibleCount > 0);
+
+      // Update URL search param
+      const url = new URL(window.location.href);
+      if (selectedType === 'All') {
+        url.searchParams.delete('type');
+      } else {
+        url.searchParams.set('type', selectedType);
+      }
+      window.history.replaceState({}, '', url.toString());
+    }
+
+    filterButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const type = btn.getAttribute('data-filter-type') || 'All';
+        applyFilter(type);
+      });
+    });
+
+    // Check URL params on initial load
+    const params = new URLSearchParams(window.location.search);
+    const initialType = params.get('type');
+    if (initialType) {
+      applyFilter(initialType);
+    }
+  }
+
+  // Setup on initial load and navigation
+  setupFilters();
+  document.addEventListener('astro:page-load', setupFilters);
+</script>

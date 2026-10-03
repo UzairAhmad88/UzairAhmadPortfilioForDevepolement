@@ -3,6 +3,7 @@ import type { NavigationItem } from '@/types/site';
 export const primaryNavigation: NavigationItem[] = [
   { label: 'Work', href: '/work' },
   { label: 'Research', href: '/research' },
+  { label: 'Lab', href: '/lab' },
   { label: 'Notes', href: '/notes' },
   { label: 'About', href: '/about' },
   { label: 'Services', href: '/services' },

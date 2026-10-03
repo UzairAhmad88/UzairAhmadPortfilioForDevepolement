@@ -1,0 +1,372 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ProjectVisualization from '@/components/visualizations/ProjectVisualization.astro';
+import { getAllLabItems } from '@/data/lab';
+import { projects } from '@/data/projects';
+import { researchItems } from '@/data/research';
+import { engineeringNotes } from '@/data/notes';
+import { getTechnologyById } from '@/data/technologies';
+import { siteConfig } from '@/data/site';
+import type { LabItem } from '@/types/lab';
+import type { Project } from '@/types/project';
+import type { ResearchItem } from '@/types/research';
+import type { EngineeringNote } from '@/types/note';
+import type { Technology } from '@/types/technology';
+
+export function getStaticPaths() {
+  const items = getAllLabItems();
+  return items.map((item) => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+export interface Props {
+  item: LabItem;
+}
+
+const { item } = Astro.props;
+
+const relatedProjectObjects: Project[] = (item.relatedProjects || [])
+  .map((slug) => projects.find((p) => p.slug === slug))
+  .filter((p): p is Project => Boolean(p));
+
+const relatedResearchObjects: ResearchItem[] = (item.relatedResearch || [])
+  .map((slug) => researchItems.find((r) => r.slug === slug))
+  .filter((r): r is ResearchItem => Boolean(r));
+
+const relatedNoteObjects: EngineeringNote[] = (item.relatedNotes || [])
+  .map((slug) => engineeringNotes.find((n) => n.slug === slug))
+  .filter((n): n is EngineeringNote => Boolean(n));
+
+const technologyObjects: Technology[] = (item.technologies || [])
+  .map((id) => getTechnologyById(id))
+  .filter((t): t is Technology => Boolean(t));
+
+const promotedProject = item.promotedToProject
+  ? projects.find((p) => p.slug === item.promotedToProject)
+  : undefined;
+
+const statusColors: Record<string, string> = {
+  Completed: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
+  Active: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30',
+  Prototype: 'bg-blue-500/10 text-blue-400 border-blue-500/30',
+  Validating: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
+  Exploring: 'bg-purple-500/10 text-purple-400 border-purple-500/30',
+  Paused: 'bg-slate-500/10 text-slate-400 border-slate-500/30',
+  Archived: 'bg-slate-500/10 text-slate-400 border-slate-500/30',
+  Abandoned: 'bg-rose-500/10 text-rose-400 border-rose-500/30',
+  Idea: 'bg-slate-500/10 text-slate-400 border-slate-500/30',
+};
+
+const statusClass = statusColors[item.status] || 'bg-slate-500/10 text-slate-400 border-slate-500/30';
+
+const seo = {
+  title: `${item.title} | Lab Workbench | ${siteConfig.name}`,
+  description: item.shortDescription,
+  canonical: `${siteConfig.url}/lab/${item.slug}`,
+};
+---
+
+<BaseLayout seo={seo}>
+  <main id="top" class="lab-detail-page py-12">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+      <!-- Breadcrumb Navigation -->
+      <nav class="mb-8" aria-label="Breadcrumbs">
+        <ol class="flex items-center space-x-2 text-xs font-mono text-slate-400">
+          <li><a href="/" class="hover:text-indigo-400 transition-colors">Home</a></li>
+          <li class="text-slate-400">/</li>
+          <li><a href="/lab" class="hover:text-indigo-400 transition-colors">Lab</a></li>
+          <li class="text-slate-400">/</li>
+          <li class="text-slate-200 truncate max-w-[200px] sm:max-w-xs" aria-current="page">{item.slug}</li>
+        </ol>
+      </nav>
+
+      <!-- Experiment Header -->
+      <header class="mb-12 border-b border-slate-800 pb-10">
+        <div class="flex flex-wrap items-center gap-2 mb-4">
+          <span class={`px-2.5 py-1 rounded border text-xs font-mono font-semibold tracking-wider ${statusClass}`}>
+            {item.status.toUpperCase()}
+          </span>
+          <span class="px-2.5 py-1 rounded border border-slate-700 bg-slate-800/80 text-xs font-mono text-slate-300 uppercase tracking-wider">
+            {item.type}
+          </span>
+          <span class="px-2.5 py-1 rounded border border-slate-800 bg-[#12161c] text-xs font-mono text-slate-400">
+            STATE: {item.state.toUpperCase()}
+          </span>
+          <span class="text-xs font-mono text-slate-400 ml-auto">
+            {item.date} {item.updatedAt ? `(Updated: ${item.updatedAt})` : ''}
+          </span>
+        </div>
+
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-100 mb-4 leading-tight">
+          {item.title}
+        </h1>
+
+        <p class="text-base sm:text-lg text-slate-300 leading-relaxed">
+          {item.description}
+        </p>
+
+        <!-- Promoted Callout if applicable -->
+        {promotedProject && (
+          <div class="mt-6 rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-4 text-xs font-mono text-emerald-300 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+              <span class="text-base">🚀</span>
+              <span><strong>Evolution:</strong> This experiment successfully graduated into the production system: <strong>{promotedProject.title}</strong></span>
+            </div>
+            <a href={`/work/${promotedProject.slug}`} class="text-emerald-400 underline font-semibold hover:text-emerald-300 shrink-0">
+              Inspect Project Case Study →
+            </a>
+          </div>
+        )}
+
+        <!-- Technology Pills -->
+        <div class="mt-6 flex flex-wrap items-center gap-2 pt-4 border-t border-slate-800/60">
+          <span class="text-xs font-mono text-slate-400 mr-2">Ecosystem:</span>
+          {technologyObjects.map((tech) => (
+            <a
+              href={`/technology/${tech.id}`}
+              class="rounded bg-slate-800/80 hover:bg-indigo-900/40 hover:text-indigo-300 hover:border-indigo-500/40 border border-slate-700/60 px-2.5 py-1 font-mono text-xs text-slate-200 transition-colors"
+            >
+              {tech.name}
+            </a>
+          ))}
+        </div>
+      </header>
+
+      <!-- Section 01: Question & Hypothesis -->
+      <section class="mb-10 rounded-xl border border-indigo-500/30 bg-indigo-950/20 p-6 sm:p-8">
+        <div class="flex items-center gap-2 text-xs font-mono text-indigo-400 font-semibold uppercase tracking-wider mb-3">
+          <span>01 / Core Question & Hypothesis</span>
+        </div>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-100 mb-3">
+          {item.question}
+        </h2>
+        {item.hypothesis && (
+          <p class="text-sm text-indigo-200/90 leading-relaxed font-mono bg-[#0e141f] p-3.5 rounded border border-indigo-900/50 mt-4">
+            <strong class="text-indigo-400">Hypothesis:</strong> {item.hypothesis}
+          </p>
+        )}
+        {item.intent && (
+          <p class="text-sm text-slate-300 leading-relaxed mt-4">
+            <strong class="text-slate-100">Intent:</strong> {item.intent}
+          </p>
+        )}
+      </section>
+
+      <!-- Section 02: Context & Motivation -->
+      <section class="mb-12 space-y-4">
+        <h2 class="text-xs font-mono text-slate-400 uppercase tracking-widest">
+          02 / Context & Technical Motivation
+        </h2>
+        <div class="rounded-xl border border-slate-800 bg-[#12161c] p-6 space-y-4 text-sm text-slate-300 leading-relaxed">
+          <p>{item.context}</p>
+          {item.motivation && <p class="text-slate-400">{item.motivation}</p>}
+        </div>
+      </section>
+
+      <!-- Section 03: Experiment & Implementation -->
+      <section class="mb-12 space-y-4">
+        <h2 class="text-xs font-mono text-slate-400 uppercase tracking-widest">
+          03 / Experimentation & Implementation
+        </h2>
+        <div class="rounded-xl border border-slate-800 bg-[#12161c] p-6 space-y-4 text-sm text-slate-300 leading-relaxed">
+          <p>{item.experiment}</p>
+          {item.implementation && <p class="text-slate-400">{item.implementation}</p>}
+
+          {item.technicalDecisions && item.technicalDecisions.length > 0 && (
+            <div class="mt-4 pt-4 border-t border-slate-800/80">
+              <h3 class="text-xs font-mono text-slate-200 uppercase tracking-wider mb-2">Key Technical Decisions:</h3>
+              <ul class="space-y-2 list-disc list-inside text-xs font-mono text-slate-400">
+                {item.technicalDecisions.map((decision) => (
+                  <li>{decision}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
+        <!-- Code Snippets if present -->
+        {item.codeSnippets && item.codeSnippets.map((snippet) => (
+          <div class="rounded-xl border border-slate-800 bg-[#0d1117] overflow-hidden my-6">
+            {snippet.title && (
+              <div class="bg-slate-900 px-4 py-2 text-xs font-mono text-slate-400 border-b border-slate-800 flex items-center justify-between">
+                <span>{snippet.title}</span>
+                <span class="text-[10px] uppercase text-slate-400">{snippet.language}</span>
+              </div>
+            )}
+            <pre class="p-4 overflow-x-auto text-xs font-mono text-slate-200 leading-relaxed bg-[#0b0e14]"><code>{snippet.code}</code></pre>
+            {snippet.caption && (
+              <div class="px-4 py-2 text-[11px] font-mono text-slate-400 bg-slate-900/50 border-t border-slate-800/60">
+                {snippet.caption}
+              </div>
+            )}
+          </div>
+        ))}
+      </section>
+
+      <!-- Section 04: Visualizations & Architecture -->
+      {item.visualizations && item.visualizations.length > 0 && (
+        <section class="mb-12 space-y-4">
+          <h2 class="text-xs font-mono text-slate-400 uppercase tracking-widest">
+            04 / Architecture & Flow Diagrams
+          </h2>
+          {item.visualizations.map((vis) => (
+            <ProjectVisualization visualization={vis} />
+          ))}
+        </section>
+      )}
+
+      <!-- Section 05: Observations & Empirical Results -->
+      <section class="mb-12 space-y-4">
+        <h2 class="text-xs font-mono text-slate-400 uppercase tracking-widest">
+          05 / Observations & Empirical Results
+        </h2>
+        <div class="rounded-xl border border-slate-800 bg-[#12161c] p-6 space-y-4">
+          <div class="flex items-center gap-3 border-b border-slate-800/80 pb-3">
+            <span class="text-xs font-mono text-slate-400">Outcome Classification:</span>
+            <span class="text-xs font-mono font-semibold text-slate-100 bg-slate-800 px-2.5 py-1 rounded border border-slate-700">
+              {item.resultOutcome}
+            </span>
+          </div>
+
+          <p class="text-sm text-slate-300 leading-relaxed">{item.result}</p>
+
+          {item.observations && item.observations.length > 0 && (
+            <div class="pt-2">
+              <h3 class="text-xs font-mono text-slate-200 uppercase tracking-wider mb-2">Empirical Observations:</h3>
+              <ul class="space-y-2 text-xs font-mono text-slate-400">
+                {item.observations.map((obs) => (
+                  <li class="flex items-start gap-2">
+                    <span class="text-indigo-400">→</span>
+                    <span>{obs}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </section>
+
+      <!-- Section 06: Limitations & Lessons Learned -->
+      <section class="mb-12 grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {item.limitations && item.limitations.length > 0 && (
+          <div class="rounded-xl border border-slate-800 bg-[#12161c] p-6 space-y-3">
+            <h2 class="text-xs font-mono text-amber-400 uppercase tracking-wider font-semibold">
+              Known Limitations & Caveats
+            </h2>
+            <ul class="space-y-2 text-xs font-mono text-slate-400">
+              {item.limitations.map((lim) => (
+                <li class="flex items-start gap-2">
+                  <span class="text-amber-500">•</span>
+                  <span>{lim}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {item.lessonsLearned && item.lessonsLearned.length > 0 && (
+          <div class="rounded-xl border border-slate-800 bg-[#12161c] p-6 space-y-3">
+            <h2 class="text-xs font-mono text-emerald-400 uppercase tracking-wider font-semibold">
+              Lessons Learned
+            </h2>
+            <ul class="space-y-2 text-xs font-mono text-slate-400">
+              {item.lessonsLearned.map((lesson) => (
+                <li class="flex items-start gap-2">
+                  <span class="text-emerald-400">✓</span>
+                  <span>{lesson}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </section>
+
+      <!-- Section 07: Next Steps -->
+      {item.nextStep && (
+        <section class="mb-12">
+          <h2 class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-3">
+            07 / Next Step & Evolution
+          </h2>
+          <div class="rounded-xl border border-slate-800 bg-[#12161c] p-5 text-xs font-mono text-slate-300">
+            <p><strong class="text-indigo-400">Workbench Action:</strong> {item.nextStep}</p>
+          </div>
+        </section>
+      )}
+
+      <!-- Section 08: Cross-System Bidirectional Relationships -->
+      <section class="border-t border-slate-800/80 pt-10 mb-12">
+        <h2 class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-6">
+          08 / Connected Knowledge & Systems
+        </h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <!-- Related Projects -->
+          <div class="rounded-xl border border-slate-800 bg-[#12161c] p-4 text-xs font-mono">
+            <span class="text-slate-400 uppercase tracking-wider text-[11px]">Related Projects</span>
+            {relatedProjectObjects.length > 0 ? (
+              <ul class="mt-3 space-y-2">
+                {relatedProjectObjects.map((proj) => (
+                  <li>
+                    <a href={`/work/${proj.slug}`} class="text-indigo-400 hover:underline block truncate">
+                      {proj.title} →
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="mt-2 text-slate-400 text-[11px]">No direct project links</p>
+            )}
+          </div>
+
+          <!-- Related Research -->
+          <div class="rounded-xl border border-slate-800 bg-[#12161c] p-4 text-xs font-mono">
+            <span class="text-slate-400 uppercase tracking-wider text-[11px]">Related Research</span>
+            {relatedResearchObjects.length > 0 ? (
+              <ul class="mt-3 space-y-2">
+                {relatedResearchObjects.map((res) => (
+                  <li>
+                    <a href={`/research/${res.slug}`} class="text-indigo-400 hover:underline block truncate">
+                      {res.title} →
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="mt-2 text-slate-400 text-[11px]">No direct research links</p>
+            )}
+          </div>
+
+          <!-- Related Engineering Notes -->
+          <div class="rounded-xl border border-slate-800 bg-[#12161c] p-4 text-xs font-mono">
+            <span class="text-slate-400 uppercase tracking-wider text-[11px]">Related Notes</span>
+            {relatedNoteObjects.length > 0 ? (
+              <ul class="mt-3 space-y-2">
+                {relatedNoteObjects.map((note) => (
+                  <li>
+                    <a href={`/notes/${note.slug}`} class="text-indigo-400 hover:underline block truncate">
+                      {note.title} →
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="mt-2 text-slate-400 text-[11px]">No direct note links</p>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <!-- Back Navigation Bar -->
+      <div class="border-t border-slate-800/80 pt-6 flex items-center justify-between text-xs font-mono">
+        <a href="/lab" class="text-indigo-400 hover:underline">
+          ← Back to Experimental Workbench
+        </a>
+        <a href="#top" class="text-slate-400 hover:text-slate-200">
+          Back to Top ↑
+        </a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

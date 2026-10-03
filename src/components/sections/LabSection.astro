@@ -1,0 +1,245 @@
+---
+import { getFeaturedLabItems } from '@/data/lab';
+
+const featuredExperiments = getFeaturedLabItems().slice(0, 3);
+---
+
+<section id="lab" class="lab-workbench-section">
+  <div class="section-shell">
+    <div class="section-heading reveal">
+      <p class="eyebrow"><span class="section-number">06 /</span> Experimental Workbench</p>
+      <h2>Active prototypes, algorithmic tests, and proofs of concept.</h2>
+      <p class="section-intro">
+        A look at technical explorations currently occupying the bench — built to test hypotheses, evaluate architectures, and understand systems before formal productization.
+      </p>
+    </div>
+
+    <div class="workbench-grid">
+      {featuredExperiments.map((item) => (
+        <article class="workbench-card reveal">
+          <div class="workbench-card-top">
+            <span class="workbench-badge">{item.type}</span>
+            <span class="workbench-status">{item.status.toUpperCase()}</span>
+          </div>
+
+          <h3 class="workbench-title">
+            <a href={`/lab/${item.slug}`}>
+              {item.title.split(':')[0]}
+            </a>
+          </h3>
+
+          <p class="workbench-question">
+            <strong>Question:</strong> {item.question}
+          </p>
+
+          <p class="workbench-desc">
+            {item.shortDescription}
+          </p>
+
+          <div class="workbench-card-bottom">
+            <div class="tech-pills">
+              {item.technologies.slice(0, 3).map((tech) => (
+                <span class="tech-pill">{tech}</span>
+              ))}
+            </div>
+            <a href={`/lab/${item.slug}`} class="workbench-link">
+              Inspect Experiment →
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="workbench-footer reveal">
+      <a href="/lab" class="view-all-lab-btn">
+        Explore All Experiments in the Lab ({getFeaturedLabItems().length}+ items) →
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .lab-workbench-section {
+    padding: 6.5rem 0;
+    background: rgba(14, 20, 27, 0.6);
+    border-top: 1px solid rgba(246, 241, 232, 0.06);
+    border-bottom: 1px solid rgba(246, 241, 232, 0.06);
+  }
+
+  .section-intro {
+    max-width: 42rem;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    color: var(--color-text-muted, #a9b8b1);
+    line-height: 1.6;
+  }
+
+  .workbench-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+
+  .workbench-card {
+    padding: 1.5rem;
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 10px;
+    background: rgba(18, 24, 32, 0.85);
+    display: flex;
+    flex-direction: column;
+    transition: transform 200ms ease, border-color 200ms ease, background 200ms ease;
+  }
+
+  .workbench-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(99, 102, 241, 0.4);
+    background: rgba(21, 29, 39, 0.95);
+  }
+
+  .workbench-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.85rem;
+  }
+
+  .workbench-badge {
+    color: #818cf8;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.725rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .workbench-status {
+    color: #94a3b8;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.7rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .workbench-title {
+    margin: 0 0 0.75rem 0;
+    font-size: 1.15rem;
+    font-weight: 800;
+    line-height: 1.35;
+  }
+
+  .workbench-title a {
+    color: var(--color-text, #f6f1e8);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .workbench-title a:hover {
+    color: #818cf8;
+  }
+
+  .workbench-question {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.8rem;
+    color: #c7d2fe;
+    background: rgba(99, 102, 241, 0.08);
+    border-left: 2px solid #818cf8;
+    padding: 0.5rem 0.65rem;
+    border-radius: 0 4px 4px 0;
+    margin: 0 0 0.85rem 0;
+    line-height: 1.5;
+  }
+
+  .workbench-question strong {
+    color: #a5b4fc;
+  }
+
+  .workbench-desc {
+    color: var(--color-text-muted, #94a3b8);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin: 0 0 1.25rem 0;
+  }
+
+  .workbench-card-bottom {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(246, 241, 232, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .tech-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .tech-pill {
+    background: rgba(255, 255, 255, 0.06);
+    color: #94a3b8;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.675rem;
+    padding: 0.15rem 0.35rem;
+    border-radius: 3px;
+  }
+
+  .workbench-link {
+    color: #818cf8;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.775rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 150ms ease;
+  }
+
+  .workbench-link:hover {
+    color: #a5b4fc;
+    text-decoration: underline;
+  }
+
+  .workbench-footer {
+    margin-top: 2.5rem;
+    text-align: center;
+  }
+
+  .view-all-lab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(99, 102, 241, 0.1);
+    color: #a5b4fc;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 6px;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 150ms ease;
+  }
+
+  .view-all-lab-btn:hover {
+    background: rgba(99, 102, 241, 0.2);
+    border-color: rgba(99, 102, 241, 0.5);
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 960px) {
+    .workbench-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .workbench-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
