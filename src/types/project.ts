@@ -1,3 +1,5 @@
+import type { ProjectVisualization } from './visualization';
+
 export type ProjectCategory = 'quant' | 'ai' | 'engineering' | 'product';
 
 export type ProjectType = 'Product' | 'System' | 'Research' | 'Academic' | 'Prototype' | 'Experiment';
@@ -77,6 +79,7 @@ export interface ProjectCaseStudy {
   approach?: string;
   architectureDiagram?: string;
   architectureNotes?: string;
+  visualizations?: ProjectVisualization[];
   implementationHighlights?: string[];
   challenges?: TechnicalChallenge[];
   keyDecisions?: TechnicalDecision[];

@@ -56,6 +56,52 @@ export const featuredProject: Project = {
 │ (OHLCV Series) │    │ Technical Features) │    │ (PyTorch/GPU)        │    │ (Sharpe, Returns)   │
 └────────────────┘    └─────────────────────┘    └──────────────────────┘    └─────────────────────┘`,
     architectureNotes: 'Data flows sequentially with strict chronological boundaries to guarantee no future data leaks into feature calculations or training batches.',
+    visualizations: [
+      {
+        id: 'stock-return-pipeline',
+        type: 'pipeline',
+        title: 'End-to-End Quantitative ML & Walk-Forward Forecasting Pipeline',
+        status: 'actual',
+        description: 'Chronologically partitioned pipeline processing multi-asset historical price series into stationarized indicators, deep neural representations, and walk-forward backtest risk analytics.',
+        caption: 'Data flows with strict chronological boundaries to guarantee no future data leaks into training batches or normalization statistics.',
+        sourceEvidence: 'Public GitHub Repository: UzairAhmad88/Deep-Learning-Based-Stock-Return-Prediction---Quantitative-Trading-System-ByUzaii',
+        textAlternative: 'A four-stage sequential pipeline moving from Historical Market Data ingestion, to Stationarized Feature Store extraction and normalization, to PyTorch Deep Neural Architecture model training on GPU, and finally to Walk-Forward Signal & Backtest Engine risk evaluation.',
+        nodes: [
+          {
+            id: 'market-data',
+            label: 'Historical Market Data',
+            subLabel: 'Multi-asset OHLCV price series',
+            role: 'input',
+            badge: 'Ingestion',
+            details: ['Yahoo / AlphaVantage Feeds', 'Adjusted Close Prices', 'Strict Temporal Splits']
+          },
+          {
+            id: 'feature-store',
+            label: 'Stationarized Feature Store',
+            subLabel: 'Rolling normalization & statistical features',
+            role: 'process',
+            badge: 'Transformation',
+            details: ['Log Returns & Fractional Diff', 'GARCH Volatility Estimator', '30+ Technical Indicators (RSI, MACD)']
+          },
+          {
+            id: 'neural-arch',
+            label: 'Deep Neural Architecture',
+            subLabel: 'PyTorch temporal models on GPU',
+            role: 'model',
+            badge: 'PyTorch / CUDA',
+            details: ['LSTM / GRU / Dense Layers', 'Dropout & Gradient Clipping', 'Custom Directional Loss Penalties']
+          },
+          {
+            id: 'signal-backtest',
+            label: 'Signal & Backtest Engine',
+            subLabel: 'Walk-forward risk & portfolio evaluation',
+            role: 'output',
+            badge: 'Evaluation',
+            details: ['Sharpe Ratio & Max Drawdown', 'Zero-Lookahead Validation', 'Directional Precision Metrics']
+          }
+        ]
+      }
+    ],
     implementationHighlights: [
       'Engineered 30+ technical indicators including RSI, MACD, Bollinger Bands, and rolling volatility estimators.',
       'Implemented custom PyTorch Dataset and DataLoader classes with sliding temporal window slicing.',
@@ -175,6 +221,60 @@ export const fypProject: Project = {
                             └─────────────────────────┘      │ (JSON Schema / State) │
                                                              └───────────────────────┘`,
     architectureNotes: 'All agent outputs pass through a deterministic JSON schema validation layer before reaching the client interface.',
+    visualizations: [
+      {
+        id: 'multi-agent-state-graph',
+        type: 'state-graph',
+        title: 'Stateful Multi-Agent Orchestration & Guardrail Graph',
+        status: 'prototype',
+        description: 'Directed state graph architecture orchestrating collaborative LLM agents with deterministic Pydantic schema validation for lead qualification and retention risk decision support.',
+        caption: 'All multi-agent outputs pass through deterministic Pydantic schema validation guardrails before reaching the user interface.',
+        sourceEvidence: 'Public GitHub Repository: UzairAhmad88/Multi-Modal-Quantitative-AI-Development (FYP Academic Deliverable)',
+        textAlternative: 'A five-stage state graph flow starting from User Query, routed by an Orchestrator Agent to a Specialist Worker Agent Graph, validated by a Deterministic Schema Guardrail, and delivered to the Decision Briefing UI.',
+        nodes: [
+          {
+            id: 'user-query',
+            label: 'User Query & Domain Filter',
+            subLabel: 'Lead parameters & prospect criteria',
+            role: 'input',
+            badge: 'Input State',
+            details: ['Industry & Domain Filter', 'Target Executive Roles', 'CRM Context / Initial State']
+          },
+          {
+            id: 'orchestrator',
+            label: 'Orchestrator Router Agent',
+            subLabel: 'State graph router & task dispatcher',
+            role: 'router',
+            badge: 'LangGraph State',
+            details: ['Directed Graph Routing', 'Iteration & Timeout Limits', 'Execution State Memory']
+          },
+          {
+            id: 'worker-graph',
+            label: 'Specialist Worker Graph',
+            subLabel: 'Parallel research & scoring agents',
+            role: 'model',
+            badge: 'LLM Agents',
+            details: ['Web Research Agent', 'Enrichment & Synthesis Agent', 'Churn Risk Scoring Agent']
+          },
+          {
+            id: 'guardrails',
+            label: 'Deterministic Guardrails',
+            subLabel: 'Pydantic schema validation',
+            role: 'guardrail',
+            badge: 'Validation',
+            details: ['JSON Schema Conformance', 'Anti-Hallucination Checks', 'Entity Normalization']
+          },
+          {
+            id: 'briefing-ui',
+            label: 'Decision Briefing UI',
+            subLabel: 'Interactive decision support dashboard',
+            role: 'output',
+            badge: 'Presentation',
+            details: ['Structured Prospect Cards', 'Retention Risk Alerts', 'Recommended Action Matrix']
+          }
+        ]
+      }
+    ],
     implementationHighlights: [
       'Constructed stateful agent graphs with conditional branching and fallback error recovery.',
       'Implemented automated prompt templates with structured output parsing.',
@@ -277,6 +377,52 @@ export const projects: Project[] = [
 │ Frontend Application  │◄────►│ Backend API Server      │◄────►│ Relational Database   │
 │ (React / TypeScript)  │      │ (Node.js / Express Auth)│      │ (Patient Records/EMR) │
 └───────────────────────┘      └─────────────────────────┘      └───────────────────────┘`,
+      visualizations: [
+        {
+          id: 'curasphere-tiered-architecture',
+          type: 'architecture',
+          title: 'Tiered Full-Stack Healthcare Management Architecture',
+          status: 'actual',
+          description: 'Role-based web platform coordinating clinician workflows, appointment scheduling, and electronic medical records across distinct administrative roles.',
+          caption: 'Modular tier separation guarantees that clinicians only access medical records authorized under their specific role permissions.',
+          sourceEvidence: 'Public GitHub Repository & Vercel Deployment: UzairAhmad88/-CuraSphere-HMS-DevelopbyUzaii',
+          textAlternative: 'A four-tier client-server architecture with React Web Client connecting through an Auth Gateway to a Node/Express API Service Layer backed by a relational PostgreSQL EMR database.',
+          nodes: [
+            {
+              id: 'client-portal',
+              label: 'Clinician Web Client',
+              subLabel: 'Responsive React / TS frontend',
+              role: 'input',
+              badge: 'React / TS',
+              details: ['Doctor & Reception Portals', 'Zero-Layout-Shift Forms', 'Role-Based Route Guards']
+            },
+            {
+              id: 'auth-gateway',
+              label: 'Auth & Permission Gateway',
+              subLabel: 'Token validation & RBAC security',
+              role: 'guardrail',
+              badge: 'Security',
+              details: ['JWT Authentication', 'Permission Segregation', 'Payload Sanitization']
+            },
+            {
+              id: 'api-service',
+              label: 'Backend API Service Layer',
+              subLabel: 'Node.js / Express controllers',
+              role: 'process',
+              badge: 'Express API',
+              details: ['Patient Intake Lifecycle', 'Consultation & Rx Dispatch', 'Audit Logging & Invoicing']
+            },
+            {
+              id: 'database-emr',
+              label: 'Relational EMR Database',
+              subLabel: 'PostgreSQL patient records',
+              role: 'storage',
+              badge: 'PostgreSQL',
+              details: ['Normalized Patient Records', 'Appointment Schedules', 'Prescription History']
+            }
+          ]
+        }
+      ],
       challenges: [
         {
           challenge: 'Role-Based Navigation and State Segregation',
@@ -360,6 +506,52 @@ export const projects: Project[] = [
 │ Multi-Asset Data  │───►│ Statistical Moment    │───►│ Unsupervised GMM/   │───►│ Regime Probability │
 │ Feed              │    │ Engine (Vol, Skew)   │    │ HMM Cluster Engine  │    │ & Signal Output    │
 └───────────────────┘    └───────────────────────┘    └─────────────────────┘    └────────────────────┘`,
+      visualizations: [
+        {
+          id: 'regime-engine-pipeline',
+          type: 'pipeline',
+          title: 'Unsupervised Market Regime Discovery & Classification Pipeline',
+          status: 'actual',
+          description: 'Statistical algorithmic pipeline extracting multi-asset rolling distribution moments and clustering latent market volatility states using Gaussian Mixture Models.',
+          caption: 'Latent cluster states are sorted deterministically by volatility variance to preserve identical semantic meaning across rolling refits.',
+          sourceEvidence: 'Public GitHub Repository: UzairAhmad88/Develop-Market-Regime--Engine-byUzaii',
+          textAlternative: 'A four-stage pipeline moving from Multi-Asset Feed, to Statistical Moment Engine (calculating volatility and skewness), to Unsupervised GMM/HMM Cluster Engine, to Regime Signal & Risk Throttle probability output.',
+          nodes: [
+            {
+              id: 'asset-feed',
+              label: 'Multi-Asset Price Feed',
+              subLabel: 'Historical equities & index bars',
+              role: 'input',
+              badge: 'Market Data',
+              details: ['Equities & Indices OHLCV', 'Rolling Estimation Windows', 'Intraday Variance Bars']
+            },
+            {
+              id: 'moment-engine',
+              label: 'Statistical Moment Engine',
+              subLabel: 'Rolling variance & distribution moments',
+              role: 'process',
+              badge: 'Statistical Feature',
+              details: ['Realized Volatility & ATR', 'Kurtosis & Return Skewness', 'Volume Ratio Dispersion']
+            },
+            {
+              id: 'gmm-cluster',
+              label: 'Unsupervised Cluster Engine',
+              subLabel: 'GMM / HMM state decomposition',
+              role: 'model',
+              badge: 'GMM / HMM',
+              details: ['Gaussian Mixture Models', 'AIC / BIC Model Selection', 'Variance-Ordered Labels']
+            },
+            {
+              id: 'regime-output',
+              label: 'Regime Signal & Risk Throttle',
+              subLabel: 'Continuous state probabilities',
+              role: 'output',
+              badge: 'Risk Throttle',
+              details: ['State Membership Probability', 'Dynamic Risk Throttle Feed', 'Backtest Simulator Hook']
+            }
+          ]
+        }
+      ],
       challenges: [
         {
           challenge: 'Regime Label Flipping across Training Windows',
@@ -434,6 +626,44 @@ export const projects: Project[] = [
       ],
       role: 'Sole Developer.',
       team: 'Individual Project',
+      visualizations: [
+        {
+          id: 'pos-operational-flow',
+          type: 'system-flow',
+          title: 'High-Speed Order Processing & Transaction Lifecycle Flow',
+          status: 'actual',
+          description: 'Optimized local state operational flow connecting table occupancy selection, bill computation, and local storage record persistence.',
+          caption: 'Engineered for zero-latency touchscreen operations during peak restaurant dining service.',
+          sourceEvidence: 'Public GitHub Repository: UzairAhmad88/Resturent-Managment-System---POS',
+          textAlternative: 'A three-stage system flow moving from Order Entry and Table Mapping, to Transaction & Billing Engine calculation, to Local Sales Persistence.',
+          nodes: [
+            {
+              id: 'pos-input',
+              label: 'Touch Order Entry & Table Map',
+              subLabel: 'Fast touchscreen order input',
+              role: 'input',
+              badge: 'UI Layer',
+              details: ['1-Touch Menu Selection', 'Visual Table Occupancy Map', 'Dynamic Item Modifiers']
+            },
+            {
+              id: 'pos-engine',
+              label: 'Transaction & Billing Engine',
+              subLabel: 'Calculation & ticket dispatch',
+              role: 'process',
+              badge: 'Core Logic',
+              details: ['Split-Bill Computation', 'Tax & Discount Auditing', 'Kitchen Ticket Generation']
+            },
+            {
+              id: 'pos-storage',
+              label: 'Local Sales & State Persistence',
+              subLabel: 'Reliable local data persistence',
+              role: 'storage',
+              badge: 'Storage',
+              details: ['Daily Sales Record Ledger', 'Offline-First State Cache', 'Zero-Latency Persistence']
+            }
+          ]
+        }
+      ],
       results: [
         {
           status: 'Implemented',

@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
 import ProjectDNA from '@/components/common/ProjectDNA.astro';
+import ProjectVisualization from '@/components/visualizations/ProjectVisualization.astro';
 import ProjectCard from '@/components/cards/ProjectCard.astro';
 import ContactCallout from '@/components/sections/ContactCallout.astro';
 import { projects } from '@/data/projects';
@@ -122,13 +123,21 @@ const finalRelatedProjects = relatedProjects.length > 0 ? relatedProjects : fall
             </section>
           )}
 
-          {caseStudy?.architectureDiagram && (
+          {(caseStudy?.visualizations && caseStudy.visualizations.length > 0) ? (
+            <section class="study-section">
+              <h2 class="section-title">06 — System Architecture & Topology</h2>
+              {caseStudy.visualizations.map((vis) => (
+                <ProjectVisualization visualization={vis} />
+              ))}
+              {caseStudy.architectureNotes && <p class="caption-text">{caseStudy.architectureNotes}</p>}
+            </section>
+          ) : caseStudy?.architectureDiagram ? (
             <section class="study-section">
               <h2 class="section-title">06 — System Architecture</h2>
               <pre class="diagram-block" aria-label="System Architecture Topology"><code>{caseStudy.architectureDiagram}</code></pre>
               {caseStudy.architectureNotes && <p class="caption-text">{caseStudy.architectureNotes}</p>}
             </section>
-          )}
+          ) : null}
 
           {caseStudy?.implementationHighlights && caseStudy.implementationHighlights.length > 0 && (
             <section class="study-section">
