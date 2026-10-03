@@ -1,0 +1,783 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import {
+  technologies,
+  technologyCategories,
+} from '@/data/technologies';
+import { projects } from '@/data/projects';
+import { siteConfig } from '@/data/site';
+
+const seo = {
+  title: `Technology Ecosystem & Engineering Stack | ${siteConfig.name}`,
+  description: 'An evidence-driven map of the languages, deep learning frameworks, databases, and tooling used across Uzair Ahmad’s quantitative research and software systems.',
+  canonical: `${siteConfig.url}/technology`,
+};
+
+function getProjectBySlug(slug: string) {
+  return projects.find((p) => p.slug === slug);
+}
+---
+
+<BaseLayout seo={seo}>
+  <main id="top" class="technology-page">
+    <!-- Hero Section -->
+    <header class="technology-hero">
+      <div class="container">
+        <div class="hero-badge">
+          <span class="pulse-dot"></span>
+          <span class="badge-text">Personal Technology Ecosystem</span>
+        </div>
+        <h1 class="hero-title">Technology & Engineering Stack</h1>
+        <p class="hero-lead">
+          The languages, computational frameworks, state runtimes, and databases that appear throughout my quantitative research and production software.
+        </p>
+        <p class="hero-subtext">
+          Tools are selected strictly for mathematical correctness, low-level control, and execution performance—never for vanity.
+        </p>
+
+        <!-- Category Filter & Search Bar -->
+        <div class="tech-controls-bar">
+          <div class="category-tabs" role="tablist" aria-label="Technology Categories">
+            <button
+              type="button"
+              class="cat-tab active"
+              role="tab"
+              aria-selected="true"
+              data-category="all"
+            >
+              All ({technologies.length})
+            </button>
+            {
+              technologyCategories.map((cat) => {
+                const count = technologies.filter((t) => t.categories.includes(cat.id)).length;
+                return (
+                  <button
+                    type="button"
+                    class="cat-tab"
+                    role="tab"
+                    aria-selected="false"
+                    data-category={cat.id}
+                  >
+                    {cat.name} ({count})
+                  </button>
+                );
+              })
+            }
+          </div>
+
+          <div class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="search-icon">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="search"
+              id="tech-search-input"
+              class="tech-search"
+              placeholder="Search technologies, roles, or aliases..."
+              aria-label="Search technologies by name, role, or alias"
+            />
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Technology Collection Grid -->
+    <section class="section-shell technology-collection-section">
+      <div class="container">
+        <!-- Results Counter -->
+        <div class="collection-status" aria-live="polite">
+          <span id="results-count" class="status-count">Showing all {technologies.length} technologies</span>
+        </div>
+
+        <div id="tech-grid" class="tech-grid">
+          {
+            technologies.map((tech) => {
+              const evidenceProjects = tech.projectSlugs
+                .map((slug) => getProjectBySlug(slug))
+                .filter(Boolean);
+
+              const categoriesStr = tech.categories.join(' ');
+
+              return (
+                <article
+                  class="tech-card"
+                  data-categories={categoriesStr}
+                  data-name={tech.name.toLowerCase()}
+                  data-aliases={tech.aliases?.join(' ').toLowerCase() || ''}
+                  data-role={tech.primaryRole.toLowerCase()}
+                >
+                  <header class="tech-card-header">
+                    <div class="tech-card-top">
+                      <h2 class="tech-name">
+                        <a href={`/technology/${tech.id}`} class="tech-name-link">
+                          {tech.name}
+                        </a>
+                      </h2>
+                      <span class:list={['status-pill', `status-${tech.status}`]}>
+                        {tech.status.toUpperCase()}
+                      </span>
+                    </div>
+                    <p class="tech-role">{tech.primaryRole}</p>
+                  </header>
+
+                  <div class="tech-card-body">
+                    <p class="tech-desc">{tech.description}</p>
+
+                    <div class="tech-categories-wrap">
+                      {tech.categories.map((c) => {
+                        const catMeta = technologyCategories.find((cat) => cat.id === c);
+                        return <span class="category-tag">{catMeta?.name || c}</span>;
+                      })}
+                    </div>
+
+                    {evidenceProjects.length > 0 && (
+                      <div class="tech-evidence-box">
+                        <span class="evidence-heading">Project Evidence:</span>
+                        <div class="evidence-pills">
+                          {evidenceProjects.map((p) => (
+                            <a href={`/work/${p?.slug}`} class="evidence-pill">
+                              {p?.title} ↗
+                            </a>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {tech.methodologySteps && tech.methodologySteps.length > 0 && (
+                      <div class="tech-methodology-box">
+                        <span class="evidence-heading">Methodology Stages:</span>
+                        <div class="methodology-tags">
+                          {tech.methodologySteps.map((step) => (
+                            <a href={`/how-i-build#step-${step}`} class="method-step-tag">
+                              {step.toUpperCase()}
+                            </a>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <footer class="tech-card-footer">
+                    <a href={`/technology/${tech.id}`} class="view-detail-link">
+                      Technical Profile & Projects →
+                    </a>
+                  </footer>
+                </article>
+              );
+            })
+          }
+        </div>
+
+        <!-- Empty State -->
+        <div id="no-results-state" class="empty-state" hidden>
+          <div class="empty-icon">🔍</div>
+          <h3 class="empty-title">No technologies match your filter criteria</h3>
+          <p class="empty-desc">Try clearing your search query or selecting a different category tab.</p>
+          <button type="button" id="reset-filter-btn" class="btn-reset">
+            Reset Filters
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cross-System Integration CTA -->
+    <section class="section-shell integration-section">
+      <div class="container text-center">
+        <h2 class="cta-title">Connect Technologies to Engineering Practice</h2>
+        <p class="cta-desc">
+          See how these technologies are applied within concrete problem boundaries, state graphs, and empirical backtest suites.
+        </p>
+        <div class="cta-actions">
+          <a href="/how-i-build" class="btn-primary">
+            How I Build Methodology →
+          </a>
+          <a href="/work" class="btn-secondary">
+            Browse Project Case Studies →
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<script>
+  function setupTechExplorer() {
+    const tabs = document.querySelectorAll<HTMLButtonElement>('.cat-tab');
+    const searchInput = document.getElementById('tech-search-input') as HTMLInputElement | null;
+    const cards = document.querySelectorAll<HTMLElement>('.tech-card');
+    const noResults = document.getElementById('no-results-state');
+    const countDisplay = document.getElementById('results-count');
+    const resetBtn = document.getElementById('reset-filter-btn');
+
+    let activeCategory = 'all';
+    let searchQuery = '';
+
+    function filterCards() {
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const categories = card.dataset.categories || '';
+        const name = card.dataset.name || '';
+        const aliases = card.dataset.aliases || '';
+        const role = card.dataset.role || '';
+
+        const matchesCategory =
+          activeCategory === 'all' || categories.split(' ').includes(activeCategory);
+
+        const matchesSearch =
+          !searchQuery ||
+          name.includes(searchQuery) ||
+          aliases.includes(searchQuery) ||
+          role.includes(searchQuery);
+
+        if (matchesCategory && matchesSearch) {
+          card.hidden = false;
+          visibleCount++;
+        } else {
+          card.hidden = true;
+        }
+      });
+
+      if (countDisplay) {
+        countDisplay.textContent = `Showing ${visibleCount} of ${cards.length} technologies`;
+      }
+
+      if (noResults) {
+        noResults.hidden = visibleCount > 0;
+      }
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((t) => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        });
+
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+        activeCategory = tab.dataset.category || 'all';
+        filterCards();
+      });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
+        filterCards();
+      });
+    }
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        if (searchInput) searchInput.value = '';
+        searchQuery = '';
+        activeCategory = 'all';
+
+        tabs.forEach((t) => {
+          const isAll = t.dataset.category === 'all';
+          t.classList.toggle('active', isAll);
+          t.setAttribute('aria-selected', isAll ? 'true' : 'false');
+        });
+
+        filterCards();
+      });
+    }
+  }
+
+  setupTechExplorer();
+  document.addEventListener('astro:after-swap', setupTechExplorer);
+</script>
+
+<style>
+  .technology-page {
+    color: var(--ink, #f6f1e8);
+    padding-bottom: clamp(3rem, 6vw, 6rem);
+  }
+
+  .container {
+    width: min(var(--container-max, 1200px), calc(100% - max(1.5rem, calc(env(safe-area-inset-left) + env(safe-area-inset-right) + 1rem))));
+    margin: 0 auto;
+    padding-left: env(safe-area-inset-left, 0);
+    padding-right: env(safe-area-inset-right, 0);
+  }
+
+  /* Hero Section */
+  .technology-hero {
+    padding: clamp(3.5rem, 6vw, 5.5rem) 0 clamp(2rem, 4vw, 3.5rem);
+    border-bottom: 1px solid rgba(246, 241, 232, 0.08);
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.85rem;
+    background: rgba(126, 216, 196, 0.08);
+    border: 1px solid rgba(126, 216, 196, 0.25);
+    border-radius: var(--radius-full, 9999px);
+    margin-bottom: 1.25rem;
+  }
+
+  .pulse-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--teal, #7ed8c4);
+    box-shadow: 0 0 10px rgba(126, 216, 196, 0.7);
+  }
+
+  .badge-text {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--teal, #7ed8c4);
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin: 0 0 1.25rem 0;
+  }
+
+  .hero-lead {
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    line-height: 1.55;
+    color: var(--muted, #a9b8b1);
+    max-width: 820px;
+    margin: 0 0 0.85rem 0;
+  }
+
+  .hero-subtext {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(169, 184, 177, 0.8);
+    max-width: 760px;
+    margin: 0 0 2.5rem 0;
+  }
+
+  /* Filter Controls */
+  .tech-controls-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .category-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .cat-tab {
+    background: rgba(16, 26, 23, 0.8);
+    border: 1px solid rgba(246, 241, 232, 0.12);
+    color: var(--muted, #a9b8b1);
+    padding: 0.45rem 0.9rem;
+    border-radius: var(--radius-full, 9999px);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+    min-height: var(--touch-target-min, 44px);
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .cat-tab:hover,
+  .cat-tab:focus-visible {
+    border-color: var(--teal, #7ed8c4);
+    color: var(--ink, #f6f1e8);
+    outline: none;
+  }
+
+  .cat-tab.active {
+    background: rgba(126, 216, 196, 0.15);
+    border-color: var(--teal, #7ed8c4);
+    color: var(--teal, #7ed8c4);
+    font-weight: 700;
+  }
+
+  .search-box {
+    position: relative;
+    max-width: 480px;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted, #a9b8b1);
+    pointer-events: none;
+  }
+
+  .tech-search {
+    width: 100%;
+    background: rgba(7, 17, 15, 0.9);
+    border: 1px solid rgba(246, 241, 232, 0.12);
+    border-radius: 0.5rem;
+    padding: 0.65rem 1rem 0.65rem 2.5rem;
+    color: var(--ink, #f6f1e8);
+    font-size: 0.9rem;
+    min-height: var(--touch-target-min, 44px);
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+  }
+
+  .tech-search:focus {
+    outline: none;
+    border-color: var(--teal, #7ed8c4);
+    box-shadow: 0 0 16px rgba(126, 216, 196, 0.2);
+  }
+
+  /* Section Shells */
+  .section-shell {
+    padding: clamp(3rem, 5vw, 4.5rem) 0;
+    border-bottom: 1px solid rgba(246, 241, 232, 0.08);
+  }
+
+  .collection-status {
+    margin-bottom: 1.5rem;
+  }
+
+  .status-count {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.8rem;
+    color: var(--muted, #a9b8b1);
+    letter-spacing: 0.05em;
+  }
+
+  /* Technology Grid */
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .tech-card {
+    background: rgba(16, 26, 23, 0.65);
+    border: 1px solid rgba(246, 241, 232, 0.1);
+    border-radius: 0.875rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 200ms ease, transform 150ms ease;
+  }
+
+  .tech-card:hover {
+    border-color: rgba(126, 216, 196, 0.35);
+    transform: translateY(-2px);
+  }
+
+  .tech-card-header {
+    margin-bottom: 1rem;
+  }
+
+  .tech-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .tech-name {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .tech-name-link {
+    color: var(--ink, #f6f1e8);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .tech-name-link:hover,
+  .tech-name-link:focus-visible {
+    color: var(--teal, #7ed8c4);
+  }
+
+  .status-pill {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-full, 9999px);
+    letter-spacing: 0.06em;
+  }
+
+  .status-core {
+    background: rgba(126, 216, 196, 0.15);
+    color: var(--teal, #7ed8c4);
+    border: 1px solid rgba(126, 216, 196, 0.3);
+  }
+
+  .status-recurring {
+    background: rgba(169, 184, 177, 0.12);
+    color: #a9b8b1;
+    border: 1px solid rgba(169, 184, 177, 0.25);
+  }
+
+  .status-specialized {
+    background: rgba(224, 159, 103, 0.12);
+    color: #e09f67;
+    border: 1px solid rgba(224, 159, 103, 0.3);
+  }
+
+  .status-research {
+    background: rgba(180, 142, 230, 0.12);
+    color: #b48ee6;
+    border: 1px solid rgba(180, 142, 230, 0.3);
+  }
+
+  .tech-role {
+    font-size: 0.85rem;
+    color: var(--teal, #7ed8c4);
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .tech-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex-grow: 1;
+  }
+
+  .tech-desc {
+    font-size: 0.9rem;
+    color: var(--muted, #a9b8b1);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .tech-categories-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .category-tag {
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    background: rgba(246, 241, 232, 0.05);
+    border: 1px solid rgba(246, 241, 232, 0.1);
+    padding: 0.15rem 0.45rem;
+    border-radius: 0.3rem;
+    color: rgba(246, 241, 232, 0.8);
+  }
+
+  .tech-evidence-box,
+  .tech-methodology-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(246, 241, 232, 0.06);
+  }
+
+  .evidence-heading {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(169, 184, 177, 0.7);
+  }
+
+  .evidence-pills,
+  .methodology-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .evidence-pill {
+    font-size: 0.775rem;
+    font-weight: 600;
+    color: var(--teal, #7ed8c4);
+    text-decoration: none;
+    background: rgba(126, 216, 196, 0.08);
+    border: 1px solid rgba(126, 216, 196, 0.2);
+    padding: 0.2rem 0.55rem;
+    border-radius: var(--radius-full, 9999px);
+    transition: background 150ms ease;
+  }
+
+  .evidence-pill:hover,
+  .evidence-pill:focus-visible {
+    background: rgba(126, 216, 196, 0.18);
+  }
+
+  .method-step-tag {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--ink, #f6f1e8);
+    text-decoration: none;
+    background: rgba(246, 241, 232, 0.06);
+    border: 1px solid rgba(246, 241, 232, 0.12);
+    padding: 0.15rem 0.45rem;
+    border-radius: 0.25rem;
+    transition: border-color 150ms ease;
+  }
+
+  .method-step-tag:hover,
+  .method-step-tag:focus-visible {
+    border-color: var(--teal, #7ed8c4);
+    color: var(--teal, #7ed8c4);
+  }
+
+  .tech-card-footer {
+    padding-top: 1rem;
+    border-top: 1px solid rgba(246, 241, 232, 0.08);
+    margin-top: auto;
+  }
+
+  .view-detail-link {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--teal, #7ed8c4);
+    text-decoration: none;
+  }
+
+  .view-detail-link:hover,
+  .view-detail-link:focus-visible {
+    text-decoration: underline;
+  }
+
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 1.5rem;
+    background: rgba(16, 26, 23, 0.6);
+    border: 1px dashed rgba(246, 241, 232, 0.15);
+    border-radius: 0.875rem;
+    margin-top: 2rem;
+  }
+
+  .empty-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .empty-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .empty-desc {
+    font-size: 0.95rem;
+    color: var(--muted, #a9b8b1);
+    margin: 0 0 1.5rem 0;
+  }
+
+  .btn-reset {
+    background: rgba(126, 216, 196, 0.15);
+    border: 1px solid var(--teal, #7ed8c4);
+    color: var(--teal, #7ed8c4);
+    font-size: 0.875rem;
+    font-weight: 700;
+    padding: 0.5rem 1.25rem;
+    border-radius: var(--radius-full, 9999px);
+    cursor: pointer;
+  }
+
+  /* CTA Section */
+  .integration-section {
+    border-bottom: none;
+    padding: clamp(3.5rem, 6vw, 5.5rem) 0;
+  }
+
+  .text-center {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .cta-title {
+    font-size: clamp(1.75rem, 3.2vw, 2.35rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0 0 1rem 0;
+  }
+
+  .cta-desc {
+    font-size: 1.05rem;
+    color: var(--muted, #a9b8b1);
+    line-height: 1.6;
+    margin: 0 0 2rem 0;
+  }
+
+  .cta-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--touch-target-min, 44px);
+    padding: 0.75rem 1.75rem;
+    border-radius: var(--radius-full, 9999px);
+    background: var(--teal, #7ed8c4);
+    color: #07110f;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 0 20px rgba(126, 216, 196, 0.3);
+    transition: transform 150ms ease, box-shadow 150ms ease;
+  }
+
+  .btn-primary:hover,
+  .btn-primary:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(126, 216, 196, 0.5);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--touch-target-min, 44px);
+    padding: 0.75rem 1.75rem;
+    border-radius: var(--radius-full, 9999px);
+    background: rgba(246, 241, 232, 0.06);
+    border: 1px solid rgba(246, 241, 232, 0.2);
+    color: var(--ink, #f6f1e8);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color 150ms ease, background 150ms ease;
+  }
+
+  .btn-secondary:hover,
+  .btn-secondary:focus-visible {
+    border-color: var(--teal, #7ed8c4);
+    background: rgba(126, 216, 196, 0.08);
+    color: var(--teal, #7ed8c4);
+  }
+
+  /* Responsive Media Queries */
+  @media (max-width: 1040px) {
+    .tech-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .tech-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,31 +1,32 @@
 ---
+import { getTechnologyById } from '@/data/technologies';
 import { universeNodes } from '@/data/skills';
 
-const roleStack = [
+const domainGroups = [
   {
     role: 'Quantitative & Mathematical Systems',
     focus: 'Time-series forecasting, statistical stationarity, and algorithmic backtesting.',
-    skills: ['Python', 'PyTorch', 'Pandas', 'NumPy', 'Scikit-Learn', 'Statsmodels', 'Walk-Forward CV'],
+    techIds: ['python', 'pytorch', 'pandas', 'numpy', 'scikit-learn', 'cuda'],
   },
   {
     role: 'AI & Intelligent Systems',
     focus: 'Neural return prediction, regime transition clustering, and deterministic agent execution.',
-    skills: ['Deep Learning', 'GMM & HMM', 'LangGraph', 'Agentic Systems', 'State Machines'],
+    techIds: ['pytorch', 'langgraph', 'fastapi', 'pydantic', 'scikit-learn'],
   },
   {
     role: 'Backend & Data Infrastructure',
     focus: 'Resilient REST APIs, relational schemas, secure endpoints, and data validation.',
-    skills: ['Node.js', 'Express', 'TypeScript', 'PostgreSQL', 'RESTful APIs', 'Data Cleaning'],
+    techIds: ['nodejs', 'express', 'typescript', 'postgresql', 'fastapi'],
   },
   {
     role: 'Frontend & Product Experience',
     focus: 'Accessible interfaces, sub-second performance, design systems, and mobile-first layouts.',
-    skills: ['Astro', 'React', 'Modern CSS', 'Semantic HTML5', 'WCAG AA', 'TypeScript'],
+    techIds: ['astro', 'react', 'typescript', 'tailwindcss', 'html5-css3'],
   },
   {
     role: 'Engineering Discipline & Delivery',
     focus: 'Version control, reproducible research notebooks, automated testing, and CI/CD.',
-    skills: ['Git & GitHub', 'Linux', 'Vercel', 'CI/CD Pipelines', 'Node Test Runner', 'Automated QA'],
+    techIds: ['git', 'jupyter', 'cuda'],
   },
 ];
 ---
@@ -35,7 +36,7 @@ const roleStack = [
     <p class="eyebrow"><span class="section-number">04 /</span> Technical Map</p>
     <h2>Organized by Engineering Role & System Responsibility</h2>
     <p class="section-subtitle">
-      I use tools for their reliability, mathematical capabilities, and performance—never for vanity.
+      I select tools strictly for their reliability, mathematical correctness, and execution performance—never for vanity.
     </p>
   </div>
 
@@ -53,18 +54,33 @@ const roleStack = [
 
   <div class="role-stack-grid reveal">
     {
-      roleStack.map((category) => (
-        <article class="stack-card">
-          <h3 class="stack-role-title">{category.role}</h3>
-          <p class="stack-focus-text">{category.focus}</p>
-          <div class="skill-pills-wrap">
-            {category.skills.map((skill) => (
-              <span class="skill-pill">{skill}</span>
-            ))}
-          </div>
-        </article>
-      ))
+      domainGroups.map((group) => {
+        const groupTechs = group.techIds
+          .map((id) => getTechnologyById(id))
+          .filter(Boolean);
+
+        return (
+          <article class="stack-card">
+            <h3 class="stack-role-title">{group.role}</h3>
+            <p class="stack-focus-text">{group.focus}</p>
+            <div class="skill-pills-wrap">
+              {groupTechs.map((tech) => (
+                <a href={`/technology/${tech?.id}`} class="skill-pill">
+                  {tech?.name}
+                </a>
+              ))}
+            </div>
+          </article>
+        );
+      })
     }
+  </div>
+
+  <div class="stack-footer-cta reveal">
+    <span class="footer-note">All technologies link to verified project repositories and case studies.</span>
+    <a href="/technology" class="tech-system-link">
+      Explore Full Technology System & Project Mappings →
+    </a>
   </div>
 </section>
 
@@ -214,19 +230,59 @@ const roleStack = [
   .skill-pills-wrap {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.35rem;
+    gap: 0.4rem;
     margin-top: auto;
   }
 
   .skill-pill {
-    font-size: 0.75rem;
+    font-size: 0.775rem;
     font-weight: 600;
     color: #7ed8c4;
     background: rgba(126, 216, 196, 0.08);
     border: 1px solid rgba(126, 216, 196, 0.2);
-    padding: 0.2rem 0.55rem;
-    border-radius: 0.25rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-full, 9999px);
     white-space: nowrap;
+    text-decoration: none;
+    transition: background 150ms ease, border-color 150ms ease;
+  }
+
+  .skill-pill:hover,
+  .skill-pill:focus-visible {
+    background: rgba(126, 216, 196, 0.2);
+    border-color: #7ed8c4;
+  }
+
+  .stack-footer-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding: 1rem 1.5rem;
+    background: rgba(16, 26, 23, 0.7);
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-note {
+    font-size: 0.85rem;
+    color: var(--muted, #a9b8b1);
+  }
+
+  .tech-system-link {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #7ed8c4;
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .tech-system-link:hover,
+  .tech-system-link:focus-visible {
+    color: #fff;
+    text-decoration: underline;
   }
 
   @media (max-width: 980px) {
@@ -238,6 +294,11 @@ const roleStack = [
   @media (max-width: 640px) {
     .role-stack-grid {
       grid-template-columns: 1fr;
+    }
+
+    .stack-footer-cta {
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 </style>

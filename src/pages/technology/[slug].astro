@@ -1,0 +1,753 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import {
+  technologies,
+  technologyCategories,
+} from '@/data/technologies';
+import type { Technology, TechnologyCategory } from '@/types/technology';
+import type { Project } from '@/types/project';
+import type { ResearchItem } from '@/types/research';
+import { projects } from '@/data/projects';
+import { researchItems } from '@/data/research';
+import { siteConfig } from '@/data/site';
+
+export function getStaticPaths() {
+  return technologies.map((tech: Technology) => ({
+    params: { slug: tech.id },
+    props: { tech },
+  }));
+}
+
+export interface Props {
+  tech: Technology;
+}
+
+const { tech } = Astro.props;
+
+const evidenceProjects: Project[] = tech.projectSlugs
+  .map((slug: string) => projects.find((p) => p.slug === slug))
+  .filter((p): p is Project => Boolean(p));
+
+const evidenceResearch: ResearchItem[] = (tech.researchSlugs || [])
+  .map((slug: string) => researchItems.find((r) => r.slug === slug))
+  .filter((r): r is ResearchItem => Boolean(r));
+
+const seo = {
+  title: `${tech.name} — Technical Role & Projects | ${siteConfig.name}`,
+  description: `${tech.name} in Uzair Ahmad’s engineering work: ${tech.primaryRole}. Verified case studies, architecture context, and repository usage.`,
+  canonical: `${siteConfig.url}/technology/${tech.id}`,
+};
+---
+
+<BaseLayout seo={seo}>
+  <main id="top" class="tech-detail-page">
+    <!-- Breadcrumbs -->
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+      <div class="container">
+        <ol class="breadcrumb-list">
+          <li><a href="/" class="breadcrumb-link">Home</a></li>
+          <li class="separator" aria-hidden="true">/</li>
+          <li><a href="/technology" class="breadcrumb-link">Technology</a></li>
+          <li class="separator" aria-hidden="true">/</li>
+          <li class="current" aria-current="page">{tech.name}</li>
+        </ol>
+      </div>
+    </nav>
+
+    <!-- Header / Hero -->
+    <header class="tech-header">
+      <div class="container">
+        <div class="tech-header-top">
+          <div class="status-badge-wrap">
+            <span class:list={['status-pill', `status-${tech.status}`]}>
+              {tech.status.toUpperCase()} STATUS
+            </span>
+            {
+              tech.categories.map((c: TechnologyCategory) => {
+                const catMeta = technologyCategories.find((cat) => cat.id === c);
+                return <span class="category-pill">{catMeta?.name || c}</span>;
+              })
+            }
+          </div>
+
+          <div class="external-links">
+            {
+              tech.website && (
+                <a href={tech.website} target="_blank" rel="noopener noreferrer" class="ext-link">
+                  Official Website ↗
+                </a>
+              )
+            }
+            {
+              tech.documentationUrl && (
+                <a href={tech.documentationUrl} target="_blank" rel="noopener noreferrer" class="ext-link">
+                  Documentation ↗
+                </a>
+              )
+            }
+          </div>
+        </div>
+
+        <h1 class="tech-title">{tech.name}</h1>
+        <p class="tech-tagline">{tech.tagline}</p>
+        <div class="role-banner">
+          <span class="role-label">Primary System Role:</span>
+          <span class="role-value">{tech.primaryRole}</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Technical Context Section -->
+    <section class="section-shell context-section">
+      <div class="container">
+        <div class="context-grid">
+          <div class="context-main">
+            <h2 class="subheading">Application & Architectural Context</h2>
+            <p class="context-body">{tech.description}</p>
+
+            {
+              tech.methodologySteps && tech.methodologySteps.length > 0 && (
+                <div class="methodology-panel">
+                  <h3 class="panel-heading">Associated Engineering Methodology Stages</h3>
+                  <p class="panel-subtext">
+                    This technology is actively utilized during the following lifecycle phases:
+                  </p>
+                  <div class="method-steps-grid">
+                    {tech.methodologySteps.map((step: string) => (
+                      <a href={`/how-i-build#step-${step}`} class="method-step-card">
+                        <span class="method-step-arrow">→</span>
+                        <span class="method-step-name">{step.toUpperCase()}</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )
+            }
+          </div>
+
+          <aside class="context-sidebar">
+            <div class="sidebar-box">
+              <h3 class="sidebar-title">Metadata & Verification</h3>
+              <dl class="meta-list">
+                <div class="meta-item">
+                  <dt>Canonical ID</dt>
+                  <dd><code>{tech.id}</code></dd>
+                </div>
+                <div class="meta-item">
+                  <dt>Verified Projects</dt>
+                  <dd>{evidenceProjects.length} Case Studies</dd>
+                </div>
+                {
+                  tech.aliases && tech.aliases.length > 0 && (
+                    <div class="meta-item">
+                      <dt>Known Aliases</dt>
+                      <dd>{tech.aliases.join(', ')}</dd>
+                    </div>
+                  )
+                }
+              </dl>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Verified Project Evidence -->
+    {
+      evidenceProjects.length > 0 && (
+        <section class="section-shell projects-evidence-section">
+          <div class="container">
+            <div class="section-header">
+              <p class="eyebrow">Public Verification</p>
+              <h2 class="section-title">Projects Utilizing {tech.name}</h2>
+              <p class="section-desc">
+                Inspect how {tech.name} was architected, integrated, and validated in complete open-source repositories.
+              </p>
+            </div>
+
+            <div class="projects-grid">
+              {evidenceProjects.map((proj: Project) => (
+                <article class="project-evidence-card">
+                  <div class="project-top">
+                    <span class="project-type">{proj.projectType}</span>
+                    <span class="project-domain">{proj.domain}</span>
+                  </div>
+                  <h3 class="project-title">
+                    <a href={`/work/${proj.slug}`} class="project-link">
+                      {proj.title}
+                    </a>
+                  </h3>
+                  <p class="project-desc">{proj.shortDescription}</p>
+                  <div class="project-footer">
+                    <a href={`/work/${proj.slug}`} class="case-study-btn">
+                      Read Technical Case Study →
+                    </a>
+                    {proj.githubUrl && (
+                      <a href={proj.githubUrl} target="_blank" rel="noopener noreferrer" class="github-link">
+                        GitHub Repo ↗
+                      </a>
+                    )}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Related Research Inquiries -->
+    {
+      evidenceResearch.length > 0 && (
+        <section class="section-shell research-evidence-section">
+          <div class="container">
+            <div class="section-header">
+              <p class="eyebrow">Scientific & Empirical Context</p>
+              <h2 class="section-title">Related Research Inquiries</h2>
+              <p class="section-desc">
+                Theoretical inquiries and mathematical investigations leveraging {tech.name}.
+              </p>
+            </div>
+
+            <div class="research-grid">
+              {evidenceResearch.map((res: ResearchItem) => (
+                <article class="research-card">
+                  <div class="research-top">
+                    <span class="research-badge">{res.badge}</span>
+                    <span class="research-domain">{res.domain}</span>
+                  </div>
+                  <h3 class="research-title">
+                    <a href={`/research/${res.slug}`} class="research-link">
+                      {res.title}
+                    </a>
+                  </h3>
+                  <p class="research-summary">{res.summary}</p>
+                  <a href={`/research/${res.slug}`} class="research-view-link">
+                    Explore Research Hypothesis →
+                  </a>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Bottom Navigation -->
+    <section class="section-shell bottom-nav-section">
+      <div class="container">
+        <div class="bottom-nav-box">
+          <a href="/technology" class="btn-secondary">
+            ← Back to Technology Ecosystem
+          </a>
+          <a href="/how-i-build" class="btn-primary">
+            How I Build Methodology →
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .tech-detail-page {
+    color: var(--ink, #f6f1e8);
+    padding-bottom: clamp(3rem, 6vw, 6rem);
+  }
+
+  .container {
+    width: min(var(--container-max, 1200px), calc(100% - max(1.5rem, calc(env(safe-area-inset-left) + env(safe-area-inset-right) + 1rem))));
+    margin: 0 auto;
+    padding-left: env(safe-area-inset-left, 0);
+    padding-right: env(safe-area-inset-right, 0);
+  }
+
+  /* Breadcrumbs */
+  .breadcrumb-nav {
+    padding: 1.25rem 0 0.5rem 0;
+  }
+
+  .breadcrumb-list {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.85rem;
+  }
+
+  .breadcrumb-link {
+    color: var(--muted, #a9b8b1);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .breadcrumb-link:hover,
+  .breadcrumb-link:focus-visible {
+    color: var(--teal, #7ed8c4);
+  }
+
+  .separator {
+    color: rgba(169, 184, 177, 0.4);
+  }
+
+  .current {
+    color: var(--ink, #f6f1e8);
+    font-weight: 600;
+  }
+
+  /* Header */
+  .tech-header {
+    padding: clamp(2.5rem, 5vw, 4rem) 0 clamp(2rem, 3.5vw, 3rem);
+    border-bottom: 1px solid rgba(246, 241, 232, 0.08);
+  }
+
+  .tech-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+  }
+
+  .status-badge-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .status-pill {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-full, 9999px);
+    letter-spacing: 0.06em;
+  }
+
+  .status-core {
+    background: rgba(126, 216, 196, 0.15);
+    color: var(--teal, #7ed8c4);
+    border: 1px solid rgba(126, 216, 196, 0.35);
+  }
+
+  .status-recurring {
+    background: rgba(169, 184, 177, 0.15);
+    color: #a9b8b1;
+    border: 1px solid rgba(169, 184, 177, 0.3);
+  }
+
+  .status-specialized {
+    background: rgba(224, 159, 103, 0.15);
+    color: #e09f67;
+    border: 1px solid rgba(224, 159, 103, 0.35);
+  }
+
+  .status-research {
+    background: rgba(180, 142, 230, 0.15);
+    color: #b48ee6;
+    border: 1px solid rgba(180, 142, 230, 0.35);
+  }
+
+  .category-pill {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.75rem;
+    background: rgba(246, 241, 232, 0.06);
+    border: 1px solid rgba(246, 241, 232, 0.15);
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-full, 9999px);
+    color: rgba(246, 241, 232, 0.85);
+  }
+
+  .external-links {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .ext-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--teal, #7ed8c4);
+    text-decoration: none;
+    border: 1px solid rgba(126, 216, 196, 0.25);
+    padding: 0.25rem 0.65rem;
+    border-radius: 0.35rem;
+    background: rgba(126, 216, 196, 0.06);
+    transition: background 150ms ease, border-color 150ms ease;
+  }
+
+  .ext-link:hover,
+  .ext-link:focus-visible {
+    background: rgba(126, 216, 196, 0.16);
+    border-color: var(--teal, #7ed8c4);
+  }
+
+  .tech-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin: 0 0 0.85rem 0;
+  }
+
+  .tech-tagline {
+    font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+    color: var(--muted, #a9b8b1);
+    line-height: 1.5;
+    margin: 0 0 1.5rem 0;
+    max-width: 800px;
+  }
+
+  .role-banner {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: rgba(7, 17, 15, 0.8);
+    border: 1px solid rgba(126, 216, 196, 0.25);
+    padding: 0.6rem 1.15rem;
+    border-radius: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .role-label {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #83968e;
+  }
+
+  .role-value {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--teal, #7ed8c4);
+  }
+
+  /* Section Shells */
+  .section-shell {
+    padding: clamp(3rem, 5vw, 4.5rem) 0;
+    border-bottom: 1px solid rgba(246, 241, 232, 0.08);
+  }
+
+  .context-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .subheading {
+    font-size: 1.45rem;
+    font-weight: 800;
+    margin: 0 0 1rem 0;
+    letter-spacing: -0.01em;
+  }
+
+  .context-body {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: rgba(246, 241, 232, 0.9);
+    margin: 0 0 2rem 0;
+  }
+
+  .methodology-panel {
+    background: rgba(16, 26, 23, 0.7);
+    border: 1px solid rgba(246, 241, 232, 0.1);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+  }
+
+  .panel-heading {
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin: 0 0 0.35rem 0;
+  }
+
+  .panel-subtext {
+    font-size: 0.875rem;
+    color: var(--muted, #a9b8b1);
+    margin: 0 0 1rem 0;
+  }
+
+  .method-steps-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+  }
+
+  .method-step-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: rgba(7, 17, 15, 0.85);
+    border: 1px solid rgba(126, 216, 196, 0.25);
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--radius-full, 9999px);
+    text-decoration: none;
+    font-size: 0.825rem;
+    font-weight: 700;
+    color: var(--teal, #7ed8c4);
+    font-family: var(--font-mono, monospace);
+    transition: background 150ms ease, border-color 150ms ease;
+  }
+
+  .method-step-card:hover,
+  .method-step-card:focus-visible {
+    background: rgba(126, 216, 196, 0.18);
+    border-color: var(--teal, #7ed8c4);
+  }
+
+  .method-step-arrow {
+    font-weight: 800;
+  }
+
+  /* Sidebar */
+  .sidebar-box {
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(246, 241, 232, 0.1);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+  }
+
+  .sidebar-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--teal, #7ed8c4);
+    margin: 0 0 1.25rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(246, 241, 232, 0.08);
+  }
+
+  .meta-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 0;
+  }
+
+  .meta-item dt {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #83968e;
+    margin-bottom: 0.2rem;
+  }
+
+  .meta-item dd {
+    font-size: 0.95rem;
+    color: var(--ink, #f6f1e8);
+    margin: 0;
+  }
+
+  .meta-item code {
+    font-family: var(--font-mono, monospace);
+    color: var(--teal, #7ed8c4);
+    background: rgba(126, 216, 196, 0.08);
+    padding: 0.15rem 0.45rem;
+    border-radius: 0.3rem;
+  }
+
+  /* Projects & Research Grids */
+  .section-header {
+    margin-bottom: 2rem;
+    max-width: 720px;
+  }
+
+  .eyebrow {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--teal, #7ed8c4);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .section-title {
+    font-size: clamp(1.6rem, 3vw, 2.25rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.65rem 0;
+  }
+
+  .section-desc {
+    font-size: 1rem;
+    color: var(--muted, #a9b8b1);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .projects-grid,
+  .research-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .project-evidence-card,
+  .research-card {
+    background: rgba(16, 26, 23, 0.65);
+    border: 1px solid rgba(246, 241, 232, 0.1);
+    border-radius: 0.875rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 150ms ease;
+  }
+
+  .project-evidence-card:hover,
+  .research-card:hover {
+    border-color: rgba(126, 216, 196, 0.35);
+  }
+
+  .project-top,
+  .research-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--teal, #7ed8c4);
+    margin-bottom: 0.5rem;
+  }
+
+  .project-domain,
+  .research-domain {
+    color: var(--muted, #a9b8b1);
+  }
+
+  .project-title,
+  .research-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin: 0 0 0.65rem 0;
+    line-height: 1.3;
+  }
+
+  .project-link,
+  .research-link {
+    color: var(--ink, #f6f1e8);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .project-link:hover,
+  .project-link:focus-visible,
+  .research-link:hover,
+  .research-link:focus-visible {
+    color: var(--teal, #7ed8c4);
+  }
+
+  .project-desc,
+  .research-summary {
+    font-size: 0.925rem;
+    color: var(--muted, #a9b8b1);
+    line-height: 1.55;
+    margin: 0 0 1.25rem 0;
+    flex-grow: 1;
+  }
+
+  .project-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(246, 241, 232, 0.08);
+    flex-wrap: wrap;
+  }
+
+  .case-study-btn,
+  .research-view-link {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--teal, #7ed8c4);
+    text-decoration: none;
+  }
+
+  .case-study-btn:hover,
+  .research-view-link:hover {
+    text-decoration: underline;
+  }
+
+  .github-link {
+    font-size: 0.825rem;
+    color: var(--muted, #a9b8b1);
+    text-decoration: none;
+  }
+
+  .github-link:hover {
+    color: var(--ink, #f6f1e8);
+  }
+
+  /* Bottom Navigation */
+  .bottom-nav-section {
+    border-bottom: none;
+    padding-top: 2rem;
+  }
+
+  .bottom-nav-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--touch-target-min, 44px);
+    padding: 0.65rem 1.5rem;
+    border-radius: var(--radius-full, 9999px);
+    background: var(--teal, #7ed8c4);
+    color: #07110f;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: box-shadow 150ms ease;
+  }
+
+  .btn-primary:hover,
+  .btn-primary:focus-visible {
+    box-shadow: 0 0 24px rgba(126, 216, 196, 0.4);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--touch-target-min, 44px);
+    padding: 0.65rem 1.5rem;
+    border-radius: var(--radius-full, 9999px);
+    background: rgba(246, 241, 232, 0.06);
+    border: 1px solid rgba(246, 241, 232, 0.15);
+    color: var(--ink, #f6f1e8);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color 150ms ease;
+  }
+
+  .btn-secondary:hover,
+  .btn-secondary:focus-visible {
+    border-color: var(--teal, #7ed8c4);
+    color: var(--teal, #7ed8c4);
+  }
+
+  @media (max-width: 900px) {
+    .context-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .projects-grid,
+    .research-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
