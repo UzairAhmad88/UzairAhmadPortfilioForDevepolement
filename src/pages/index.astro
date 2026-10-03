@@ -1,10 +1,10 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Hero from '@/components/sections/Hero.astro';
-import Ticker from '@/components/sections/Ticker.astro';
+import Currently from '@/components/sections/Currently.astro';
+import Work from '@/components/sections/Work.astro';
 import Systems from '@/components/sections/Systems.astro';
 import TechStack from '@/components/sections/TechStack.astro';
-import Work from '@/components/sections/Work.astro';
 import ResearchLab from '@/components/sections/ResearchLab.astro';
 import ArchitectureSection from '@/components/sections/ArchitectureSection.astro';
 import About from '@/components/sections/About.astro';
@@ -25,10 +25,10 @@ const seo = {
 <BaseLayout seo={seo}>
   <main id="top">
     <Hero />
-    <Ticker />
+    <Currently />
+    <Work />
     <Systems />
     <TechStack />
-    <Work />
     <ResearchLab />
     <ArchitectureSection />
     <About />

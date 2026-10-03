@@ -6,7 +6,7 @@ import { featuredProject, projects, projectFilters } from '@/data/projects';
 
 <section id="work" class="section-shell">
   <div class="section-heading reveal">
-    <p class="eyebrow"><span class="section-number">01 /</span> Selected Work</p>
+    <p class="eyebrow"><span class="section-number">02 /</span> Selected Work</p>
     <h2>Projects framed as systems, not just repositories.</h2>
   </div>
 
@@ -27,6 +27,12 @@ import { featuredProject, projects, projectFilters } from '@/data/projects';
 
   <div class="project-grid">
     {projects.map((project) => <ProjectCard project={project} />)}
+  </div>
+
+  <div class="work-footer-cta reveal">
+    <a href="/work" class="button ghost">
+      View All Work & Projects Archive →
+    </a>
   </div>
 </section>
 
@@ -96,6 +102,12 @@ import { featuredProject, projects, projectFilters } from '@/data/projects';
     gap: 1.25rem;
   }
 
+  .work-footer-cta {
+    display: flex;
+    justify-content: center;
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+
   @media (max-width: 1024px) {
     .project-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -105,6 +117,10 @@ import { featuredProject, projects, projectFilters } from '@/data/projects';
   @media (max-width: 640px) {
     .project-grid {
       grid-template-columns: 1fr;
+    }
+
+    .work-footer-cta .button {
+      width: 100%;
     }
   }
 </style>
