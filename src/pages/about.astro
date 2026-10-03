@@ -1,261 +1,1069 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
-import SectionHeader from '@/components/common/SectionHeader.astro';
-import ContactCallout from '@/components/sections/ContactCallout.astro';
+import { aboutProfile } from '@/data/about';
+import { currentlyData } from '@/data/currently';
+import { projects } from '@/data/projects';
 import { siteConfig } from '@/data/site';
+import { getProfilePageSchema } from '@/lib/seo/jsonld';
+
+const featuredProjects = projects.filter((p) => p.featured).slice(0, 3);
 
 const seo = {
-  title: 'About — Uzair Ahmad | Background, Values & Technical Stack',
-  description: 'Learn about Uzair Ahmad, a Quantitative AI and Product Engineer building reliable systems at the intersection of finance, machine learning, and modern web architectures.',
+  title: `About ${aboutProfile.name} — ${aboutProfile.title} | Engineering Identity`,
+  description:
+    'Engineering identity, intellectual focus, core principles, and technical evolution of Uzair Ahmad across quantitative finance, machine learning, and full-stack systems.',
   canonical: `${siteConfig.url}/about`,
+  keywords: [
+    'Uzair Ahmad',
+    'Quantitative AI Engineer',
+    'Product Engineer',
+    'Systems Architect',
+    'Machine Learning Research',
+    'About Uzair Ahmad',
+    'Engineering Philosophy',
+  ],
+  schema: [getProfilePageSchema()],
 };
 ---
 
 <BaseLayout seo={seo}>
-  <div class="page-container">
-    <Breadcrumbs items={[{ label: 'About', href: '/about' }]} />
+  <main id="main-content" class="about-page">
+    <div class="page-container">
+      <Breadcrumbs items={[{ label: 'About', href: '/about' }]} />
 
-    <section class="about-hero">
-      <SectionHeader
-        eyebrow="Background & Philosophy"
-        title="Engineering Systems with Quantitative Rigor & Production Craft"
-        subtitle="Bridging statistical intelligence, financial modeling, and end-to-end web engineering."
-      />
-    </section>
+      <!-- 1. Hero Identity Section -->
+      <header class="about-hero">
+        <div class="hero-badge">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span>{aboutProfile.eyebrow}</span>
+        </div>
 
-    <div class="about-grid">
-      <main class="about-narrative">
-        <section class="narrative-block">
-          <h2 class="subhead">The Journey & Core Focus</h2>
-          <p>
-            I am a Quantitative AI and Product Engineer focused on designing systems where statistical rigor and software engineering meet. My work spans from deep learning return prediction models to full-stack web platforms and operations software.
-          </p>
-          <p>
-            Rather than treating machine learning as an isolated academic sandbox, I focus on the end-to-end engineering lifecycle: data ingestion, feature normalization, model execution, API architecture, and high-performance user interfaces.
-          </p>
-        </section>
+        <h1 class="hero-name">{aboutProfile.name}</h1>
+        <p class="hero-positioning">{aboutProfile.title}</p>
+        
+        <p class="hero-statement">
+          {aboutProfile.shortBio}
+        </p>
 
-        <section class="narrative-block">
-          <h2 class="subhead">Engineering Philosophy</h2>
-          <div class="principles-stack">
-            <div class="principle-item">
-              <h3 class="principle-title">01 — Verifiable Evidence Over Abstract Claims</h3>
-              <p>
-                Working code, public repositories, and reproducible pipelines speak louder than inflated buzzwords. Every project in this portfolio represents actual software with source code.
-              </p>
-            </div>
-            <div class="principle-item">
-              <h3 class="principle-title">02 — Production-Minded Research</h3>
-              <p>
-                Models are only as valuable as their stability in production. I build research tools designed to withstand regime shifts, data anomalies, and strict latency requirements.
-              </p>
-            </div>
-            <div class="principle-item">
-              <h3 class="principle-title">03 — Full-Stack Architectural Ownership</h3>
-              <p>
-                Understanding the entire stack—from PyTorch tensor pipelines down to DOM rendering performance and semantic HTML—enables lean, cohesive architectures with zero bloat.
-              </p>
-            </div>
+        <div class="hero-meta-row">
+          <div class="meta-item">
+            <span class="meta-icon" aria-hidden="true">📍</span>
+            <span>{aboutProfile.location}</span>
           </div>
-        </section>
-
-        <section class="narrative-block">
-          <h2 class="subhead">Current Explorations</h2>
-          <p>
-            Currently, my active research centers on <strong>Unsupervised Market Regime Classification</strong> using Gaussian Mixture Models and <strong>Deterministic Guardrails for Agentic Execution Workflows</strong>.
-          </p>
-        </section>
-      </main>
-
-      <aside class="about-sidebar">
-        <div class="toolkit-card">
-          <h3 class="toolkit-heading">Technical Toolkit</h3>
-
-          <div class="toolkit-category">
-            <h4 class="category-title">Quantitative & AI</h4>
-            <div class="tags-wrap">
-              <span class="tech-badge">Python</span>
-              <span class="tech-badge">PyTorch</span>
-              <span class="tech-badge">Pandas</span>
-              <span class="tech-badge">NumPy</span>
-              <span class="tech-badge">Scikit-Learn</span>
-              <span class="tech-badge">Time-Series</span>
-            </div>
-          </div>
-
-          <div class="toolkit-category">
-            <h4 class="category-title">Backend & Systems</h4>
-            <div class="tags-wrap">
-              <span class="tech-badge">Node.js</span>
-              <span class="tech-badge">Express</span>
-              <span class="tech-badge">TypeScript</span>
-              <span class="tech-badge">PostgreSQL</span>
-              <span class="tech-badge">REST APIs</span>
-            </div>
-          </div>
-
-          <div class="toolkit-category">
-            <h4 class="category-title">Frontend & Web</h4>
-            <div class="tags-wrap">
-              <span class="tech-badge">Astro</span>
-              <span class="tech-badge">React</span>
-              <span class="tech-badge">TypeScript</span>
-              <span class="tech-badge">Semantic HTML5</span>
-              <span class="tech-badge">Modern CSS</span>
-            </div>
-          </div>
-
-          <div class="toolkit-category">
-            <h4 class="category-title">Tooling & DevOps</h4>
-            <div class="tags-wrap">
-              <span class="tech-badge">Git & GitHub</span>
-              <span class="tech-badge">Linux</span>
-              <span class="tech-badge">Vercel</span>
-              <span class="tech-badge">CI/CD</span>
-            </div>
+          <div class="meta-item availability">
+            <span class="status-indicator" aria-hidden="true"></span>
+            <span>Available for high-impact technical roles & select collaborations</span>
           </div>
         </div>
-      </aside>
-    </div>
 
-    <ContactCallout />
-  </div>
+        <div class="hero-cta-group">
+          <a href="/work" class="btn-primary">
+            Explore Work →
+          </a>
+          <a href="/research" class="btn-secondary">
+            Inspect Research ↗
+          </a>
+          <a href="/timeline" class="btn-secondary">
+            View Timeline ↗
+          </a>
+          <a href="/contact" class="btn-secondary">
+            Get in Touch ✉
+          </a>
+        </div>
+      </header>
+
+      <!-- 2. Intellectual Narrative & Background -->
+      <section class="identity-section" aria-labelledby="narrative-heading">
+        <div class="section-label">
+          <span class="section-num">01 /</span>
+          <h2 id="narrative-heading" class="section-title">Background & Intellectual Focus</h2>
+        </div>
+        <div class="narrative-body">
+          {aboutProfile.narrativeParagraphs.map((para) => (
+            <p class="narrative-text">{para}</p>
+          ))}
+        </div>
+      </section>
+
+      <!-- 3. What I Work On (Focus Areas & Evidence) -->
+      <section class="focus-section" aria-labelledby="focus-heading">
+        <div class="section-label">
+          <span class="section-num">02 /</span>
+          <h2 id="focus-heading" class="section-title">What I Work On & Technical Domains</h2>
+        </div>
+        <div class="focus-grid">
+          {aboutProfile.focusAreas.map((focus) => (
+            <article class="focus-card">
+              <div class="card-domain-badge">{focus.domain}</div>
+              <h3 class="focus-title">{focus.title}</h3>
+              <p class="focus-desc">{focus.description}</p>
+              
+              <div class="tech-stack-row">
+                {focus.keyTechnologies.map((tech) => (
+                  <span class="tech-pill">{tech}</span>
+                ))}
+              </div>
+
+              <a href={focus.canonicalHref} class="focus-link" aria-label={`Inspect evidence for ${focus.title}`}>
+                Inspect {focus.evidenceType === 'research' ? 'Research' : focus.evidenceType === 'lab' ? 'Lab Experiments' : 'System'} →
+              </a>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <!-- 4. How I Think & Engineering Principles -->
+      <section class="principles-section" aria-labelledby="principles-heading">
+        <div class="section-label">
+          <div class="label-row">
+            <span class="section-num">03 /</span>
+            <h2 id="principles-heading" class="section-title">How I Think — Engineering Principles</h2>
+          </div>
+          <a href="/how-i-build" class="subtle-link">
+            Explore Full Methodology ("How I Build") →
+          </a>
+        </div>
+
+        <div class="principles-grid">
+          {aboutProfile.principles.map((principle) => (
+            <div class="principle-card">
+              <div class="principle-num">{principle.number}</div>
+              <h3 class="principle-title">{principle.title}</h3>
+              <p class="principle-summary">{principle.summary}</p>
+              <div class="principle-app">
+                <span class="app-label">In Practice:</span>
+                <p class="app-text">{principle.application}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- 5. Selected Evidence & Flagship Systems -->
+      <section class="evidence-section" aria-labelledby="evidence-heading">
+        <div class="section-label">
+          <div class="label-row">
+            <span class="section-num">04 /</span>
+            <h2 id="evidence-heading" class="section-title">Selected Flagship Systems</h2>
+          </div>
+          <a href="/work" class="subtle-link">
+            View All Verified Systems ({projects.length}) →
+          </a>
+        </div>
+
+        <div class="evidence-grid">
+          {featuredProjects.map((proj) => (
+            <article class="evidence-card">
+              <div class="card-meta">
+                <span class="proj-type">{proj.projectType}</span>
+                <span class="proj-status">{proj.status.toUpperCase()}</span>
+              </div>
+              <h3 class="proj-title">
+                <a href={`/work/${proj.slug}`}>{proj.title}</a>
+              </h3>
+              <p class="proj-desc">{proj.shortDescription || proj.problem}</p>
+              <div class="proj-techs">
+                {proj.technologies?.slice(0, 4).map((tech) => (
+                  <span class="tech-tag">{tech}</span>
+                ))}
+              </div>
+              <a href={`/work/${proj.slug}`} class="evidence-link">
+                Read Case Study →
+              </a>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <!-- 6. Active Focus & Direction (Currently Integration) -->
+      <section class="currently-integration-section" aria-labelledby="currently-heading">
+        <div class="section-label">
+          <div class="label-row">
+            <span class="section-num">05 /</span>
+            <h2 id="currently-heading" class="section-title">Current Workbench & Active Direction</h2>
+          </div>
+          {currentlyData.updatedAt && (
+            <span class="update-tag">Updated // {currentlyData.updatedAt}</span>
+          )}
+        </div>
+
+        <div class="currently-summary-grid">
+          <div class="summary-col">
+            <h3 class="col-title building">● BUILDING</h3>
+            <p class="col-highlight-title">{currentlyData.building?.title}</p>
+            <p class="col-desc">{currentlyData.building?.description}</p>
+            {currentlyData.building?.href && (
+              <a href={currentlyData.building.href} class="col-link">
+                Inspect Active System →
+              </a>
+            )}
+          </div>
+
+          <div class="summary-col">
+            <h3 class="col-title learning">→ LEARNING</h3>
+            <ul class="col-list">
+              {currentlyData.learning?.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="summary-col">
+            <h3 class="col-title exploring">◇ EXPLORING</h3>
+            <ul class="col-list">
+              {currentlyData.exploring?.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Chronological Evolution & History Gateways -->
+      <section class="evolution-gateways" aria-label="Timeline and Archive Gateways">
+        <div class="gateway-card timeline-gate">
+          <div class="gate-icon" aria-hidden="true">⏱</div>
+          <div class="gate-content">
+            <h3>Chronological Engineering Timeline</h3>
+            <p>
+              Explore the full chronological history tracing how projects, quantitative research, laboratory experiments, and architectural transitions have evolved from 2024 to 2026.
+            </p>
+            <a href="/timeline" class="gate-link">
+              Explore Timeline (23 Milestones) →
+            </a>
+          </div>
+        </div>
+
+        <div class="gateway-card archive-gate">
+          <div class="gate-icon" aria-hidden="true">🏛</div>
+          <div class="gate-content">
+            <h3>Project Archive & Historical Systems</h3>
+            <p>
+              Inspect legacy architectures, superseded prototypes, and preserved historical codebases documenting foundational software progression.
+            </p>
+            <a href="/archive" class="gate-link">
+              Explore Project Archive Catalog →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. Education & Academic Background -->
+      <section class="education-section" aria-labelledby="edu-heading">
+        <div class="section-label">
+          <span class="section-num">06 /</span>
+          <h2 id="edu-heading" class="section-title">Education & Academic Grounding</h2>
+        </div>
+
+        <div class="education-list">
+          {aboutProfile.education.map((edu) => (
+            <div class="edu-card">
+              <div class="edu-header">
+                <div>
+                  <h3 class="edu-degree">{edu.degree} in {edu.field}</h3>
+                  <p class="edu-inst">{edu.institution}</p>
+                </div>
+                <div class="edu-meta">
+                  <span class="edu-period">{edu.period}</span>
+                  <span class="edu-loc">{edu.location}</span>
+                </div>
+              </div>
+              {edu.focus && (
+                <div class="edu-focus-wrap">
+                  <span class="focus-label">Key Focus Areas:</span>
+                  <div class="focus-pills">
+                    {edu.focus.map((item) => (
+                      <span class="focus-pill">{item}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- 9. Collaboration & Problem Inquiries -->
+      <section class="collaboration-section" aria-labelledby="collab-heading">
+        <div class="section-label">
+          <span class="section-num">07 /</span>
+          <h2 id="collab-heading" class="section-title">Collaboration & Engineering Inquiries</h2>
+        </div>
+
+        <p class="collab-intro">
+          I am interested in technical roles, research initiatives, and engineering collaborations focused on challenging problems at the intersection of data, intelligence, and distributed software systems.
+        </p>
+
+        <div class="collab-grid">
+          {aboutProfile.collaborationInterests.map((interest) => (
+            <div class="collab-card">
+              <span class="collab-role-pill">{interest.roleType}</span>
+              <h3 class="collab-area">{interest.area}</h3>
+              <p class="collab-desc">{interest.description}</p>
+            </div>
+          ))}
+        </div>
+
+        <!-- Direct Contact Action -->
+        <div class="contact-action-banner">
+          <div class="banner-text">
+            <h3>Have a technical problem worth exploring?</h3>
+            <p>Let's discuss architecture, research collaboration, or technical roles.</p>
+          </div>
+          <div class="banner-actions">
+            <a href="/contact" class="btn-primary">
+              Start a Conversation →
+            </a>
+            <a href={aboutProfile.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" class="btn-secondary">
+              Connect on LinkedIn ↗
+            </a>
+            <a href={aboutProfile.socialLinks.github} target="_blank" rel="noopener noreferrer" class="btn-secondary">
+              Inspect GitHub ↗
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
 </BaseLayout>
 
 <style>
+  .about-page {
+    padding: clamp(2rem, 4vw, 3.5rem) 0 5rem;
+  }
+
   .page-container {
-    width: min(var(--container-max, 1200px), calc(100% - max(1.5rem, calc(env(safe-area-inset-left) + env(safe-area-inset-right) + 1rem))));
+    width: min(var(--container-max, 1100px), calc(100% - 2rem));
     margin: 0 auto;
-    padding: 1rem 0 5rem;
-    padding-left: env(safe-area-inset-left, 0);
-    padding-right: env(safe-area-inset-right, 0);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3rem, 5vw, 4.5rem);
   }
 
+  /* 1. Hero Section */
   .about-hero {
-    margin-bottom: clamp(2rem, 4vw, 3.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
   }
 
-  .about-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: clamp(2rem, 4vw, 3.5rem);
-    align-items: start;
-  }
-
-  .narrative-block {
-    margin-bottom: 3rem;
-  }
-
-  .subhead {
-    font-size: clamp(1.25rem, 2vw + 0.2rem, 1.6rem);
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.775rem;
     font-weight: 800;
-    color: var(--color-text, #f6f1e8);
-    margin: 0 0 1.25rem 0;
-    letter-spacing: -0.02em;
-    line-height: 1.25;
+    color: var(--color-accent-teal, #7ed8c4);
+    letter-spacing: 0.08em;
+    background: rgba(126, 216, 196, 0.08);
+    border: 1px solid rgba(126, 216, 196, 0.24);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-full, 9999px);
+    width: fit-content;
   }
 
-  .narrative-block p {
-    font-size: var(--font-size-body, 1.05rem);
-    color: var(--color-text-muted, #a9b8b1);
-    line-height: 1.75;
-    margin: 0 0 1.25rem 0;
+  .pulse-dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: var(--color-accent-teal, #7ed8c4);
+    box-shadow: 0 0 8px rgba(126, 216, 196, 0.8);
   }
 
-  .narrative-block p strong {
-    color: var(--color-text, #f6f1e8);
+  .hero-name {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 800;
+    color: var(--color-text-primary, #f6f1e8);
+    line-height: 1.15;
+    margin: 0;
   }
 
-  .principles-stack {
+  .hero-positioning {
+    font-family: var(--font-mono, monospace);
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
+    color: var(--color-accent-teal, #7ed8c4);
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .hero-statement {
+    max-width: 780px;
+    font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+    color: var(--color-text-secondary, #a9b8b1);
+    line-height: 1.65;
+    margin: 0.5rem 0;
+  }
+
+  .hero-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--color-text-muted, #83968e);
+    margin-top: 0.25rem;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .meta-item.availability {
+    color: var(--color-accent-teal, #7ed8c4);
+    font-weight: 600;
+  }
+
+  .status-indicator {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--color-accent-teal, #7ed8c4);
+    box-shadow: 0 0 8px rgba(126, 216, 196, 0.6);
+  }
+
+  .hero-cta-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #07110f;
+    background: var(--color-accent-teal, #7ed8c4);
+    padding: 0.6rem 1.25rem;
+    border-radius: var(--radius-sm, 4px);
+    text-decoration: none;
+    transition: all var(--transition-fast, 150ms ease);
+  }
+
+  .btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text-secondary, #a9b8b1);
+    background: rgba(246, 241, 232, 0.04);
+    border: 1px solid rgba(246, 241, 232, 0.1);
+    padding: 0.6rem 1.15rem;
+    border-radius: var(--radius-sm, 4px);
+    text-decoration: none;
+    transition: all var(--transition-fast, 150ms ease);
+  }
+
+  .btn-secondary:hover {
+    color: var(--color-text-primary, #f6f1e8);
+    border-color: rgba(126, 216, 196, 0.35);
+  }
+
+  /* Section Common Layout */
+  .section-label {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
+  }
+
+  .label-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.65rem;
+  }
+
+  .section-num {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--color-accent-teal, #7ed8c4);
+    letter-spacing: 0.05em;
+  }
+
+  .section-title {
+    font-size: clamp(1.25rem, 2.5vw, 1.65rem);
+    font-weight: 800;
+    color: var(--color-text-primary, #f6f1e8);
+    margin: 0;
+  }
+
+  .subtle-link {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-accent-teal, #7ed8c4);
+    text-decoration: none;
+    transition: color var(--transition-fast, 150ms ease);
+  }
+
+  .subtle-link:hover {
+    text-decoration: underline;
+  }
+
+  /* 2. Narrative Section */
+  .narrative-body {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-    margin-top: 1.5rem;
+    max-width: 820px;
   }
 
-  .principle-item {
-    background: rgba(16, 26, 23, 0.75);
-    border: 1px solid rgba(246, 241, 232, 0.09);
-    border-radius: 0.75rem;
+  .narrative-text {
+    font-size: clamp(1rem, 1.5vw, 1.1rem);
+    color: var(--color-text-secondary, #a9b8b1);
+    line-height: 1.75;
+    margin: 0;
+  }
+
+  /* 3. Focus Grid */
+  .focus-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .focus-card {
+    background: var(--color-background-subtle, #101a17);
+    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.1));
+    border-radius: var(--radius-md, 8px);
     padding: clamp(1.25rem, 2.5vw, 1.75rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    transition: transform var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  .focus-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(126, 216, 196, 0.35);
+  }
+
+  .card-domain-badge {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.725rem;
+    font-weight: 800;
+    color: var(--color-accent-teal, #7ed8c4);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .focus-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--color-text-primary, #f6f1e8);
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  .focus-desc {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary, #a9b8b1);
+    line-height: 1.6;
+    margin: 0;
+    flex-grow: 1;
+  }
+
+  .tech-stack-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .tech-pill {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.725rem;
+    color: var(--color-text-muted, #a9b8b1);
+    background: rgba(246, 241, 232, 0.04);
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    padding: 0.15rem 0.45rem;
+    border-radius: 3px;
+  }
+
+  .focus-link {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-accent-teal, #7ed8c4);
+    text-decoration: none;
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
+    transition: color var(--transition-fast);
+  }
+
+  .focus-link:hover {
+    text-decoration: underline;
+  }
+
+  /* 4. Principles Section */
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .principle-card {
+    background: var(--color-background-subtle, #101a17);
+    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.1));
+    border-radius: var(--radius-md, 8px);
+    padding: clamp(1.25rem, 2.5vw, 1.75rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .principle-num {
+    font-family: var(--font-mono, monospace);
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--color-accent-teal, #7ed8c4);
   }
 
   .principle-title {
     font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--color-accent, #7ed8c4);
-    margin: 0 0 0.5rem 0;
+    font-weight: 800;
+    color: var(--color-text-primary, #f6f1e8);
+    margin: 0;
     line-height: 1.35;
   }
 
-  .principle-item p {
-    margin: 0;
-    font-size: 0.95rem;
-    color: var(--color-text-muted, #a9b8b1);
+  .principle-summary {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary, #a9b8b1);
     line-height: 1.6;
+    margin: 0;
+    flex-grow: 1;
   }
 
-  .toolkit-card {
-    position: sticky;
-    top: 5.5rem;
-    background: rgba(16, 26, 23, 0.85);
-    border: 1px solid rgba(246, 241, 232, 0.09);
-    border-radius: 0.75rem;
-    padding: clamp(1.25rem, 2.5vw, 2rem);
+  .principle-app {
+    background: rgba(255, 255, 255, 0.02);
+    border-left: 2px solid var(--color-accent-teal, #7ed8c4);
+    padding: 0.5rem 0.75rem;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.825rem;
   }
 
-  .toolkit-heading {
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: var(--color-text, #f6f1e8);
-    margin: 0 0 1.5rem 0;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid rgba(246, 241, 232, 0.09);
-  }
-
-  .toolkit-category {
-    margin-bottom: 1.5rem;
-  }
-
-  .toolkit-category:last-child {
-    margin-bottom: 0;
-  }
-
-  .category-title {
-    font-size: 0.8rem;
+  .app-label {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.7rem;
     font-weight: 700;
+    color: var(--color-accent-teal, #7ed8c4);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-text-muted, #83968e);
-    margin: 0 0 0.5rem 0;
+    display: block;
+    margin-bottom: 0.15rem;
   }
 
-  .tags-wrap {
+  .app-text {
+    color: var(--color-text-muted, #83968e);
+    margin: 0;
+    line-height: 1.45;
+  }
+
+  /* 5. Selected Evidence */
+  .evidence-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .evidence-card {
+    background: var(--color-background-subtle, #101a17);
+    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.1));
+    border-radius: var(--radius-md, 8px);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .card-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.7rem;
+    color: var(--color-text-muted, #83968e);
+  }
+
+  .proj-status {
+    color: var(--color-accent-teal, #7ed8c4);
+    font-weight: 700;
+  }
+
+  .proj-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  .proj-title a {
+    color: var(--color-text-primary, #f6f1e8);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .proj-title a:hover {
+    color: var(--color-accent-teal, #7ed8c4);
+  }
+
+  .proj-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary, #a9b8b1);
+    line-height: 1.5;
+    margin: 0;
+    flex-grow: 1;
+  }
+
+  .proj-techs {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.45rem;
+    gap: 0.35rem;
   }
 
-  .tech-badge {
+  .tech-tag {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.7rem;
+    color: var(--color-text-muted, #83968e);
+    background: rgba(246, 241, 232, 0.03);
+    padding: 0.15rem 0.45rem;
+    border-radius: 3px;
+  }
+
+  .evidence-link {
+    font-size: 0.825rem;
+    font-weight: 700;
+    color: var(--color-accent-teal, #7ed8c4);
+    text-decoration: none;
+    margin-top: 0.5rem;
+  }
+
+  .evidence-link:hover {
+    text-decoration: underline;
+  }
+
+  /* 6. Currently Summary */
+  .currently-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .summary-col {
+    background: var(--color-background-subtle, #101a17);
+    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.1));
+    border-radius: var(--radius-md, 8px);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .col-title {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    margin: 0;
+  }
+
+  .col-title.building { color: var(--color-accent-teal, #7ed8c4); }
+  .col-title.learning { color: #d2a071; }
+  .col-title.exploring { color: #bda6ff; }
+
+  .col-highlight-title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--color-text-primary, #f6f1e8);
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  .col-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary, #a9b8b1);
+    line-height: 1.55;
+    margin: 0;
+    flex-grow: 1;
+  }
+
+  .col-link {
+    font-size: 0.825rem;
+    font-weight: 700;
+    color: var(--color-accent-teal, #7ed8c4);
+    text-decoration: none;
+    margin-top: auto;
+  }
+
+  .col-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .col-list li {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary, #a9b8b1);
+    line-height: 1.5;
+  }
+
+  .update-tag {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.725rem;
+    color: var(--color-text-muted, #83968e);
+  }
+
+  /* 7. Evolution Gateways */
+  .evolution-gateways {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .gateway-card {
+    background: linear-gradient(180deg, rgba(126, 216, 196, 0.04), transparent), var(--color-background-subtle, #101a17);
+    border: 1px solid rgba(126, 216, 196, 0.25);
+    border-radius: var(--radius-md, 8px);
+    padding: clamp(1.25rem, 2.5vw, 1.75rem);
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  .gate-icon {
+    font-size: 1.75rem;
+    flex-shrink: 0;
+  }
+
+  .gate-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .gate-content h3 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--color-text-primary, #f6f1e8);
+    margin: 0;
+  }
+
+  .gate-content p {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary, #a9b8b1);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .gate-link {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-accent-teal, #7ed8c4);
+    text-decoration: none;
+    margin-top: 0.25rem;
+  }
+
+  .gate-link:hover {
+    text-decoration: underline;
+  }
+
+  /* 8. Education Section */
+  .education-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .edu-card {
+    background: var(--color-background-subtle, #101a17);
+    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.1));
+    border-radius: var(--radius-md, 8px);
+    padding: clamp(1.25rem, 2.5vw, 1.75rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .edu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .edu-degree {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--color-text-primary, #f6f1e8);
+    margin: 0 0 0.25rem 0;
+  }
+
+  .edu-inst {
+    font-size: 0.95rem;
+    color: var(--color-accent-teal, #7ed8c4);
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .edu-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-family: var(--font-mono, monospace);
     font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--color-text-muted, #a9b8b1);
-    background: rgba(246, 241, 232, 0.05);
-    border: 1px solid rgba(246, 241, 232, 0.08);
-    padding: 0.25rem 0.6rem;
-    border-radius: 0.25rem;
-    white-space: nowrap;
+    color: var(--color-text-muted, #83968e);
   }
 
-  @media (max-width: 1024px) {
-    .about-grid {
+  .edu-focus-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
+  }
+
+  .focus-label {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.725rem;
+    font-weight: 700;
+    color: var(--color-text-muted, #83968e);
+    text-transform: uppercase;
+  }
+
+  .focus-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .focus-pill {
+    font-size: 0.8rem;
+    color: var(--color-text-secondary, #a9b8b1);
+    background: rgba(246, 241, 232, 0.04);
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+  }
+
+  /* 9. Collaboration Section */
+  .collab-intro {
+    font-size: 1.05rem;
+    color: var(--color-text-secondary, #a9b8b1);
+    line-height: 1.65;
+    max-width: 780px;
+    margin: 0 0 1.5rem 0;
+  }
+
+  .collab-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .collab-card {
+    background: var(--color-background-subtle, #101a17);
+    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.1));
+    border-radius: var(--radius-md, 8px);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .collab-role-pill {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--color-accent-teal, #7ed8c4);
+    background: rgba(126, 216, 196, 0.08);
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    width: fit-content;
+  }
+
+  .collab-area {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--color-text-primary, #f6f1e8);
+    margin: 0;
+  }
+
+  .collab-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary, #a9b8b1);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .contact-action-banner {
+    background: linear-gradient(180deg, rgba(126, 216, 196, 0.06), transparent), var(--color-background-subtle, #101a17);
+    border: 1px solid rgba(126, 216, 196, 0.3);
+    border-radius: var(--radius-md, 8px);
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .banner-text h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--color-text-primary, #f6f1e8);
+    margin: 0 0 0.25rem 0;
+  }
+
+  .banner-text p {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary, #a9b8b1);
+    margin: 0;
+  }
+
+  .banner-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 960px) {
+    .evidence-grid,
+    .currently-summary-grid,
+    .collab-grid {
       grid-template-columns: 1fr;
-      gap: 2.5rem;
     }
 
-    .toolkit-card {
-      position: static;
+    .evolution-gateways {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .focus-grid,
+    .principles-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .edu-meta {
+      align-items: flex-start;
     }
   }
 </style>
