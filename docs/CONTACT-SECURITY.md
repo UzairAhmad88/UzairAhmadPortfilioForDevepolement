@@ -1,26 +1,33 @@
-# Contact Form Security & Anti-Abuse Controls
+# Contact Security & Secret Protection Architecture (Phase 22)
 
-This document details the security controls implemented to protect against spam, injection, header manipulation, and payload abuse.
+## 1. Threat Modeling & Safeguards
 
-## 1. Security Safeguards
-
-| Threat Vector | Mitigation Strategy | Implementation |
-|---|---|---|
-| **Automated Bot Spam** | Honeypot Field (`_gotcha`) | Hidden from legitimate users; any submission with content in this field is silently dropped. |
-| **Cross-Site Scripting (XSS)** | HTML Entity Encoding | All input text is escaped before being converted to HTML notifications. |
-| **Email Header Injection** | Newline Stripping in Subject/From | Strips `\r` and `\n` characters from `name`, `email`, and `organization` fields. |
-| **Oversized Payloads** | Strict Input Constraints | Name max 100 chars, email max 100 chars, message max 3000 chars. Total payload capped at 10 KB. |
-| **Credential Leakage** | Strict Server Isolation | Zero client-side API secrets; all backend keys use server-only environment variables. |
-
-## 2. Server-Side Validation Rules
-
-```typescript
-function sanitizeInput(text: string): string {
-  return text.replace(/[<>]/g, '').trim();
-}
-
-function validateEmail(email: string): boolean {
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return emailRegex.test(email.trim());
-}
+```text
+┌─────────────────────────────────────────────────────────────┐
+│ 1. Secret Protection & Zero Client Leakage                  │
+│    API keys (RESEND_API_KEY) exist solely server-side.      │
+├─────────────────────────────────────────────────────────────┤
+│ 2. Email Header Injection Prevention                        │
+│    All single-line fields (Name, Org, Subject) strip CRLF.  │
+├─────────────────────────────────────────────────────────────┤
+│ 3. Cross-Site Scripting (XSS) Prevention                    │
+│    HTML tags stripped before formatting; safe escaping.     │
+├─────────────────────────────────────────────────────────────┤
+│ 4. Protocol & URL Injection Defense                         │
+│    Non-HTTP/HTTPS schemes (javascript:, data:) rejected.    │
+├─────────────────────────────────────────────────────────────┤
+│ 5. HTTP Method & Rate Enforcement                           │
+│    Strict POST-only routing with 405 Method Not Allowed.    │
+└─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 2. Environment Variables & Secret Hygiene
+
+All secrets are documented via [`.env.example`](file:///d:/web/protfolio/.env.example):
+- `RESEND_API_KEY`: Serverless environment variable only.
+- `CONTACT_FROM_EMAIL`: Configured sender email address.
+- `CONTACT_TO_EMAIL`: Recipient inbox.
+
+**Git Safety:** `.env`, `.env.local`, and `.env.production` are strictly tracked in `.gitignore`. Zero credentials exist in client bundles or public repositories.

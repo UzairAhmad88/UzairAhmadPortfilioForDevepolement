@@ -15,6 +15,7 @@
     "timeline:validate": "node scripts/validate-timeline.mjs",
     "about:validate": "node scripts/validate-about.mjs",
     "collaborate:validate": "node scripts/validate-collaboration.mjs",
+    "contact:validate": "node scripts/validate-contact.mjs",
     "projects:sync": "node scripts/sync-projects.mjs",
 
     "projects:sync:dry": "node scripts/sync-projects.mjs --dry-run",

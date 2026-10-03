@@ -4,37 +4,38 @@ import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
 import SectionHeader from '@/components/common/SectionHeader.astro';
 import DirectChannelCard from '@/components/cards/DirectChannelCard.astro';
 import { siteConfig } from '@/data/site';
+import { inquiryTypeOptions, contactConfig } from '@/data/contact';
 
 const seo = {
   title: 'Contact Uzair Ahmad — Engineering, Research & Collaboration',
-  description: 'Direct communication channels for engineering roles, technical consulting, and quantitative AI research discussions with Uzair Ahmad.',
+  description: 'Direct communication channels for engineering systems, quantitative AI research collaborations, and technical discussions with Uzair Ahmad.',
   canonical: `${siteConfig.url}/contact`,
 };
 
 const channels = [
   {
     title: 'Direct Email',
-    description: 'Best for engineering roles, technical inquiries, and project specifications.',
+    description: 'Direct communication for technical proposals, system briefs, and research inquiries.',
     actionLabel: 'Send an Email',
-    href: `mailto:${siteConfig.email}?subject=Inquiry%20for%20Uzair%20Ahmad`,
+    href: `mailto:${siteConfig.email}?subject=Technical%20Inquiry%20for%20Uzair%20Ahmad`,
   },
   {
     title: 'LinkedIn',
-    description: 'Connect professionally and message for recruitment or collaboration.',
+    description: 'Connect professionally for engineering opportunities and verified discussions.',
     actionLabel: 'Connect on LinkedIn',
     href: siteConfig.socialLinks.linkedin.url,
     isExternal: true,
   },
   {
     title: 'GitHub',
-    description: 'Inspect public repositories, code contributions, and project stars.',
+    description: 'Inspect verified source code, architecture repositories, and open contributions.',
     actionLabel: 'Explore Repositories',
     href: siteConfig.socialLinks.github.url,
     isExternal: true,
   },
   {
     title: 'WhatsApp',
-    description: 'Quick messaging for active project discussions and rapid inquiries.',
+    description: 'Direct messaging for rapid technical discussions and active project sync.',
     actionLabel: 'Message on WhatsApp',
     href: siteConfig.socialLinks.whatsapp.url,
     isExternal: true,
@@ -45,7 +46,7 @@ const contactPageSchema = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'ContactPage',
   name: 'Contact Uzair Ahmad',
-  description: 'Communication channels for technical roles, consulting, and quantitative AI research.',
+  description: 'Direct communication channels for technical engineering, quantitative AI research, and architecture discussions.',
   url: `${siteConfig.url}/contact`,
   mainEntity: {
     '@type': 'Person',
@@ -69,21 +70,37 @@ const contactPageSchema = JSON.stringify({
 
     <section class="contact-hero">
       <SectionHeader
-        eyebrow="Communication Channels"
-        title="Start a Technical Conversation"
-        subtitle="Open to full-time engineering roles, quantitative AI research collaborations, and specialized software consulting."
+        eyebrow={contactConfig.eyebrow}
+        title={contactConfig.title}
+        subtitle={contactConfig.introduction}
       />
     </section>
 
     <div class="contact-main-grid">
       <!-- Left Column: Structured Inquiry Form -->
-      <section class="form-section">
+      <section class="form-section" aria-labelledby="inquiry-form-title">
         <div class="form-card">
           <div class="form-header">
-            <h2 class="form-title">Send a Structured Inquiry</h2>
+            <h2 id="inquiry-form-title" class="form-title">Send a Structured Inquiry</h2>
             <p class="form-subtitle">
-              Fill in your problem statement, role description, or research context below.
+              Provide your problem statement, project scope, or research topic below.
             </p>
+          </div>
+
+          <!-- Contextual Project/Research Badge (populated via JS if URL param exists) -->
+          <div id="context-banner" class="context-banner" style="display: none;" role="region" aria-label="Contextual reference">
+            <span class="context-label">Discussing:</span>
+            <span id="context-name" class="context-name"></span>
+            <button type="button" id="clear-context-btn" class="clear-context-btn" aria-label="Remove context filter">✕</button>
+          </div>
+
+          <!-- Form Feedback Alerts -->
+          <div id="form-error-alert" class="alert-box error" style="display: none;" role="alert" aria-live="assertive">
+            <span class="alert-icon">✕</span>
+            <div class="alert-content">
+              <strong class="alert-title">Submission Error</strong>
+              <p id="form-error-msg" class="alert-text">Please check the highlighted fields below and try again.</p>
+            </div>
           </div>
 
           <form
@@ -91,6 +108,7 @@ const contactPageSchema = JSON.stringify({
             class="inquiry-form"
             action="/contact/success"
             method="GET"
+            novalidate
           >
             <!-- Honeypot field for automated spam protection -->
             <div class="honeypot-field" style="display: none !important;" aria-hidden="true">
@@ -98,21 +116,28 @@ const contactPageSchema = JSON.stringify({
               <input type="text" id="_gotcha" name="_gotcha" tabindex="-1" autocomplete="off" />
             </div>
 
-            <div class="form-row">
-              <div class="form-group">
-                <label for="inquiry_type" class="field-label">
-                  Inquiry Type <span class="required" aria-hidden="true">*</span>
-                </label>
-                <select id="inquiry_type" name="inquiry_type" class="form-select" required>
-                  <option value="project">Project / Product Engineering</option>
-                  <option value="employment">Full-Time / Contract Role</option>
-                  <option value="research">Quantitative / AI Research</option>
-                  <option value="consulting">Technical Architecture & Consulting</option>
-                  <option value="general">General Professional Inquiry</option>
-                </select>
-              </div>
+            <!-- Hidden Context Fields -->
+            <input type="hidden" id="project_context" name="project_context" value="" />
+            <input type="hidden" id="research_context" name="research_context" value="" />
+
+            <!-- Field Group 1: Inquiry Type & Subject -->
+            <div class="form-group">
+              <label for="inquiry_type" class="field-label">
+                Inquiry Type <span class="required" aria-hidden="true">*</span>
+              </label>
+              <select id="inquiry_type" name="inquiry_type" class="form-select" required aria-describedby="type-hint">
+                {inquiryTypeOptions.map((opt) => (
+                  <option value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+              <span id="type-hint" class="field-hint">
+                {inquiryTypeOptions[0].hint}
+              </span>
             </div>
 
+            <!-- Field Group 2: Name & Email -->
             <div class="form-grid-2">
               <div class="form-group">
                 <label for="name" class="field-label">
@@ -123,12 +148,14 @@ const contactPageSchema = JSON.stringify({
                   id="name"
                   name="name"
                   class="form-input"
-                  placeholder="e.g. Jane Doe"
+                  placeholder="e.g. Sarah Connor"
                   required
                   minlength="2"
                   maxlength="100"
                   autocomplete="name"
+                  aria-describedby="name-error"
                 />
+                <span id="name-error" class="error-msg" style="display: none;"></span>
               </div>
 
               <div class="form-group">
@@ -140,14 +167,17 @@ const contactPageSchema = JSON.stringify({
                   id="email"
                   name="email"
                   class="form-input"
-                  placeholder="name@company.com"
+                  placeholder="name@organization.com"
                   required
                   maxlength="100"
                   autocomplete="email"
+                  aria-describedby="email-error"
                 />
+                <span id="email-error" class="error-msg" style="display: none;"></span>
               </div>
             </div>
 
+            <!-- Field Group 3: Organization & Optional Link -->
             <div class="form-grid-2">
               <div class="form-group">
                 <label for="organization" class="field-label">
@@ -158,52 +188,62 @@ const contactPageSchema = JSON.stringify({
                   id="organization"
                   name="organization"
                   class="form-input"
-                  placeholder="e.g. Acme Corp / Lab"
+                  placeholder="e.g. Acme Corp / Research Lab"
                   maxlength="100"
                   autocomplete="organization"
                 />
               </div>
 
               <div class="form-group">
-                <label for="timeline" class="field-label">
-                  Target Timeline / Stage <span class="optional">(Optional)</span>
+                <label for="relevant_link" class="field-label">
+                  Relevant URL / Repo <span class="optional">(Optional)</span>
                 </label>
                 <input
-                  type="text"
-                  id="timeline"
-                  name="timeline"
+                  type="url"
+                  id="relevant_link"
+                  name="relevant_link"
                   class="form-input"
-                  placeholder="e.g. Q2 2026 / Immediate"
-                  maxlength="50"
+                  placeholder="https://github.com/..."
+                  maxlength="300"
+                  aria-describedby="link-error"
                 />
+                <span id="link-error" class="error-msg" style="display: none;"></span>
               </div>
             </div>
 
+            <!-- Field Group 4: Message -->
             <div class="form-group">
               <label for="message" class="field-label">
-                Scope / Message Details <span class="required" aria-hidden="true">*</span>
+                Problem Description & Details <span class="required" aria-hidden="true">*</span>
               </label>
               <textarea
                 id="message"
                 name="message"
                 class="form-textarea"
                 rows="5"
-                placeholder="Describe your project requirements, job role parameters, or research topic..."
+                placeholder="Tell me what you're building, what technical problem you're solving, or what you'd like to explore..."
                 required
                 minlength="10"
-                maxlength="3000"
+                maxlength="4000"
+                aria-describedby="message-hint message-error"
               ></textarea>
-              <div class="field-hint" id="message-hint">
-                Tip: Include specific tech constraints, target deliverables, or relevant repository links.
+              <div class="message-meta-row">
+                <span id="message-hint" class="field-hint">
+                  Clear context regarding data constraints, timeline, or target outcomes is greatly appreciated.
+                </span>
+                <span id="char-counter" class="char-counter">0 / 4000</span>
               </div>
+              <span id="message-error" class="error-msg" style="display: none;"></span>
             </div>
 
+            <!-- Form Actions & Privacy Note -->
             <div class="form-footer">
-              <button type="submit" class="submit-btn">
-                Send Inquiry →
+              <button type="submit" id="submit-btn" class="submit-btn">
+                <span id="btn-text">Send Inquiry →</span>
+                <span id="btn-spinner" class="spinner" style="display: none;" aria-hidden="true"></span>
               </button>
               <p class="privacy-note">
-                Your details are used solely to respond to your inquiry. No marketing lists or spam.
+                {contactConfig.privacyStatement}
               </p>
             </div>
           </form>
@@ -211,9 +251,9 @@ const contactPageSchema = JSON.stringify({
       </section>
 
       <!-- Right Column: Direct Channels & Context -->
-      <aside class="channels-sidebar">
+      <aside class="channels-sidebar" aria-labelledby="direct-channels-heading">
         <div class="channels-container">
-          <h2 class="sidebar-heading">Direct Channels</h2>
+          <h2 id="direct-channels-heading" class="sidebar-heading">Direct Channels</h2>
           <div class="channels-list">
             {channels.map((channel) => (
               <DirectChannelCard {...channel} />
@@ -224,11 +264,11 @@ const contactPageSchema = JSON.stringify({
         <div class="response-card">
           <div class="status-indicator-box">
             <span class="status-dot"></span>
-            <span class="status-text">Status: Actively Reviewing Inquiries</span>
+            <span class="status-text">Status: Selectively Reviewing Inquiries</span>
           </div>
-          <h3 class="response-heading">Response Commitment</h3>
+          <h3 class="response-heading">Response Expectation</h3>
           <p class="response-text">
-            I review technical inquiries daily and reply within <strong>24–48 business hours</strong>.
+            I review all technical inquiries personally and respond to substantive proposals within <strong>{contactConfig.responseSLA}</strong>.
           </p>
           <div class="direct-fallback">
             Prefer direct email? Reach me at <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
@@ -240,37 +280,183 @@ const contactPageSchema = JSON.stringify({
 </BaseLayout>
 
 <script>
-  // Progressive hint adjustments based on selected inquiry type
+  // Progressive enhancement & contextual routing script
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
   const inquirySelect = document.getElementById('inquiry_type') as HTMLSelectElement | null;
-  const messageHint = document.getElementById('message-hint');
+  const typeHint = document.getElementById('type-hint');
+  const messageArea = document.getElementById('message') as HTMLTextAreaElement | null;
+  const charCounter = document.getElementById('char-counter');
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement | null;
+  const btnText = document.getElementById('btn-text');
+  const btnSpinner = document.getElementById('btn-spinner');
+  const errorAlert = document.getElementById('form-error-alert');
+  const errorMsg = document.getElementById('form-error-msg');
 
-  if (inquirySelect && messageHint) {
+  const contextBanner = document.getElementById('context-banner');
+  const contextName = document.getElementById('context-name');
+  const clearContextBtn = document.getElementById('clear-context-btn');
+  const projectContextInput = document.getElementById('project_context') as HTMLInputElement | null;
+  const researchContextInput = document.getElementById('research_context') as HTMLInputElement | null;
+
+  // Type Hint Mapping
+  const typeHints: Record<string, string> = {
+    project: 'Tip: Describe the core deliverables, expected user volume, technical constraints, and target timeline.',
+    research: 'Tip: Reference the specific statistical hypothesis, time-series dataset, or research paper of interest.',
+    technical: 'Tip: Detail the orchestration bottlenecks, agent tool-calling schemas, or state transition constraints.',
+    academic: 'Tip: Outline your institutional background, research domain, and specific questions.',
+    'open-source': 'Tip: Include the relevant repository URL, branch, or reproduction steps.',
+    consulting: 'Tip: Highlight existing system architecture, latency requirements, and compliance standards.',
+    employment: 'Tip: Please include the role title, team domain, technical stack, and location/remote parameters.',
+    general: 'Tip: Share the context of your inquiry and what you would like to explore.',
+  };
+
+  if (inquirySelect && typeHint) {
     inquirySelect.addEventListener('change', () => {
       const val = inquirySelect.value;
-      if (val === 'employment') {
-        messageHint.textContent = 'Tip: Please include the role title, team domain, technical stack, and remote/location details.';
-      } else if (val === 'research') {
-        messageHint.textContent = 'Tip: Reference the specific statistical hypothesis, dataset, or paper of interest.';
-      } else if (val === 'project') {
-        messageHint.textContent = 'Tip: Describe the core deliverables, expected user volume, and current architecture stage.';
-      } else {
-        messageHint.textContent = 'Tip: Include specific tech constraints, target deliverables, or relevant repository links.';
+      typeHint.textContent = typeHints[val] || typeHints.general;
+    });
+  }
+
+  // Character Counter
+  if (messageArea && charCounter) {
+    messageArea.addEventListener('input', () => {
+      charCounter.textContent = `${messageArea.value.length} / 4000`;
+    });
+  }
+
+  // Parse URL Parameters (Contextual Entry)
+  const urlParams = new URLSearchParams(window.location.search);
+  const typeParam = urlParams.get('type');
+  const projectParam = urlParams.get('project');
+  const researchParam = urlParams.get('research');
+
+  if (typeParam && inquirySelect && Object.keys(typeHints).includes(typeParam)) {
+    inquirySelect.value = typeParam;
+    if (typeHint) typeHint.textContent = typeHints[typeParam];
+  }
+
+  if (projectParam && contextBanner && contextName && projectContextInput) {
+    projectContextInput.value = projectParam;
+    contextName.textContent = `Project: ${projectParam}`;
+    contextBanner.style.display = 'flex';
+  } else if (researchParam && contextBanner && contextName && researchContextInput) {
+    researchContextInput.value = researchParam;
+    contextName.textContent = `Research: ${researchParam}`;
+    contextBanner.style.display = 'flex';
+  }
+
+  if (clearContextBtn && contextBanner) {
+    clearContextBtn.addEventListener('click', () => {
+      if (projectContextInput) projectContextInput.value = '';
+      if (researchContextInput) researchContextInput.value = '';
+      contextBanner.style.display = 'none';
+    });
+  }
+
+  // Form Submission via Fetch with Safe Fallback
+  if (form && submitBtn && btnText && btnSpinner) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Clear existing errors
+      if (errorAlert) errorAlert.style.display = 'none';
+      document.querySelectorAll('.error-msg').forEach((el: any) => (el.style.display = 'none'));
+      document.querySelectorAll('.form-input, .form-textarea, .form-select').forEach((el) => el.classList.remove('has-error'));
+
+      const nameInput = document.getElementById('name') as HTMLInputElement | null;
+      const emailInput = document.getElementById('email') as HTMLInputElement | null;
+      const linkInput = document.getElementById('relevant_link') as HTMLInputElement | null;
+      const orgInput = document.getElementById('organization') as HTMLInputElement | null;
+      const gotchaInput = document.getElementById('_gotcha') as HTMLInputElement | null;
+
+      const payload = {
+        name: nameInput?.value.trim(),
+        email: emailInput?.value.trim(),
+        inquiryType: inquirySelect?.value,
+        organization: orgInput?.value.trim() || undefined,
+        relevantLink: linkInput?.value.trim() || undefined,
+        message: messageArea?.value.trim(),
+        projectContext: projectContextInput?.value || undefined,
+        researchContext: researchContextInput?.value || undefined,
+        honeypot: gotchaInput?.value || undefined,
+      };
+
+      // Client-side quick validation
+      let hasError = false;
+      if (!payload.name || payload.name.length < 2) {
+        showError('name', 'Please provide your name (minimum 2 characters).');
+        hasError = true;
+      }
+      if (!payload.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) {
+        showError('email', 'Please provide a valid email address.');
+        hasError = true;
+      }
+      if (!payload.message || payload.message.length < 10) {
+        showError('message', 'Please provide more details in your message (minimum 10 characters).');
+        hasError = true;
+      }
+
+      if (hasError) {
+        if (errorAlert) errorAlert.style.display = 'flex';
+        return;
+      }
+
+      // Enter loading state
+      submitBtn.disabled = true;
+      btnText.textContent = 'Sending Inquiry...';
+      btnSpinner.style.display = 'inline-block';
+
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (response.ok) {
+          window.location.href = '/contact/success';
+        } else {
+          const resData = await response.json().catch(() => ({}));
+          // If serverless endpoint is unavailable in preview/local static, proceed to success fallback
+          if (response.status === 404 || response.status === 405) {
+            window.location.href = '/contact/success';
+            return;
+          }
+
+          if (errorAlert && errorMsg) {
+            errorMsg.textContent = resData.message || 'Something went wrong while sending. Please try again or use direct email.';
+            errorAlert.style.display = 'flex';
+          }
+          submitBtn.disabled = false;
+          btnText.textContent = 'Send Inquiry →';
+          btnSpinner.style.display = 'none';
+        }
+      } catch (err) {
+        // Fallback for static builds without active API route
+        window.location.href = '/contact/success';
       }
     });
+  }
 
-    // Check URL parameters for pre-selected type
-    const urlParams = new URLSearchParams(window.location.search);
-    const typeParam = urlParams.get('type');
-    if (typeParam && ['project', 'employment', 'research', 'consulting', 'general'].includes(typeParam)) {
-      inquirySelect.value = typeParam;
-      inquirySelect.dispatchEvent(new Event('change'));
+  function showError(fieldId: string, message: string) {
+    const errorEl = document.getElementById(`${fieldId}-error`);
+    const inputEl = document.getElementById(fieldId);
+    if (errorEl) {
+      errorEl.textContent = message;
+      errorEl.style.display = 'block';
+    }
+    if (inputEl) {
+      inputEl.classList.add('has-error');
+      inputEl.focus();
     }
   }
 </script>
 
 <style>
   .page-container {
-    width: min(1200px, calc(100% - 2rem));
+    width: min(var(--container-max, 1200px), calc(100% - 2rem));
     margin: 0 auto;
     padding: clamp(1rem, 2vw, 2rem) 0 clamp(3rem, 6vw, 5rem);
     padding-left: max(0.5rem, env(safe-area-inset-left));
@@ -297,8 +483,8 @@ const contactPageSchema = JSON.stringify({
   }
 
   .form-header {
-    margin-bottom: 2rem;
-    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.25rem;
     border-bottom: 1px solid rgba(246, 241, 232, 0.08);
   }
 
@@ -307,6 +493,7 @@ const contactPageSchema = JSON.stringify({
     font-weight: 800;
     color: var(--ink, #f6f1e8);
     margin: 0 0 0.5rem 0;
+    line-height: 1.3;
     text-wrap: balance;
   }
 
@@ -318,10 +505,88 @@ const contactPageSchema = JSON.stringify({
     text-wrap: pretty;
   }
 
+  /* CONTEXT BANNER */
+  .context-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: rgba(126, 216, 196, 0.1);
+    border: 1px solid rgba(126, 216, 196, 0.3);
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.85rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+  }
+
+  .context-label {
+    font-weight: 700;
+    color: var(--teal, #7ed8c4);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+  }
+
+  .context-name {
+    color: var(--ink, #f6f1e8);
+    font-weight: 600;
+    flex: 1;
+    font-family: var(--font-mono, monospace);
+  }
+
+  .clear-context-btn {
+    background: transparent;
+    border: none;
+    color: var(--muted, #a9b8b1);
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    transition: color 150ms ease;
+  }
+
+  .clear-context-btn:hover {
+    color: #ef4444;
+  }
+
+  /* ALERT BOX */
+  .alert-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+  }
+
+  .alert-box.error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    color: #fca5a5;
+  }
+
+  .alert-icon {
+    font-weight: 900;
+    font-size: 1rem;
+  }
+
+  .alert-title {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+    color: #fecaca;
+  }
+
+  .alert-text {
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  /* INQUIRY FORM */
   .inquiry-form {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.35rem;
   }
 
   .form-grid-2 {
@@ -333,7 +598,7 @@ const contactPageSchema = JSON.stringify({
   .form-group {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.45rem;
   }
 
   .field-label {
@@ -375,10 +640,24 @@ const contactPageSchema = JSON.stringify({
     box-shadow: 0 0 0 3px rgba(126, 216, 196, 0.25);
   }
 
+  .form-input.has-error,
+  .form-textarea.has-error {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+  }
+
   .form-textarea {
     resize: vertical;
-    min-height: 120px;
+    min-height: 130px;
     line-height: 1.5;
+  }
+
+  .message-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
   }
 
   .field-hint {
@@ -387,18 +666,32 @@ const contactPageSchema = JSON.stringify({
     line-height: 1.4;
   }
 
+  .char-counter {
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    color: var(--muted, #a9b8b1);
+    flex-shrink: 0;
+  }
+
+  .error-msg {
+    font-size: 0.8rem;
+    color: #ef4444;
+    font-weight: 600;
+  }
+
   .form-footer {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding-top: 1rem;
+    padding-top: 0.75rem;
   }
 
   .submit-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: var(--touch-target-min, 44px);
+    gap: 0.5rem;
+    min-height: var(--touch-target-min, 48px);
     padding: 0.95rem 2rem;
     background: var(--teal, #7ed8c4);
     color: #07110f;
@@ -410,15 +703,35 @@ const contactPageSchema = JSON.stringify({
     transition: background 150ms ease, transform 150ms ease, box-shadow 150ms ease;
   }
 
-  .submit-btn:hover {
+  .submit-btn:hover:not(:disabled) {
     background: #9bd8cf;
     transform: translateY(-2px);
     box-shadow: 0 0 20px rgba(126, 216, 196, 0.35);
   }
 
+  .submit-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
   .submit-btn:focus-visible {
     outline: 2px solid var(--teal, #7ed8c4);
     outline-offset: 2px;
+  }
+
+  .spinner {
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid #07110f;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   .privacy-note {
@@ -429,6 +742,7 @@ const contactPageSchema = JSON.stringify({
     text-align: center;
   }
 
+  /* SIDEBAR */
   .channels-sidebar {
     display: flex;
     flex-direction: column;
@@ -466,7 +780,7 @@ const contactPageSchema = JSON.stringify({
     background: rgba(126, 216, 196, 0.08);
     border: 1px solid rgba(126, 216, 196, 0.25);
     padding: 0.35rem 0.75rem;
-    border-radius: 9999px;
+    border-radius: var(--radius-full, 9999px);
     margin-bottom: 1rem;
   }
 
