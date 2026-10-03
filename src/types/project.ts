@@ -19,6 +19,37 @@ export type DeploymentStatus = 'production' | 'preview' | 'not_deployed' | 'unkn
 
 export type ProjectSource = 'manual' | 'github' | 'vercel' | 'github+vercel';
 
+export type ProjectContext = 
+  | 'Personal Engineering'
+  | 'Independent Research'
+  | 'Academic (FYP)'
+  | 'Academic Project'
+  | 'Client Platform'
+  | 'Open Source'
+  | 'Prototype / Experiment';
+
+export interface ProjectEvidenceItem {
+  label: string;
+  url?: string;
+  type: 'github' | 'live' | 'demo' | 'case-study' | 'documentation';
+  verified: boolean;
+}
+
+export interface ProjectDNAMetadata {
+  type: string;
+  status: string;
+  rawStatus: ProjectStatus;
+  year?: string;
+  timeline?: string;
+  role?: string;
+  context?: string;
+  technologies: string[];
+  evidence: ProjectEvidenceItem[];
+  deployment?: string;
+  domain?: string;
+  architecturePattern?: string;
+}
+
 export interface TechnicalDecision {
   decision: string;
   context?: string;
@@ -110,8 +141,12 @@ export interface Project {
   role?: string;
   team?: string;
   timeline?: string;
+  context?: ProjectContext;
+  deployment?: string;
   order?: number;
   relatedProjects?: string[];
   relatedResearch?: string[];
   caseStudy?: ProjectCaseStudy;
+  dna?: Partial<ProjectDNAMetadata>;
 }
+

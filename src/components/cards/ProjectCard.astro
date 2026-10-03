@@ -1,5 +1,6 @@
 ---
 import type { Project } from '@/types/project';
+import ProjectDNA from '@/components/common/ProjectDNA.astro';
 
 export interface Props {
   project: Project;
@@ -12,14 +13,7 @@ const detailUrl = `/work/${project.slug}`;
 ---
 
 <article class:list={['project-card', `mode-${viewMode}`]} data-category={categoryString}>
-  <div class="card-header">
-    <span class="project-type">{project.projectType}</span>
-    {project.status && (
-      <span class:list={['status-badge', `status-${project.status}`]}>
-        {project.status === 'active' ? 'Active Research' : project.status === 'academic' ? 'Academic Project' : 'Completed'}
-      </span>
-    )}
-  </div>
+  <ProjectDNA project={project} variant="card" />
 
   <h3 class="project-title">
     <a href={detailUrl} class="title-link">{project.title}</a>
@@ -28,14 +22,6 @@ const detailUrl = `/work/${project.slug}`;
   <p class="project-summary">
     {project.problem}
   </p>
-
-  {project.technologies && project.technologies.length > 0 && (
-    <ul class="tech-tag-list" aria-label="Technologies used">
-      {project.technologies.slice(0, 4).map((tech) => (
-        <li class="tech-tag">{tech}</li>
-      ))}
-    </ul>
-  )}
 
   <div class="card-actions">
     <a href={detailUrl} class="action-link primary">
@@ -72,53 +58,10 @@ const detailUrl = `/work/${project.slug}`;
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35), 0 0 24px rgba(126, 216, 196, 0.06);
   }
 
-  .card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .project-type {
-    color: var(--teal, #7ed8c4);
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .status-badge {
-    font-size: 0.7rem;
-    font-weight: 600;
-    padding: 0.2rem 0.5rem;
-    border-radius: var(--radius-full, 9999px);
-    white-space: nowrap;
-  }
-
-  .status-active {
-    background: rgba(126, 216, 196, 0.12);
-    color: var(--teal, #7ed8c4);
-    border: 1px solid rgba(126, 216, 196, 0.28);
-  }
-
-  .status-academic {
-    background: rgba(189, 166, 255, 0.15);
-    color: #d8b4fe;
-    border: 1px solid rgba(189, 166, 255, 0.3);
-  }
-
-  .status-completed {
-    background: rgba(16, 185, 129, 0.12);
-    color: #6ee7b7;
-    border: 1px solid rgba(16, 185, 129, 0.25);
-  }
-
   .project-title {
     font-size: clamp(1.15rem, 1.5vw, 1.3rem);
     font-weight: 700;
-    margin: 0 0 0.75rem 0;
+    margin: 0.5rem 0 0.75rem 0;
     line-height: 1.35;
   }
 
@@ -139,26 +82,6 @@ const detailUrl = `/work/${project.slug}`;
     line-height: 1.6;
     margin: 0 0 1.25rem 0;
     flex-grow: 1;
-  }
-
-  .tech-tag-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    list-style: none;
-    padding: 0;
-    margin: 0 0 1.5rem 0;
-  }
-
-  .tech-tag {
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--muted, #a9b8b1);
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(246, 241, 232, 0.08);
-    padding: 0.2rem 0.55rem;
-    border-radius: 0.25rem;
-    white-space: nowrap;
   }
 
   .card-actions {
