@@ -16,15 +16,17 @@ html {
 body {
   margin: 0;
   padding: 0;
-  background:
-    radial-gradient(circle at 20% 6%, rgba(126, 216, 196, 0.22), transparent 30rem),
-    radial-gradient(circle at 84% 18%, rgba(210, 160, 113, 0.16), transparent 28rem),
-    linear-gradient(135deg, #07110f 0%, #101a17 50%, #17120f 100%);
-  color: var(--ink);
+  background-color: var(--color-background, #07110f);
+  background-image:
+    radial-gradient(circle at 18% 4%, rgba(126, 216, 196, 0.12), transparent 28rem),
+    radial-gradient(circle at 86% 16%, rgba(210, 160, 113, 0.08), transparent 24rem),
+    linear-gradient(180deg, #07110f 0%, #0c1714 50%, #07110f 100%);
+  background-attachment: fixed;
+  color: var(--color-text-primary, #f6f1e8);
   font-family: var(--font-sans);
   font-size: var(--font-size-body);
-  line-height: 1.6;
-  letter-spacing: 0;
+  line-height: var(--line-height-body, 1.68);
+  letter-spacing: var(--letter-spacing-normal, 0);
   overflow-x: hidden;
   min-width: 320px;
 }
@@ -43,9 +45,18 @@ iframe {
 a {
   color: inherit;
   text-decoration: none;
+  transition: color var(--transition-fast);
 }
 
-/* Typography Hierarchy & Fluid Scaling */
+a:focus-visible {
+  outline: 2px solid var(--color-accent, #7ed8c4);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm, 4px);
+}
+
+/* ============================================================
+   TYPOGRAPHY HIERARCHY & MEASURES
+   ============================================================ */
 h1,
 h2,
 h3,
@@ -61,52 +72,85 @@ h1 {
   max-width: 900px;
   margin-bottom: 1.25rem;
   font-size: var(--font-size-display);
-  line-height: 1.05;
-  letter-spacing: -0.025em;
+  line-height: var(--line-height-tight, 1.15);
+  letter-spacing: var(--letter-spacing-tight, -0.025em);
   font-weight: 800;
   text-wrap: balance;
+  color: var(--color-text-primary);
 }
 
 h2 {
   max-width: 820px;
   font-size: var(--font-size-h2);
-  line-height: 1.18;
-  letter-spacing: -0.02em;
+  line-height: var(--line-height-heading, 1.25);
+  letter-spacing: var(--letter-spacing-heading, -0.015em);
   font-weight: 800;
   text-wrap: balance;
+  color: var(--color-text-primary);
 }
 
 h3 {
   font-size: var(--font-size-h3);
-  line-height: 1.3;
+  line-height: 1.35;
   letter-spacing: -0.015em;
   font-weight: 700;
+  color: var(--color-text-primary);
 }
 
 h4 {
   font-size: var(--font-size-h4);
   line-height: 1.4;
   font-weight: 700;
+  color: var(--color-text-primary);
 }
 
 p {
-  line-height: 1.7;
+  max-width: var(--container-reading, 70ch);
+  line-height: var(--line-height-body, 1.68);
+  color: var(--color-text-secondary);
 }
 
-/* Responsive Code Blocks and Tables */
+small {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+/* Technical Code Blocks and Monospace Text */
 pre,
-code {
+code,
+kbd,
+samp {
   font-family: var(--font-mono);
+}
+
+code {
+  font-size: var(--font-size-code, 0.85rem);
+  padding: 0.15em 0.4em;
+  border-radius: var(--radius-sm, 4px);
+  background: var(--color-surface-elevated, rgba(255, 255, 255, 0.08));
+  color: var(--color-accent-teal, #7ed8c4);
 }
 
 pre {
   max-width: 100%;
+  padding: var(--space-4);
+  border-radius: var(--radius-md, 8px);
+  background: var(--color-background-subtle, #101a17);
+  border: var(--border-subtle);
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   white-space: pre;
   word-wrap: normal;
 }
 
+pre code {
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 0.875rem;
+}
+
+/* Tables & Wrappers */
 table {
   width: 100%;
   max-width: 100%;
@@ -117,16 +161,12 @@ table {
   width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  margin: 1.5rem 0;
+  margin: var(--space-6) 0;
 }
 
-/* Animations */
-@keyframes drawLine {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
+/* ============================================================
+   LIGHTWEIGHT CSS ANIMATIONS
+   ============================================================ */
 @keyframes pulseDot {
   0%,
   100% {
@@ -134,7 +174,7 @@ table {
     opacity: 0.72;
   }
   50% {
-    transform: scale(1.55);
+    transform: scale(1.4);
     opacity: 1;
   }
 }
@@ -146,7 +186,7 @@ table {
     opacity: 0.8;
   }
   50% {
-    transform: scale(1.04);
+    transform: scale(1.03);
     opacity: 1;
   }
 }
@@ -160,35 +200,9 @@ table {
   }
 }
 
-@keyframes orbit {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes travelNode {
-  0% {
-    offset-distance: 0%;
-  }
-  50% {
-    offset-distance: 100%;
-  }
-  100% {
-    offset-distance: 0%;
-  }
-}
-
-@keyframes floatSmall {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
-/* Reduced Motion Accessibility */
+/* ============================================================
+   ACCESSIBILITY: REDUCED MOTION PREFERENCE
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -199,8 +213,9 @@ table {
     transition-duration: 0.01ms !important;
   }
 
-  .three-field {
-    display: none;
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   .ticker-content {
