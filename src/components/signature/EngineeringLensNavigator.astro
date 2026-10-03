@@ -1,0 +1,1510 @@
+---
+import type { SignatureInteractionPayload, EngineeringLensId } from '@/types/signatureInteraction';
+import { engineeringLenses, signatureConfig } from '@/data/signatureInteraction';
+import { projects } from '@/data/projects';
+import { buildSignaturePayload } from '@/lib/signature/interactionBuilder';
+
+export interface Props {
+  payload?: SignatureInteractionPayload;
+  projectSlug?: string;
+  initialLens?: EngineeringLensId;
+  showProjectSelector?: boolean;
+  variant?: 'full' | 'compact' | 'embedded';
+}
+
+const {
+  payload: passedPayload,
+  projectSlug,
+  initialLens = 'architecture',
+  showProjectSelector = false,
+  variant = 'full',
+} = Astro.props;
+
+// Resolve payload
+let payload = passedPayload;
+if (!payload) {
+  if (projectSlug) {
+    const proj = projects.find((p) => p.slug === projectSlug);
+    if (proj) payload = buildSignaturePayload(proj);
+  }
+}
+if (!payload) {
+  const featured = projects.find((p) => p.featured) || projects[0];
+  payload = buildSignaturePayload(featured);
+}
+
+const allProjects = projects.filter((p) => p.presentationLevel === 'A' || p.featured || p.status === 'academic');
+const uniqueId = `lens-nav-${payload.projectSlug.replace(/[^a-zA-Z0-9]/g, '-')}`;
+---
+
+<div class:list={['signature-interaction-root', `variant-${variant}`]} id={uniqueId} data-project-slug={payload.projectSlug} data-active-lens={initialLens}>
+  <!-- Header Bar / Context Strip -->
+  <div class="interaction-header-bar">
+    <div class="header-left">
+      <span class="interaction-pill">
+        <span class="pulse-indicator"></span>
+        {signatureConfig.badgeText}
+      </span>
+      <h3 class="interaction-system-title">
+        <span class="sys-label">SYSTEM:</span> {payload.projectTitle}
+      </h3>
+      <span class="sys-domain-badge">{payload.domain}</span>
+    </div>
+
+    {showProjectSelector && (
+      <div class="project-selector-wrapper">
+        <label for={`${uniqueId}-project-select`} class="sr-only">Switch Inspected System</label>
+        <select id={`${uniqueId}-project-select`} class="project-dropdown" aria-label="Select System to Inspect">
+          {allProjects.map((p) => (
+            <option value={p.slug} selected={p.slug === payload.projectSlug}>
+              {p.title} ({p.domain || 'Engineering'})
+            </option>
+          ))}
+        </select>
+      </div>
+    )}
+  </div>
+
+  <!-- Lens Navigation Tabs (WCAG 2.2 AA compliant tablist) -->
+  <div class="lens-tablist-wrapper">
+    <div class="lens-tablist" role="tablist" aria-label="Engineering Perspective Lenses">
+      {engineeringLenses.map((lens) => {
+        const isActive = lens.id === initialLens;
+        return (
+          <button
+            type="button"
+            class:list={['lens-tab-btn', { 'is-active': isActive }]}
+            role="tab"
+            id={`${uniqueId}-tab-${lens.id}`}
+            aria-selected={isActive ? 'true' : 'false'}
+            aria-controls={`${uniqueId}-panel-${lens.id}`}
+            data-lens-id={lens.id}
+            tabindex={isActive ? 0 : -1}
+          >
+            <span class="lens-tab-badge">{lens.badge}</span>
+            <span class="lens-tab-name">{lens.name}</span>
+          </button>
+        );
+      })}
+    </div>
+  </div>
+
+  <!-- Perspective Banner -->
+  <div class="lens-perspective-banner" aria-live="polite">
+    <div class="perspective-left">
+      <span class="perspective-tag" id={`${uniqueId}-active-tagline`}>
+        {engineeringLenses.find((l) => l.id === initialLens)?.tagline}
+      </span>
+      <p class="perspective-question" id={`${uniqueId}-active-question`}>
+        <em>Perspective Query:</em> "{engineeringLenses.find((l) => l.id === initialLens)?.question}"
+      </p>
+    </div>
+  </div>
+
+  <!-- Lens Panels Container -->
+  <div class="lens-panels-container">
+    <!-- LENS 01: ARCHITECTURE & TOPOLOGY -->
+    <div
+      id={`${uniqueId}-panel-architecture`}
+      class:list={['lens-panel', { 'is-active': initialLens === 'architecture' }]}
+      role="tabpanel"
+      aria-labelledby={`${uniqueId}-tab-architecture`}
+      hidden={initialLens !== 'architecture'}
+    >
+      <div class="panel-inner-grid">
+        <div class="panel-left-col">
+          <div class="schematic-header">
+            <h4 class="schematic-title">System Pipeline & Execution Stages</h4>
+            <span class="schematic-sub">Decoupled execution boundaries</span>
+          </div>
+
+          <div class="stage-flow-pipeline">
+            {payload.lenses.architecture.stages.map((st, i) => (
+              <div class="stage-flow-card">
+                <div class="flow-step-num">{st.step}</div>
+                <div class="flow-content">
+                  <h5 class="flow-label">{st.label}</h5>
+                  <p class="flow-role">{st.role}</p>
+                  {st.technologies && st.technologies.length > 0 && (
+                    <div class="flow-tech-tags">
+                      {st.technologies.map((t) => <span class="flow-tag">{t}</span>)}
+                    </div>
+                  )}
+                </div>
+                {i < payload.lenses.architecture.stages.length - 1 && (
+                  <div class="flow-arrow" aria-hidden="true">↓</div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="panel-right-col">
+          <div class="topology-nodes-box">
+            <h4 class="topology-title">Execution Topologies & Storage Nodes</h4>
+            <div class="nodes-grid">
+              {payload.lenses.architecture.nodes.map((node) => (
+                <div class:list={['node-card', `node-type-${node.type}`]}>
+                  <div class="node-badge">{node.type.toUpperCase()}</div>
+                  <h5 class="node-title">{node.title}</h5>
+                  {node.subtitle && <p class="node-sub">{node.subtitle}</p>}
+                  <ul class="node-details-list">
+                    {node.details.map((d) => <li>{d}</li>)}
+                  </ul>
+                </div>
+              ))}
+            </div>
+
+            <div class="state-model-callout">
+              <span class="callout-label">State Model:</span>
+              <span class="callout-val">{payload.lenses.architecture.stateModel}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LENS 02: PROBLEM & CONSTRAINTS -->
+    <div
+      id={`${uniqueId}-panel-constraints`}
+      class:list={['lens-panel', { 'is-active': initialLens === 'constraints' }]}
+      role="tabpanel"
+      aria-labelledby={`${uniqueId}-tab-constraints`}
+      hidden={initialLens !== 'constraints'}
+    >
+      <div class="panel-inner-grid">
+        <div class="panel-left-col">
+          <div class="constraint-block">
+            <h4 class="block-title">Formal Problem Statement</h4>
+            <p class="problem-statement-text">{payload.lenses.constraints.problemStatement}</p>
+          </div>
+
+          <div class="constraint-block">
+            <h4 class="block-title">Mathematical & Physical Boundaries</h4>
+            <ul class="constraint-list">
+              {payload.lenses.constraints.mathematicalBoundaries.map((mb) => (
+                <li>
+                  <span class="bullet-icon">∑</span>
+                  <span class="bullet-text">{mb}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div class="panel-right-col">
+          <div class="constraint-block">
+            <h4 class="block-title">Operational & Performance Latencies</h4>
+            <div class="latency-pill">
+              <span class="lat-label">Budget:</span>
+              <span class="lat-val">{payload.lenses.constraints.latencyAndThroughput}</span>
+            </div>
+            <ul class="constraint-list">
+              {payload.lenses.constraints.operationalConstraints.map((oc) => (
+                <li>
+                  <span class="bullet-icon">⚡</span>
+                  <span class="bullet-text">{oc}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="constraint-block">
+            <h4 class="block-title">Guarded Failure Modes</h4>
+            <ul class="constraint-list failure-list">
+              {payload.lenses.constraints.failureModesGuarded.map((fm) => (
+                <li>
+                  <span class="bullet-icon">🛡️</span>
+                  <span class="bullet-text">{fm}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LENS 03: CORE STACK & CODE -->
+    <div
+      id={`${uniqueId}-panel-implementation`}
+      class:list={['lens-panel', { 'is-active': initialLens === 'implementation' }]}
+      role="tabpanel"
+      aria-labelledby={`${uniqueId}-tab-implementation`}
+      hidden={initialLens !== 'implementation'}
+    >
+      <div class="panel-inner-grid">
+        <div class="panel-left-col">
+          <h4 class="block-title">Verified Core Stack</h4>
+          <div class="stack-grid">
+            {payload.lenses.implementation.coreStack.map((tech) => (
+              <a href={`/technology/${tech.id}`} class="tech-stack-card" title={`View ${tech.name} in Technology Matrix`}>
+                <span class="tech-name">{tech.name}</span>
+                <span class="tech-role">{tech.role}</span>
+                <span class="tech-category">{tech.category}</span>
+              </a>
+            ))}
+          </div>
+
+          <div class="highlights-box">
+            <h5 class="highlights-title">Engineering Highlights</h5>
+            <ul class="highlights-list">
+              {payload.lenses.implementation.keyHighlights.map((kh) => <li>{kh}</li>)}
+            </ul>
+          </div>
+        </div>
+
+        <div class="panel-right-col">
+          {payload.lenses.implementation.codeOrContractSnippet && (
+            <div class="code-snippet-box">
+              <div class="code-snippet-bar">
+                <span class="code-filename">{payload.lenses.implementation.codeOrContractSnippet.filename}</span>
+                <span class="code-lang">{payload.lenses.implementation.codeOrContractSnippet.language.toUpperCase()}</span>
+              </div>
+              <pre class="code-content"><code>{payload.lenses.implementation.codeOrContractSnippet.code}</code></pre>
+              <p class="code-caption">{payload.lenses.implementation.codeOrContractSnippet.caption}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+
+    <!-- LENS 04: EMPIRICAL EVIDENCE -->
+    <div
+      id={`${uniqueId}-panel-evidence`}
+      class:list={['lens-panel', { 'is-active': initialLens === 'evidence' }]}
+      role="tabpanel"
+      aria-labelledby={`${uniqueId}-tab-evidence`}
+      hidden={initialLens !== 'evidence'}
+    >
+      <div class="panel-inner-grid">
+        <div class="panel-left-col">
+          <h4 class="block-title">Verifiable Outcomes & Results</h4>
+          <div class="results-stack">
+            {payload.lenses.evidence.verifiableResults.map((res) => (
+              <div class="result-box">
+                <span class:list={['res-status-tag', `status-${res.status.toLowerCase()}`]}>
+                  {res.status}
+                </span>
+                <p class="res-desc">{res.description}</p>
+              </div>
+            ))}
+          </div>
+
+          <div class="outcomes-block">
+            <h5 class="outcomes-title">Documented Achievements</h5>
+            <ul class="outcomes-list">
+              {payload.lenses.evidence.outcomes.map((oc) => <li>{oc}</li>)}
+            </ul>
+          </div>
+        </div>
+
+        <div class="panel-right-col">
+          <h4 class="block-title">Provenance & Telemetry Audit</h4>
+          <div class="telemetry-table-wrapper">
+            <table class="telemetry-table">
+              <thead>
+                <tr>
+                  <th scope="col">Telemetry Dimension</th>
+                  <th scope="col">Observed State</th>
+                  <th scope="col">Validation</th>
+                </tr>
+              </thead>
+              <tbody>
+                {payload.lenses.evidence.auditMetrics.map((met) => (
+                  <tr>
+                    <td class="met-label">{met.label}</td>
+                    <td class="met-value">{met.value}</td>
+                    <td>
+                      <span class:list={['met-status', `met-${met.status}`]}>
+                        {met.status.toUpperCase()}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="evidence-links-strip">
+            {payload.lenses.evidence.githubUrl && (
+              <a href={payload.lenses.evidence.githubUrl} target="_blank" rel="noopener noreferrer" class="evidence-btn git-btn">
+                <span>GitHub Source</span>
+                <span class="btn-arrow">↗</span>
+              </a>
+            )}
+            {payload.lenses.evidence.vercelUrl && (
+              <a href={payload.lenses.evidence.vercelUrl} target="_blank" rel="noopener noreferrer" class="evidence-btn vercel-btn">
+                <span>Live Deployment</span>
+                <span class="btn-arrow">↗</span>
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LENS 05: TRADE-OFFS & LESSONS -->
+    <div
+      id={`${uniqueId}-panel-tradeoffs`}
+      class:list={['lens-panel', { 'is-active': initialLens === 'tradeoffs' }]}
+      role="tabpanel"
+      aria-labelledby={`${uniqueId}-tab-tradeoffs`}
+      hidden={initialLens !== 'tradeoffs'}
+    >
+      <div class="panel-inner-grid">
+        <div class="panel-left-col">
+          <h4 class="block-title">Key Architectural Decisions & Sacrifices</h4>
+          <div class="decisions-stack">
+            {payload.lenses.tradeoffs.decisions.map((dec) => (
+              <div class="decision-card">
+                <h5 class="dec-title">{dec.decision}</h5>
+                {dec.context && <p class="dec-context"><strong>Context:</strong> {dec.context}</p>}
+                <p class="dec-rationale"><strong>Rationale:</strong> {dec.rationale}</p>
+                {dec.tradeOff && (
+                  <p class="dec-tradeoff">
+                    <span class="tradeoff-pill">Trade-off</span> {dec.tradeOff}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="panel-right-col">
+          <div class="challenges-block">
+            <h4 class="block-title">Overcome Engineering Challenges</h4>
+            {payload.lenses.tradeoffs.challenges.map((ch) => (
+              <div class="challenge-box">
+                <h5 class="ch-problem">{ch.challenge}</h5>
+                <p class="ch-solution"><strong>Engineered Solution:</strong> {ch.solution}</p>
+              </div>
+            ))}
+          </div>
+
+          <div class="lessons-block">
+            <h4 class="block-title">Postmortem Lessons Learned</h4>
+            <ul class="lessons-list">
+              {payload.lenses.tradeoffs.lessonsLearned.map((ll) => <li>{ll}</li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LENS 06: CONNECTED KNOWLEDGE -->
+    <div
+      id={`${uniqueId}-panel-connections`}
+      class:list={['lens-panel', { 'is-active': initialLens === 'connections' }]}
+      role="tabpanel"
+      aria-labelledby={`${uniqueId}-tab-connections`}
+      hidden={initialLens !== 'connections'}
+    >
+      <div class="connections-wrapper">
+        <div class="connections-summary-strip">
+          <span class="con-count">
+            <strong>{payload.lenses.connections.totalConnectedEntities}</strong> Verified Connected Entities
+          </span>
+          <a href="/knowledge" class="graph-link">Explore Full Knowledge Graph →</a>
+        </div>
+
+        <div class="connections-three-col">
+          <!-- Research Connections -->
+          <div class="con-column">
+            <h5 class="con-col-title">🔬 Connected Research ({payload.lenses.connections.connectedResearch.length})</h5>
+            {payload.lenses.connections.connectedResearch.length > 0 ? (
+              <div class="con-cards-list">
+                {payload.lenses.connections.connectedResearch.map((res) => (
+                  <a href={`/research/${res.slug}`} class="con-item-card">
+                    <span class="con-rel">{res.relationship}</span>
+                    <h6 class="con-title">{res.title}</h6>
+                    {res.summary && <p class="con-desc">{res.summary.slice(0, 100)}...</p>}
+                  </a>
+                ))}
+              </div>
+            ) : (
+              <p class="con-empty">No direct research papers linked to this specific codebase.</p>
+            )}
+          </div>
+
+          <!-- Lab Experiments -->
+          <div class="con-column">
+            <h5 class="con-col-title">🧪 Connected Lab ({payload.lenses.connections.connectedLab.length})</h5>
+            {payload.lenses.connections.connectedLab.length > 0 ? (
+              <div class="con-cards-list">
+                {payload.lenses.connections.connectedLab.map((lab) => (
+                  <a href={`/lab/${lab.slug}`} class="con-item-card">
+                    <span class="con-rel">{lab.relationship}</span>
+                    <h6 class="con-title">{lab.title}</h6>
+                    <span class="con-status-badge">{lab.status}</span>
+                  </a>
+                ))}
+              </div>
+            ) : (
+              <p class="con-empty">No precursor lab prototypes directly linked.</p>
+            )}
+          </div>
+
+          <!-- Engineering Notes -->
+          <div class="con-column">
+            <h5 class="con-col-title">📝 Engineering Notes ({payload.lenses.connections.connectedNotes.length})</h5>
+            {payload.lenses.connections.connectedNotes.length > 0 ? (
+              <div class="con-cards-list">
+                {payload.lenses.connections.connectedNotes.map((note) => (
+                  <a href={`/notes/${note.slug}`} class="con-item-card">
+                    <span class="con-rel">{note.relationship}</span>
+                    <h6 class="con-title">{note.title}</h6>
+                    <span class="con-topic-tag">{note.topic}</span>
+                  </a>
+                ))}
+              </div>
+            ) : (
+              <p class="con-empty">No debugging or architecture notes directly linked.</p>
+            )}
+          </div>
+        </div>
+
+        {payload.lenses.connections.historicalEvolution && (
+          <div class="evolution-footprint-box">
+            <h5 class="evo-title">Historical Architecture Lineage</h5>
+            <div class="evo-links-grid">
+              {payload.lenses.connections.historicalEvolution.predecessorSlug && (
+                <div class="evo-node">
+                  <span class="evo-tag">↰ Predecessor Prototype:</span>
+                  <a href={`/work/${payload.lenses.connections.historicalEvolution.predecessorSlug}`} class="evo-anchor">
+                    {payload.lenses.connections.historicalEvolution.predecessorTitle || payload.lenses.connections.historicalEvolution.predecessorSlug} →
+                  </a>
+                </div>
+              )}
+              {payload.lenses.connections.historicalEvolution.successorSlug && (
+                <div class="evo-node">
+                  <span class="evo-tag">↳ Successor System:</span>
+                  <a href={`/work/${payload.lenses.connections.historicalEvolution.successorSlug}`} class="evo-anchor">
+                    {payload.lenses.connections.historicalEvolution.successorTitle || payload.lenses.connections.historicalEvolution.successorSlug} →
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setupEngineeringLensNavigators() {
+    const roots = document.querySelectorAll('.signature-interaction-root');
+
+    roots.forEach((root) => {
+      const tabs = root.querySelectorAll<HTMLButtonElement>('.lens-tab-btn');
+      const panels = root.querySelectorAll<HTMLElement>('.lens-panel');
+      const taglineElem = root.querySelector<HTMLElement>('[id$="-active-tagline"]');
+      const questionElem = root.querySelector<HTMLElement>('[id$="-active-question"]');
+      const projectSelect = root.querySelector<HTMLSelectElement>('.project-dropdown');
+
+      const lensTaglines: Record<string, { tagline: string; question: string }> = {
+        architecture: {
+          tagline: 'Component hierarchy, dataflow pipelines & system boundaries',
+          question: 'How do the components interconnect and route state under load?'
+        },
+        constraints: {
+          tagline: 'Mathematical boundaries, non-stationarity & latency limits',
+          question: 'What physical, mathematical, and latency boundaries dictate the design?'
+        },
+        implementation: {
+          tagline: 'Tensors, data contracts, and algorithmic implementation',
+          question: 'What technologies, schemas, and algorithms execute the business logic?'
+        },
+        evidence: {
+          tagline: 'Out-of-sample metrics, benchmarks & verified telemetry',
+          question: 'What verifiable empirical proofs and metrics validate this system?'
+        },
+        tradeoffs: {
+          tagline: 'Technical decisions, postmortems & what was sacrificed',
+          question: 'What alternative designs were rejected and what constraints were accepted?'
+        },
+        connections: {
+          tagline: 'Linked research, lab experiments, notes & system evolution',
+          question: 'How does this system connect to the broader body of research and lab experiments?'
+        }
+      };
+
+      function switchLens(targetLensId: string, updateUrl: boolean = true) {
+        tabs.forEach((tab) => {
+          const isTarget = tab.getAttribute('data-lens-id') === targetLensId;
+          tab.classList.toggle('is-active', isTarget);
+          tab.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+          tab.setAttribute('tabindex', isTarget ? '0' : '-1');
+        });
+
+        panels.forEach((panel) => {
+          const panelLensId = panel.id.split('-panel-')[1];
+          const isTarget = panelLensId === targetLensId;
+          panel.classList.toggle('is-active', isTarget);
+          panel.hidden = !isTarget;
+        });
+
+        root.setAttribute('data-active-lens', targetLensId);
+
+        if (taglineElem && lensTaglines[targetLensId]) {
+          taglineElem.textContent = lensTaglines[targetLensId].tagline;
+        }
+        if (questionElem && lensTaglines[targetLensId]) {
+          questionElem.innerHTML = `<em>Perspective Query:</em> "${lensTaglines[targetLensId].question}"`;
+        }
+
+        if (updateUrl && typeof window !== 'undefined' && window.history) {
+          const url = new URL(window.location.href);
+          url.searchParams.set('lens', targetLensId);
+          window.history.replaceState({}, '', url.toString());
+        }
+      }
+
+      // Check URL search parameter on initial load
+      if (typeof window !== 'undefined') {
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlLens = urlParams.get('lens');
+        if (urlLens && lensTaglines[urlLens]) {
+          switchLens(urlLens, false);
+        }
+      }
+
+      // Click Event
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          const lensId = tab.getAttribute('data-lens-id');
+          if (lensId) switchLens(lensId, true);
+        });
+
+        // Keyboard Navigation (ArrowLeft, ArrowRight, Home, End)
+        tab.addEventListener('keydown', (e) => {
+          const tabArray = Array.from(tabs);
+          const currentIndex = tabArray.indexOf(tab);
+
+          let newIndex = currentIndex;
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+            e.preventDefault();
+            newIndex = (currentIndex + 1) % tabArray.length;
+          } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            newIndex = (currentIndex - 1 + tabArray.length) % tabArray.length;
+          } else if (e.key === 'Home') {
+            e.preventDefault();
+            newIndex = 0;
+          } else if (e.key === 'End') {
+            e.preventDefault();
+            newIndex = tabArray.length - 1;
+          }
+
+          if (newIndex !== currentIndex) {
+            const nextTab = tabArray[newIndex];
+            nextTab.focus();
+            const lensId = nextTab.getAttribute('data-lens-id');
+            if (lensId) switchLens(lensId, true);
+          }
+        });
+      });
+
+      // Project Selector Event
+      if (projectSelect) {
+        projectSelect.addEventListener('change', () => {
+          const targetSlug = projectSelect.value;
+          if (targetSlug) {
+            window.location.href = `/work/${targetSlug}?lens=${root.getAttribute('data-active-lens') || 'architecture'}`;
+          }
+        });
+      }
+    });
+  }
+
+  // Execute on initial page load and on client-side router navigation
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupEngineeringLensNavigators);
+  } else {
+    setupEngineeringLensNavigators();
+  }
+  document.addEventListener('astro:page-load', setupEngineeringLensNavigators);
+</script>
+
+<style>
+  .signature-interaction-root {
+    background: #0d1117;
+    border: 1px solid rgba(246, 241, 232, 0.12);
+    border-radius: 12px;
+    padding: clamp(1rem, 2.5vw, 1.75rem);
+    color: #e6edf3;
+    font-family: inherit;
+    margin: 2rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Header Bar */
+  .interaction-header-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(246, 241, 232, 0.08);
+    margin-bottom: 1.25rem;
+  }
+
+  .header-left {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .interaction-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: rgba(88, 166, 255, 0.1);
+    border: 1px solid rgba(88, 166, 255, 0.3);
+    color: #58a6ff;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  .pulse-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #58a6ff;
+    animation: pulseGlow 2s infinite ease-in-out;
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 0.4; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+
+  .interaction-system-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #f0f6fc;
+    margin: 0;
+  }
+
+  .sys-label {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    color: #8b949e;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .sys-domain-badge {
+    background: rgba(246, 241, 232, 0.06);
+    border: 1px solid rgba(246, 241, 232, 0.12);
+    color: #c9d1d9;
+    font-size: 0.75rem;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+  }
+
+  .project-dropdown {
+    background: #161b22;
+    border: 1px solid rgba(246, 241, 232, 0.18);
+    color: #f0f6fc;
+    font-size: 0.8rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  /* Tablist */
+  .lens-tablist-wrapper {
+    overflow-x: auto;
+    scrollbar-width: thin;
+    margin-bottom: 1rem;
+  }
+
+  .lens-tablist {
+    display: flex;
+    gap: 0.5rem;
+    min-width: max-content;
+    padding-bottom: 0.25rem;
+  }
+
+  .lens-tab-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: #161b22;
+    border: 1px solid rgba(246, 241, 232, 0.1);
+    border-radius: 6px;
+    padding: 0.5rem 0.85rem;
+    color: #8b949e;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    text-align: left;
+  }
+
+  .lens-tab-btn:hover {
+    background: #21262d;
+    color: #c9d1d9;
+    border-color: rgba(246, 241, 232, 0.2);
+  }
+
+  .lens-tab-btn.is-active {
+    background: #1f2937;
+    border-color: #58a6ff;
+    color: #f0f6fc;
+    box-shadow: 0 0 0 1px #58a6ff;
+  }
+
+  .lens-tab-btn:focus-visible {
+    outline: 2px solid #58a6ff;
+    outline-offset: 2px;
+  }
+
+  .lens-tab-badge {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.65rem;
+    color: #58a6ff;
+    font-weight: 700;
+  }
+
+  .lens-tab-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  /* Perspective Banner */
+  .lens-perspective-banner {
+    background: rgba(88, 166, 255, 0.05);
+    border: 1px solid rgba(88, 166, 255, 0.15);
+    border-radius: 6px;
+    padding: 0.65rem 0.85rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .perspective-tag {
+    display: block;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.8rem;
+    color: #58a6ff;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+  }
+
+  .perspective-question {
+    font-size: 0.8rem;
+    color: #c9d1d9;
+    margin: 0;
+  }
+
+  /* Panel Layouts */
+  .panel-inner-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 860px) {
+    .panel-inner-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .block-title, .schematic-title, .topology-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #f0f6fc;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .schematic-sub {
+    display: block;
+    font-size: 0.75rem;
+    color: #8b949e;
+    margin-top: -0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Stage Flow Cards */
+  .stage-flow-pipeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .stage-flow-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background: #161b22;
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 6px;
+    padding: 0.65rem 0.85rem;
+    position: relative;
+  }
+
+  .flow-step-num {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #58a6ff;
+    background: rgba(88, 166, 255, 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+  }
+
+  .flow-content {
+    flex: 1;
+  }
+
+  .flow-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #e6edf3;
+    margin: 0 0 0.2rem 0;
+  }
+
+  .flow-role {
+    font-size: 0.75rem;
+    color: #8b949e;
+    margin: 0 0 0.4rem 0;
+    line-height: 1.4;
+  }
+
+  .flow-tech-tags {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+
+  .flow-tag {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.65rem;
+    background: rgba(246, 241, 232, 0.06);
+    border: 1px solid rgba(246, 241, 232, 0.1);
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    color: #c9d1d9;
+  }
+
+  .flow-arrow {
+    text-align: center;
+    color: #58a6ff;
+    font-size: 0.85rem;
+    position: absolute;
+    bottom: -0.65rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+  }
+
+  /* Nodes Grid */
+  .nodes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+  }
+
+  @media (max-width: 540px) {
+    .nodes-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .node-card {
+    background: #161b22;
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 6px;
+    padding: 0.65rem;
+  }
+
+  .node-badge {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.6rem;
+    color: #3fb950;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+
+  .node-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #f0f6fc;
+    margin: 0 0 0.15rem 0;
+  }
+
+  .node-sub {
+    font-size: 0.7rem;
+    color: #8b949e;
+    margin: 0 0 0.4rem 0;
+  }
+
+  .node-details-list {
+    margin: 0;
+    padding-left: 1rem;
+    font-size: 0.7rem;
+    color: #c9d1d9;
+    line-height: 1.4;
+  }
+
+  .state-model-callout {
+    margin-top: 0.85rem;
+    background: rgba(246, 241, 232, 0.04);
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 4px;
+    padding: 0.45rem 0.65rem;
+    font-size: 0.75rem;
+  }
+
+  .callout-label {
+    font-weight: 700;
+    color: #8b949e;
+    margin-right: 0.35rem;
+  }
+
+  .callout-val {
+    color: #e6edf3;
+  }
+
+  /* Constraints Styles */
+  .constraint-block {
+    background: #161b22;
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 6px;
+    padding: 0.75rem 0.85rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .problem-statement-text {
+    font-size: 0.8rem;
+    color: #c9d1d9;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .constraint-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .constraint-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: #c9d1d9;
+    line-height: 1.45;
+  }
+
+  .bullet-icon {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    color: #58a6ff;
+    font-weight: 700;
+  }
+
+  .latency-pill {
+    display: inline-flex;
+    gap: 0.35rem;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .lat-label {
+    color: #8b949e;
+  }
+
+  .lat-val {
+    color: #60a5fa;
+    font-weight: 700;
+  }
+
+  /* Implementation Stack */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .tech-stack-card {
+    display: flex;
+    flex-direction: column;
+    background: #161b22;
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 6px;
+    padding: 0.5rem;
+    text-decoration: none;
+    transition: border-color 0.15s;
+  }
+
+  .tech-stack-card:hover {
+    border-color: #58a6ff;
+  }
+
+  .tech-name {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #f0f6fc;
+  }
+
+  .tech-role {
+    font-size: 0.68rem;
+    color: #8b949e;
+  }
+
+  .tech-category {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.6rem;
+    color: #58a6ff;
+    margin-top: 0.2rem;
+  }
+
+  .highlights-box {
+    background: #161b22;
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 6px;
+    padding: 0.75rem;
+  }
+
+  .highlights-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #f0f6fc;
+    margin: 0 0 0.4rem 0;
+  }
+
+  .highlights-list {
+    margin: 0;
+    padding-left: 1rem;
+    font-size: 0.75rem;
+    color: #c9d1d9;
+    line-height: 1.45;
+  }
+
+  .code-snippet-box {
+    background: #090d13;
+    border: 1px solid rgba(246, 241, 232, 0.12);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .code-snippet-bar {
+    display: flex;
+    justify-content: space-between;
+    background: #161b22;
+    padding: 0.35rem 0.65rem;
+    border-bottom: 1px solid rgba(246, 241, 232, 0.08);
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.7rem;
+    color: #8b949e;
+  }
+
+  .code-content {
+    padding: 0.75rem;
+    margin: 0;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.72rem;
+    line-height: 1.45;
+    color: #e6edf3;
+    overflow-x: auto;
+  }
+
+  .code-caption {
+    font-size: 0.7rem;
+    color: #8b949e;
+    padding: 0.4rem 0.75rem;
+    margin: 0;
+    border-top: 1px solid rgba(246, 241, 232, 0.06);
+    background: #0d1117;
+  }
+
+  /* Evidence */
+  .results-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .result-box {
+    background: #161b22;
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 6px;
+    padding: 0.65rem;
+  }
+
+  .res-status-tag {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 0.3rem;
+  }
+
+  .status-implemented {
+    background: rgba(63, 185, 80, 0.15);
+    color: #3fb950;
+    border: 1px solid rgba(63, 185, 80, 0.3);
+  }
+
+  .status-measured {
+    background: rgba(88, 166, 255, 0.15);
+    color: #58a6ff;
+    border: 1px solid rgba(88, 166, 255, 0.3);
+  }
+
+  .res-desc {
+    font-size: 0.75rem;
+    color: #c9d1d9;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .outcomes-block {
+    background: #161b22;
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 6px;
+    padding: 0.75rem;
+  }
+
+  .outcomes-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #f0f6fc;
+    margin: 0 0 0.4rem 0;
+  }
+
+  .outcomes-list {
+    margin: 0;
+    padding-left: 1rem;
+    font-size: 0.75rem;
+    color: #c9d1d9;
+    line-height: 1.45;
+  }
+
+  .telemetry-table-wrapper {
+    overflow-x: auto;
+    background: #161b22;
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 6px;
+    margin-bottom: 0.85rem;
+  }
+
+  .telemetry-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.75rem;
+    text-align: left;
+  }
+
+  .telemetry-table th {
+    background: rgba(246, 241, 232, 0.04);
+    color: #8b949e;
+    font-weight: 600;
+    padding: 0.45rem 0.65rem;
+    border-bottom: 1px solid rgba(246, 241, 232, 0.08);
+  }
+
+  .telemetry-table td {
+    padding: 0.45rem 0.65rem;
+    border-bottom: 1px solid rgba(246, 241, 232, 0.04);
+    color: #c9d1d9;
+  }
+
+  .met-status {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+  }
+
+  .met-pass, .met-verified, .met-optimal {
+    background: rgba(63, 185, 80, 0.15);
+    color: #3fb950;
+  }
+
+  .evidence-links-strip {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .evidence-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: #161b22;
+    border: 1px solid rgba(246, 241, 232, 0.12);
+    color: #f0f6fc;
+    font-size: 0.75rem;
+    padding: 0.4rem 0.65rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: border-color 0.15s;
+  }
+
+  .evidence-btn:hover {
+    border-color: #58a6ff;
+  }
+
+  /* Tradeoffs */
+  .decisions-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .decision-card {
+    background: #161b22;
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 6px;
+    padding: 0.75rem;
+  }
+
+  .dec-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #f0f6fc;
+    margin: 0 0 0.35rem 0;
+  }
+
+  .dec-context, .dec-rationale {
+    font-size: 0.75rem;
+    color: #c9d1d9;
+    margin: 0 0 0.35rem 0;
+    line-height: 1.4;
+  }
+
+  .dec-tradeoff {
+    font-size: 0.75rem;
+    color: #e3b341;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .tradeoff-pill {
+    background: rgba(227, 179, 65, 0.15);
+    border: 1px solid rgba(227, 179, 65, 0.3);
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.65rem;
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    font-weight: 700;
+    margin-right: 0.25rem;
+  }
+
+  .challenge-box {
+    background: #161b22;
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 6px;
+    padding: 0.65rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .ch-problem {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #f0f6fc;
+    margin: 0 0 0.25rem 0;
+  }
+
+  .ch-solution {
+    font-size: 0.75rem;
+    color: #c9d1d9;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .lessons-block {
+    background: #161b22;
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 6px;
+    padding: 0.75rem;
+  }
+
+  .lessons-list {
+    margin: 0;
+    padding-left: 1rem;
+    font-size: 0.75rem;
+    color: #c9d1d9;
+    line-height: 1.45;
+  }
+
+  /* Connections */
+  .connections-summary-strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #161b22;
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 6px;
+    padding: 0.5rem 0.85rem;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+  }
+
+  .con-count {
+    color: #c9d1d9;
+  }
+
+  .graph-link {
+    color: #58a6ff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.75rem;
+  }
+
+  .connections-three-col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.85rem;
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 860px) {
+    .connections-three-col {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .con-col-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #f0f6fc;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .con-cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .con-item-card {
+    display: flex;
+    flex-direction: column;
+    background: #161b22;
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 6px;
+    padding: 0.65rem;
+    text-decoration: none;
+    transition: border-color 0.15s;
+  }
+
+  .con-item-card:hover {
+    border-color: #58a6ff;
+  }
+
+  .con-rel {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.65rem;
+    color: #58a6ff;
+    margin-bottom: 0.2rem;
+  }
+
+  .con-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #f0f6fc;
+    margin: 0 0 0.25rem 0;
+  }
+
+  .con-desc {
+    font-size: 0.7rem;
+    color: #8b949e;
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  .con-status-badge {
+    align-self: flex-start;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.65rem;
+    background: rgba(63, 185, 80, 0.15);
+    color: #3fb950;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    margin-top: 0.35rem;
+  }
+
+  .con-topic-tag {
+    align-self: flex-start;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.65rem;
+    background: rgba(246, 241, 232, 0.06);
+    color: #c9d1d9;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    margin-top: 0.35rem;
+  }
+
+  .con-empty {
+    font-size: 0.75rem;
+    color: #8b949e;
+    font-style: italic;
+    margin: 0;
+  }
+
+  .evolution-footprint-box {
+    background: #161b22;
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 6px;
+    padding: 0.75rem;
+  }
+
+  .evo-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #f0f6fc;
+    margin: 0 0 0.4rem 0;
+  }
+
+  .evo-links-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .evo-node {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+  }
+
+  .evo-tag {
+    color: #8b949e;
+  }
+
+  .evo-anchor {
+    color: #58a6ff;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .pulse-indicator {
+      animation: none;
+    }
+    .lens-tab-btn, .tech-stack-card, .con-item-card, .evidence-btn {
+      transition: none;
+    }
+  }
+</style>

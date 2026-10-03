@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
 import ProjectDNA from '@/components/common/ProjectDNA.astro';
+import EngineeringLensNavigator from '@/components/signature/EngineeringLensNavigator.astro';
 import ProjectVisualization from '@/components/visualizations/ProjectVisualization.astro';
 import ProjectCard from '@/components/cards/ProjectCard.astro';
 import RelatedKnowledgeGrid from '@/components/knowledge/RelatedKnowledgeGrid.astro';
@@ -119,6 +120,11 @@ const isArchived = project.archive?.state && project.archive.state !== 'active';
               Launch Live Demo ↗
             </a>
           )}
+        </div>
+
+        <!-- Signature Interaction: Multi-Dimensional Engineering Lens -->
+        <div class="case-study-signature-lens-wrapper" style="margin-top: 2rem;">
+          <EngineeringLensNavigator projectSlug={project.slug} variant="embedded" />
         </div>
       </header>
 

@@ -1,0 +1,62 @@
+---
+import EngineeringLensNavigator from '@/components/signature/EngineeringLensNavigator.astro';
+import { signatureConfig } from '@/data/signatureInteraction';
+import { getFeaturedSignaturePayload } from '@/lib/signature/interactionBuilder';
+
+const featuredPayload = getFeaturedSignaturePayload();
+---
+
+<section id="signature-system" class="section-shell signature-section">
+  <div class="section-heading reveal">
+    <div class="eyebrow-wrapper">
+      <span class="eyebrow-pill">SIGNATURE INTERACTION</span>
+      <p class="eyebrow">Multi-Perspective Engineering Inspector</p>
+    </div>
+    <h2>{signatureConfig.heading}</h2>
+    <p class="section-subtitle">
+      {signatureConfig.subheading}
+    </p>
+  </div>
+
+  <div class="signature-navigator-wrapper reveal">
+    <EngineeringLensNavigator
+      payload={featuredPayload}
+      showProjectSelector={true}
+      variant="full"
+    />
+  </div>
+</section>
+
+<style>
+  .signature-section {
+    position: relative;
+    padding: var(--space-section, 6rem) 0;
+  }
+
+  .eyebrow-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .eyebrow-pill {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #58a6ff;
+    background: rgba(88, 166, 255, 0.1);
+    border: 1px solid rgba(88, 166, 255, 0.25);
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  .signature-section .eyebrow {
+    margin: 0;
+  }
+
+  .signature-navigator-wrapper {
+    margin-top: 1.5rem;
+  }
+</style>
