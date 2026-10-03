@@ -7,8 +7,10 @@ import {
 import type { Technology, TechnologyCategory } from '@/types/technology';
 import type { Project } from '@/types/project';
 import type { ResearchItem } from '@/types/research';
+import type { EngineeringNote } from '@/types/note';
 import { projects } from '@/data/projects';
 import { researchItems } from '@/data/research';
+import { engineeringNotes } from '@/data/notes';
 import { siteConfig } from '@/data/site';
 
 export function getStaticPaths() {
@@ -31,6 +33,10 @@ const evidenceProjects: Project[] = tech.projectSlugs
 const evidenceResearch: ResearchItem[] = (tech.researchSlugs || [])
   .map((slug: string) => researchItems.find((r) => r.slug === slug))
   .filter((r): r is ResearchItem => Boolean(r));
+
+const evidenceNotes: EngineeringNote[] = (tech.noteSlugs || [])
+  .map((slug: string) => engineeringNotes.find((n) => n.slug === slug))
+  .filter((n): n is EngineeringNote => Boolean(n));
 
 const seo = {
   title: `${tech.name} — Technical Role & Projects | ${siteConfig.name}`,
@@ -224,6 +230,43 @@ const seo = {
                   <p class="research-summary">{res.summary}</p>
                   <a href={`/research/${res.slug}`} class="research-view-link">
                     Explore Research Hypothesis →
+                  </a>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Related Engineering Notes -->
+    {
+      evidenceNotes.length > 0 && (
+        <section class="section-shell notes-evidence-section">
+          <div class="container">
+            <div class="section-header">
+              <p class="eyebrow">Practical Lessons & Decision Logs</p>
+              <h2 class="section-title">Related Engineering Notes</h2>
+              <p class="section-desc">
+                Technical observations, debugging discoveries, and architectural lessons involving {tech.name}.
+              </p>
+            </div>
+
+            <div class="research-grid">
+              {evidenceNotes.map((note: EngineeringNote) => (
+                <article class="research-card">
+                  <div class="research-top">
+                    <span class="research-badge">{note.type}</span>
+                    <span class="research-domain">{note.topic}</span>
+                  </div>
+                  <h3 class="research-title">
+                    <a href={`/notes/${note.slug}`} class="research-link">
+                      {note.title}
+                    </a>
+                  </h3>
+                  <p class="research-summary">{note.summary}</p>
+                  <a href={`/notes/${note.slug}`} class="research-view-link">
+                    Read Engineering Note →
                   </a>
                 </article>
               ))}

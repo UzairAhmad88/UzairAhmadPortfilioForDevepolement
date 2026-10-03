@@ -91,6 +91,7 @@ export interface ResearchItem {
   technologies?: string[]; // Canonical IDs from Phase 09 (e.g., 'python', 'pytorch', 'pandas')
   relatedProjects?: string[]; // Canonical project slugs from Phase 05
   relatedResearch?: string[]; // Slugs of related research items
+  relatedNotes?: string[]; // Slugs of related engineering notes from Phase 11
   references?: ResearchReference[];
   githubUrl?: string;
   featured?: boolean;

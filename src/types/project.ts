@@ -149,6 +149,7 @@ export interface Project {
   order?: number;
   relatedProjects?: string[];
   relatedResearch?: string[];
+  relatedNotes?: string[];
   caseStudy?: ProjectCaseStudy;
   dna?: Partial<ProjectDNAMetadata>;
 }

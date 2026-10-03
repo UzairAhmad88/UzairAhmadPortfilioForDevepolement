@@ -24,6 +24,7 @@ export interface Technology {
   methodologySteps?: string[];
   projectSlugs: string[];
   researchSlugs?: string[];
+  noteSlugs?: string[];
   aliases?: string[];
   website?: string;
   documentationUrl?: string;

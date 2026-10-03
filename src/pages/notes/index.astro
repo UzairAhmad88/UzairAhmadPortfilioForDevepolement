@@ -1,0 +1,182 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
+import SectionHeader from '@/components/common/SectionHeader.astro';
+import EngineeringNoteCard from '@/components/cards/EngineeringNoteCard.astro';
+import ContactCallout from '@/components/sections/ContactCallout.astro';
+import { engineeringNotes } from '@/data/notes';
+import { siteConfig } from '@/data/site';
+
+const seo = {
+  title: `Engineering Notes & Decision Logs — ${siteConfig.name}`,
+  description: 'Technical observations, debugging discoveries, architectural trade-offs, and implementation lessons from building production systems.',
+  canonical: `${siteConfig.url}/notes`,
+};
+
+const allTopics = Array.from(new Set(engineeringNotes.map((n) => n.topic)));
+---
+
+<BaseLayout seo={seo}>
+  <div class="page-container">
+    <Breadcrumbs items={[{ label: 'Notes', href: '/notes' }]} />
+
+    <section class="notes-hero">
+      <SectionHeader
+        eyebrow="Engineering Notes"
+        title="Technical Writing, Decisions & Debugging Discoveries"
+        subtitle="Practical lessons, architectural trade-offs, and implementation observations from building real-world software, multi-agent systems, and quantitative models."
+      />
+    </section>
+
+    <!-- Notes Philosophy Banner -->
+    <section class="philosophy-section">
+      <div class="philosophy-box">
+        <span class="philosophy-eyebrow">PERSONAL KNOWLEDGE CAPTURE & LESSONS LEARNED</span>
+        <p class="philosophy-text">
+          Engineering notes capture what I actually encountered, investigated, and solved during system implementation. They document real error logs, architectural constraints, and algorithmic trade-offs that don't fit neatly into case studies or research papers.
+        </p>
+      </div>
+    </section>
+
+    <!-- Topics Filter & Overview -->
+    <section class="topics-section">
+      <div class="topics-header">
+        <h2 class="topics-title">Topics & Knowledge Domains</h2>
+        <span class="notes-count">{engineeringNotes.length} Documented Notes</span>
+      </div>
+      <div class="topics-bar">
+        <span class="topic-pill active">All Topics ({engineeringNotes.length})</span>
+        {allTopics.map((topic) => {
+          const count = engineeringNotes.filter((n) => n.topic === topic).length;
+          return (
+            <span class="topic-pill">
+              {topic} ({count})
+            </span>
+          );
+        })}
+      </div>
+    </section>
+
+    <!-- Notes Grid -->
+    <section class="notes-grid-section">
+      <div class="notes-grid">
+        {engineeringNotes.map((note) => (
+          <EngineeringNoteCard note={note} />
+        ))}
+      </div>
+    </section>
+
+    <ContactCallout
+      title="Have questions or insights on these engineering decisions?"
+      subtitle="Open to discussing backend architectures, concurrency models, and statistical algorithms."
+    />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-container {
+    width: min(var(--container-max, 1200px), calc(100% - max(1.5rem, calc(env(safe-area-inset-left) + env(safe-area-inset-right) + 1rem))));
+    margin: 0 auto;
+    padding: 1rem 0 5rem;
+    padding-left: env(safe-area-inset-left, 0);
+    padding-right: env(safe-area-inset-right, 0);
+  }
+
+  .notes-hero {
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .philosophy-section {
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+
+  .philosophy-box {
+    background: rgba(16, 26, 23, 0.65);
+    border: 1px solid rgba(126, 216, 196, 0.2);
+    border-radius: 0.75rem;
+    padding: clamp(1.25rem, 2.5vw, 1.75rem);
+  }
+
+  .philosophy-eyebrow {
+    display: block;
+    font-size: 0.7rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--color-accent, #7ed8c4);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+
+  .philosophy-text {
+    font-size: 0.95rem;
+    color: var(--color-text-muted, #a9b8b1);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .topics-section {
+    margin-bottom: 2rem;
+  }
+
+  .topics-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .topics-title {
+    font-size: clamp(1.15rem, 2vw, 1.35rem);
+    font-weight: 800;
+    color: var(--color-text, #f6f1e8);
+    margin: 0;
+  }
+
+  .notes-count {
+    font-size: 0.85rem;
+    font-family: var(--font-mono, monospace);
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .topics-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .topic-pill {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-full, 9999px);
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(246, 241, 232, 0.09);
+    color: var(--color-text-muted, #a9b8b1);
+    white-space: nowrap;
+  }
+
+  .topic-pill.active {
+    background: rgba(126, 216, 196, 0.15);
+    border-color: rgba(126, 216, 196, 0.4);
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .notes-grid-section {
+    margin-bottom: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  .notes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .notes-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
