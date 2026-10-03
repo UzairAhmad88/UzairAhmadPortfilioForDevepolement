@@ -1,9 +1,10 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import { researchItems, featuredResearch } from '../../src/data/research.ts';
+import { researchItems, featuredResearch, getResearchBySlug } from '../../src/data/research.ts';
 import { projects } from '../../src/data/projects.ts';
+import { technologies } from '../../src/data/technologies.ts';
 
-describe('Research Data & Knowledge Graph Integrity', () => {
+describe('Phase 10: Research Platform & Hypothesis-Driven Investigation System', () => {
   it('should have valid research items with complete scientific fields', () => {
     assert.ok(researchItems.length > 0, 'Research items array must not be empty');
     researchItems.forEach((item) => {
@@ -30,6 +31,15 @@ describe('Research Data & Knowledge Graph Integrity', () => {
     assert.strictEqual(featuredResearch.featured, true, 'Featured research item must have featured: true');
   });
 
+  it('should resolve research items accurately by slug', () => {
+    researchItems.forEach((item) => {
+      const found = getResearchBySlug(item.slug);
+      assert.ok(found, `getResearchBySlug must resolve for ${item.slug}`);
+      assert.strictEqual(found?.id, item.id);
+    });
+    assert.strictEqual(getResearchBySlug('non-existent-research-slug'), undefined);
+  });
+
   it('should resolve all relatedProjects to existing project slugs in the knowledge graph', () => {
     const projectSlugs = new Set(projects.map((p) => p.slug));
     researchItems.forEach((item) => {
@@ -38,6 +48,20 @@ describe('Research Data & Knowledge Graph Integrity', () => {
           assert.ok(
             projectSlugs.has(projSlug),
             `Research item "${item.slug}" references non-existent project "${projSlug}"`
+          );
+        });
+      }
+    });
+  });
+
+  it('should resolve all canonical technologies to existing technology IDs in Phase 09 system', () => {
+    const techIds = new Set(technologies.map((t) => t.id));
+    researchItems.forEach((item) => {
+      if (item.technologies) {
+        item.technologies.forEach((techId) => {
+          assert.ok(
+            techIds.has(techId),
+            `Research item "${item.slug}" references non-existent canonical technology ID "${techId}"`
           );
         });
       }
@@ -55,6 +79,42 @@ describe('Research Data & Knowledge Graph Integrity', () => {
           );
         });
       }
+    });
+  });
+
+  it('should contain structured experiments with valid statuses and observations', () => {
+    const validStatuses = new Set(['Planned', 'Running', 'Completed', 'Inconclusive', 'Failed']);
+    researchItems.forEach((item) => {
+      if (item.experimentsList) {
+        item.experimentsList.forEach((exp) => {
+          assert.ok(exp.id, `Experiment in ${item.slug} must have an ID`);
+          assert.ok(exp.title, `Experiment ${exp.id} must have a title`);
+          assert.ok(exp.objective, `Experiment ${exp.id} must have an objective`);
+          assert.ok(validStatuses.has(exp.status), `Experiment ${exp.id} has invalid status "${exp.status}"`);
+          if (exp.status === 'Completed') {
+            assert.ok(exp.results && exp.results.length > 0, `Completed experiment ${exp.id} must have recorded results`);
+          }
+        });
+      }
+    });
+  });
+
+  it('should contain structured methodology stages with tool assignments', () => {
+    researchItems.forEach((item) => {
+      if (item.methodologyStages) {
+        item.methodologyStages.forEach((stage) => {
+          assert.ok(stage.stage, `Stage in ${item.slug} must have a stage label`);
+          assert.ok(stage.title, `Stage in ${item.slug} must have a title`);
+          assert.ok(stage.description, `Stage in ${item.slug} must have a description`);
+        });
+      }
+    });
+  });
+
+  it('should explicitly separate factual findings from technical interpretation and state open questions', () => {
+    researchItems.forEach((item) => {
+      assert.ok(item.interpretation, `Research item ${item.slug} must provide technical interpretation`);
+      assert.ok(item.openQuestions && item.openQuestions.length > 0, `Research item ${item.slug} must acknowledge open questions`);
     });
   });
 

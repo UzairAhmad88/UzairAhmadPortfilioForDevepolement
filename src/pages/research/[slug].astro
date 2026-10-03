@@ -5,6 +5,7 @@ import ProjectCard from '@/components/cards/ProjectCard.astro';
 import ContactCallout from '@/components/sections/ContactCallout.astro';
 import { researchItems } from '@/data/research';
 import { projects } from '@/data/projects';
+import { technologies } from '@/data/technologies';
 import { siteConfig } from '@/data/site';
 import type { ResearchItem } from '@/types/research';
 
@@ -44,6 +45,10 @@ const researchSchema = {
 const relatedProjects = (inquiry.relatedProjects || [])
   .map((slug) => projects.find((p) => p.slug === slug))
   .filter((p) => Boolean(p));
+
+const linkedTechnologies = (inquiry.technologies || [])
+  .map((techId) => technologies.find((t) => t.id === techId))
+  .filter((t) => Boolean(t));
 ---
 
 <BaseLayout seo={seo}>
@@ -92,7 +97,7 @@ const relatedProjects = (inquiry.relatedProjects || [])
         {inquiry.githubUrl && (
           <div class="header-action-links">
             <a href={inquiry.githubUrl} target="_blank" rel="noopener noreferrer" class="cta-primary">
-              View Research Artifacts on GitHub ↗
+              View Verified Repository on GitHub ↗
             </a>
           </div>
         )}
@@ -100,6 +105,7 @@ const relatedProjects = (inquiry.relatedProjects || [])
 
       <div class="research-grid">
         <main class="research-main">
+          <!-- 01: Question -->
           <section class="research-section">
             <h2 class="section-title">01 — Core Research Question</h2>
             <div class="question-callout">
@@ -107,19 +113,50 @@ const relatedProjects = (inquiry.relatedProjects || [])
             </div>
           </section>
 
+          <!-- 02: Context & Motivation -->
           <section class="research-section">
             <h2 class="section-title">02 — Context & Motivation</h2>
             <p>{inquiry.context}</p>
+            {inquiry.motivation && (
+              <p class="motivation-text">
+                <strong>Empirical Motivation:</strong> {inquiry.motivation}
+              </p>
+            )}
           </section>
 
+          <!-- 03: Hypothesis -->
           <section class="research-section">
-            <h2 class="section-title">03 — Hypothesis</h2>
+            <h2 class="section-title">03 — Working Hypothesis</h2>
             <div class="hypothesis-card">
               <p>{inquiry.hypothesis}</p>
             </div>
           </section>
 
-          {inquiry.methodology && inquiry.methodology.length > 0 && (
+          <!-- 04: Methodology Stages -->
+          {inquiry.methodologyStages && inquiry.methodologyStages.length > 0 ? (
+            <section class="research-section">
+              <h2 class="section-title">04 — Methodological Pipeline & Stages</h2>
+              <div class="methodology-stages-grid">
+                {inquiry.methodologyStages.map((st) => (
+                  <div class="stage-card">
+                    <span class="stage-num">{st.stage}</span>
+                    <h3 class="stage-title">{st.title}</h3>
+                    <p class="stage-desc">{st.description}</p>
+                    {st.tools && st.tools.length > 0 && (
+                      <div class="stage-tools">
+                        <span class="tools-label">Toolkit:</span>
+                        <div class="tools-tags">
+                          {st.tools.map((tool) => (
+                            <span class="tool-badge">{tool}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </section>
+          ) : inquiry.methodology && inquiry.methodology.length > 0 ? (
             <section class="research-section">
               <h2 class="section-title">04 — Methodological Approach</h2>
               <ul class="bullet-list">
@@ -128,18 +165,20 @@ const relatedProjects = (inquiry.relatedProjects || [])
                 ))}
               </ul>
             </section>
-          )}
+          ) : null}
 
+          <!-- 05: Mathematical Formulation -->
           {inquiry.mathematicalFormulation && (
             <section class="research-section">
-              <h2 class="section-title">05 — Mathematical / Structural Formulation</h2>
+              <h2 class="section-title">05 — Mathematical & Structural Formulation</h2>
               <pre class="math-block" aria-label="Mathematical Formulation"><code>{inquiry.mathematicalFormulation}</code></pre>
             </section>
           )}
 
+          <!-- 06: Data Sources -->
           {inquiry.dataSources && inquiry.dataSources.length > 0 && (
             <section class="research-section">
-              <h2 class="section-title">06 — Data Sources & Inputs</h2>
+              <h2 class="section-title">06 — Data Sources & Experimental Inputs</h2>
               <ul class="bullet-list">
                 {inquiry.dataSources.map((ds) => (
                   <li>{ds}</li>
@@ -148,9 +187,56 @@ const relatedProjects = (inquiry.relatedProjects || [])
             </section>
           )}
 
+          <!-- 07: Empirical Experiments -->
+          {inquiry.experimentsList && inquiry.experimentsList.length > 0 && (
+            <section class="research-section">
+              <h2 class="section-title">07 — Experiments & Empirical Testing</h2>
+              <div class="experiments-stack">
+                {inquiry.experimentsList.map((exp) => (
+                  <div class="experiment-card">
+                    <div class="exp-header">
+                      <span class="exp-id">{exp.id.toUpperCase()}</span>
+                      <span class:list={['exp-status', `status-${exp.status.toLowerCase()}`]}>
+                        {exp.status}
+                      </span>
+                    </div>
+                    <h3 class="exp-title">{exp.title}</h3>
+                    <p class="exp-objective"><strong>Objective:</strong> {exp.objective}</p>
+                    {exp.variables && (
+                      <div class="exp-vars">
+                        <span class="vars-label">Controlled Variables:</span>
+                        <ul class="vars-list">
+                          {exp.variables.map((v) => (
+                            <li>{v}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {exp.results && (
+                      <div class="exp-results">
+                        <span class="results-label">Observed Results:</span>
+                        <ul class="results-list">
+                          {exp.results.map((r) => (
+                            <li>{r}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {exp.interpretation && (
+                      <p class="exp-interpretation">
+                        <strong>Interpretation:</strong> {exp.interpretation}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          <!-- 08: Findings vs Interpretation -->
           {inquiry.findings && inquiry.findings.length > 0 && (
             <section class="research-section">
-              <h2 class="section-title">07 — Empirical Findings & Current State</h2>
+              <h2 class="section-title">08 — Empirical Findings & Technical Interpretation</h2>
               <div class="findings-stack">
                 {inquiry.findings.map((f) => (
                   <div class="finding-card">
@@ -161,38 +247,58 @@ const relatedProjects = (inquiry.relatedProjects || [])
                   </div>
                 ))}
               </div>
+
+              {inquiry.interpretation && (
+                <div class="interpretation-box">
+                  <h3 class="interpretation-title">Technical Interpretation & Synthesis</h3>
+                  <p>{inquiry.interpretation}</p>
+                </div>
+              )}
             </section>
           )}
 
-          {inquiry.limitations && inquiry.limitations.length > 0 && (
+          <!-- 09: Limitations & Open Questions -->
+          <section class="research-section">
+            <h2 class="section-title">09 — Known Limitations & Epistemic Uncertainty</h2>
+            {inquiry.limitations && inquiry.limitations.length > 0 && (
+              <div class="limits-block">
+                <h3 class="sub-block-title">Methodological & Data Limitations</h3>
+                <ul class="bullet-list">
+                  {inquiry.limitations.map((lim) => (
+                    <li>{lim}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {inquiry.openQuestions && inquiry.openQuestions.length > 0 && (
+              <div class="open-q-block">
+                <h3 class="sub-block-title">Unresolved Questions Under Active Exploration</h3>
+                <ul class="bullet-list">
+                  {inquiry.openQuestions.map((oq) => (
+                    <li>{oq}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </section>
+
+          <!-- 10: Technologies -->
+          {linkedTechnologies.length > 0 && (
             <section class="research-section">
-              <h2 class="section-title">08 — Known Limitations & Constraints</h2>
-              <ul class="bullet-list">
-                {inquiry.limitations.map((lim) => (
-                  <li>{lim}</li>
+              <h2 class="section-title">10 — Related Technology Stack</h2>
+              <div class="tech-chips-grid">
+                {linkedTechnologies.map((t) => (
+                  <a href={`/technology/${t!.id}`} class="tech-chip">
+                    <span class="tech-chip-name">{t!.name}</span>
+                    <span class="tech-chip-role">{t!.primaryRole}</span>
+                  </a>
                 ))}
-              </ul>
+              </div>
             </section>
           )}
 
-          {inquiry.conclusion && (
-            <section class="research-section">
-              <h2 class="section-title">09 — Technical Synthesis</h2>
-              <p>{inquiry.conclusion}</p>
-            </section>
-          )}
-
-          {inquiry.nextSteps && inquiry.nextSteps.length > 0 && (
-            <section class="research-section">
-              <h2 class="section-title">10 — Next Iterations</h2>
-              <ul class="bullet-list">
-                {inquiry.nextSteps.map((ns) => (
-                  <li>{ns}</li>
-                ))}
-              </ul>
-            </section>
-          )}
-
+          <!-- 11: Academic References -->
           {inquiry.references && inquiry.references.length > 0 && (
             <section class="research-section">
               <h2 class="section-title">11 — Academic & Technical References</h2>
@@ -202,7 +308,7 @@ const relatedProjects = (inquiry.relatedProjects || [])
                     <span>{ref.citation}</span>
                     {ref.url && (
                       <a href={ref.url} target="_blank" rel="noopener noreferrer" class="ref-link">
-                        [Link ↗]
+                        [Source Link ↗]
                       </a>
                     )}
                   </li>
@@ -214,23 +320,36 @@ const relatedProjects = (inquiry.relatedProjects || [])
 
         <aside class="research-sidebar">
           <div class="sticky-sidebar-card">
-            <h3 class="sidebar-heading">Research Metadata</h3>
+            <h3 class="sidebar-heading">Investigation Specs</h3>
             <dl class="sidebar-specs">
               <dt>Domain</dt>
               <dd>{inquiry.domain}</dd>
-              <dt>Inquiry Status</dt>
+              <dt>Status</dt>
               <dd>{inquiry.status}</dd>
               <dt>Artifacts</dt>
               <dd>
                 {inquiry.githubUrl ? (
                   <a href={inquiry.githubUrl} target="_blank" rel="noopener noreferrer" class="ext-link">
-                    Public GitHub Code ↗
+                    Public GitHub Repository ↗
                   </a>
                 ) : (
                   'Active Lab'
                 )}
               </dd>
             </dl>
+
+            {linkedTechnologies.length > 0 && (
+              <div class="sidebar-tech-list">
+                <span class="sidebar-tech-label">Primary Stack:</span>
+                <div class="sidebar-tags">
+                  {linkedTechnologies.map((t) => (
+                    <a href={`/technology/${t!.id}`} class="sidebar-tag-link">
+                      {t!.name}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div class="sidebar-cta-box">
               <p class="sidebar-cta-text">Interested in discussing these research findings?</p>
@@ -290,7 +409,7 @@ const relatedProjects = (inquiry.relatedProjects || [])
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--color-accent, #60a5fa);
+    color: var(--color-accent, #7ed8c4);
   }
 
   .status-pill {
@@ -302,18 +421,24 @@ const relatedProjects = (inquiry.relatedProjects || [])
   }
 
   .badge-exploring {
-    background: rgba(168, 85, 247, 0.15);
-    color: #c084fc;
-    border: 1px solid rgba(168, 85, 247, 0.3);
+    background: rgba(189, 166, 255, 0.15);
+    color: #bda6ff;
+    border: 1px solid rgba(189, 166, 255, 0.3);
   }
 
   .badge-experimenting {
-    background: rgba(59, 130, 246, 0.15);
-    color: #93c5fd;
-    border: 1px solid rgba(59, 130, 246, 0.3);
+    background: rgba(210, 160, 113, 0.15);
+    color: #d2a071;
+    border: 1px solid rgba(210, 160, 113, 0.3);
   }
 
   .badge-building {
+    background: rgba(126, 216, 196, 0.15);
+    color: #7ed8c4;
+    border: 1px solid rgba(126, 216, 196, 0.3);
+  }
+
+  .badge-completed {
     background: rgba(16, 185, 129, 0.15);
     color: #6ee7b7;
     border: 1px solid rgba(16, 185, 129, 0.3);
@@ -322,7 +447,7 @@ const relatedProjects = (inquiry.relatedProjects || [])
   .research-headline {
     font-size: var(--font-size-h1, clamp(2rem, 3.8vw, 2.75rem));
     font-weight: 800;
-    color: var(--text-primary, #f8fafc);
+    color: var(--color-text, #f6f1e8);
     letter-spacing: -0.025em;
     line-height: 1.18;
     margin: 0 0 1.25rem 0;
@@ -331,7 +456,7 @@ const relatedProjects = (inquiry.relatedProjects || [])
 
   .lead-summary {
     font-size: var(--font-size-lead, 1.15rem);
-    color: var(--text-secondary, #cbd5e1);
+    color: var(--color-text-muted, #a9b8b1);
     line-height: 1.65;
     max-width: 820px;
     margin: 0 0 2rem 0;
@@ -341,8 +466,8 @@ const relatedProjects = (inquiry.relatedProjects || [])
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 1.25rem;
-    background: var(--bg-surface, #0f172a);
-    border: 1px solid var(--border-subtle, #1e293b);
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(246, 241, 232, 0.09);
     border-radius: 0.75rem;
     padding: clamp(1rem, 2vw, 1.5rem);
     margin-bottom: 2rem;
@@ -359,13 +484,14 @@ const relatedProjects = (inquiry.relatedProjects || [])
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--text-muted, #94a3b8);
+    color: var(--color-accent, #7ed8c4);
+    font-family: var(--font-mono, monospace);
   }
 
   .meta-val {
     font-size: 0.95rem;
     font-weight: 600;
-    color: var(--text-primary, #f8fafc);
+    color: var(--color-text, #f6f1e8);
   }
 
   .header-action-links {
@@ -380,18 +506,20 @@ const relatedProjects = (inquiry.relatedProjects || [])
     justify-content: center;
     min-height: var(--touch-target-min, 44px);
     padding: 0.75rem 1.5rem;
-    background: var(--color-accent, #3b82f6);
-    color: #ffffff;
+    background: rgba(126, 216, 196, 0.15);
+    color: var(--color-accent, #7ed8c4);
+    border: 1px solid rgba(126, 216, 196, 0.35);
     font-weight: 700;
     font-size: 0.95rem;
     border-radius: 0.5rem;
     text-decoration: none;
     text-align: center;
-    transition: background 150ms ease;
+    transition: background 150ms ease, color 150ms ease;
   }
 
   .cta-primary:hover {
-    background: #2563eb;
+    background: var(--color-accent, #7ed8c4);
+    color: #0d1512;
   }
 
   .research-grid {
@@ -408,7 +536,7 @@ const relatedProjects = (inquiry.relatedProjects || [])
   .section-title {
     font-size: clamp(1.2rem, 2vw + 0.1rem, 1.45rem);
     font-weight: 800;
-    color: var(--text-primary, #f8fafc);
+    color: var(--color-text, #f6f1e8);
     margin: 0 0 1.25rem 0;
     letter-spacing: -0.015em;
     line-height: 1.3;
@@ -416,14 +544,22 @@ const relatedProjects = (inquiry.relatedProjects || [])
 
   .research-section p {
     font-size: var(--font-size-body, 1.05rem);
-    color: var(--text-secondary, #cbd5e1);
+    color: var(--color-text-muted, #a9b8b1);
     line-height: 1.75;
     margin: 0 0 1rem 0;
   }
 
+  .motivation-text {
+    background: rgba(0, 0, 0, 0.2);
+    border-left: 2px solid rgba(126, 216, 196, 0.5);
+    padding: 0.75rem 1rem;
+    border-radius: 0 0.375rem 0.375rem 0;
+    margin-top: 1rem !important;
+  }
+
   .question-callout {
-    background: rgba(59, 130, 246, 0.08);
-    border-left: 3px solid var(--color-accent, #3b82f6);
+    background: rgba(126, 216, 196, 0.08);
+    border-left: 3px solid var(--color-accent, #7ed8c4);
     padding: clamp(1rem, 2vw, 1.5rem);
     border-radius: 0 0.5rem 0.5rem 0;
   }
@@ -431,21 +567,84 @@ const relatedProjects = (inquiry.relatedProjects || [])
   .question-text {
     font-size: clamp(1.05rem, 1.8vw, 1.2rem) !important;
     font-weight: 600;
-    color: var(--text-primary, #f8fafc) !important;
+    color: var(--color-text, #f6f1e8) !important;
     line-height: 1.5 !important;
     margin: 0 !important;
   }
 
   .hypothesis-card {
-    background: var(--bg-surface, #0f172a);
-    border: 1px solid var(--border-subtle, #1e293b);
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(246, 241, 232, 0.09);
     border-radius: 0.5rem;
     padding: clamp(1rem, 2vw, 1.5rem);
   }
 
   .hypothesis-card p {
     margin: 0;
-    color: var(--text-secondary, #cbd5e1);
+    color: var(--color-text, #f6f1e8);
+  }
+
+  .methodology-stages-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .stage-card {
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(246, 241, 232, 0.09);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+  }
+
+  .stage-num {
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 800;
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .stage-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-text, #f6f1e8);
+    margin: 0.35rem 0 0.5rem 0;
+  }
+
+  .stage-desc {
+    font-size: 0.95rem !important;
+    color: var(--color-text-muted, #a9b8b1) !important;
+    line-height: 1.55 !important;
+    margin: 0 0 0.75rem 0 !important;
+  }
+
+  .stage-tools {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tools-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-text-muted, #a9b8b1);
+    font-family: var(--font-mono, monospace);
+  }
+
+  .tools-tags {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .tool-badge {
+    font-size: 0.725rem;
+    padding: 0.15rem 0.45rem;
+    border-radius: 0.25rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    color: var(--color-accent, #7ed8c4);
   }
 
   .bullet-list {
@@ -458,13 +657,13 @@ const relatedProjects = (inquiry.relatedProjects || [])
 
   .bullet-list li {
     font-size: 1.025rem;
-    color: var(--text-secondary, #cbd5e1);
+    color: var(--color-text-muted, #a9b8b1);
     line-height: 1.65;
   }
 
   .math-block {
     background: #060911;
-    border: 1px solid var(--border-subtle, #1e293b);
+    border: 1px solid rgba(246, 241, 232, 0.09);
     border-radius: 0.5rem;
     padding: 1.25rem;
     max-width: 100%;
@@ -472,22 +671,120 @@ const relatedProjects = (inquiry.relatedProjects || [])
     -webkit-overflow-scrolling: touch;
     font-family: var(--font-mono, monospace);
     font-size: 0.875rem;
-    color: #60a5fa;
+    color: #7ed8c4;
     line-height: 1.6;
+  }
+
+  .experiments-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .experiment-card {
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(246, 241, 232, 0.09);
+    border-radius: 0.5rem;
+    padding: 1.35rem;
+  }
+
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .exp-id {
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 800;
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .exp-status {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.15rem 0.45rem;
+    border-radius: 0.25rem;
+  }
+
+  .status-completed {
+    background: rgba(16, 185, 129, 0.15);
+    color: #6ee7b7;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+
+  .status-running {
+    background: rgba(59, 130, 246, 0.15);
+    color: #93c5fd;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  .status-inconclusive {
+    background: rgba(210, 160, 113, 0.15);
+    color: #d2a071;
+    border: 1px solid rgba(210, 160, 113, 0.3);
+  }
+
+  .exp-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-text, #f6f1e8);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .exp-objective {
+    font-size: 0.95rem !important;
+    color: var(--color-text-muted, #a9b8b1) !important;
+    margin: 0 0 0.75rem 0 !important;
+  }
+
+  .vars-label, .results-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-text-muted, #a9b8b1);
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+    font-family: var(--font-mono, monospace);
+  }
+
+  .vars-list, .results-list {
+    padding-left: 1.25rem;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .vars-list li, .results-list li {
+    font-size: 0.9rem;
+    color: var(--color-text-muted, #a9b8b1);
+    line-height: 1.5;
+  }
+
+  .exp-interpretation {
+    background: rgba(0, 0, 0, 0.2);
+    border-left: 2px solid var(--color-accent, #7ed8c4);
+    padding: 0.6rem 0.85rem;
+    font-size: 0.925rem !important;
+    color: var(--color-text, #f6f1e8) !important;
+    margin: 0.5rem 0 0 0 !important;
   }
 
   .findings-stack {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   .finding-card {
     display: flex;
     align-items: flex-start;
     gap: 1rem;
-    background: var(--bg-surface, #0f172a);
-    border: 1px solid var(--border-subtle, #1e293b);
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(246, 241, 232, 0.09);
     border-radius: 0.5rem;
     padding: 1.25rem;
   }
@@ -517,9 +814,68 @@ const relatedProjects = (inquiry.relatedProjects || [])
 
   .finding-desc {
     font-size: 0.95rem;
-    color: var(--text-secondary, #cbd5e1);
+    color: var(--color-text, #f6f1e8);
     line-height: 1.5;
     margin: 0 !important;
+  }
+
+  .interpretation-box {
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(126, 216, 196, 0.2);
+    border-radius: 0.5rem;
+    padding: 1.35rem;
+  }
+
+  .interpretation-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-accent, #7ed8c4);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .limits-block, .open-q-block {
+    margin-bottom: 1.5rem;
+  }
+
+  .sub-block-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-text, #f6f1e8);
+    margin: 0 0 0.75rem 0;
+  }
+
+  .tech-chips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .tech-chip {
+    display: flex;
+    flex-direction: column;
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(246, 241, 232, 0.09);
+    border-radius: 0.5rem;
+    padding: 0.85rem 1rem;
+    text-decoration: none;
+    transition: transform 150ms ease, border-color 150ms ease;
+  }
+
+  .tech-chip:hover {
+    transform: translateY(-2px);
+    border-color: rgba(126, 216, 196, 0.35);
+  }
+
+  .tech-chip-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .tech-chip-role {
+    font-size: 0.75rem;
+    color: var(--color-text-muted, #a9b8b1);
+    margin-top: 0.25rem;
   }
 
   .references-list {
@@ -533,7 +889,7 @@ const relatedProjects = (inquiry.relatedProjects || [])
 
   .ref-item {
     font-size: 0.95rem;
-    color: var(--text-secondary, #94a3b8);
+    color: var(--color-text-muted, #a9b8b1);
     line-height: 1.6;
     padding-left: 1.5rem;
     position: relative;
@@ -544,11 +900,11 @@ const relatedProjects = (inquiry.relatedProjects || [])
     content: "•";
     position: absolute;
     left: 0;
-    color: var(--color-accent, #60a5fa);
+    color: var(--color-accent, #7ed8c4);
   }
 
   .ref-link {
-    color: var(--color-accent, #60a5fa);
+    color: var(--color-accent, #7ed8c4);
     text-decoration: none;
     margin-left: 0.5rem;
     white-space: nowrap;
@@ -561,8 +917,8 @@ const relatedProjects = (inquiry.relatedProjects || [])
   .sticky-sidebar-card {
     position: sticky;
     top: 5.5rem;
-    background: var(--bg-surface, #0f172a);
-    border: 1px solid var(--border-subtle, #1e293b);
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(246, 241, 232, 0.09);
     border-radius: 0.75rem;
     padding: clamp(1.25rem, 2.5vw, 1.75rem);
   }
@@ -570,14 +926,14 @@ const relatedProjects = (inquiry.relatedProjects || [])
   .sidebar-heading {
     font-size: 1rem;
     font-weight: 700;
-    color: var(--text-primary, #f8fafc);
+    color: var(--color-text, #f6f1e8);
     margin: 0 0 1.25rem 0;
     padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--border-subtle, #1e293b);
+    border-bottom: 1px solid rgba(246, 241, 232, 0.09);
   }
 
   .sidebar-specs {
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 1.25rem 0;
     display: grid;
     grid-template-columns: 1fr;
     gap: 0.75rem;
@@ -587,17 +943,18 @@ const relatedProjects = (inquiry.relatedProjects || [])
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
-    color: var(--text-muted, #94a3b8);
+    color: var(--color-accent, #7ed8c4);
+    font-family: var(--font-mono, monospace);
   }
 
   .sidebar-specs dd {
     font-size: 0.95rem;
-    color: var(--text-primary, #f8fafc);
+    color: var(--color-text, #f6f1e8);
     margin: 0 0 0.5rem 0;
   }
 
   .ext-link {
-    color: var(--color-accent, #60a5fa);
+    color: var(--color-accent, #7ed8c4);
     text-decoration: none;
   }
 
@@ -605,14 +962,52 @@ const relatedProjects = (inquiry.relatedProjects || [])
     text-decoration: underline;
   }
 
+  .sidebar-tech-list {
+    margin-bottom: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(246, 241, 232, 0.09);
+  }
+
+  .sidebar-tech-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-accent, #7ed8c4);
+    margin-bottom: 0.5rem;
+    font-family: var(--font-mono, monospace);
+  }
+
+  .sidebar-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .sidebar-tag-link {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 0.25rem;
+    color: var(--color-text-muted, #a9b8b1);
+    text-decoration: none;
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+
+  .sidebar-tag-link:hover {
+    color: var(--color-accent, #7ed8c4);
+    border-color: rgba(126, 216, 196, 0.3);
+  }
+
   .sidebar-cta-box {
     padding-top: 1.25rem;
-    border-top: 1px solid var(--border-subtle, #1e293b);
+    border-top: 1px solid rgba(246, 241, 232, 0.09);
   }
 
   .sidebar-cta-text {
     font-size: 0.9rem;
-    color: var(--text-secondary, #94a3b8);
+    color: var(--color-text-muted, #a9b8b1);
     margin-bottom: 1rem;
   }
 
@@ -623,9 +1018,9 @@ const relatedProjects = (inquiry.relatedProjects || [])
     min-height: var(--touch-target-min, 44px);
     text-align: center;
     padding: 0.75rem 1rem;
-    background: rgba(59, 130, 246, 0.15);
-    color: var(--color-accent, #60a5fa);
-    border: 1px solid rgba(59, 130, 246, 0.3);
+    background: rgba(126, 216, 196, 0.15);
+    color: var(--color-accent, #7ed8c4);
+    border: 1px solid rgba(126, 216, 196, 0.3);
     border-radius: 0.5rem;
     font-weight: 600;
     font-size: 0.9rem;
@@ -634,20 +1029,20 @@ const relatedProjects = (inquiry.relatedProjects || [])
   }
 
   .sidebar-btn:hover {
-    background: var(--color-accent, #3b82f6);
-    color: #ffffff;
+    background: var(--color-accent, #7ed8c4);
+    color: #0d1512;
   }
 
   .related-section {
     margin: 4rem 0 3rem;
     padding-top: 2.5rem;
-    border-top: 1px solid var(--border-subtle, #1e293b);
+    border-top: 1px solid rgba(246, 241, 232, 0.09);
   }
 
   .related-heading {
     font-size: 1.5rem;
     font-weight: 800;
-    color: var(--text-primary, #f8fafc);
+    color: var(--color-text, #f6f1e8);
     margin: 0 0 2rem 0;
   }
 

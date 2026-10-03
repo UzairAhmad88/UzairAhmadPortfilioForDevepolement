@@ -1,3 +1,10 @@
+# Research Data Model & TypeScript Schemas
+
+## Schema Overview
+
+The Research Platform is strictly typed in `src/types/research.ts` and centralized in `src/data/research.ts`.
+
+```ts
 export type ResearchStatus = 
   | 'Exploring' 
   | 'Experimenting' 
@@ -88,10 +95,28 @@ export interface ResearchItem {
   nextSteps?: string[];
   
   // Cross-system relationships
-  technologies?: string[]; // Canonical IDs from Phase 09 (e.g., 'python', 'pytorch', 'pandas')
+  technologies?: string[]; // Canonical IDs from Phase 09 (e.g., 'python', 'pytorch')
   relatedProjects?: string[]; // Canonical project slugs from Phase 05
   relatedResearch?: string[]; // Slugs of related research items
   references?: ResearchReference[];
   githubUrl?: string;
   featured?: boolean;
 }
+```
+
+---
+
+## Field Descriptions & Validation Rules
+
+| Field | Type | Requirement | Description |
+| :--- | :--- | :--- | :--- |
+| `id` / `slug` | `string` | Mandatory | Unique URL-safe identifier (e.g. `signal-research`). |
+| `question` | `string` | Mandatory | The prominent inquiry anchoring the investigation. |
+| `hypothesis` | `string` | Mandatory | Working falsifiable premise before experimental testing. |
+| `experimentsList` | `ResearchExperiment[]` | Mandatory | Array of controlled empirical tests with observed results. |
+| `findings` | `ResearchFinding[]` | Mandatory | Structured findings tagged with epistemic status. |
+| `interpretation` | `string` | Mandatory | Explicit technical synthesis separate from raw results. |
+| `limitations` | `string[]` | Mandatory | Documented sample, regime, or compute constraints. |
+| `openQuestions` | `string[]` | Mandatory | Unresolved questions under active ongoing investigation. |
+| `technologies` | `string[]` | Mandatory | Valid canonical technology IDs from Phase 09. |
+| `relatedProjects` | `string[]` | Optional | Valid project slugs from Phase 05 demonstrating application. |

@@ -4,39 +4,14 @@ import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
 import SectionHeader from '@/components/common/SectionHeader.astro';
 import ResearchInquiryCard from '@/components/cards/ResearchInquiryCard.astro';
 import ContactCallout from '@/components/sections/ContactCallout.astro';
+import { researchItems } from '@/data/research';
 import { siteConfig } from '@/data/site';
 
 const seo = {
-  title: 'Research Lab & Technical Inquiries — Uzair Ahmad',
-  description: 'Hypothesis-driven explorations across quantitative finance, machine learning models, and intelligent system architectures.',
+  title: `Research Platform & Investigations — ${siteConfig.name}`,
+  description: 'Personal research workspace: empirical time-series experiments, unsupervised market regime clustering, and deterministic multi-agent state machines.',
   canonical: `${siteConfig.url}/research`,
 };
-
-const inquiries = [
-  {
-    badge: 'Exploring' as const,
-    title: 'Predictive Feature Extraction in Non-Stationary Financial Series',
-    inquiry: 'Which statistical features (e.g. fractional differentiation, realized volatility moments) preserve long memory while satisfying stationarity constraints for deep neural networks?',
-    methods: ['Time-Series Analysis', 'PyTorch', 'Fractional Calculus', 'Walk-Forward CV'],
-    statusNote: 'Active empirical testing on cross-asset historical series.',
-    githubUrl: 'https://github.com/UzairAhmad88/Deep-Learning-Based-Stock-Return-Prediction---Quantitative-Trading-System-ByUzaii',
-  },
-  {
-    badge: 'Experimenting' as const,
-    title: 'Unsupervised Market Regime Transition Clustering',
-    inquiry: 'Can Gaussian Mixture Models and Hidden Markov Models reliably partition macro volatility regimes and provide early warning signals before drawdown cascades?',
-    methods: ['Gaussian Mixture Models (GMM)', 'Hidden Markov Models (HMM)', 'Scikit-Learn', 'Pandas'],
-    statusNote: 'Prototype engine complete; evaluating transition matrices.',
-    githubUrl: 'https://github.com/UzairAhmad88/Develop-Market-Regime--Engine-byUzaii',
-  },
-  {
-    badge: 'Building' as const,
-    title: 'Deterministic Guardrails & State Machines for LLM Workflows',
-    inquiry: 'How can autonomous agent execution pipelines be bounded with deterministic state machines to ensure zero hallucinations in automated data pipelines?',
-    methods: ['TypeScript', 'Finite State Machines', 'LangGraph Patterns', 'JSON Schema Validation'],
-    statusNote: 'Architecting modular framework for verifiable data extraction.',
-  },
-];
 ---
 
 <BaseLayout seo={seo}>
@@ -45,18 +20,57 @@ const inquiries = [
 
     <section class="research-hero">
       <SectionHeader
-        eyebrow="Research Lab"
-        title="Hypothesis-Driven Technical Inquiries"
-        subtitle="Exploring open questions at the frontier of quantitative finance, machine learning models, and autonomous system architectures."
+        eyebrow="Research Platform"
+        title="Hypothesis-Driven Technical Investigations"
+        subtitle="Exploring open questions at the intersection of quantitative finance, time-series machine learning, and autonomous agent architectures."
       />
     </section>
 
+    <!-- Research Philosophy & Lifecycle Banner -->
+    <section class="lifecycle-section">
+      <div class="lifecycle-container">
+        <span class="lifecycle-eyebrow">RESEARCH METHODOLOGY & INVESTIGATION LIFECYCLE</span>
+        <div class="lifecycle-steps">
+          <div class="step-item">
+            <span class="step-idx">01</span>
+            <span class="step-name">Question</span>
+          </div>
+          <span class="step-arr" aria-hidden="true">→</span>
+          <div class="step-item">
+            <span class="step-idx">02</span>
+            <span class="step-name">Hypothesis</span>
+          </div>
+          <span class="step-arr" aria-hidden="true">→</span>
+          <div class="step-item">
+            <span class="step-idx">03</span>
+            <span class="step-name">Experiment</span>
+          </div>
+          <span class="step-arr" aria-hidden="true">→</span>
+          <div class="step-item">
+            <span class="step-idx">04</span>
+            <span class="step-name">Evidence</span>
+          </div>
+          <span class="step-arr" aria-hidden="true">→</span>
+          <div class="step-item">
+            <span class="step-idx">05</span>
+            <span class="step-name">Interpretation</span>
+          </div>
+          <span class="step-arr" aria-hidden="true">→</span>
+          <div class="step-item">
+            <span class="step-idx">06</span>
+            <span class="step-name">Engineering System</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Research Domains Overview -->
     <section class="domains-overview">
       <div class="domain-grid">
         <div class="domain-box">
           <span class="domain-num">01</span>
           <h3 class="domain-title">Signal & Series Research</h3>
-          <p class="domain-desc">Feature engineering, stationarity transformations, and neural time-series forecasting.</p>
+          <p class="domain-desc">Feature engineering, fractional stationarity transformations, and neural time-series forecasting.</p>
         </div>
         <div class="domain-box">
           <span class="domain-num">02</span>
@@ -66,41 +80,46 @@ const inquiries = [
         <div class="domain-box">
           <span class="domain-num">03</span>
           <h3 class="domain-title">Agentic Workflow Systems</h3>
-          <p class="domain-desc">Deterministic execution boundaries for LLM and automated research pipelines.</p>
+          <p class="domain-desc">Deterministic state graph boundaries and runtime schema guardrails for autonomous LLMs.</p>
         </div>
       </div>
     </section>
 
+    <!-- Active Research Investigations Grid -->
     <section class="inquiries-section">
-      <h2 class="inquiries-heading">Active Inquiries & Experiments</h2>
+      <div class="section-top-row">
+        <h2 class="inquiries-heading">Active Investigations & Empirical Experiments</h2>
+        <span class="inquiries-count">{researchItems.length} Structured Inquiries</span>
+      </div>
       <div class="inquiries-grid">
-        {inquiries.map((inq) => (
-          <ResearchInquiryCard {...inq} />
+        {researchItems.map((item) => (
+          <ResearchInquiryCard item={item} />
         ))}
       </div>
     </section>
 
+    <!-- Research Integrity Standards -->
     <section class="methodology-standards">
-      <h2 class="methodology-title">Research Integrity & Methodology Standards</h2>
+      <h2 class="methodology-title">Research Integrity & Epistemic Standards</h2>
       <div class="standards-grid">
         <div class="standard-card">
           <h4>No Lookahead Bias</h4>
-          <p>All feature normalization and statistical parameters are calculated strictly on expanding historical windows.</p>
+          <p>All feature normalization, stationarity parameters, and statistical moments are calculated strictly on expanding historical windows.</p>
         </div>
         <div class="standard-card">
           <h4>Out-of-Sample Discipline</h4>
-          <p>Models are evaluated on unseen temporal data partitions to guard against in-sample noise overfitting.</p>
+          <p>Models are evaluated exclusively on unseen temporal partitions with strict purge buffers to guard against random k-fold data leakage.</p>
         </div>
         <div class="standard-card">
-          <h4>Verifiable Code</h4>
-          <p>Research artifacts, notebooks, and models are backed by reproducible code on GitHub.</p>
+          <h4>Transparent Limitations</h4>
+          <p>Every investigation explicitly records failure modes, sample size boundaries, and epistemic uncertainty rather than claiming universal superiority.</p>
         </div>
       </div>
     </section>
 
     <ContactCallout
-      title="Interested in collaborating on research?"
-      subtitle="Open to discussing quantitative modeling, empirical findings, and machine learning architectures."
+      title="Interested in discussing research or quantitative modeling?"
+      subtitle="Open to technical exchanges, empirical data validation, and joint machine learning architecture discussions."
     />
   </div>
 </BaseLayout>
@@ -115,7 +134,61 @@ const inquiries = [
   }
 
   .research-hero {
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .lifecycle-section {
     margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+
+  .lifecycle-container {
+    background: rgba(16, 26, 23, 0.65);
+    border: 1px solid rgba(126, 216, 196, 0.2);
+    border-radius: 0.75rem;
+    padding: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .lifecycle-eyebrow {
+    display: block;
+    font-size: 0.7rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--color-accent, #7ed8c4);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  .lifecycle-steps {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .step-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .step-idx {
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 700;
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .step-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text, #f6f1e8);
+  }
+
+  .step-arr {
+    color: rgba(246, 241, 232, 0.3);
+    font-size: 0.85rem;
   }
 
   .domains-overview {
@@ -161,12 +234,27 @@ const inquiries = [
     margin-bottom: clamp(2.5rem, 5vw, 4rem);
   }
 
+  .section-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+  }
+
   .inquiries-heading {
     font-size: clamp(1.35rem, 2.5vw, 1.65rem);
     font-weight: 800;
     color: var(--color-text, #f6f1e8);
-    margin: 0 0 1.75rem 0;
+    margin: 0;
     letter-spacing: -0.015em;
+  }
+
+  .inquiries-count {
+    font-size: 0.85rem;
+    font-family: var(--font-mono, monospace);
+    color: var(--color-accent, #7ed8c4);
   }
 
   .inquiries-grid {
@@ -219,6 +307,13 @@ const inquiries = [
   @media (max-width: 640px) {
     .domain-grid, .standards-grid {
       grid-template-columns: 1fr;
+    }
+    .lifecycle-steps {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .step-arr {
+      display: none;
     }
   }
 </style>
