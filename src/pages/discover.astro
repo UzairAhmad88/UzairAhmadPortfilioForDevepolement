@@ -1,0 +1,462 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import DiscoveryResultCard from '@/components/cards/DiscoveryResultCard.astro';
+import { discoveryItems, discoveryTaxonomy } from '@/data/discovery';
+import { siteConfig } from '@/data/site';
+
+const seo = {
+  title: `Discovery & Engineering Search | ${siteConfig.name}`,
+  description: `Discover projects, quantitative research inquiries, experimental prototypes, engineering notes, and technologies across Uzair Ahmad’s personal platform.`,
+  canonical: `${siteConfig.url}/discover`,
+};
+
+// Serialize initial items and taxonomy for instant client-side execution
+const discoveryDataJson = JSON.stringify({
+  items: discoveryItems,
+  taxonomy: discoveryTaxonomy,
+});
+---
+
+<BaseLayout seo={seo}>
+  <main id="top" class="discovery-page">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
+      <!-- Breadcrumb Navigation -->
+      <nav class="mb-8" aria-label="Breadcrumbs">
+        <ol class="flex items-center space-x-2 text-xs font-mono text-slate-400">
+          <li><a href="/" class="hover:text-indigo-400 transition-colors">Home</a></li>
+          <li class="text-slate-400">/</li>
+          <li class="text-slate-200" aria-current="page">Discover</li>
+        </ol>
+      </nav>
+
+      <!-- Discovery Header -->
+      <header class="mb-10 border-b border-slate-800/80 pb-8">
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 text-xs font-mono font-semibold uppercase tracking-wider mb-4">
+          <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
+          Discovery & Relational Search
+        </div>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-100 mb-4">
+          Discover Engineering Work & Research
+        </h1>
+        <p class="text-base sm:text-lg text-slate-400 max-w-3xl leading-relaxed">
+          Search across production software, quantitative research inquiries, experimental workbench prototypes, technical decision logs, and foundational technologies without generic algorithmic rankings.
+        </p>
+      </header>
+
+      <!-- Search & Filter Controls Workspace -->
+      <section class="mb-10 space-y-4" aria-label="Search and Filter Controls">
+        <div class="bg-[#12161c] border border-slate-800 rounded-xl p-5 space-y-4">
+          <!-- Primary Search Bar -->
+          <div class="relative flex items-center">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400 text-sm font-mono">
+              🔍
+            </span>
+            <input
+              type="search"
+              id="discovery-search-input"
+              placeholder="Search by keyword, technology (e.g. FastAPI, PyTorch), topic, or problem... (Press '/' to focus)"
+              class="w-full bg-[#0d1117] border border-slate-700/80 rounded-lg pl-10 pr-20 py-3 text-sm font-mono text-slate-100 placeholder-slate-400 focus:outline-none focus:border-indigo-500 transition-colors shadow-inner"
+              aria-label="Search all engineering platform content"
+              autocomplete="off"
+            />
+            <div class="absolute right-3 flex items-center gap-1.5 pointer-events-none">
+              <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono text-slate-400 bg-slate-800 border border-slate-700 rounded">
+                /
+              </kbd>
+            </div>
+          </div>
+
+          <!-- Facet Filter Bar -->
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pt-2 border-t border-slate-800/80">
+            <!-- Content Type Filter Pills -->
+            <div class="flex flex-wrap items-center gap-1.5" id="type-filter-group" role="group" aria-label="Filter by Content Type">
+              <button
+                type="button"
+                data-type-filter="all"
+                class="px-3 py-1.5 rounded-lg text-xs font-mono transition-colors border bg-indigo-600 text-white border-indigo-500 font-semibold active-type-btn"
+                aria-pressed="true"
+              >
+                All ({discoveryItems.length})
+              </button>
+              {discoveryTaxonomy.types.map((t) => (
+                <button
+                  type="button"
+                  data-type-filter={t.type}
+                  class="px-3 py-1.5 rounded-lg text-xs font-mono transition-colors border bg-slate-900 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white"
+                  aria-pressed="false"
+                >
+                  {t.label} ({t.count})
+                </button>
+              ))}
+            </div>
+
+            <!-- Dropdown Filters: Technology, Topic, Status -->
+            <div class="flex flex-wrap items-center gap-2 text-xs font-mono">
+              <!-- Technology Select -->
+              <select
+                id="tech-filter-select"
+                class="bg-[#0d1117] border border-slate-700/80 text-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-indigo-500"
+                aria-label="Filter by technology"
+              >
+                <option value="">All Technologies</option>
+                {discoveryTaxonomy.technologies.map((tech) => (
+                  <option value={tech.id}>
+                    {tech.name} ({tech.count})
+                  </option>
+                ))}
+              </select>
+
+              <!-- Topic Select -->
+              <select
+                id="topic-filter-select"
+                class="bg-[#0d1117] border border-slate-700/80 text-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-indigo-500"
+                aria-label="Filter by topic"
+              >
+                <option value="">All Topics</option>
+                {discoveryTaxonomy.topics.map((tp) => (
+                  <option value={tp.name}>
+                    {tp.name} ({tp.count})
+                  </option>
+                ))}
+              </select>
+
+              <!-- Reset Action -->
+              <button
+                type="button"
+                id="reset-filters-btn"
+                class="text-indigo-400 hover:text-indigo-300 underline cursor-pointer px-2 py-1 text-xs"
+              >
+                Reset All
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Filters Strip & Results Count Announcer -->
+        <div class="flex items-center justify-between px-2 text-xs font-mono text-slate-400">
+          <div id="results-count-announcer" aria-live="polite">
+            Showing <strong class="text-slate-200" id="results-count-number">{discoveryItems.length}</strong> engineering entities
+          </div>
+          <div class="hidden sm:flex items-center gap-2 text-[11px]">
+            <span>Deterministic Keyword & Facet Match</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Discovery Results Grid -->
+      <section aria-label="Search Results">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="discovery-results-grid">
+          {discoveryItems.map((item) => (
+            <DiscoveryResultCard item={item} />
+          ))}
+        </div>
+
+        <!-- Empty State (Shown when zero results match) -->
+        <div id="empty-state-box" class="hidden rounded-xl border border-slate-800 bg-[#12161c] p-10 text-center space-y-4 my-8">
+          <div class="w-12 h-12 rounded-full bg-slate-800/80 border border-slate-700 flex items-center justify-center mx-auto text-lg text-slate-400">
+            🔍
+          </div>
+          <h2 class="text-lg font-bold text-slate-100">No matching work found</h2>
+          <p class="text-xs text-slate-400 max-w-md mx-auto leading-relaxed">
+            No engineering projects, research inquiries, prototypes, or notes match the current search query and filter criteria.
+          </p>
+          <div class="pt-2 flex flex-wrap items-center justify-center gap-3 text-xs font-mono">
+            <button
+              type="button"
+              id="empty-clear-btn"
+              class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-colors"
+            >
+              Clear Search & Filters
+            </button>
+            <a
+              href="/work"
+              class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors border border-slate-700"
+            >
+              Browse Projects →
+            </a>
+            <a
+              href="/knowledge"
+              class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-indigo-300 transition-colors border border-slate-700"
+            >
+              Explore Knowledge Graph ↗
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Knowledge Graph Bridge Callout -->
+      <section class="mt-16 border-t border-slate-800/80 pt-10">
+        <div class="rounded-xl border border-indigo-500/20 bg-gradient-to-r from-indigo-950/30 to-[#12161c] p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+          <div>
+            <span class="text-xs font-mono text-indigo-400 font-semibold uppercase tracking-wider">
+              Connected Knowledge Layer
+            </span>
+            <h2 class="text-xl font-bold text-slate-100 mt-1">
+              Prefer exploring via topological graph?
+            </h2>
+            <p class="text-xs text-slate-400 mt-1 max-w-2xl leading-relaxed">
+              The Knowledge Graph provides an interactive visual map of all 46 entities and 172 deterministic bidirectional connections.
+            </p>
+          </div>
+          <a
+            href="/knowledge"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-mono font-semibold transition-colors shrink-0"
+          >
+            <span>Open Knowledge Graph</span>
+            <span>→</span>
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>
+
+<!-- Client-side Search and Discovery Engine Script -->
+<script define:vars={{ discoveryDataJson }}>
+  const data = JSON.parse(discoveryDataJson);
+  const allItems = data.items;
+
+  // Search state
+  let currentQuery = '';
+  let currentType = 'all';
+  let currentTech = '';
+  let currentTopic = '';
+
+  const searchInput = document.getElementById('discovery-search-input');
+  const typeButtons = document.querySelectorAll('#type-filter-group button');
+  const techSelect = document.getElementById('tech-filter-select');
+  const topicSelect = document.getElementById('topic-filter-select');
+  const resetBtn = document.getElementById('reset-filters-btn');
+  const emptyClearBtn = document.getElementById('empty-clear-btn');
+  const countNumber = document.getElementById('results-count-number');
+  const emptyBox = document.getElementById('empty-state-box');
+  const cards = document.querySelectorAll('.discovery-result-card');
+
+  // Alias dictionary for search expansion
+  const TECH_ALIASES = {
+    postgres: 'postgresql',
+    pgsql: 'postgresql',
+    py: 'python',
+    ts: 'typescript',
+    js: 'javascript',
+    reactjs: 'react',
+    'react.js': 'react',
+    tf: 'pytorch',
+    torch: 'pytorch',
+    scikit: 'scikit-learn',
+    sklearn: 'scikit-learn',
+    ml: 'scikit-learn',
+    tailwind: 'tailwindcss',
+    node: 'nodejs',
+  };
+
+  function updateDiscovery() {
+    const rawQuery = currentQuery.trim().toLowerCase();
+    const queryTokens = rawQuery ? rawQuery.split(/\s+/).filter(Boolean) : [];
+
+    const expandedAliases = [];
+    if (rawQuery && TECH_ALIASES[rawQuery]) {
+      expandedAliases.push(TECH_ALIASES[rawQuery]);
+    }
+    queryTokens.forEach((tok) => {
+      if (TECH_ALIASES[tok]) expandedAliases.push(TECH_ALIASES[tok]);
+    });
+
+    let visibleCount = 0;
+
+    cards.forEach((card) => {
+      const itemType = card.getAttribute('data-item-type');
+      const itemTechs = (card.getAttribute('data-item-techs') || '').split(',').filter(Boolean);
+      const itemTopics = (card.getAttribute('data-item-topics') || '').split(',').filter(Boolean);
+      const cardText = card.textContent?.toLowerCase() || '';
+
+      // 1. Facet Filtering
+      if (currentType !== 'all' && itemType !== currentType) {
+        card.classList.add('hidden');
+        return;
+      }
+
+      if (currentTech) {
+        const hasTech = itemTechs.some(
+          (t) => t.toLowerCase() === currentTech.toLowerCase()
+        );
+        if (!hasTech) {
+          card.classList.add('hidden');
+          return;
+        }
+      }
+
+      if (currentTopic) {
+        const hasTopic = itemTopics.some(
+          (tp) => tp.toLowerCase() === currentTopic.toLowerCase()
+        );
+        if (!hasTopic) {
+          card.classList.add('hidden');
+          return;
+        }
+      }
+
+      // 2. Query Search
+      if (queryTokens.length > 0) {
+        const matchesDirect = queryTokens.every((tok) => cardText.includes(tok));
+        const matchesAlias = expandedAliases.some((alias) =>
+          itemTechs.some((t) => t.toLowerCase().includes(alias))
+        );
+
+        if (!matchesDirect && !matchesAlias) {
+          card.classList.add('hidden');
+          return;
+        }
+      }
+
+      card.classList.remove('hidden');
+      visibleCount++;
+    });
+
+    if (countNumber) {
+      countNumber.textContent = String(visibleCount);
+    }
+
+    if (emptyBox) {
+      if (visibleCount === 0) {
+        emptyBox.classList.remove('hidden');
+      } else {
+        emptyBox.classList.add('hidden');
+      }
+    }
+
+    // Synchronize URL parameters cleanly
+    syncUrlParams();
+  }
+
+  function syncUrlParams() {
+    const url = new URL(window.location);
+    if (currentQuery) url.searchParams.set('q', currentQuery);
+    else url.searchParams.delete('q');
+
+    if (currentType && currentType !== 'all') url.searchParams.set('type', currentType);
+    else url.searchParams.delete('type');
+
+    if (currentTech) url.searchParams.set('tech', currentTech);
+    else url.searchParams.delete('tech');
+
+    if (currentTopic) url.searchParams.set('topic', currentTopic);
+    else url.searchParams.delete('topic');
+
+    window.history.replaceState({}, '', url);
+  }
+
+  function resetAll() {
+    currentQuery = '';
+    currentType = 'all';
+    currentTech = '';
+    currentTopic = '';
+
+    if (searchInput) searchInput.value = '';
+    if (techSelect) techSelect.value = '';
+    if (topicSelect) topicSelect.value = '';
+
+    typeButtons.forEach((btn) => {
+      btn.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-500', 'font-semibold', 'active-type-btn');
+      btn.classList.add('bg-slate-900', 'text-slate-300', 'border-slate-800');
+      btn.setAttribute('aria-pressed', 'false');
+      if (btn.getAttribute('data-type-filter') === 'all') {
+        btn.classList.remove('bg-slate-900', 'text-slate-300', 'border-slate-800');
+        btn.classList.add('bg-indigo-600', 'text-white', 'border-indigo-500', 'font-semibold', 'active-type-btn');
+        btn.setAttribute('aria-pressed', 'true');
+      }
+    });
+
+    updateDiscovery();
+  }
+
+  // Event Listeners
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      currentQuery = e.target.value;
+      updateDiscovery();
+    });
+  }
+
+  // Keyboard shortcut '/' to focus search
+  window.addEventListener('keydown', (e) => {
+    if (e.key === '/' && document.activeElement !== searchInput) {
+      e.preventDefault();
+      searchInput?.focus();
+      searchInput?.select();
+    }
+  });
+
+  // Type filter buttons
+  typeButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      typeButtons.forEach((b) => {
+        b.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-500', 'font-semibold', 'active-type-btn');
+        b.classList.add('bg-slate-900', 'text-slate-300', 'border-slate-800');
+        b.setAttribute('aria-pressed', 'false');
+      });
+      btn.classList.remove('bg-slate-900', 'text-slate-300', 'border-slate-800');
+      btn.classList.add('bg-indigo-600', 'text-white', 'border-indigo-500', 'font-semibold', 'active-type-btn');
+      btn.setAttribute('aria-pressed', 'true');
+
+      currentType = btn.getAttribute('data-type-filter') || 'all';
+      updateDiscovery();
+    });
+  });
+
+  // Technology select
+  if (techSelect) {
+    techSelect.addEventListener('change', (e) => {
+      currentTech = e.target.value;
+      updateDiscovery();
+    });
+  }
+
+  // Topic select
+  if (topicSelect) {
+    topicSelect.addEventListener('change', (e) => {
+      currentTopic = e.target.value;
+      updateDiscovery();
+    });
+  }
+
+  // Reset buttons
+  if (resetBtn) resetBtn.addEventListener('click', resetAll);
+  if (emptyClearBtn) emptyClearBtn.addEventListener('click', resetAll);
+
+  // Initialize from URL query parameters
+  const params = new URLSearchParams(window.location.search);
+  const qParam = params.get('q');
+  const typeParam = params.get('type');
+  const techParam = params.get('tech');
+  const topicParam = params.get('topic');
+
+  if (qParam) {
+    currentQuery = qParam;
+    if (searchInput) searchInput.value = qParam;
+  }
+  if (typeParam) {
+    currentType = typeParam;
+    typeButtons.forEach((btn) => {
+      if (btn.getAttribute('data-type-filter') === typeParam) {
+        btn.click();
+      }
+    });
+  }
+  if (techParam) {
+    currentTech = techParam;
+    if (techSelect) techSelect.value = techParam;
+  }
+  if (topicParam) {
+    currentTopic = topicParam;
+    if (topicSelect) topicSelect.value = topicParam;
+  }
+
+  updateDiscovery();
+</script>
+
+<style>
+  .discovery-page {
+    color: var(--color-text, #f6f1e8);
+  }
+</style>

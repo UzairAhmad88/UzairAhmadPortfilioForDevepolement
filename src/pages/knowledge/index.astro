@@ -84,18 +84,27 @@ const graphDataJson = JSON.stringify({
       <!-- Filter and Exploration Controls -->
       <section class="mb-8 space-y-4" aria-label="Knowledge Graph Controls">
         <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-[#12161c] border border-slate-800 rounded-xl p-4">
-          <!-- Search input -->
-          <div class="relative flex-1 max-w-md">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 text-xs font-mono">
-              🔍
-            </span>
-            <input
-              type="search"
-              id="graph-search-input"
-              placeholder="Search entities, technologies, slugs..."
-              class="w-full bg-[#0d1117] border border-slate-700/80 rounded-lg pl-9 pr-3 py-2 text-xs font-mono text-slate-200 placeholder-slate-400 focus:outline-none focus:border-indigo-500 transition-colors"
-              aria-label="Filter knowledge graph nodes"
-            />
+          <!-- Search input & Discovery Link -->
+          <div class="flex items-center gap-2 flex-1 max-w-md">
+            <div class="relative flex-1">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 text-xs font-mono">
+                🔍
+              </span>
+              <input
+                type="search"
+                id="graph-search-input"
+                placeholder="Search graph entities..."
+                class="w-full bg-[#0d1117] border border-slate-700/80 rounded-lg pl-9 pr-3 py-2 text-xs font-mono text-slate-200 placeholder-slate-400 focus:outline-none focus:border-indigo-500 transition-colors"
+                aria-label="Filter knowledge graph nodes"
+              />
+            </div>
+            <a
+              href="/discover"
+              class="px-2.5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-indigo-400 hover:text-indigo-300 border border-slate-700 text-xs font-mono shrink-0 transition-colors"
+              title="Full Platform Discovery Search"
+            >
+              Discover ↗
+            </a>
           </div>
 
           <!-- Type filter buttons -->

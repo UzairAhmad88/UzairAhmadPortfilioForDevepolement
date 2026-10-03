@@ -1,0 +1,111 @@
+---
+import type { DiscoveryItem } from '@/types/discovery';
+
+export interface Props {
+  item: DiscoveryItem;
+}
+
+const { item } = Astro.props;
+
+const typeMetadata: Record<string, { label: string; icon: string; border: string; bg: string; text: string }> = {
+  project: { label: 'Project', icon: '⚡', border: 'border-emerald-500/30', bg: 'bg-emerald-500/10', text: 'text-emerald-400' },
+  research: { label: 'Research', icon: '🔬', border: 'border-purple-500/30', bg: 'bg-purple-500/10', text: 'text-purple-400' },
+  lab: { label: 'Lab Experiment', icon: '🧪', border: 'border-amber-500/30', bg: 'bg-amber-500/10', text: 'text-amber-400' },
+  note: { label: 'Engineering Note', icon: '📝', border: 'border-blue-500/30', bg: 'bg-blue-500/10', text: 'text-blue-400' },
+  technology: { label: 'Technology', icon: '🛠️', border: 'border-teal-500/30', bg: 'bg-teal-500/10', text: 'text-teal-400' },
+  methodology: { label: 'Methodology', icon: '📐', border: 'border-indigo-500/30', bg: 'bg-indigo-500/10', text: 'text-indigo-400' },
+};
+
+const meta = typeMetadata[item.type] || {
+  label: item.type,
+  icon: '•',
+  border: 'border-slate-700',
+  bg: 'bg-slate-800',
+  text: 'text-slate-300',
+};
+---
+
+<article
+  class="discovery-result-card rounded-xl border border-slate-800 bg-[#12161c] p-5 flex flex-col justify-between hover:border-slate-700 transition-all duration-200"
+  data-item-id={item.id}
+  data-item-type={item.type}
+  data-item-techs={item.technologies.join(',')}
+  data-item-topics={item.topics.join(',')}
+  data-item-status={item.status || ''}
+  data-item-year={item.year || ''}
+>
+  <div>
+    <!-- Top Metadata Strip -->
+    <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/80 text-[11px] font-mono">
+      <div class="flex items-center gap-2">
+        <span class:list={['px-2 py-0.5 rounded border uppercase font-semibold flex items-center gap-1', meta.bg, meta.text, meta.border]}>
+          <span>{meta.icon}</span>
+          <span>{meta.label}</span>
+        </span>
+        {item.badge && item.badge !== meta.label && (
+          <span class="text-slate-400 truncate max-w-[140px]">{item.badge}</span>
+        )}
+      </div>
+
+      <div class="flex items-center gap-2 text-slate-400 shrink-0">
+        {item.year && <span>{item.year}</span>}
+        {item.relatedIds.length > 0 && (
+          <span class="text-indigo-400/90 text-[10px]" title="Connected entities in Knowledge Graph">
+            {item.relatedIds.length} connected
+          </span>
+        )}
+      </div>
+    </div>
+
+    <!-- Title & Canonical Link -->
+    <h3 class="text-base font-bold text-slate-100 leading-snug group-hover:text-indigo-400 transition-colors">
+      <a href={item.href} class="hover:text-indigo-400 transition-colors">
+        {item.title}
+      </a>
+    </h3>
+
+    <!-- Excerpt / Short Description -->
+    {item.excerpt && (
+      <p class="text-xs text-slate-400 mt-2 line-clamp-2 leading-relaxed">
+        {item.excerpt}
+      </p>
+    )}
+
+    <!-- Technology & Topic Chips -->
+    <div class="mt-4 flex flex-wrap gap-1.5">
+      {item.technologies.slice(0, 4).map((tech) => (
+        <a
+          href={`/technology/${tech}`}
+          class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300 hover:border-indigo-500/50 hover:text-indigo-300 transition-colors"
+        >
+          {tech}
+        </a>
+      ))}
+      {item.topics.slice(0, 2).map((topic) => (
+        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800/60 text-slate-400 border border-slate-700/50">
+          {topic}
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <!-- Card Action Footer -->
+  <div class="mt-5 pt-3 border-t border-slate-800/70 flex items-center justify-between text-xs font-mono">
+    <a
+      href={`/knowledge?focus=${item.id}`}
+      class="text-indigo-400 hover:text-indigo-300 font-semibold inline-flex items-center gap-1 text-[11px]"
+      title="Inspect relationships in Knowledge Graph"
+    >
+      <span>Graph Connections</span>
+      <span>↗</span>
+    </a>
+
+    <a
+      href={item.href}
+      class="text-slate-300 hover:text-white font-medium inline-flex items-center gap-1"
+    >
+      <span>View {meta.label}</span>
+      <span>→</span>
+    </a>
+  </div>
+</article>
