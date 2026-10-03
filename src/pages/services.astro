@@ -1,362 +1,123 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
-import SectionHeader from '@/components/common/SectionHeader.astro';
-import ContactCallout from '@/components/sections/ContactCallout.astro';
 import { siteConfig } from '@/data/site';
 
 const seo = {
-  title: 'Engineering Capabilities & Technical Collaboration — Uzair Ahmad',
-  description: 'Specialized engineering consulting across full-stack web platforms, AI/ML model integration, and quantitative data architectures.',
-  canonical: `${siteConfig.url}/services`,
+  title: 'Engineering Collaboration & Technical Opportunities — Uzair Ahmad',
+  description: 'Specialized engineering collaboration across full-stack web platforms, multi-agent AI systems, and quantitative data architectures.',
+  canonical: `${siteConfig.url}/collaborate`,
 };
-
-const capabilities = [
-  {
-    num: '01',
-    title: 'Full-Stack Web Applications',
-    description: 'Engineering responsive, accessible, high-performance web products using Astro, React, TypeScript, Node.js, and modern SQL/NoSQL databases.',
-    deliverables: ['Custom Web Applications', 'Accessible Component Systems', 'REST/GraphQL API Services', 'State Architecture'],
-    evidenceSlug: 'curasphere-hms',
-    evidenceLabel: 'CuraSphere HMS Case Study',
-    contactType: 'project',
-  },
-  {
-    num: '02',
-    title: 'AI & Machine Learning System Integration',
-    description: 'Transitioning machine learning models and predictive pipelines into production environments with robust data validation and monitoring.',
-    deliverables: ['PyTorch Model Deployment', 'Feature Ingestion Pipelines', 'Predictive Decision Support', 'Deterministic Agent Guardrails'],
-    evidenceSlug: 'multi-agent-prospect-intelligence',
-    evidenceLabel: 'Multi-Agent Intelligence Case Study',
-    contactType: 'consulting',
-  },
-  {
-    num: '03',
-    title: 'Quantitative Data & Time-Series Pipelines',
-    description: 'Architecting time-series ingestion, statistical moment calculations, and backtest infrastructure for financial and analytical platforms.',
-    deliverables: ['Time-Series Feature Extraction', 'Data Cleaning & Normalization', 'Empirical Statistical Analysis', 'Custom Analytical Tooling'],
-    evidenceSlug: 'deep-learning-stock-return-prediction',
-    evidenceLabel: 'Stock Return Prediction Case Study',
-    contactType: 'research',
-  },
-  {
-    num: '04',
-    title: 'Technical MVP Prototyping & Architecture',
-    description: 'Rapid, disciplined engineering of 0-to-1 software products for founders and teams requiring clean, scalable code from day one.',
-    deliverables: ['Rapid System Scoping', 'Modular Architecture Design', 'Production Deployment Setup', 'Technical Documentation'],
-    evidenceSlug: 'market-regime-engine',
-    evidenceLabel: 'Market Regime Engine Case Study',
-    contactType: 'project',
-  },
-];
 ---
 
 <BaseLayout seo={seo}>
   <div class="page-container">
     <Breadcrumbs items={[{ label: 'Services', href: '/services' }]} />
 
-    <section class="services-hero">
-      <SectionHeader
-        eyebrow="Technical Capabilities"
-        title="Engineering Consulting & Collaboration"
-        subtitle="Specialized technical execution for ambitious products, AI pipelines, and high-performance web systems."
-      />
-    </section>
+    <section class="redirect-card">
+      <span class="redirect-badge">SYSTEMS & COLLABORATION</span>
+      <h1 class="redirect-title">Engineering Collaboration</h1>
+      <p class="redirect-desc">
+        Our engineering capabilities and collaboration pathways have moved to the dedicated Collaboration Platform.
+      </p>
 
-    <section class="capabilities-grid-section">
-      <div class="cap-grid">
-        {capabilities.map((cap) => (
-          <article class="cap-card">
-            <div>
-              <span class="cap-num">{cap.num}</span>
-              <h3 class="cap-title">{cap.title}</h3>
-              <p class="cap-desc">{cap.description}</p>
-              <div class="deliverables-box">
-                <span class="del-label">Key Deliverables:</span>
-                <ul class="del-list">
-                  {cap.deliverables.map((del) => (
-                    <li>{del}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            <div class="cap-footer">
-              <div class="evidence-link-box">
-                <span class="evidence-label">Demonstrated In:</span>
-                <a href={`/work/${cap.evidenceSlug}`} class="evidence-link">
-                  {cap.evidenceLabel} →
-                </a>
-              </div>
-              <a href={`/contact?type=${cap.contactType}`} class="cap-cta-btn">
-                Discuss This Capability →
-              </a>
-            </div>
-          </article>
-        ))}
+      <div class="redirect-actions">
+        <a href="/collaborate" class="redirect-btn">
+          Proceed to Collaboration Platform →
+        </a>
+        <a href="/work" class="secondary-btn">
+          View Projects & Systems ↗
+        </a>
       </div>
     </section>
-
-    <section class="process-section">
-      <h2 class="process-title">Collaboration Workflow</h2>
-      <div class="process-steps">
-        <div class="step-card">
-          <span class="step-badge">Phase 1</span>
-          <h4>Scoping & Technical Architecture</h4>
-          <p>Defining exact requirements, data contracts, and architectural diagrams before code is written.</p>
-        </div>
-        <div class="step-card">
-          <span class="step-badge">Phase 2</span>
-          <h4>Iterative Milestone Engineering</h4>
-          <p>Transparent development with regular milestone reviews, code inspections, and continuous testing.</p>
-        </div>
-        <div class="step-card">
-          <span class="step-badge">Phase 3</span>
-          <h4>Production Hardening & Verification</h4>
-          <p>Accessibility auditing, performance optimization, error handling, and security review.</p>
-        </div>
-        <div class="step-card">
-          <span class="step-badge">Phase 4</span>
-          <h4>Documentation & Handoff</h4>
-          <p>Clear documentation, typed APIs, and clean repository handoff for your team.</p>
-        </div>
-      </div>
-    </section>
-
-    <ContactCallout
-      title="Ready to discuss your project requirements?"
-      subtitle="Reach out with your problem scope and timeline to start a conversation."
-    />
   </div>
 </BaseLayout>
 
 <style>
   .page-container {
-    width: min(1200px, calc(100% - 2rem));
+    width: min(var(--container-max, 1200px), calc(100% - 2rem));
     margin: 0 auto;
     padding: clamp(1rem, 2vw, 2rem) 0 clamp(3rem, 6vw, 5rem);
-    padding-left: max(0.5rem, env(safe-area-inset-left));
-    padding-right: max(0.5rem, env(safe-area-inset-right));
   }
 
-  .services-hero {
-    margin-bottom: clamp(2rem, 4vw, 3.5rem);
+  .redirect-card {
+    background: rgba(16, 26, 23, 0.9);
+    border: 1px solid rgba(126, 216, 196, 0.25);
+    border-radius: 1rem;
+    padding: clamp(2rem, 5vw, 3.5rem);
+    margin: clamp(2rem, 4vw, 3.5rem) 0;
+    max-width: 800px;
   }
 
-  .cap-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: clamp(1.25rem, 3vw, 2rem);
-    margin-bottom: clamp(3rem, 5vw, 4.5rem);
-  }
-
-  .cap-card {
-    background: rgba(16, 26, 23, 0.85);
-    border: 1px solid rgba(246, 241, 232, 0.1);
-    border-radius: 0.85rem;
-    padding: clamp(1.5rem, 3vw, 2.25rem);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 1.5rem;
-    transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
-  }
-
-  .cap-card:hover {
-    transform: translateY(-3px);
-    border-color: rgba(126, 216, 196, 0.4);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
-  }
-
-  .cap-num {
-    font-size: 0.85rem;
+  .redirect-badge {
+    font-size: 0.75rem;
     font-weight: 800;
     color: var(--teal, #7ed8c4);
     font-family: var(--font-mono, monospace);
-    margin-bottom: 0.75rem;
+    letter-spacing: 0.08em;
     display: inline-block;
+    margin-bottom: 0.75rem;
   }
 
-  .cap-title {
-    font-size: clamp(1.15rem, 2vw, 1.35rem);
+  .redirect-title {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
     font-weight: 800;
     color: var(--ink, #f6f1e8);
-    margin: 0 0 0.75rem 0;
-    line-height: 1.3;
-    text-wrap: balance;
+    margin: 0 0 1rem 0;
+    line-height: 1.25;
   }
 
-  .cap-desc {
-    font-size: 0.95rem;
+  .redirect-desc {
+    font-size: 1.05rem;
     color: var(--muted, #a9b8b1);
     line-height: 1.6;
-    margin: 0 0 1.5rem 0;
-    text-wrap: pretty;
+    margin: 0 0 2rem 0;
   }
 
-  .deliverables-box {
-    padding-top: 1.25rem;
-    border-top: 1px solid rgba(246, 241, 232, 0.08);
-  }
-
-  .del-label {
-    display: block;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--muted, #a9b8b1);
-    margin-bottom: 0.5rem;
-  }
-
-  .del-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  .redirect-actions {
     display: flex;
-    flex-direction: column;
-    gap: 0.45rem;
-  }
-
-  .del-list li {
-    font-size: 0.875rem;
-    color: var(--muted, #a9b8b1);
-    position: relative;
-    padding-left: 1.15rem;
-  }
-
-  .del-list li::before {
-    content: "•";
-    position: absolute;
-    left: 0;
-    color: var(--teal, #7ed8c4);
-  }
-
-  .cap-footer {
-    padding-top: 1.25rem;
-    border-top: 1px solid rgba(246, 241, 232, 0.08);
-    display: flex;
-    flex-direction: column;
+    align-items: center;
     gap: 1rem;
+    flex-wrap: wrap;
   }
 
-  .evidence-link-box {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .evidence-label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--muted, #a9b8b1);
-  }
-
-  .evidence-link {
-    font-size: 0.875rem;
-    color: var(--teal, #7ed8c4);
-    text-decoration: none;
-    font-weight: 600;
+  .redirect-btn {
     display: inline-flex;
     align-items: center;
-    min-height: 36px;
+    justify-content: center;
+    min-height: var(--touch-target-min, 44px);
+    padding: 0.75rem 1.5rem;
+    background: var(--teal, #7ed8c4);
+    color: #07110f;
+    border-radius: var(--radius-full, 9999px);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: background 150ms ease, transform 150ms ease;
   }
 
-  .evidence-link:hover {
-    color: #9bd8cf;
-    text-decoration: underline;
+  .redirect-btn:hover {
+    background: #9bd8cf;
+    transform: translateY(-1px);
   }
 
-  .cap-cta-btn {
+  .secondary-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     min-height: var(--touch-target-min, 44px);
     padding: 0.75rem 1.25rem;
-    background: rgba(126, 216, 196, 0.08);
-    border: 1px solid rgba(126, 216, 196, 0.3);
-    color: var(--teal, #7ed8c4);
-    border-radius: 0.5rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background 150ms ease, color 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
-  }
-
-  .cap-cta-btn:hover {
-    background: var(--teal, #7ed8c4);
-    color: #07110f;
-    border-color: var(--teal, #7ed8c4);
-    box-shadow: 0 0 20px rgba(126, 216, 196, 0.35);
-  }
-
-  .process-section {
-    background: rgba(16, 26, 23, 0.85);
-    border: 1px solid rgba(246, 241, 232, 0.1);
-    border-radius: 1rem;
-    padding: clamp(1.5rem, 4vw, 3rem);
-    margin-bottom: clamp(3rem, 5vw, 4rem);
-  }
-
-  .process-title {
-    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
-    font-weight: 800;
-    color: var(--ink, #f6f1e8);
-    margin: 0 0 clamp(1.25rem, 3vw, 2rem) 0;
-  }
-
-  .process-steps {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: clamp(1rem, 2vw, 1.5rem);
-  }
-
-  .step-card {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .step-badge {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--teal, #7ed8c4);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .step-card h4 {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--ink, #f6f1e8);
-    margin: 0;
-  }
-
-  .step-card p {
-    font-size: 0.875rem;
     color: var(--muted, #a9b8b1);
-    line-height: 1.5;
-    margin: 0;
-    text-wrap: pretty;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid rgba(246, 241, 232, 0.15);
+    border-radius: var(--radius-full, 9999px);
+    transition: color 150ms ease, border-color 150ms ease;
   }
 
-  @media (max-width: 1024px) {
-    .cap-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .process-steps {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.75rem;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .process-steps {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
+  .secondary-btn:hover {
+    color: var(--teal, #7ed8c4);
+    border-color: rgba(126, 216, 196, 0.4);
   }
 </style>

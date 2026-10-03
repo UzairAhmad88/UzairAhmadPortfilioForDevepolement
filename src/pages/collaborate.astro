@@ -1,0 +1,1333 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
+import SectionHeader from '@/components/common/SectionHeader.astro';
+import { collaborationProfile } from '@/data/collaboration';
+import { siteConfig } from '@/data/site';
+import { projects } from '@/data/projects';
+import { researchItems } from '@/data/research';
+import { labItems } from '@/data/lab';
+import { technologies } from '@/data/technologies';
+
+const seo = {
+  title: 'Collaboration & Technical Opportunities — Uzair Ahmad',
+  description: 'Evidence-based engineering collaboration across quantitative systems, multi-agent AI workflows, and high-performance web platforms.',
+  canonical: `${siteConfig.url}/collaborate`,
+};
+
+// Helper lookup for project titles
+function getProjectTitle(slug: string) {
+  const p = projects.find((item) => item.slug === slug);
+  return p ? p.title : slug;
+}
+
+// Helper lookup for research titles
+function getResearchTitle(slug: string) {
+  const r = researchItems.find((item) => item.slug === slug);
+  return r ? r.title : slug;
+}
+
+// Helper lookup for lab titles
+function getLabTitle(slug: string) {
+  const l = labItems.find((item) => item.slug === slug);
+  return l ? l.title.split(':')[0] : slug;
+}
+
+// Helper lookup for tech names
+function getTechName(id: string) {
+  const t = technologies.find((item) => item.id === id);
+  return t ? t.name : id;
+}
+---
+
+<BaseLayout seo={seo}>
+  <div class="collaborate-container">
+    <Breadcrumbs items={[{ label: 'Collaborate', href: '/collaborate' }]} />
+
+    <!-- HERO SECTION -->
+    <header class="collab-hero">
+      <div class="hero-header-wrap">
+        <SectionHeader
+          eyebrow={collaborationProfile.eyebrow}
+          title={collaborationProfile.title}
+          subtitle={collaborationProfile.introduction}
+        />
+      </div>
+
+      <div class="availability-banner">
+        <div class="avail-badge">
+          <span class="status-pulse" aria-hidden="true"></span>
+          <span class="avail-state-text">{collaborationProfile.availability.badgeLabel}</span>
+        </div>
+        <p class="avail-note">{collaborationProfile.availability.note}</p>
+        <span class="avail-timestamp">Updated {collaborationProfile.availability.updatedAt}</span>
+      </div>
+    </header>
+
+    <!-- POSITIONING PRINCIPLE CALLOUT -->
+    <section class="positioning-section" aria-labelledby="collab-approach-heading">
+      <div class="positioning-card">
+        <div class="positioning-badge">PHILOSOPHY // PROBLEM-FIRST</div>
+        <h2 id="collab-approach-heading" class="positioning-title">
+          Engineering Collaboration Grounded in Working Systems
+        </h2>
+        <p class="positioning-lead">
+          {collaborationProfile.positioningStatement}
+        </p>
+        <div class="positioning-actions">
+          <a href="#areas" class="btn-secondary">Explore Collaboration Areas ↓</a>
+          <a href="#brief-guide" class="btn-secondary">How to Structure a Brief ↓</a>
+          <a href="/contact" class="btn-primary">Start a Conversation →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 1: COLLABORATION AREAS -->
+    <section id="areas" class="content-section" aria-labelledby="areas-heading">
+      <div class="section-title-wrap">
+        <span class="section-badge">01 // DOMAINS & CAPABILITIES</span>
+        <h2 id="areas-heading" class="section-title">Collaboration Areas & Technical Focus</h2>
+        <p class="section-subtitle">
+          Every area is backed by demonstrable repositories, published research inquiries, and empirical lab benchmarks.
+        </p>
+      </div>
+
+      <div class="areas-grid">
+        {
+          collaborationProfile.areas.map((area) => (
+            <article class="area-card">
+              <div class="area-header">
+                <span class="area-domain">{area.domain}</span>
+                <h3 class="area-title">{area.title}</h3>
+                <p class="area-desc">{area.shortExplanation}</p>
+              </div>
+
+              <div class="area-body">
+                <div class="problems-block">
+                  <span class="block-label">Relevant Problems & Inquiries:</span>
+                  <ul class="problems-list">
+                    {area.relevantProblems.map((prob) => (
+                      <li>{prob}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div class="potential-collab-block">
+                  <span class="block-label">Potential Collaboration:</span>
+                  <p class="potential-text">{area.potentialCollaboration}</p>
+                </div>
+              </div>
+
+              <div class="area-footer">
+                <div class="evidence-block">
+                  <span class="block-label">Demonstrated Evidence:</span>
+                  <div class="evidence-pills">
+                    {area.projectSlugs.map((slug) => (
+                      <a href={`/work/${slug}`} class="evidence-pill project">
+                        <span class="pill-type">Project</span>
+                        <span class="pill-name">{getProjectTitle(slug)}</span>
+                        <span class="pill-arrow">↗</span>
+                      </a>
+                    ))}
+                    {area.researchSlugs.map((slug) => (
+                      <a href={`/research/${slug}`} class="evidence-pill research">
+                        <span class="pill-type">Research</span>
+                        <span class="pill-name">{getResearchTitle(slug)}</span>
+                        <span class="pill-arrow">↗</span>
+                      </a>
+                    ))}
+                    {area.labSlugs.map((slug) => (
+                      <a href={`/lab/${slug}`} class="evidence-pill lab">
+                        <span class="pill-type">Lab</span>
+                        <span class="pill-name">{getLabTitle(slug)}</span>
+                        <span class="pill-arrow">↗</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+
+                <div class="tech-stack-row">
+                  <span class="tech-label">Technologies:</span>
+                  <div class="tech-tags">
+                    {area.technologyIds.map((tid) => (
+                      <span class="tech-tag">{getTechName(tid)}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- SECTION 2: ENGAGEMENT TYPES -->
+    <section class="content-section" aria-labelledby="engagement-heading">
+      <div class="section-title-wrap">
+        <span class="section-badge">02 // ENGAGEMENT STRUCTURE</span>
+        <h2 id="engagement-heading" class="section-title">Ways We Can Work Together</h2>
+        <p class="section-subtitle">
+          Transparent engagement structures tailored to systems engineering, applied research, and technical prototyping.
+        </p>
+      </div>
+
+      <div class="engagements-grid">
+        {
+          collaborationProfile.engagementTypes.map((eng) => (
+            <article class="engagement-card">
+              <div class="eng-top">
+                <span class="eng-category-badge">{eng.category}</span>
+                <h3 class="eng-title">{eng.title}</h3>
+                <p class="eng-desc">{eng.description}</p>
+
+                <div class="suitable-block">
+                  <span class="block-label">Naturally Suited For:</span>
+                  <ul class="suitable-list">
+                    {eng.suitableFor.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div class="eng-bottom">
+                <div class="eng-evidence">
+                  <span class="block-label">Supporting Evidence:</span>
+                  <div class="evidence-links">
+                    {eng.evidenceSlugs.map((ev) => {
+                      const href =
+                        ev.type === 'project'
+                          ? `/work/${ev.slug}`
+                          : ev.type === 'research'
+                          ? `/research/${ev.slug}`
+                          : `/lab/${ev.slug}`;
+                      return (
+                        <a href={href} class="eng-ev-link">
+                          <span class="ev-badge">{ev.type}</span>
+                          <span class="ev-label">{ev.label}</span>
+                          <span class="ev-arrow">→</span>
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <a href={`/contact?type=${eng.contactType}`} class="eng-cta-btn">
+                  {eng.ctaLabel} →
+                </a>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- SECTION 3: PROBLEMS & NON-GOALS (2-COLUMN CONTRAST) -->
+    <section class="content-section" aria-labelledby="problems-heading">
+      <div class="section-title-wrap">
+        <span class="section-badge">03 // SELECTION & CRITERIA</span>
+        <h2 id="problems-heading" class="section-title">Problem Selection & Fit</h2>
+        <p class="section-subtitle">
+          Clear boundaries help ensure every collaboration aligns with verified capabilities and produces rigorous outcomes.
+        </p>
+      </div>
+
+      <div class="contrast-grid">
+        <!-- PREFERRED PROBLEMS -->
+        <div class="contrast-column positive">
+          <div class="column-header">
+            <span class="col-icon">✓</span>
+            <h3 class="column-title">Problems I Enjoy Exploring</h3>
+          </div>
+          <ul class="criteria-list positive-list">
+            {
+              collaborationProfile.preferredProblems.map((item) => (
+                <li>
+                  <span class="check-mark">✓</span>
+                  <span>{item}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <!-- NON-GOALS -->
+        <div class="contrast-column boundary">
+          <div class="column-header">
+            <span class="col-icon">✕</span>
+            <h3 class="column-title">What I Am Not Looking For</h3>
+          </div>
+          <ul class="criteria-list boundary-list">
+            {
+              collaborationProfile.nonGoals.map((item) => (
+                <li>
+                  <span class="cross-mark">✕</span>
+                  <span>{item}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: COLLABORATION PROCESS -->
+    <section class="content-section" aria-labelledby="process-heading">
+      <div class="section-title-wrap">
+        <span class="section-badge">04 // METHODOLOGY</span>
+        <h2 id="process-heading" class="section-title">How Collaboration Works</h2>
+        <p class="section-subtitle">
+          A disciplined, 6-stage engineering lifecycle derived directly from <a href="/how-i-build" class="inline-link">How I Build</a>.
+        </p>
+      </div>
+
+      <div class="process-grid">
+        {
+          collaborationProfile.process.map((step) => (
+            <div class="process-card">
+              <div class="step-num-badge">{step.step}</div>
+              <h3 class="step-title">{step.title}</h3>
+              <p class="step-summary">{step.summary}</p>
+              <div class="step-principle">
+                <span class="principle-label">Core Principle:</span>
+                <p class="principle-text">{step.principle}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- SECTION 5: COLLABORATION BRIEF GUIDE -->
+    <section id="brief-guide" class="content-section" aria-labelledby="brief-heading">
+      <div class="section-title-wrap">
+        <span class="section-badge">05 // INQUIRY PREPARATION</span>
+        <h2 id="brief-heading" class="section-title">What Helps Me Understand Your Problem</h2>
+        <p class="section-subtitle">
+          Providing clear technical context upfront allows us to have a substantive, efficient conversation right from the start.
+        </p>
+      </div>
+
+      <div class="brief-grid">
+        {
+          collaborationProfile.briefQuestions.map((q) => (
+            <div class="brief-card">
+              <div class="brief-num">{q.number}</div>
+              <h3 class="brief-prompt">{q.prompt}</h3>
+              <p class="brief-guidance">{q.guidance}</p>
+              <div class="brief-example">
+                <span class="example-label">Example:</span>
+                <code class="example-code">{q.example}</code>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- SECTION 6: CONTACT CALLOUT & CONVERSATION HANDOFF -->
+    <section class="collab-cta-section" aria-labelledby="cta-heading">
+      <div class="cta-card">
+        <div class="cta-top">
+          <span class="cta-badge">DIRECT ENGAGEMENT</span>
+          <h2 id="cta-heading" class="cta-title">Ready to Discuss a Technical Challenge?</h2>
+          <p class="cta-desc">
+            Whether you have a specific system to build, an applied research question, or a prototype to scope, let’s start a technical conversation.
+          </p>
+
+          <div class="guidance-box">
+            <span class="guidance-label">Response Expectations:</span>
+            <ul class="guidance-list">
+              {collaborationProfile.contactGuidance.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div class="cta-actions">
+          <a href="/contact" class="btn-primary-large">
+            Open Contact Form →
+          </a>
+          <a href={`mailto:${siteConfig.email}`} class="btn-secondary-large">
+            Direct Email: {siteConfig.email}
+          </a>
+          <a href="/work" class="btn-ghost">
+            Inspect All Systems & Projects ↗
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .collaborate-container {
+    width: min(var(--container-max, 1200px), calc(100% - 2rem));
+    margin: 0 auto;
+    padding: clamp(1rem, 2vw, 2rem) 0 clamp(3rem, 6vw, 5rem);
+    padding-left: max(0.5rem, env(safe-area-inset-left));
+    padding-right: max(0.5rem, env(safe-area-inset-right));
+  }
+
+  .collab-hero {
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .hero-header-wrap {
+    margin-bottom: 1.5rem;
+  }
+
+  /* AVAILABILITY BANNER */
+  .availability-banner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 0.85rem 1.25rem;
+    background: rgba(16, 26, 23, 0.9);
+    border: 1px solid rgba(126, 216, 196, 0.25);
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  .avail-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.65rem;
+    background: rgba(126, 216, 196, 0.12);
+    border: 1px solid rgba(126, 216, 196, 0.35);
+    border-radius: var(--radius-full, 9999px);
+    color: var(--teal, #7ed8c4);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .status-pulse {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--teal, #7ed8c4);
+    box-shadow: 0 0 8px var(--teal, #7ed8c4);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(0.85);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .avail-note {
+    font-size: 0.9rem;
+    color: var(--ink, #f6f1e8);
+    margin: 0;
+    flex: 1;
+    min-width: 260px;
+    line-height: 1.4;
+  }
+
+  .avail-timestamp {
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    color: var(--muted, #a9b8b1);
+  }
+
+  /* POSITIONING CARD */
+  .positioning-section {
+    margin-bottom: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  .positioning-card {
+    background: linear-gradient(135deg, rgba(16, 26, 23, 0.95) 0%, rgba(7, 17, 15, 0.98) 100%);
+    border: 1px solid rgba(126, 216, 196, 0.25);
+    border-radius: 1rem;
+    padding: clamp(1.75rem, 4vw, 3rem);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .positioning-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #7ed8c4 0%, #3ca691 50%, transparent 100%);
+  }
+
+  .positioning-badge {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--teal, #7ed8c4);
+    font-family: var(--font-mono, monospace);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.75rem;
+  }
+
+  .positioning-title {
+    font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+    font-weight: 800;
+    color: var(--ink, #f6f1e8);
+    margin: 0 0 1rem 0;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+
+  .positioning-lead {
+    font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+    color: var(--muted, #a9b8b1);
+    line-height: 1.6;
+    max-width: 900px;
+    margin: 0 0 1.75rem 0;
+    text-wrap: pretty;
+  }
+
+  .positioning-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  /* SECTION HEADINGS */
+  .content-section {
+    margin-bottom: clamp(3.5rem, 7vw, 5.5rem);
+  }
+
+  .section-title-wrap {
+    margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
+  }
+
+  .section-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--teal, #7ed8c4);
+    font-family: var(--font-mono, monospace);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+    font-weight: 800;
+    color: var(--ink, #f6f1e8);
+    margin: 0 0 0.5rem 0;
+    line-height: 1.3;
+    text-wrap: balance;
+  }
+
+  .section-subtitle {
+    font-size: 0.95rem;
+    color: var(--muted, #a9b8b1);
+    line-height: 1.5;
+    margin: 0;
+    max-width: 800px;
+    text-wrap: pretty;
+  }
+
+  .inline-link {
+    color: var(--teal, #7ed8c4);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* BUTTONS */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--touch-target-min, 44px);
+    padding: 0.65rem 1.25rem;
+    background: var(--teal, #7ed8c4);
+    color: #07110f;
+    border: 1px solid var(--teal, #7ed8c4);
+    border-radius: var(--radius-full, 9999px);
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+  }
+
+  .btn-primary:hover {
+    background: #9bd8cf;
+    box-shadow: 0 0 20px rgba(126, 216, 196, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--touch-target-min, 44px);
+    padding: 0.65rem 1.15rem;
+    background: rgba(246, 241, 232, 0.05);
+    color: var(--ink, #f6f1e8);
+    border: 1px solid rgba(246, 241, 232, 0.15);
+    border-radius: var(--radius-full, 9999px);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 150ms ease, border-color 150ms ease;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(246, 241, 232, 0.1);
+    border-color: rgba(126, 216, 196, 0.4);
+    color: var(--teal, #7ed8c4);
+  }
+
+  /* SECTION 1: AREAS GRID */
+  .areas-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  .area-card {
+    background: rgba(16, 26, 23, 0.85);
+    border: 1px solid rgba(246, 241, 232, 0.1);
+    border-radius: 1rem;
+    padding: clamp(1.5rem, 3vw, 2rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.5rem;
+    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  }
+
+  .area-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(126, 216, 196, 0.4);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  .area-domain {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--teal, #7ed8c4);
+    font-family: var(--font-mono, monospace);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .area-title {
+    font-size: clamp(1.15rem, 2vw, 1.35rem);
+    font-weight: 800;
+    color: var(--ink, #f6f1e8);
+    margin: 0 0 0.75rem 0;
+    line-height: 1.3;
+    text-wrap: balance;
+  }
+
+  .area-desc {
+    font-size: 0.925rem;
+    color: var(--muted, #a9b8b1);
+    line-height: 1.55;
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .area-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(246, 241, 232, 0.08);
+  }
+
+  .block-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted, #a9b8b1);
+    margin-bottom: 0.5rem;
+  }
+
+  .problems-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .problems-list li {
+    font-size: 0.875rem;
+    color: var(--muted, #a9b8b1);
+    position: relative;
+    padding-left: 1.15rem;
+    line-height: 1.45;
+  }
+
+  .problems-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--teal, #7ed8c4);
+  }
+
+  .potential-text {
+    font-size: 0.875rem;
+    color: var(--ink, #f6f1e8);
+    line-height: 1.5;
+    margin: 0;
+    background: rgba(126, 216, 196, 0.05);
+    border-left: 2px solid var(--teal, #7ed8c4);
+    padding: 0.5rem 0.75rem;
+    border-radius: 0 0.35rem 0.35rem 0;
+  }
+
+  .area-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(246, 241, 232, 0.08);
+  }
+
+  .evidence-pills {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .evidence-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.4rem 0.75rem;
+    background: rgba(246, 241, 232, 0.04);
+    border: 1px solid rgba(246, 241, 232, 0.1);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background 150ms ease, border-color 150ms ease;
+    min-height: 36px;
+  }
+
+  .evidence-pill:hover {
+    background: rgba(126, 216, 196, 0.08);
+    border-color: rgba(126, 216, 196, 0.3);
+  }
+
+  .pill-type {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-family: var(--font-mono, monospace);
+    color: var(--teal, #7ed8c4);
+    flex-shrink: 0;
+  }
+
+  .pill-name {
+    font-size: 0.825rem;
+    color: var(--ink, #f6f1e8);
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+  }
+
+  .pill-arrow {
+    color: var(--muted, #a9b8b1);
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .tech-stack-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tech-label {
+    font-size: 0.75rem;
+    color: var(--muted, #a9b8b1);
+  }
+
+  .tech-tags {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+
+  .tech-tag {
+    font-size: 0.75rem;
+    color: var(--muted, #a9b8b1);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.15rem 0.45rem;
+    border-radius: 0.25rem;
+    font-family: var(--font-mono, monospace);
+  }
+
+  /* SECTION 2: ENGAGEMENT GRID */
+  .engagements-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  .engagement-card {
+    background: rgba(16, 26, 23, 0.85);
+    border: 1px solid rgba(246, 241, 232, 0.1);
+    border-radius: 1rem;
+    padding: clamp(1.5rem, 3vw, 2rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.5rem;
+    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  }
+
+  .engagement-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(126, 216, 196, 0.4);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  .eng-category-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--teal, #7ed8c4);
+    font-family: var(--font-mono, monospace);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .eng-title {
+    font-size: clamp(1.15rem, 2vw, 1.35rem);
+    font-weight: 800;
+    color: var(--ink, #f6f1e8);
+    margin: 0 0 0.75rem 0;
+    line-height: 1.3;
+    text-wrap: balance;
+  }
+
+  .eng-desc {
+    font-size: 0.925rem;
+    color: var(--muted, #a9b8b1);
+    line-height: 1.55;
+    margin: 0 0 1.25rem 0;
+    text-wrap: pretty;
+  }
+
+  .suitable-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .suitable-list li {
+    font-size: 0.875rem;
+    color: var(--muted, #a9b8b1);
+    position: relative;
+    padding-left: 1.15rem;
+    line-height: 1.45;
+  }
+
+  .suitable-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--teal, #7ed8c4);
+  }
+
+  .eng-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(246, 241, 232, 0.08);
+  }
+
+  .evidence-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .eng-ev-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--ink, #f6f1e8);
+    text-decoration: none;
+    padding: 0.35rem 0.65rem;
+    background: rgba(246, 241, 232, 0.03);
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 0.35rem;
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+
+  .eng-ev-link:hover {
+    color: var(--teal, #7ed8c4);
+    border-color: rgba(126, 216, 196, 0.3);
+  }
+
+  .ev-badge {
+    font-size: 0.7rem;
+    font-family: var(--font-mono, monospace);
+    text-transform: uppercase;
+    color: var(--teal, #7ed8c4);
+  }
+
+  .ev-label {
+    flex: 1;
+    font-weight: 600;
+  }
+
+  .ev-arrow {
+    color: var(--muted, #a9b8b1);
+  }
+
+  .eng-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--touch-target-min, 44px);
+    padding: 0.75rem 1.25rem;
+    background: rgba(126, 216, 196, 0.08);
+    border: 1px solid rgba(126, 216, 196, 0.3);
+    color: var(--teal, #7ed8c4);
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 150ms ease, color 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+  }
+
+  .eng-cta-btn:hover {
+    background: var(--teal, #7ed8c4);
+    color: #07110f;
+    border-color: var(--teal, #7ed8c4);
+    box-shadow: 0 0 20px rgba(126, 216, 196, 0.35);
+  }
+
+  /* SECTION 3: CONTRAST GRID (PREFERRED PROBLEMS VS NON-GOALS) */
+  .contrast-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  .contrast-column {
+    border-radius: 1rem;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .contrast-column.positive {
+    background: rgba(16, 26, 23, 0.85);
+    border: 1px solid rgba(126, 216, 196, 0.25);
+  }
+
+  .contrast-column.boundary {
+    background: rgba(22, 18, 16, 0.85);
+    border: 1px solid rgba(246, 241, 232, 0.12);
+  }
+
+  .column-header {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .col-icon {
+    font-weight: 900;
+    font-size: 1.1rem;
+  }
+
+  .positive .col-icon {
+    color: var(--teal, #7ed8c4);
+  }
+
+  .boundary .col-icon {
+    color: #e07a5f;
+  }
+
+  .column-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--ink, #f6f1e8);
+    margin: 0;
+  }
+
+  .criteria-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .criteria-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--muted, #a9b8b1);
+    line-height: 1.5;
+  }
+
+  .check-mark {
+    color: var(--teal, #7ed8c4);
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .cross-mark {
+    color: #e07a5f;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  /* SECTION 4: PROCESS GRID */
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .process-card {
+    background: rgba(16, 26, 23, 0.85);
+    border: 1px solid rgba(246, 241, 232, 0.1);
+    border-radius: 0.85rem;
+    padding: clamp(1.25rem, 2.5vw, 1.75rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .step-num-badge {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--teal, #7ed8c4);
+    font-family: var(--font-mono, monospace);
+  }
+
+  .step-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--ink, #f6f1e8);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .step-summary {
+    font-size: 0.875rem;
+    color: var(--muted, #a9b8b1);
+    line-height: 1.5;
+    margin: 0;
+    flex: 1;
+  }
+
+  .step-principle {
+    padding-top: 0.85rem;
+    border-top: 1px solid rgba(246, 241, 232, 0.08);
+  }
+
+  .principle-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--teal, #7ed8c4);
+    margin-bottom: 0.25rem;
+  }
+
+  .principle-text {
+    font-size: 0.8rem;
+    color: var(--muted, #a9b8b1);
+    font-style: italic;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  /* SECTION 5: BRIEF GUIDE */
+  .brief-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1.25rem, 2.5vw, 1.75rem);
+  }
+
+  .brief-card {
+    background: rgba(16, 26, 23, 0.85);
+    border: 1px solid rgba(246, 241, 232, 0.1);
+    border-radius: 0.85rem;
+    padding: clamp(1.25rem, 2.5vw, 1.75rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .brief-num {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--teal, #7ed8c4);
+    font-family: var(--font-mono, monospace);
+  }
+
+  .brief-prompt {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ink, #f6f1e8);
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  .brief-guidance {
+    font-size: 0.875rem;
+    color: var(--muted, #a9b8b1);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .brief-example {
+    background: rgba(7, 17, 15, 0.6);
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 0.5rem;
+    padding: 0.65rem 0.85rem;
+    margin-top: 0.5rem;
+  }
+
+  .example-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted, #a9b8b1);
+    margin-bottom: 0.25rem;
+  }
+
+  .example-code {
+    font-size: 0.8rem;
+    color: var(--teal, #7ed8c4);
+    font-family: var(--font-mono, monospace);
+    line-height: 1.4;
+    display: block;
+    word-break: break-word;
+  }
+
+  /* SECTION 6: CTA CARD */
+  .collab-cta-section {
+    margin-top: clamp(3rem, 6vw, 5rem);
+  }
+
+  .cta-card {
+    background: linear-gradient(135deg, rgba(16, 26, 23, 0.95) 0%, rgba(7, 17, 15, 0.98) 100%);
+    border: 1px solid rgba(126, 216, 196, 0.3);
+    border-radius: 1.25rem;
+    padding: clamp(2rem, 5vw, 3.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+  }
+
+  .cta-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--teal, #7ed8c4);
+    font-family: var(--font-mono, monospace);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+
+  .cta-title {
+    font-size: clamp(1.5rem, 3vw, 2.15rem);
+    font-weight: 800;
+    color: var(--ink, #f6f1e8);
+    margin: 0 0 0.85rem 0;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  .cta-desc {
+    font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+    color: var(--muted, #a9b8b1);
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 0 1.5rem 0;
+    text-wrap: pretty;
+  }
+
+  .guidance-box {
+    background: rgba(246, 241, 232, 0.03);
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    max-width: 800px;
+  }
+
+  .guidance-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--teal, #7ed8c4);
+    margin-bottom: 0.5rem;
+  }
+
+  .guidance-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .guidance-list li {
+    font-size: 0.875rem;
+    color: var(--muted, #a9b8b1);
+    position: relative;
+    padding-left: 1.15rem;
+    line-height: 1.45;
+  }
+
+  .guidance-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--teal, #7ed8c4);
+  }
+
+  .cta-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary-large {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--touch-target-min, 48px);
+    padding: 0.85rem 1.75rem;
+    background: var(--teal, #7ed8c4);
+    color: #07110f;
+    border: 1px solid var(--teal, #7ed8c4);
+    border-radius: var(--radius-full, 9999px);
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+  }
+
+  .btn-primary-large:hover {
+    background: #9bd8cf;
+    box-shadow: 0 0 25px rgba(126, 216, 196, 0.45);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary-large {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--touch-target-min, 48px);
+    padding: 0.85rem 1.5rem;
+    background: rgba(246, 241, 232, 0.06);
+    color: var(--ink, #f6f1e8);
+    border: 1px solid rgba(246, 241, 232, 0.2);
+    border-radius: var(--radius-full, 9999px);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+  }
+
+  .btn-secondary-large:hover {
+    background: rgba(246, 241, 232, 0.12);
+    border-color: rgba(126, 216, 196, 0.4);
+    color: var(--teal, #7ed8c4);
+  }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    color: var(--muted, #a9b8b1);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 0.5rem 0.75rem;
+    transition: color 150ms ease;
+  }
+
+  .btn-ghost:hover {
+    color: var(--teal, #7ed8c4);
+    text-decoration: underline;
+  }
+
+  /* RESPONSIVE DESIGN */
+  @media (max-width: 1024px) {
+    .areas-grid,
+    .engagements-grid,
+    .contrast-grid,
+    .brief-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .process-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .process-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .availability-banner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .cta-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .btn-primary-large,
+    .btn-secondary-large {
+      width: 100%;
+    }
+  }
+</style>
