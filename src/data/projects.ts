@@ -198,7 +198,7 @@ export const fypProject: Project = {
     originalYear: '2024',
   },
   source: 'github',
-  githubUrl: 'https://github.com/UzairAhmad88',
+  githubUrl: 'https://github.com/UzairAhmad88/Multi-Modal-Quantitative-AI-Development',
   githubRepo: 'UzairAhmad88/Multi-Modal-Quantitative-AI-Development',
   repositoryStatus: 'public',
   deploymentStatus: 'preview',
