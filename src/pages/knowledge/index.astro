@@ -1,5 +1,8 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
+import SectionHeader from '@/components/common/SectionHeader.astro';
+import ContactCallout from '@/components/sections/ContactCallout.astro';
 import { knowledgeGraph, knowledgeGraphValidation } from '@/data/knowledgeGraph';
 import { siteConfig } from '@/data/site';
 import type { KnowledgeNodeType } from '@/types/knowledge';
@@ -8,14 +11,14 @@ const nodes = knowledgeGraph.nodes;
 const edges = knowledgeGraph.edges;
 const validation = knowledgeGraphValidation;
 
-const entityTypes: { type: KnowledgeNodeType | 'all'; label: string; count: number; icon: string; color: string }[] = [
-  { type: 'all', label: 'All Entities', count: nodes.length, icon: '🌐', color: 'slate' },
-  { type: 'project', label: 'Projects', count: validation.nodesByType.project, icon: '⚡', color: 'emerald' },
-  { type: 'research', label: 'Research', count: validation.nodesByType.research, icon: '🔬', color: 'purple' },
-  { type: 'lab', label: 'Lab Experiments', count: validation.nodesByType.lab, icon: '🧪', color: 'amber' },
-  { type: 'note', label: 'Engineering Notes', count: validation.nodesByType.note, icon: '📝', color: 'blue' },
-  { type: 'technology', label: 'Technologies', count: validation.nodesByType.technology, icon: '🛠️', color: 'teal' },
-  { type: 'methodology', label: 'Methodology', count: validation.nodesByType.methodology, icon: '📐', color: 'indigo' },
+const entityTypes: { type: KnowledgeNodeType | 'all'; label: string; count: number; icon: string }[] = [
+  { type: 'all', label: 'All Entities', count: nodes.length, icon: '🌐' },
+  { type: 'project', label: 'Projects', count: validation.nodesByType.project, icon: '⚡' },
+  { type: 'research', label: 'Research', count: validation.nodesByType.research, icon: '🔬' },
+  { type: 'lab', label: 'Lab Experiments', count: validation.nodesByType.lab, icon: '🧪' },
+  { type: 'note', label: 'Engineering Notes', count: validation.nodesByType.note, icon: '📝' },
+  { type: 'technology', label: 'Technologies', count: validation.nodesByType.technology, icon: '🛠️' },
+  { type: 'methodology', label: 'Methodology', count: validation.nodesByType.methodology, icon: '📐' },
 ];
 
 const seo = {
@@ -32,284 +35,903 @@ const graphDataJson = JSON.stringify({
 ---
 
 <BaseLayout seo={seo}>
-  <main id="top" class="knowledge-graph-page">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
-      <!-- Breadcrumb Navigation -->
-      <nav class="mb-8" aria-label="Breadcrumbs">
-        <ol class="flex items-center space-x-2 text-xs font-mono text-slate-400">
-          <li><a href="/" class="hover:text-indigo-400 transition-colors">Home</a></li>
-          <li class="text-slate-400">/</li>
-          <li class="text-slate-200" aria-current="page">Knowledge Graph</li>
-        </ol>
-      </nav>
+  <div class="page-container">
+    <!-- Breadcrumb Navigation -->
+    <Breadcrumbs items={[{ label: 'Knowledge Graph', href: '/knowledge' }]} />
 
-      <!-- Knowledge Header -->
-      <header class="mb-10 border-b border-slate-800/80 pb-8">
-        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 text-xs font-mono font-semibold uppercase tracking-wider mb-4">
-          <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
-          Connected Engineering Knowledge Layer
+    <!-- Knowledge Header -->
+    <section class="knowledge-hero">
+      <SectionHeader
+        eyebrow="Connected Engineering Knowledge Layer"
+        title="Knowledge Graph & System Topology"
+        subtitle="A structured, deterministic relationship layer connecting everything I build, research, experiment with, and document. Projects are not isolated codebases; research is not disconnected theory; notes are not random blog posts. They form one unified body of engineering work."
+      />
+
+      <!-- Audit & Stats Summary Strip -->
+      <div class="stats-summary-ribbon" aria-label="Knowledge Graph Validation Metrics">
+        <div class="stat-block">
+          <span class="stat-label">Canonical Nodes</span>
+          <span class="stat-value">{validation.totalNodes}</span>
+          <span class="stat-sub">Verified Entities</span>
         </div>
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-100 mb-4">
-          Knowledge Graph & System Topology
-        </h1>
-        <p class="text-base sm:text-lg text-slate-400 max-w-3xl leading-relaxed">
-          A structured, deterministic relationship layer connecting everything I build, research, experiment with, and document. Projects are not isolated codebases; research is not disconnected theory; notes are not random blog posts. They form one unified body of engineering work.
-        </p>
-
-        <!-- Audit & Stats Summary Strip -->
-        <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 bg-[#12161c] border border-slate-800 rounded-xl p-4 font-mono text-xs">
-          <div>
-            <span class="text-slate-400 block text-[11px] uppercase">Canonical Nodes</span>
-            <span class="text-lg font-bold text-slate-100">{validation.totalNodes}</span>
-            <span class="text-[10px] text-slate-400 block">Verified Entities</span>
-          </div>
-          <div>
-            <span class="text-slate-400 block text-[11px] uppercase">Validated Edges</span>
-            <span class="text-lg font-bold text-indigo-400">{validation.totalEdges}</span>
-            <span class="text-[10px] text-slate-400 block">Semantic Relationships</span>
-          </div>
-          <div>
-            <span class="text-slate-400 block text-[11px] uppercase">Integrity Status</span>
-            <span class="text-lg font-bold text-emerald-400">100% Valid</span>
-            <span class="text-[10px] text-slate-400 block">0 Broken References</span>
-          </div>
-          <div>
-            <span class="text-slate-400 block text-[11px] uppercase">Derivation</span>
-            <span class="text-lg font-bold text-slate-200">Build-Time</span>
-            <span class="text-[10px] text-slate-400 block">Zero Runtime Latency</span>
-          </div>
+        <div class="stat-block">
+          <span class="stat-label">Validated Edges</span>
+          <span class="stat-value accent-text">{validation.totalEdges}</span>
+          <span class="stat-sub">Semantic Relationships</span>
         </div>
-      </header>
+        <div class="stat-block">
+          <span class="stat-label">Integrity Status</span>
+          <span class="stat-value success-text">100% Valid</span>
+          <span class="stat-sub">0 Broken References</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-label">Derivation</span>
+          <span class="stat-value">Build-Time</span>
+          <span class="stat-sub">Zero Runtime Latency</span>
+        </div>
+      </div>
+    </section>
 
-      <!-- Filter and Exploration Controls -->
-      <section class="mb-8 space-y-4" aria-label="Knowledge Graph Controls">
-        <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-[#12161c] border border-slate-800 rounded-xl p-4">
-          <!-- Search input & Discovery Link -->
-          <div class="flex items-center gap-2 flex-1 max-w-md">
-            <div class="relative flex-1">
-              <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 text-xs font-mono">
-                🔍
-              </span>
-              <input
-                type="search"
-                id="graph-search-input"
-                placeholder="Search graph entities..."
-                class="w-full bg-[#0d1117] border border-slate-700/80 rounded-lg pl-9 pr-3 py-2 text-xs font-mono text-slate-200 placeholder-slate-400 focus:outline-none focus:border-indigo-500 transition-colors"
-                aria-label="Filter knowledge graph nodes"
-              />
-            </div>
-            <a
-              href="/discover"
-              class="px-2.5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-indigo-400 hover:text-indigo-300 border border-slate-700 text-xs font-mono shrink-0 transition-colors"
-              title="Full Platform Discovery Search"
+    <!-- Filter and Exploration Controls -->
+    <section class="controls-section" aria-label="Knowledge Graph Controls">
+      <div class="controls-panel">
+        <!-- Search input & Discovery Link -->
+        <div class="search-wrap">
+          <div class="input-inner">
+            <span class="search-icon" aria-hidden="true">🔍</span>
+            <input
+              type="search"
+              id="graph-search-input"
+              placeholder="Search graph entities..."
+              class="graph-search-input"
+              aria-label="Filter knowledge graph nodes"
+            />
+          </div>
+          <a
+            href="/discover"
+            class="discover-btn"
+            title="Full Platform Discovery Search"
+          >
+            Discover ↗
+          </a>
+        </div>
+
+        <!-- Type filter buttons -->
+        <div class="filter-pills" id="type-filters" role="group" aria-label="Filter by Entity Type">
+          {entityTypes.map((item) => (
+            <button
+              type="button"
+              data-type-filter={item.type}
+              class:list={['filter-pill', item.type === 'all' ? 'active' : '']}
+              aria-pressed={item.type === 'all' ? 'true' : 'false'}
             >
-              Discover ↗
-            </a>
-          </div>
+              <span aria-hidden="true">{item.icon}</span>
+              <span>{item.label}</span>
+              <span class="pill-count">({item.count})</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
 
-          <!-- Type filter buttons -->
-          <div class="flex flex-wrap items-center gap-1.5" id="type-filters" role="group" aria-label="Filter by Entity Type">
-            {entityTypes.map((item) => (
-              <button
-                type="button"
-                data-type-filter={item.type}
-                class:list={[
-                  'px-2.5 py-1.5 rounded-lg text-xs font-mono transition-colors flex items-center gap-1.5 border',
-                  item.type === 'all'
-                    ? 'bg-indigo-600 text-white border-indigo-500 font-semibold active-filter'
-                    : 'bg-slate-900/80 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white',
-                ]}
-                aria-pressed={item.type === 'all' ? 'true' : 'false'}
+    <!-- Main Explorer Workspace: Visual Network Canvas + Inspector Panel -->
+    <div class="explorer-grid">
+      <!-- Interactive Graph / Matrix Visualizer -->
+      <div class="visualizer-card">
+        <!-- Canvas Toolbar Header -->
+        <div class="visualizer-toolbar">
+          <div class="toolbar-left">
+            <span class="live-dot" aria-hidden="true"></span>
+            <span class="toolbar-title">Relational Matrix & Topological Network</span>
+          </div>
+          <div class="toolbar-right">
+            <span id="visible-nodes-counter" class="visible-counter">{nodes.length} Nodes Rendered</span>
+            <button id="reset-focus-btn" class="reset-focus-btn">
+              Reset Focus
+            </button>
+          </div>
+        </div>
+
+        <!-- Interactive SVG Network Container -->
+        <div class="svg-container" id="graph-container">
+          <svg
+            id="graph-svg"
+            class="graph-svg"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+            aria-label="Interactive visual representation of the Knowledge Graph"
+          >
+            <defs>
+              <marker
+                id="edge-arrow"
+                viewBox="0 0 10 10"
+                refX="18"
+                refY="5"
+                markerWidth="5"
+                markerHeight="5"
+                orient="auto-start-reverse"
               >
-                <span>{item.icon}</span>
-                <span>{item.label}</span>
-                <span class="text-[10px] opacity-70">({item.count})</span>
-              </button>
-            ))}
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="rgba(246, 241, 232, 0.2)" />
+              </marker>
+              <marker
+                id="edge-arrow-active"
+                viewBox="0 0 10 10"
+                refX="18"
+                refY="5"
+                markerWidth="6"
+                markerHeight="6"
+                orient="auto-start-reverse"
+              >
+                <path d="M 0 1 L 9 5 L 0 9 z" fill="#7ed8c4" />
+              </marker>
+            </defs>
+            <g id="edges-group"></g>
+            <g id="nodes-group"></g>
+          </svg>
+
+          <!-- Legend Overlay -->
+          <div class="graph-legend">
+            <span class="legend-item"><span class="dot dot-project"></span> Project</span>
+            <span class="legend-item"><span class="dot dot-research"></span> Research</span>
+            <span class="legend-item"><span class="dot dot-lab"></span> Lab</span>
+            <span class="legend-item"><span class="dot dot-note"></span> Note</span>
+            <span class="legend-item"><span class="dot dot-tech"></span> Technology</span>
+            <span class="legend-item"><span class="dot dot-method"></span> Methodology</span>
           </div>
         </div>
-      </section>
-
-      <!-- Main Explorer Workspace: Visual Network Canvas + Inspector Panel -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        <!-- Interactive Graph / Matrix Visualizer (Large viewports) -->
-        <div class="lg:col-span-8 rounded-xl border border-slate-800 bg-[#0c1015] overflow-hidden relative shadow-2xl">
-          <!-- Canvas Toolbar Header -->
-          <div class="flex items-center justify-between px-4 py-2.5 bg-[#12161c] border-b border-slate-800/90 text-xs font-mono text-slate-400">
-            <div class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-              <span class="text-slate-300 font-medium">Relational Matrix & Topological Network</span>
-            </div>
-            <div class="flex items-center gap-3 text-[11px]">
-              <span id="visible-nodes-counter" class="text-slate-400">{nodes.length} Nodes Rendered</span>
-              <button id="reset-focus-btn" class="text-indigo-400 hover:text-indigo-300 underline cursor-pointer">
-                Reset Focus
-              </button>
-            </div>
-          </div>
-
-          <!-- Interactive SVG Network Container -->
-          <div class="relative w-full h-[520px] sm:h-[620px] bg-[#070a0e] overflow-hidden" id="graph-container">
-            <svg
-              id="graph-svg"
-              class="w-full h-full cursor-grab active:cursor-grabbing select-none"
-              xmlns="http://www.w3.org/2000/svg"
-              role="img"
-              aria-label="Interactive visual representation of the Knowledge Graph"
-            >
-              <defs>
-                <marker
-                  id="edge-arrow"
-                  viewBox="0 0 10 10"
-                  refX="18"
-                  refY="5"
-                  markerWidth="5"
-                  markerHeight="5"
-                  orient="auto-start-reverse"
-                >
-                  <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#334155" />
-                </marker>
-                <marker
-                  id="edge-arrow-active"
-                  viewBox="0 0 10 10"
-                  refX="18"
-                  refY="5"
-                  markerWidth="6"
-                  markerHeight="6"
-                  orient="auto-start-reverse"
-                >
-                  <path d="M 0 1 L 9 5 L 0 9 z" fill="#818cf8" />
-                </marker>
-              </defs>
-              <g id="edges-group"></g>
-              <g id="nodes-group"></g>
-            </svg>
-
-            <!-- Legend Overlay -->
-            <div class="absolute bottom-3 left-3 bg-[#12161c]/90 backdrop-blur-md border border-slate-800 rounded-lg p-2.5 text-[11px] font-mono text-slate-300 pointer-events-none flex flex-wrap gap-3">
-              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Project</span>
-              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span> Research</span>
-              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Lab</span>
-              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Note</span>
-              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-teal-500"></span> Technology</span>
-              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> Methodology</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Node Inspector / Focus Detail Panel -->
-        <aside class="lg:col-span-4 rounded-xl border border-slate-800 bg-[#12161c] p-5 sticky top-6 shadow-xl">
-          <div id="inspector-content">
-            <div class="border-b border-slate-800/80 pb-4 mb-4">
-              <div class="flex items-center justify-between gap-2 mb-2">
-                <span id="inspector-type-badge" class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold uppercase tracking-wider bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">
-                  Select a Node
-                </span>
-                <span id="inspector-id" class="text-[10px] font-mono text-slate-400 truncate max-w-[150px]">
-                  graph://topology
-                </span>
-              </div>
-              <h2 id="inspector-title" class="text-lg font-bold text-slate-100 leading-snug">
-                Click any node to inspect relationships
-              </h2>
-              <p id="inspector-summary" class="text-xs text-slate-400 mt-2 leading-relaxed">
-                Explore how projects originate from lab prototypes, research questions inform architectural choices, notes capture debugging discoveries, and technologies tie them together.
-              </p>
-              <div id="inspector-action-wrap" class="mt-4 hidden">
-                <a
-                  id="inspector-canonical-link"
-                  href="#"
-                  class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-mono font-semibold transition-colors"
-                >
-                  <span>Open Canonical Page</span>
-                  <span>→</span>
-                </a>
-              </div>
-            </div>
-
-            <!-- Connected Relationships Section -->
-            <div>
-              <h3 class="text-xs font-mono text-slate-400 uppercase tracking-wider mb-3 flex items-center justify-between">
-                <span>Direct Connections</span>
-                <span id="inspector-connections-count" class="text-slate-400 text-[10px]">(0)</span>
-              </h3>
-              <div id="inspector-connections-list" class="space-y-2 max-h-[340px] overflow-y-auto pr-1">
-                <p class="text-xs font-mono text-slate-400 italic">
-                  Select an entity in the graph or the directory below to view its direct incoming and outgoing connections.
-                </p>
-              </div>
-            </div>
-          </div>
-        </aside>
       </div>
 
-      <!-- Semantic Relationship Directory (Authoritative Textual List & Mobile Explorer) -->
-      <section class="mt-14 border-t border-slate-800/80 pt-10" aria-label="Structured Knowledge Directory">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <div>
-            <span class="text-xs font-mono text-indigo-400 font-semibold uppercase tracking-wider">
-              Accessible Directory
-            </span>
-            <h2 class="text-2xl font-bold tracking-tight text-slate-100">
-              Structured Relationship Directory
+      <!-- Node Inspector / Focus Detail Panel -->
+      <aside class="inspector-card">
+        <div id="inspector-content">
+          <div class="inspector-header">
+            <div class="inspector-badge-row">
+              <span id="inspector-type-badge" class="inspector-type-badge">
+                Select a Node
+              </span>
+              <span id="inspector-id" class="inspector-id-label">
+                graph://topology
+              </span>
+            </div>
+            <h2 id="inspector-title" class="inspector-title">
+              Click any node to inspect relationships
             </h2>
-            <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
-              Semantic, fully accessible catalog of all verified knowledge entities and their explicit connections.
+            <p id="inspector-summary" class="inspector-summary">
+              Explore how projects originate from lab prototypes, research questions inform architectural choices, notes capture debugging discoveries, and technologies tie them together.
             </p>
+            <div id="inspector-action-wrap" class="inspector-action-wrap hidden">
+              <a
+                id="inspector-canonical-link"
+                href="#"
+                class="btn-primary"
+              >
+                <span>Open Canonical Page</span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Connected Relationships Section -->
+          <div class="inspector-connections">
+            <h3 class="connections-heading">
+              <span>Direct Connections</span>
+              <span id="inspector-connections-count" class="connections-count">(0)</span>
+            </h3>
+            <div id="inspector-connections-list" class="connections-list">
+              <p class="empty-hint">
+                Select an entity in the graph or the directory below to view its direct incoming and outgoing connections.
+              </p>
+            </div>
           </div>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="directory-grid">
-          {nodes.map((node) => {
-            const directEdges = edges.filter((e) => e.source === node.id || e.target === node.id);
-            return (
-              <article
-                class="rounded-xl border border-slate-800 bg-[#12161c] p-4 flex flex-col justify-between directory-card"
-                data-node-id={node.id}
-                data-node-type={node.type}
-                data-node-title={node.title.toLowerCase()}
-              >
-                <div>
-                  <div class="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-slate-800/70">
-                    <span class="text-[10px] font-mono px-2 py-0.5 rounded border border-slate-700 bg-slate-800 text-slate-300 uppercase font-semibold">
-                      {node.type}
-                    </span>
-                    <span class="text-[11px] font-mono text-slate-400">
-                      {directEdges.length} connections
-                    </span>
-                  </div>
-
-                  <h3 class="text-sm font-bold text-slate-100 leading-snug hover:text-indigo-400 transition-colors">
-                    <a href={node.href}>{node.title}</a>
-                  </h3>
-
-                  {node.summary && (
-                    <p class="text-xs text-slate-400 mt-1.5 line-clamp-2 leading-relaxed">
-                      {node.summary}
-                    </p>
-                  )}
-                </div>
-
-                <div class="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between text-xs font-mono">
-                  <button
-                    type="button"
-                    class="text-indigo-400 hover:text-indigo-300 font-semibold select-node-btn"
-                    data-node-id={node.id}
-                  >
-                    Focus in Graph ⊕
-                  </button>
-                  <a href={node.href} class="text-slate-400 hover:text-slate-200">
-                    View Entity →
-                  </a>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      </section>
+      </aside>
     </div>
-  </main>
+
+    <!-- Semantic Relationship Directory -->
+    <section class="directory-section" aria-label="Structured Knowledge Directory">
+      <div class="directory-header">
+        <span class="directory-eyebrow">Accessible Directory</span>
+        <h2 class="directory-title">Structured Relationship Directory</h2>
+        <p class="directory-subtitle">
+          Semantic, fully accessible catalog of all verified knowledge entities and their explicit connections.
+        </p>
+      </div>
+
+      <div class="directory-grid" id="directory-grid">
+        {nodes.map((node) => {
+          const directEdges = edges.filter((e) => e.source === node.id || e.target === node.id);
+          return (
+            <article
+              class="directory-card"
+              data-node-id={node.id}
+              data-node-type={node.type}
+              data-node-title={node.title.toLowerCase()}
+            >
+              <div class="dir-card-body">
+                <div class="dir-card-meta">
+                  <span class="node-type-tag">
+                    {node.type}
+                  </span>
+                  <span class="dir-connections-count">
+                    {directEdges.length} connections
+                  </span>
+                </div>
+
+                <h3 class="dir-card-title">
+                  <a href={node.href} class="dir-card-link">{node.title}</a>
+                </h3>
+
+                {node.summary && (
+                  <p class="dir-card-summary">
+                    {node.summary}
+                  </p>
+                )}
+              </div>
+
+              <div class="dir-card-footer">
+                <button
+                  type="button"
+                  class="select-node-btn"
+                  data-node-id={node.id}
+                >
+                  Focus in Graph ⊕
+                </button>
+                <a href={node.href} class="dir-view-link">
+                  View Entity →
+                </a>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+
+    <ContactCallout
+      title="Questions on the knowledge graph architecture?"
+      subtitle="Open to discussing bidirectional ontology mapping, static relational indices, and graph visualization models."
+    />
+  </div>
 </BaseLayout>
+
+<style>
+  .page-container {
+    width: min(var(--container-max, 1200px), calc(100% - max(1.5rem, calc(env(safe-area-inset-left) + env(safe-area-inset-right) + 1rem))));
+    margin: 0 auto;
+    padding: 1rem 0 5rem;
+    padding-left: env(safe-area-inset-left, 0);
+    padding-right: env(safe-area-inset-right, 0);
+  }
+
+  .knowledge-hero {
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .stats-summary-ribbon {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(246, 241, 232, 0.09);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  .stat-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 700;
+    color: #83968e;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .stat-value {
+    font-size: 1.25rem;
+    font-weight: 800;
+    font-family: var(--font-mono, monospace);
+    color: var(--color-text, #f6f1e8);
+  }
+
+  .accent-text {
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .success-text {
+    color: #6ee7b7;
+  }
+
+  .stat-sub {
+    font-size: 0.7rem;
+    font-family: var(--font-mono, monospace);
+    color: #83968e;
+  }
+
+  .controls-section {
+    margin-bottom: 2rem;
+  }
+
+  .controls-panel {
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(246, 241, 232, 0.09);
+    border-radius: 0.875rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .search-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .input-inner {
+    position: relative;
+    flex: 1;
+    min-width: 240px;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 0.75rem;
+    pointer-events: none;
+    font-size: 0.85rem;
+  }
+
+  .graph-search-input {
+    width: 100%;
+    background: rgba(7, 17, 15, 0.95);
+    border: 1px solid rgba(246, 241, 232, 0.12);
+    border-radius: 0.5rem;
+    padding: 0.6rem 0.85rem 0.6rem 2.25rem;
+    font-size: 0.8rem;
+    font-family: var(--font-mono, monospace);
+    color: var(--color-text, #f6f1e8);
+    transition: border-color 150ms ease;
+  }
+
+  .graph-search-input:focus {
+    outline: none;
+    border-color: var(--color-accent, #7ed8c4);
+  }
+
+  .discover-btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 0.4rem 0.85rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(246, 241, 232, 0.12);
+    border-radius: 0.375rem;
+    color: var(--color-accent, #7ed8c4);
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 150ms ease;
+  }
+
+  .discover-btn:hover {
+    background: rgba(126, 216, 196, 0.1);
+    border-color: rgba(126, 216, 196, 0.35);
+  }
+
+  .filter-pills {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .filter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    color: var(--color-text-muted, #a9b8b1);
+    cursor: pointer;
+    transition: all 150ms ease;
+    min-height: 34px;
+  }
+
+  .filter-pill:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--color-text, #f6f1e8);
+  }
+
+  .filter-pill.active {
+    background: rgba(126, 216, 196, 0.15);
+    border-color: rgba(126, 216, 196, 0.4);
+    color: var(--color-accent, #7ed8c4);
+    font-weight: 700;
+  }
+
+  .pill-count {
+    font-size: 0.65rem;
+    opacity: 0.75;
+  }
+
+  .explorer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+    margin-bottom: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  .visualizer-card {
+    background: rgba(16, 26, 23, 0.85);
+    border: 1px solid rgba(246, 241, 232, 0.09);
+    border-radius: 0.875rem;
+    overflow: hidden;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  .visualizer-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    background: rgba(7, 17, 15, 0.95);
+    border-bottom: 1px solid rgba(246, 241, 232, 0.08);
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+  }
+
+  .toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .live-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: #7ed8c4;
+    box-shadow: 0 0 8px #7ed8c4;
+  }
+
+  .toolbar-title {
+    color: var(--color-text, #f6f1e8);
+    font-weight: 600;
+  }
+
+  .toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.7rem;
+  }
+
+  .visible-counter {
+    color: #83968e;
+  }
+
+  .reset-focus-btn {
+    background: none;
+    border: none;
+    color: var(--color-accent, #7ed8c4);
+    text-decoration: underline;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0;
+  }
+
+  .svg-container {
+    position: relative;
+    width: 100%;
+    height: clamp(480px, 55vw, 600px);
+    background: #070a0e;
+    overflow: hidden;
+  }
+
+  .graph-svg {
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+  }
+
+  .graph-svg:active {
+    cursor: grabbing;
+  }
+
+  .graph-legend {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 0.75rem;
+    background: rgba(16, 26, 23, 0.92);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(246, 241, 232, 0.1);
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.7rem;
+    font-family: var(--font-mono, monospace);
+    color: var(--color-text, #f6f1e8);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    pointer-events: none;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+  }
+
+  .dot-project { background: #6ee7b7; }
+  .dot-research { background: #7ed8c4; }
+  .dot-lab { background: #9bd8cf; }
+  .dot-note { background: #cbd5e1; }
+  .dot-tech { background: #f6f1e8; }
+  .dot-method { background: #3ca691; }
+
+  .inspector-card {
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(246, 241, 232, 0.09);
+    border-radius: 0.875rem;
+    padding: 1.25rem;
+    position: sticky;
+    top: 5.5rem;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  }
+
+  .inspector-header {
+    border-bottom: 1px solid rgba(246, 241, 232, 0.08);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .inspector-badge-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .inspector-type-badge {
+    font-size: 0.65rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.15rem 0.45rem;
+    border-radius: 0.25rem;
+    background: rgba(126, 216, 196, 0.15);
+    border: 1px solid rgba(126, 216, 196, 0.3);
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .inspector-id-label {
+    font-size: 0.7rem;
+    font-family: var(--font-mono, monospace);
+    color: #83968e;
+  }
+
+  .inspector-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--color-text, #f6f1e8);
+    line-height: 1.35;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .inspector-summary {
+    font-size: 0.85rem;
+    color: var(--color-text-muted, #a9b8b1);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .inspector-action-wrap {
+    margin-top: 1rem;
+  }
+
+  .inspector-action-wrap.hidden {
+    display: none;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.95rem;
+    border-radius: 0.375rem;
+    background: var(--color-accent, #7ed8c4);
+    color: #07110f;
+    font-size: 0.8rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 150ms ease;
+  }
+
+  .btn-primary:hover {
+    background: #9bd8cf;
+  }
+
+  .connections-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #83968e;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .connections-count {
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .connections-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 320px;
+    overflow-y: auto;
+  }
+
+  .empty-hint {
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    color: #83968e;
+    font-style: italic;
+    margin: 0;
+  }
+
+  .directory-section {
+    border-top: 1px solid rgba(246, 241, 232, 0.08);
+    padding-top: clamp(2rem, 4vw, 3rem);
+    margin-bottom: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  .directory-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .directory-eyebrow {
+    font-size: 0.7rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 800;
+    color: var(--color-accent, #7ed8c4);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  .directory-title {
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 800;
+    color: var(--color-text, #f6f1e8);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .directory-subtitle {
+    font-size: 0.875rem;
+    color: var(--color-text-muted, #a9b8b1);
+    max-width: 650px;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .directory-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  .directory-card {
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(246, 241, 232, 0.09);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    transition: transform 150ms ease, border-color 150ms ease;
+  }
+
+  .directory-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(126, 216, 196, 0.3);
+  }
+
+  .directory-card.hidden {
+    display: none;
+  }
+
+  .dir-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .dir-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(246, 241, 232, 0.08);
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+  }
+
+  .node-type-tag {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.15rem 0.45rem;
+    border-radius: 0.25rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .dir-connections-count {
+    color: #83968e;
+    font-size: 0.7rem;
+  }
+
+  .dir-card-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.35;
+    margin: 0;
+  }
+
+  .dir-card-link {
+    color: var(--color-text, #f6f1e8);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .dir-card-link:hover {
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .dir-card-summary {
+    font-size: 0.8rem;
+    color: var(--color-text-muted, #a9b8b1);
+    line-height: 1.5;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .dir-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(246, 241, 232, 0.08);
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+  }
+
+  .select-node-btn {
+    background: none;
+    border: none;
+    color: var(--color-accent, #7ed8c4);
+    font-weight: 600;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .select-node-btn:hover {
+    text-decoration: underline;
+  }
+
+  .dir-view-link {
+    color: var(--color-text-muted, #a9b8b1);
+    text-decoration: none;
+  }
+
+  .dir-view-link:hover {
+    color: var(--color-text, #f6f1e8);
+  }
+
+  @media (max-width: 1024px) {
+    .explorer-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .inspector-card {
+      position: static;
+    }
+
+    .directory-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .stats-summary-ribbon {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .directory-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  [data-theme="light"] .stats-summary-ribbon,
+  [data-theme="light"] .controls-panel,
+  [data-theme="light"] .visualizer-card,
+  [data-theme="light"] .inspector-card,
+  [data-theme="light"] .directory-card {
+    background: var(--color-surface-elevated, #ffffff);
+    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
+  }
+
+  [data-theme="light"] .graph-search-input {
+    background: #ffffff;
+    border-color: rgba(20, 31, 28, 0.15);
+    color: #141f1c;
+  }
+
+  [data-theme="light"] .filter-pill {
+    background: rgba(20, 31, 28, 0.04);
+    border-color: rgba(20, 31, 28, 0.09);
+    color: #465751;
+  }
+
+  [data-theme="light"] .filter-pill.active {
+    background: rgba(13, 118, 99, 0.12);
+    border-color: rgba(13, 118, 99, 0.35);
+    color: #0d7663;
+  }
+
+  [data-theme="light"] .svg-container {
+    background: #fbf9f5;
+  }
+
+  [data-theme="light"] .visualizer-toolbar {
+    background: #ffffff;
+    border-color: rgba(20, 31, 28, 0.1);
+  }
+
+  [data-theme="light"] .graph-legend {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(20, 31, 28, 0.15);
+    color: #141f1c;
+  }
+</style>
 
 <!-- Client-side Graph Exploration Script -->
 <script define:vars={{ graphDataJson }}>
@@ -319,12 +941,12 @@ const graphDataJson = JSON.stringify({
   let selectedNodeId = null;
 
   const colorMap = {
-    project: '#10b981',    // emerald
-    research: '#a855f7',   // purple
-    lab: '#f59e0b',        // amber
-    note: '#3b82f6',       // blue
-    technology: '#14b8a6', // teal
-    methodology: '#6366f1',// indigo
+    project: '#6ee7b7',
+    research: '#7ed8c4',
+    lab: '#9bd8cf',
+    note: '#cbd5e1',
+    technology: '#f6f1e8',
+    methodology: '#3ca691',
   };
 
   const svg = document.getElementById('graph-svg');
@@ -346,14 +968,13 @@ const graphDataJson = JSON.stringify({
   const inspectorConnectionsCount = document.getElementById('inspector-connections-count');
   const inspectorConnectionsList = document.getElementById('inspector-connections-list');
 
-  // Compute Layout Positions (Deterministic circular / force-clustered layout)
+  // Compute Layout Positions
   const nodePositions = new Map();
   const width = 800;
   const height = 600;
   const centerX = width / 2;
   const centerY = height / 2;
 
-  // Group nodes by type for organized cluster rings
   const typeGroups = {
     project: [],
     research: [],
@@ -369,7 +990,6 @@ const graphDataJson = JSON.stringify({
     }
   });
 
-  // Position clusters deterministically
   const typeRadius = {
     methodology: 80,
     technology: 160,
@@ -393,7 +1013,6 @@ const graphDataJson = JSON.stringify({
   function renderGraph() {
     if (!svg || !nodesGroup || !edgesGroup) return;
 
-    // Filter nodes
     const filteredNodes = graph.nodes.filter((node) => {
       const matchesType = activeFilter === 'all' || node.type === activeFilter;
       const matchesSearch =
@@ -409,7 +1028,6 @@ const graphDataJson = JSON.stringify({
       visibleCounter.textContent = `${filteredNodes.length} Nodes Rendered`;
     }
 
-    // Filter edges
     const filteredEdges = graph.edges.filter(
       (e) => visibleNodeIds.has(e.source) && visibleNodeIds.has(e.target)
     );
@@ -432,7 +1050,7 @@ const graphDataJson = JSON.stringify({
       line.setAttribute('y2', p2.y);
       line.setAttribute(
         'stroke',
-        isConnectedToSelected ? '#818cf8' : 'rgba(51, 65, 85, 0.45)'
+        isConnectedToSelected ? '#7ed8c4' : 'rgba(126, 216, 196, 0.2)'
       );
       line.setAttribute('stroke-width', isConnectedToSelected ? '2' : '1');
       if (isConnectedToSelected) {
@@ -461,33 +1079,30 @@ const graphDataJson = JSON.stringify({
       g.setAttribute('class', 'cursor-pointer group');
       g.setAttribute('data-node-id', node.id);
 
-      // Outer focus ring
       if (isSelected || isConnected) {
         const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         ring.setAttribute('r', isSelected ? '14' : '10');
         ring.setAttribute('fill', 'none');
-        ring.setAttribute('stroke', isSelected ? '#818cf8' : '#64748b');
+        ring.setAttribute('stroke', isSelected ? '#7ed8c4' : 'rgba(126, 216, 196, 0.5)');
         ring.setAttribute('stroke-width', '1.5');
         ring.setAttribute('stroke-dasharray', isSelected ? 'none' : '2,2');
         g.appendChild(ring);
       }
 
-      // Core Node Circle
       const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
       circle.setAttribute('r', isSelected ? '7' : '5');
-      circle.setAttribute('fill', colorMap[node.type] || '#94a3b8');
+      circle.setAttribute('fill', colorMap[node.type] || '#7ed8c4');
       circle.setAttribute('stroke', '#070a0e');
       circle.setAttribute('stroke-width', '1.5');
       g.appendChild(circle);
 
-      // Label
       const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
       text.setAttribute('x', '9');
       text.setAttribute('y', '3');
       text.setAttribute('font-family', 'monospace');
       text.setAttribute('font-size', isSelected ? '11px' : '9px');
       text.setAttribute('font-weight', isSelected ? 'bold' : 'normal');
-      text.setAttribute('fill', isSelected ? '#ffffff' : '#94a3b8');
+      text.setAttribute('fill', isSelected ? '#f6f1e8' : '#a9b8b1');
       text.textContent = node.title.length > 22 ? node.title.slice(0, 20) + '…' : node.title;
       g.appendChild(text);
 
@@ -499,7 +1114,6 @@ const graphDataJson = JSON.stringify({
       nodesGroup.appendChild(g);
     });
 
-    // Filter directory cards
     directoryCards.forEach((card) => {
       const cardType = card.getAttribute('data-node-type');
       const cardTitle = card.getAttribute('data-node-title') || '';
@@ -518,16 +1132,14 @@ const graphDataJson = JSON.stringify({
     const node = graph.nodes.find((n) => n.id === nodeId);
     if (!node) return;
 
-    // Update URL query param cleanly
     const url = new URL(window.location);
     url.searchParams.set('focus', nodeId);
     window.history.replaceState({}, '', url);
 
-    // Update Inspector
     if (inspectorTypeBadge) {
       inspectorTypeBadge.textContent = node.type.toUpperCase();
-      inspectorTypeBadge.style.borderColor = colorMap[node.type] || '#818cf8';
-      inspectorTypeBadge.style.color = colorMap[node.type] || '#818cf8';
+      inspectorTypeBadge.style.borderColor = colorMap[node.type] || '#7ed8c4';
+      inspectorTypeBadge.style.color = colorMap[node.type] || '#7ed8c4';
     }
     if (inspectorId) inspectorId.textContent = node.id;
     if (inspectorTitle) inspectorTitle.textContent = node.title;
@@ -535,7 +1147,6 @@ const graphDataJson = JSON.stringify({
     if (inspectorCanonicalLink) inspectorCanonicalLink.setAttribute('href', node.href);
     if (inspectorActionWrap) inspectorActionWrap.classList.remove('hidden');
 
-    // Find direct connections
     const connectedEdges = graph.edges.filter(
       (e) => e.source === nodeId || e.target === nodeId
     );
@@ -553,7 +1164,7 @@ const graphDataJson = JSON.stringify({
     if (inspectorConnectionsList) {
       if (connectedNodes.length === 0) {
         inspectorConnectionsList.innerHTML =
-          '<p class="text-xs font-mono text-slate-500 italic">No direct connections recorded.</p>';
+          '<p class="empty-hint">No direct connections recorded.</p>';
       } else {
         inspectorConnectionsList.innerHTML = connectedNodes
           .map((cn) => {
@@ -563,12 +1174,12 @@ const graphDataJson = JSON.stringify({
                 (e.target === nodeId && e.source === cn.id)
             );
             return `
-              <div class="p-2 rounded bg-[#0d1117] border border-slate-800 text-xs font-mono">
-                <div class="flex items-center justify-between text-[10px] text-slate-400 mb-1">
-                  <span class="text-indigo-400 font-semibold">${edge ? edge.label : 'Related'}</span>
-                  <span class="uppercase">${cn.type}</span>
+              <div style="padding: 0.5rem; border-radius: 0.375rem; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(246, 241, 232, 0.08); font-size: 0.75rem; font-family: monospace;">
+                <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.65rem; color: #83968e; margin-bottom: 0.25rem;">
+                  <span style="color: #7ed8c4; font-weight: 600;">${edge ? edge.label : 'Related'}</span>
+                  <span style="text-transform: uppercase;">${cn.type}</span>
                 </div>
-                <a href="${cn.href}" class="text-slate-200 hover:text-indigo-400 font-medium block truncate">
+                <a href="${cn.href}" style="color: #f6f1e8; text-decoration: none; font-weight: 500; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                   ${cn.title} →
                 </a>
               </div>
@@ -598,22 +1209,19 @@ const graphDataJson = JSON.stringify({
     if (inspectorConnectionsCount) inspectorConnectionsCount.textContent = '(0)';
     if (inspectorConnectionsList) {
       inspectorConnectionsList.innerHTML =
-        '<p class="text-xs font-mono text-slate-500 italic">Select an entity in the graph or the directory below to view its direct incoming and outgoing connections.</p>';
+        '<p class="empty-hint">Select an entity in the graph or the directory below to view its direct incoming and outgoing connections.</p>';
     }
 
     renderGraph();
   }
 
-  // Filter Buttons
   filterButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
       filterButtons.forEach((b) => {
-        b.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-500', 'font-semibold', 'active-filter');
-        b.classList.add('bg-slate-900/80', 'text-slate-300', 'border-slate-800');
+        b.classList.remove('active');
         b.setAttribute('aria-pressed', 'false');
       });
-      btn.classList.remove('bg-slate-900/80', 'text-slate-300', 'border-slate-800');
-      btn.classList.add('bg-indigo-600', 'text-white', 'border-indigo-500', 'font-semibold', 'active-filter');
+      btn.classList.add('active');
       btn.setAttribute('aria-pressed', 'true');
 
       activeFilter = btn.getAttribute('data-type-filter') || 'all';
@@ -621,7 +1229,6 @@ const graphDataJson = JSON.stringify({
     });
   });
 
-  // Search Input
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       searchQuery = e.target.value.toLowerCase().trim();
@@ -629,14 +1236,12 @@ const graphDataJson = JSON.stringify({
     });
   }
 
-  // Reset Focus Button
   if (resetBtn) {
     resetBtn.addEventListener('click', resetFocus);
   }
 
-  // Directory Cards Focus Button
   document.querySelectorAll('.select-node-btn').forEach((btn) => {
-    btn.addEventListener('click', (e) => {
+    btn.addEventListener('click', () => {
       const nodeId = btn.getAttribute('data-node-id');
       if (nodeId) {
         selectNode(nodeId);
@@ -645,7 +1250,6 @@ const graphDataJson = JSON.stringify({
     });
   });
 
-  // URL Deep-linking initialization
   const urlParams = new URLSearchParams(window.location.search);
   const initialFocus = urlParams.get('focus');
   if (initialFocus) {
@@ -654,22 +1258,3 @@ const graphDataJson = JSON.stringify({
     renderGraph();
   }
 </script>
-
-<style>
-  .knowledge-graph-page {
-    color: var(--color-text, #f6f1e8);
-  }
-
-  #graph-svg line {
-    transition: stroke 0.2s ease, stroke-width 0.2s ease;
-  }
-
-  #graph-svg g {
-    transition: transform 0.2s ease;
-  }
-
-  #graph-svg g:hover circle {
-    stroke: #818cf8;
-    stroke-width: 2.5px;
-  }
-</style>

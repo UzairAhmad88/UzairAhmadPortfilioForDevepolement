@@ -7,26 +7,24 @@ export interface Props {
 
 const { item } = Astro.props;
 
-const typeMetadata: Record<string, { label: string; icon: string; border: string; bg: string; text: string }> = {
-  project: { label: 'Project', icon: '⚡', border: 'border-emerald-500/30', bg: 'bg-emerald-500/10', text: 'text-emerald-400' },
-  research: { label: 'Research', icon: '🔬', border: 'border-purple-500/30', bg: 'bg-purple-500/10', text: 'text-purple-400' },
-  lab: { label: 'Lab Experiment', icon: '🧪', border: 'border-amber-500/30', bg: 'bg-amber-500/10', text: 'text-amber-400' },
-  note: { label: 'Engineering Note', icon: '📝', border: 'border-blue-500/30', bg: 'bg-blue-500/10', text: 'text-blue-400' },
-  technology: { label: 'Technology', icon: '🛠️', border: 'border-teal-500/30', bg: 'bg-teal-500/10', text: 'text-teal-400' },
-  methodology: { label: 'Methodology', icon: '📐', border: 'border-indigo-500/30', bg: 'bg-indigo-500/10', text: 'text-indigo-400' },
+const typeMetadata: Record<string, { label: string; icon: string; tagClass: string }> = {
+  project: { label: 'Project', icon: '⚡', tagClass: 'tag-project' },
+  research: { label: 'Research', icon: '🔬', tagClass: 'tag-research' },
+  lab: { label: 'Lab Experiment', icon: '🧪', tagClass: 'tag-lab' },
+  note: { label: 'Engineering Note', icon: '📝', tagClass: 'tag-note' },
+  technology: { label: 'Technology', icon: '🛠️', tagClass: 'tag-technology' },
+  methodology: { label: 'Methodology', icon: '📐', tagClass: 'tag-methodology' },
 };
 
 const meta = typeMetadata[item.type] || {
   label: item.type,
   icon: '•',
-  border: 'border-slate-700',
-  bg: 'bg-slate-800',
-  text: 'text-slate-300',
+  tagClass: 'tag-default',
 };
 ---
 
 <article
-  class="discovery-result-card rounded-xl border border-slate-800 bg-[#12161c] p-5 flex flex-col justify-between hover:border-slate-700 transition-all duration-200"
+  class="discovery-result-card"
   data-item-id={item.id}
   data-item-type={item.type}
   data-item-techs={item.technologies.join(',')}
@@ -34,23 +32,23 @@ const meta = typeMetadata[item.type] || {
   data-item-status={item.status || ''}
   data-item-year={item.year || ''}
 >
-  <div>
+  <div class="card-body">
     <!-- Top Metadata Strip -->
-    <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/80 text-[11px] font-mono">
-      <div class="flex items-center gap-2">
-        <span class:list={['px-2 py-0.5 rounded border uppercase font-semibold flex items-center gap-1', meta.bg, meta.text, meta.border]}>
-          <span>{meta.icon}</span>
+    <div class="card-meta-row">
+      <div class="meta-left">
+        <span class:list={['type-badge', meta.tagClass]}>
+          <span class="type-icon">{meta.icon}</span>
           <span>{meta.label}</span>
         </span>
         {item.badge && item.badge !== meta.label && (
-          <span class="text-slate-400 truncate max-w-[140px]">{item.badge}</span>
+          <span class="custom-badge">{item.badge}</span>
         )}
       </div>
 
-      <div class="flex items-center gap-2 text-slate-400 shrink-0">
-        {item.year && <span>{item.year}</span>}
+      <div class="meta-right">
+        {item.year && <span class="meta-year">{item.year}</span>}
         {item.relatedIds.length > 0 && (
-          <span class="text-indigo-400/90 text-[10px]" title="Connected entities in Knowledge Graph">
+          <span class="meta-connections" title="Connected entities in Knowledge Graph">
             {item.relatedIds.length} connected
           </span>
         )}
@@ -58,31 +56,28 @@ const meta = typeMetadata[item.type] || {
     </div>
 
     <!-- Title & Canonical Link -->
-    <h3 class="text-base font-bold text-slate-100 leading-snug group-hover:text-indigo-400 transition-colors">
-      <a href={item.href} class="hover:text-indigo-400 transition-colors">
+    <h3 class="card-title">
+      <a href={item.href} class="title-link">
         {item.title}
       </a>
     </h3>
 
     <!-- Excerpt / Short Description -->
     {item.excerpt && (
-      <p class="text-xs text-slate-400 mt-2 line-clamp-2 leading-relaxed">
+      <p class="card-excerpt">
         {item.excerpt}
       </p>
     )}
 
     <!-- Technology & Topic Chips -->
-    <div class="mt-4 flex flex-wrap gap-1.5">
+    <div class="chips-container">
       {item.technologies.slice(0, 4).map((tech) => (
-        <a
-          href={`/technology/${tech}`}
-          class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300 hover:border-indigo-500/50 hover:text-indigo-300 transition-colors"
-        >
+        <a href={`/technology/${tech}`} class="tech-chip">
           {tech}
         </a>
       ))}
       {item.topics.slice(0, 2).map((topic) => (
-        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800/60 text-slate-400 border border-slate-700/50">
+        <span class="topic-chip">
           {topic}
         </span>
       ))}
@@ -90,22 +85,265 @@ const meta = typeMetadata[item.type] || {
   </div>
 
   <!-- Card Action Footer -->
-  <div class="mt-5 pt-3 border-t border-slate-800/70 flex items-center justify-between text-xs font-mono">
+  <div class="card-footer">
     <a
       href={`/knowledge?focus=${item.id}`}
-      class="text-indigo-400 hover:text-indigo-300 font-semibold inline-flex items-center gap-1 text-[11px]"
+      class="graph-link"
       title="Inspect relationships in Knowledge Graph"
     >
       <span>Graph Connections</span>
-      <span>↗</span>
+      <span aria-hidden="true">↗</span>
     </a>
 
-    <a
-      href={item.href}
-      class="text-slate-300 hover:text-white font-medium inline-flex items-center gap-1"
-    >
+    <a href={item.href} class="view-link">
       <span>View {meta.label}</span>
-      <span>→</span>
+      <span aria-hidden="true">→</span>
     </a>
   </div>
 </article>
+
+<style>
+  .discovery-result-card {
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(246, 241, 232, 0.09);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+  }
+
+  .discovery-result-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(126, 216, 196, 0.35);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .card-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-bottom: 0.65rem;
+    border-bottom: 1px solid rgba(246, 241, 232, 0.08);
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+  }
+
+  .meta-left {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.15rem 0.45rem;
+    border-radius: 0.25rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border: 1px solid transparent;
+  }
+
+  .tag-project {
+    background: rgba(16, 185, 129, 0.15);
+    color: #6ee7b7;
+    border-color: rgba(16, 185, 129, 0.3);
+  }
+
+  .tag-research {
+    background: rgba(126, 216, 196, 0.15);
+    color: #7ed8c4;
+    border-color: rgba(126, 216, 196, 0.35);
+  }
+
+  .tag-lab {
+    background: rgba(126, 216, 196, 0.12);
+    color: #9bd8cf;
+    border-color: rgba(126, 216, 196, 0.28);
+  }
+
+  .tag-note {
+    background: rgba(126, 216, 196, 0.08);
+    color: #7ed8c4;
+    border-color: rgba(126, 216, 196, 0.22);
+  }
+
+  .tag-technology {
+    background: rgba(255, 255, 255, 0.05);
+    color: #cbd5e1;
+    border-color: rgba(246, 241, 232, 0.12);
+  }
+
+  .tag-methodology,
+  .tag-default {
+    background: rgba(255, 255, 255, 0.05);
+    color: #a9b8b1;
+    border-color: rgba(246, 241, 232, 0.09);
+  }
+
+  .type-icon {
+    font-size: 0.8rem;
+  }
+
+  .custom-badge {
+    color: #83968e;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+  }
+
+  .meta-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #83968e;
+    font-size: 0.7rem;
+  }
+
+  .meta-connections {
+    color: var(--color-accent, #7ed8c4);
+    font-weight: 600;
+  }
+
+  .card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.35;
+    margin: 0;
+  }
+
+  .title-link {
+    color: var(--color-text, #f6f1e8);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .title-link:hover,
+  .title-link:focus-visible {
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .card-excerpt {
+    font-size: 0.85rem;
+    color: var(--color-text-muted, #a9b8b1);
+    line-height: 1.5;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .chips-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.25rem;
+  }
+
+  .tech-chip {
+    font-size: 0.7rem;
+    font-family: var(--font-mono, monospace);
+    padding: 0.15rem 0.45rem;
+    border-radius: 0.25rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    color: var(--color-text-muted, #a9b8b1);
+    text-decoration: none;
+    transition: all 150ms ease;
+  }
+
+  .tech-chip:hover {
+    color: var(--color-accent, #7ed8c4);
+    border-color: rgba(126, 216, 196, 0.3);
+  }
+
+  .topic-chip {
+    font-size: 0.7rem;
+    font-family: var(--font-mono, monospace);
+    padding: 0.15rem 0.45rem;
+    border-radius: 0.25rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(246, 241, 232, 0.05);
+    color: #83968e;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(246, 241, 232, 0.08);
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+  }
+
+  .graph-link {
+    color: var(--color-accent, #7ed8c4);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .graph-link:hover {
+    text-decoration: underline;
+  }
+
+  .view-link {
+    color: var(--color-text-muted, #a9b8b1);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 150ms ease;
+  }
+
+  .view-link:hover {
+    color: var(--color-text, #f6f1e8);
+  }
+
+  [data-theme="light"] .discovery-result-card {
+    background: var(--color-surface-elevated, #ffffff);
+    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.04);
+  }
+
+  [data-theme="light"] .discovery-result-card:hover {
+    border-color: var(--color-accent, #0d7663);
+    box-shadow: 0 12px 32px rgba(20, 31, 28, 0.08);
+  }
+
+  [data-theme="light"] .title-link {
+    color: var(--color-text-primary, #141f1c);
+  }
+
+  [data-theme="light"] .card-excerpt {
+    color: var(--color-text-secondary, #465751);
+  }
+
+  [data-theme="light"] .tech-chip,
+  [data-theme="light"] .topic-chip {
+    background: rgba(20, 31, 28, 0.04);
+    border-color: rgba(20, 31, 28, 0.08);
+    color: #465751;
+  }
+
+  [data-theme="light"] .meta-connections,
+  [data-theme="light"] .graph-link {
+    color: var(--color-accent, #0d7663);
+  }
+</style>

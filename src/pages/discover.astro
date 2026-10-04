@@ -1,6 +1,9 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
+import SectionHeader from '@/components/common/SectionHeader.astro';
 import DiscoveryResultCard from '@/components/cards/DiscoveryResultCard.astro';
+import ContactCallout from '@/components/sections/ContactCallout.astro';
 import { discoveryItems, discoveryTaxonomy } from '@/data/discovery';
 import { siteConfig } from '@/data/site';
 
@@ -18,198 +21,551 @@ const discoveryDataJson = JSON.stringify({
 ---
 
 <BaseLayout seo={seo}>
-  <main id="top" class="discovery-page">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
-      <!-- Breadcrumb Navigation -->
-      <nav class="mb-8" aria-label="Breadcrumbs">
-        <ol class="flex items-center space-x-2 text-xs font-mono text-slate-400">
-          <li><a href="/" class="hover:text-indigo-400 transition-colors">Home</a></li>
-          <li class="text-slate-400">/</li>
-          <li class="text-slate-200" aria-current="page">Discover</li>
-        </ol>
-      </nav>
+  <div class="page-container">
+    <!-- Breadcrumb Navigation -->
+    <Breadcrumbs items={[{ label: 'Discover', href: '/discover' }]} />
 
-      <!-- Discovery Header -->
-      <header class="mb-10 border-b border-slate-800/80 pb-8">
-        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 text-xs font-mono font-semibold uppercase tracking-wider mb-4">
-          <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
-          Discovery & Relational Search
-        </div>
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-100 mb-4">
-          Discover Engineering Work & Research
-        </h1>
-        <p class="text-base sm:text-lg text-slate-400 max-w-3xl leading-relaxed">
-          Search across production software, quantitative research inquiries, experimental workbench prototypes, technical decision logs, and foundational technologies without generic algorithmic rankings.
-        </p>
-      </header>
+    <!-- Discovery Header -->
+    <section class="discovery-hero">
+      <SectionHeader
+        eyebrow="Discovery & Relational Search"
+        title="Discover Engineering Work & Research"
+        subtitle="Search across production software, quantitative research inquiries, experimental workbench prototypes, technical decision logs, and foundational technologies without generic algorithmic rankings."
+      />
+    </section>
 
-      <!-- Search & Filter Controls Workspace -->
-      <section class="mb-10 space-y-4" aria-label="Search and Filter Controls">
-        <div class="bg-[#12161c] border border-slate-800 rounded-xl p-5 space-y-4">
-          <!-- Primary Search Bar -->
-          <div class="relative flex items-center">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400 text-sm font-mono">
-              🔍
-            </span>
-            <input
-              type="search"
-              id="discovery-search-input"
-              placeholder="Search by keyword, technology (e.g. FastAPI, PyTorch), topic, or problem... (Press '/' to focus)"
-              class="w-full bg-[#0d1117] border border-slate-700/80 rounded-lg pl-10 pr-20 py-3 text-sm font-mono text-slate-100 placeholder-slate-400 focus:outline-none focus:border-indigo-500 transition-colors shadow-inner"
-              aria-label="Search all engineering platform content"
-              autocomplete="off"
-            />
-            <div class="absolute right-3 flex items-center gap-1.5 pointer-events-none">
-              <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono text-slate-400 bg-slate-800 border border-slate-700 rounded">
-                /
-              </kbd>
-            </div>
-          </div>
-
-          <!-- Facet Filter Bar -->
-          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pt-2 border-t border-slate-800/80">
-            <!-- Content Type Filter Pills -->
-            <div class="flex flex-wrap items-center gap-1.5" id="type-filter-group" role="group" aria-label="Filter by Content Type">
-              <button
-                type="button"
-                data-type-filter="all"
-                class="px-3 py-1.5 rounded-lg text-xs font-mono transition-colors border bg-indigo-600 text-white border-indigo-500 font-semibold active-type-btn"
-                aria-pressed="true"
-              >
-                All ({discoveryItems.length})
-              </button>
-              {discoveryTaxonomy.types.map((t) => (
-                <button
-                  type="button"
-                  data-type-filter={t.type}
-                  class="px-3 py-1.5 rounded-lg text-xs font-mono transition-colors border bg-slate-900 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white"
-                  aria-pressed="false"
-                >
-                  {t.label} ({t.count})
-                </button>
-              ))}
-            </div>
-
-            <!-- Dropdown Filters: Technology, Topic, Status -->
-            <div class="flex flex-wrap items-center gap-2 text-xs font-mono">
-              <!-- Technology Select -->
-              <select
-                id="tech-filter-select"
-                class="bg-[#0d1117] border border-slate-700/80 text-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-indigo-500"
-                aria-label="Filter by technology"
-              >
-                <option value="">All Technologies</option>
-                {discoveryTaxonomy.technologies.map((tech) => (
-                  <option value={tech.id}>
-                    {tech.name} ({tech.count})
-                  </option>
-                ))}
-              </select>
-
-              <!-- Topic Select -->
-              <select
-                id="topic-filter-select"
-                class="bg-[#0d1117] border border-slate-700/80 text-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-indigo-500"
-                aria-label="Filter by topic"
-              >
-                <option value="">All Topics</option>
-                {discoveryTaxonomy.topics.map((tp) => (
-                  <option value={tp.name}>
-                    {tp.name} ({tp.count})
-                  </option>
-                ))}
-              </select>
-
-              <!-- Reset Action -->
-              <button
-                type="button"
-                id="reset-filters-btn"
-                class="text-indigo-400 hover:text-indigo-300 underline cursor-pointer px-2 py-1 text-xs"
-              >
-                Reset All
-              </button>
-            </div>
+    <!-- Search & Filter Controls Workspace -->
+    <section class="controls-section" aria-label="Search and Filter Controls">
+      <div class="search-panel">
+        <!-- Primary Search Bar -->
+        <div class="search-input-wrap">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input
+            type="search"
+            id="discovery-search-input"
+            placeholder="Search by keyword, technology (e.g. FastAPI, PyTorch), topic, or problem... (Press '/' to focus)"
+            class="search-input"
+            aria-label="Search all engineering platform content"
+            autocomplete="off"
+          />
+          <div class="shortcut-badge">
+            <kbd class="shortcut-key">/</kbd>
           </div>
         </div>
 
-        <!-- Active Filters Strip & Results Count Announcer -->
-        <div class="flex items-center justify-between px-2 text-xs font-mono text-slate-400">
-          <div id="results-count-announcer" aria-live="polite">
-            Showing <strong class="text-slate-200" id="results-count-number">{discoveryItems.length}</strong> engineering entities
-          </div>
-          <div class="hidden sm:flex items-center gap-2 text-[11px]">
-            <span>Deterministic Keyword & Facet Match</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Discovery Results Grid -->
-      <section aria-label="Search Results">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="discovery-results-grid">
-          {discoveryItems.map((item) => (
-            <DiscoveryResultCard item={item} />
-          ))}
-        </div>
-
-        <!-- Empty State (Shown when zero results match) -->
-        <div id="empty-state-box" class="hidden rounded-xl border border-slate-800 bg-[#12161c] p-10 text-center space-y-4 my-8">
-          <div class="w-12 h-12 rounded-full bg-slate-800/80 border border-slate-700 flex items-center justify-center mx-auto text-lg text-slate-400">
-            🔍
-          </div>
-          <h2 class="text-lg font-bold text-slate-100">No matching work found</h2>
-          <p class="text-xs text-slate-400 max-w-md mx-auto leading-relaxed">
-            No engineering projects, research inquiries, prototypes, or notes match the current search query and filter criteria.
-          </p>
-          <div class="pt-2 flex flex-wrap items-center justify-center gap-3 text-xs font-mono">
+        <!-- Facet Filter Bar -->
+        <div class="facet-bar">
+          <!-- Content Type Filter Pills -->
+          <div class="type-filter-pills" id="type-filter-group" role="group" aria-label="Filter by Content Type">
             <button
               type="button"
-              id="empty-clear-btn"
-              class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-colors"
+              data-type-filter="all"
+              class="type-pill active"
+              aria-pressed="true"
             >
-              Clear Search & Filters
+              All ({discoveryItems.length})
             </button>
-            <a
-              href="/work"
-              class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors border border-slate-700"
+            {discoveryTaxonomy.types.map((t) => (
+              <button
+                type="button"
+                data-type-filter={t.type}
+                class="type-pill"
+                aria-pressed="false"
+              >
+                {t.label} ({t.count})
+              </button>
+            ))}
+          </div>
+
+          <!-- Dropdown Filters: Technology, Topic -->
+          <div class="dropdown-filters">
+            <!-- Technology Select -->
+            <select
+              id="tech-filter-select"
+              class="filter-select"
+              aria-label="Filter by technology"
             >
-              Browse Projects →
-            </a>
-            <a
-              href="/knowledge"
-              class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-indigo-300 transition-colors border border-slate-700"
+              <option value="">All Technologies</option>
+              {discoveryTaxonomy.technologies.map((tech) => (
+                <option value={tech.id}>
+                  {tech.name} ({tech.count})
+                </option>
+              ))}
+            </select>
+
+            <!-- Topic Select -->
+            <select
+              id="topic-filter-select"
+              class="filter-select"
+              aria-label="Filter by topic"
             >
-              Explore Knowledge Graph ↗
-            </a>
+              <option value="">All Topics</option>
+              {discoveryTaxonomy.topics.map((tp) => (
+                <option value={tp.name}>
+                  {tp.name} ({tp.count})
+                </option>
+              ))}
+            </select>
+
+            <!-- Reset Action -->
+            <button
+              type="button"
+              id="reset-filters-btn"
+              class="reset-btn"
+            >
+              Reset All
+            </button>
           </div>
         </div>
-      </section>
+      </div>
 
-      <!-- Knowledge Graph Bridge Callout -->
-      <section class="mt-16 border-t border-slate-800/80 pt-10">
-        <div class="rounded-xl border border-indigo-500/20 bg-gradient-to-r from-indigo-950/30 to-[#12161c] p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-          <div>
-            <span class="text-xs font-mono text-indigo-400 font-semibold uppercase tracking-wider">
-              Connected Knowledge Layer
-            </span>
-            <h2 class="text-xl font-bold text-slate-100 mt-1">
-              Prefer exploring via topological graph?
-            </h2>
-            <p class="text-xs text-slate-400 mt-1 max-w-2xl leading-relaxed">
-              The Knowledge Graph provides an interactive visual map of all 46 entities and 172 deterministic bidirectional connections.
-            </p>
-          </div>
-          <a
-            href="/knowledge"
-            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-mono font-semibold transition-colors shrink-0"
+      <!-- Active Filters Strip & Results Count Announcer -->
+      <div class="results-meta-strip">
+        <div id="results-count-announcer" class="count-announcer" aria-live="polite">
+          Showing <strong id="results-count-number">{discoveryItems.length}</strong> engineering entities
+        </div>
+        <div class="match-mode-label">
+          <span>Deterministic Keyword & Facet Match</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Discovery Results Grid -->
+    <section class="results-section" aria-label="Search Results">
+      <div class="results-grid" id="discovery-results-grid">
+        {discoveryItems.map((item) => (
+          <DiscoveryResultCard item={item} />
+        ))}
+      </div>
+
+      <!-- Empty State (Shown when zero results match) -->
+      <div id="empty-state-box" class="empty-state-box hidden">
+        <div class="empty-icon" aria-hidden="true">🔍</div>
+        <h2 class="empty-title">No matching work found</h2>
+        <p class="empty-desc">
+          No engineering projects, research inquiries, prototypes, or notes match the current search query and filter criteria.
+        </p>
+        <div class="empty-actions">
+          <button
+            type="button"
+            id="empty-clear-btn"
+            class="btn-primary"
           >
-            <span>Open Knowledge Graph</span>
-            <span>→</span>
+            Clear Search & Filters
+          </button>
+          <a href="/work" class="btn-secondary">
+            Browse Projects →
+          </a>
+          <a href="/knowledge" class="btn-secondary">
+            Explore Knowledge Graph ↗
           </a>
         </div>
-      </section>
-    </div>
-  </main>
+      </div>
+    </section>
+
+    <!-- Knowledge Graph Bridge Callout -->
+    <section class="knowledge-bridge-section">
+      <div class="bridge-card">
+        <div>
+          <span class="bridge-eyebrow">Connected Knowledge Layer</span>
+          <h2 class="bridge-title">Prefer exploring via topological graph?</h2>
+          <p class="bridge-desc">
+            The Knowledge Graph provides an interactive visual map of all 46 entities and 172 deterministic bidirectional connections.
+          </p>
+        </div>
+        <a href="/knowledge" class="bridge-btn">
+          <span>Open Knowledge Graph</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <ContactCallout
+      title="Looking for a specific system or inquiry?"
+      subtitle="Open to discussing system specifications, research methodologies, and architecture patterns."
+    />
+  </div>
 </BaseLayout>
+
+<style>
+  .page-container {
+    width: min(var(--container-max, 1200px), calc(100% - max(1.5rem, calc(env(safe-area-inset-left) + env(safe-area-inset-right) + 1rem))));
+    margin: 0 auto;
+    padding: 1rem 0 5rem;
+    padding-left: env(safe-area-inset-left, 0);
+    padding-right: env(safe-area-inset-right, 0);
+  }
+
+  .discovery-hero {
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .controls-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .search-panel {
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(246, 241, 232, 0.09);
+    border-radius: 0.875rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .search-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 1rem;
+    pointer-events: none;
+    font-size: 0.95rem;
+  }
+
+  .search-input {
+    width: 100%;
+    background: rgba(7, 17, 15, 0.95);
+    border: 1px solid rgba(246, 241, 232, 0.12);
+    border-radius: 0.5rem;
+    padding: 0.75rem 3rem 0.75rem 2.75rem;
+    font-size: 0.875rem;
+    font-family: var(--font-mono, monospace);
+    color: var(--color-text, #f6f1e8);
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: var(--color-accent, #7ed8c4);
+    box-shadow: 0 0 16px rgba(126, 216, 196, 0.2);
+  }
+
+  .search-input::placeholder {
+    color: #83968e;
+  }
+
+  .shortcut-badge {
+    position: absolute;
+    right: 0.85rem;
+    pointer-events: none;
+  }
+
+  .shortcut-key {
+    display: inline-block;
+    padding: 0.15rem 0.45rem;
+    font-size: 0.7rem;
+    font-family: var(--font-mono, monospace);
+    color: #83968e;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(246, 241, 232, 0.1);
+    border-radius: 0.25rem;
+  }
+
+  .facet-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(246, 241, 232, 0.08);
+  }
+
+  .type-filter-pills {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .type-pill {
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 600;
+    padding: 0.35rem 0.75rem;
+    border-radius: 0.375rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    color: var(--color-text-muted, #a9b8b1);
+    cursor: pointer;
+    transition: all 150ms ease;
+    min-height: 34px;
+  }
+
+  .type-pill:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--color-text, #f6f1e8);
+    border-color: rgba(126, 216, 196, 0.25);
+  }
+
+  .type-pill.active {
+    background: rgba(126, 216, 196, 0.15);
+    border-color: rgba(126, 216, 196, 0.4);
+    color: var(--color-accent, #7ed8c4);
+    font-weight: 700;
+  }
+
+  .dropdown-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .filter-select {
+    background: rgba(7, 17, 15, 0.95);
+    border: 1px solid rgba(246, 241, 232, 0.12);
+    color: var(--color-text, #f6f1e8);
+    border-radius: 0.375rem;
+    padding: 0.35rem 0.65rem;
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    cursor: pointer;
+    min-height: 34px;
+  }
+
+  .filter-select:focus {
+    outline: none;
+    border-color: var(--color-accent, #7ed8c4);
+  }
+
+  .reset-btn {
+    background: none;
+    border: none;
+    color: var(--color-accent, #7ed8c4);
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .reset-btn:hover {
+    color: #9bd8cf;
+  }
+
+  .results-meta-strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 0.25rem 0;
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    color: #83968e;
+  }
+
+  .count-announcer strong {
+    color: var(--color-text, #f6f1e8);
+  }
+
+  .results-section {
+    margin-bottom: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  .empty-state-box {
+    text-align: center;
+    padding: 4rem 1.5rem;
+    border: 1px dashed rgba(246, 241, 232, 0.12);
+    border-radius: 0.875rem;
+    background: rgba(16, 26, 23, 0.5);
+  }
+
+  .empty-state-box.hidden {
+    display: none;
+  }
+
+  .empty-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .empty-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text, #f6f1e8);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .empty-desc {
+    font-size: 0.875rem;
+    color: var(--color-text-muted, #a9b8b1);
+    max-width: 460px;
+    margin: 0 auto 1.5rem auto;
+    line-height: 1.55;
+  }
+
+  .empty-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0.5rem 1rem;
+    background: var(--color-accent, #7ed8c4);
+    color: #07110f;
+    font-weight: 700;
+    font-size: 0.8rem;
+    font-family: var(--font-mono, monospace);
+    border-radius: 0.375rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 150ms ease;
+  }
+
+  .btn-primary:hover {
+    background: #9bd8cf;
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(246, 241, 232, 0.12);
+    color: var(--color-text, #f6f1e8);
+    font-weight: 600;
+    font-size: 0.8rem;
+    font-family: var(--font-mono, monospace);
+    border-radius: 0.375rem;
+    text-decoration: none;
+    transition: all 150ms ease;
+  }
+
+  .btn-secondary:hover {
+    border-color: rgba(126, 216, 196, 0.3);
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .knowledge-bridge-section {
+    border-top: 1px solid rgba(246, 241, 232, 0.08);
+    padding-top: clamp(2rem, 4vw, 3rem);
+    margin-bottom: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  .bridge-card {
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(126, 216, 196, 0.2);
+    border-radius: 0.875rem;
+    padding: clamp(1.5rem, 3vw, 2rem);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .bridge-eyebrow {
+    font-size: 0.7rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 800;
+    color: var(--color-accent, #7ed8c4);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  .bridge-title {
+    font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+    font-weight: 800;
+    color: var(--color-text, #f6f1e8);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .bridge-desc {
+    font-size: 0.875rem;
+    color: var(--color-text-muted, #a9b8b1);
+    max-width: 620px;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .bridge-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 42px;
+    padding: 0.6rem 1.25rem;
+    background: rgba(126, 216, 196, 0.15);
+    border: 1px solid rgba(126, 216, 196, 0.35);
+    color: var(--color-accent, #7ed8c4);
+    font-weight: 700;
+    font-size: 0.85rem;
+    font-family: var(--font-mono, monospace);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 150ms ease;
+  }
+
+  .bridge-btn:hover {
+    background: var(--color-accent, #7ed8c4);
+    color: #07110f;
+  }
+
+  @media (max-width: 1024px) {
+    .results-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .results-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  [data-theme="light"] .search-panel,
+  [data-theme="light"] .bridge-card {
+    background: var(--color-surface-elevated, #ffffff);
+    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
+  }
+
+  [data-theme="light"] .search-input,
+  [data-theme="light"] .filter-select {
+    background: #ffffff;
+    border-color: rgba(20, 31, 28, 0.15);
+    color: #141f1c;
+  }
+
+  [data-theme="light"] .type-pill {
+    background: rgba(20, 31, 28, 0.04);
+    border-color: rgba(20, 31, 28, 0.09);
+    color: #465751;
+  }
+
+  [data-theme="light"] .type-pill.active {
+    background: rgba(13, 118, 99, 0.12);
+    border-color: rgba(13, 118, 99, 0.35);
+    color: #0d7663;
+  }
+
+  [data-theme="light"] .empty-state-box {
+    background: rgba(20, 31, 28, 0.02);
+    border-color: rgba(20, 31, 28, 0.12);
+  }
+</style>
 
 <!-- Client-side Search and Discovery Engine Script -->
 <script define:vars={{ discoveryDataJson }}>
@@ -222,241 +578,188 @@ const discoveryDataJson = JSON.stringify({
   let currentTech = '';
   let currentTopic = '';
 
-  const searchInput = document.getElementById('discovery-search-input');
-  const typeButtons = document.querySelectorAll('#type-filter-group button');
-  const techSelect = document.getElementById('tech-filter-select');
-  const topicSelect = document.getElementById('topic-filter-select');
-  const resetBtn = document.getElementById('reset-filters-btn');
-  const emptyClearBtn = document.getElementById('empty-clear-btn');
-  const countNumber = document.getElementById('results-count-number');
-  const emptyBox = document.getElementById('empty-state-box');
-  const cards = document.querySelectorAll('.discovery-result-card');
+  function setupDiscoveryEngine() {
+    const searchInput = document.getElementById('discovery-search-input');
+    const typeButtons = document.querySelectorAll('#type-filter-group button');
+    const techSelect = document.getElementById('tech-filter-select');
+    const topicSelect = document.getElementById('topic-filter-select');
+    const resetBtn = document.getElementById('reset-filters-btn');
+    const emptyClearBtn = document.getElementById('empty-clear-btn');
+    const countNumber = document.getElementById('results-count-number');
+    const emptyBox = document.getElementById('empty-state-box');
+    const cards = document.querySelectorAll('.discovery-result-card');
 
-  // Alias dictionary for search expansion
-  const TECH_ALIASES = {
-    postgres: 'postgresql',
-    pgsql: 'postgresql',
-    py: 'python',
-    ts: 'typescript',
-    js: 'javascript',
-    reactjs: 'react',
-    'react.js': 'react',
-    tf: 'pytorch',
-    torch: 'pytorch',
-    scikit: 'scikit-learn',
-    sklearn: 'scikit-learn',
-    ml: 'scikit-learn',
-    tailwind: 'tailwindcss',
-    node: 'nodejs',
-  };
+    if (!searchInput) return;
 
-  function updateDiscovery() {
-    const rawQuery = currentQuery.trim().toLowerCase();
-    const queryTokens = rawQuery ? rawQuery.split(/\s+/).filter(Boolean) : [];
+    // Alias dictionary for search expansion
+    const TECH_ALIASES = {
+      postgres: 'postgresql',
+      pgsql: 'postgresql',
+      py: 'python',
+      ts: 'typescript',
+      js: 'javascript',
+      reactjs: 'react',
+      'react.js': 'react',
+      tf: 'pytorch',
+      torch: 'pytorch',
+      scikit: 'scikit-learn',
+      sklearn: 'scikit-learn',
+      ml: 'scikit-learn',
+      tailwind: 'tailwindcss',
+      node: 'nodejs',
+    };
 
-    const expandedAliases = [];
-    if (rawQuery && TECH_ALIASES[rawQuery]) {
-      expandedAliases.push(TECH_ALIASES[rawQuery]);
-    }
-    queryTokens.forEach((tok) => {
-      if (TECH_ALIASES[tok]) expandedAliases.push(TECH_ALIASES[tok]);
-    });
-
-    let visibleCount = 0;
-
-    cards.forEach((card) => {
-      const itemType = card.getAttribute('data-item-type');
-      const itemTechs = (card.getAttribute('data-item-techs') || '').split(',').filter(Boolean);
-      const itemTopics = (card.getAttribute('data-item-topics') || '').split(',').filter(Boolean);
-      const cardText = card.textContent?.toLowerCase() || '';
-
-      // 1. Facet Filtering
-      if (currentType !== 'all' && itemType !== currentType) {
-        card.classList.add('hidden');
-        return;
-      }
-
-      if (currentTech) {
-        const hasTech = itemTechs.some(
-          (t) => t.toLowerCase() === currentTech.toLowerCase()
-        );
-        if (!hasTech) {
-          card.classList.add('hidden');
-          return;
-        }
-      }
-
-      if (currentTopic) {
-        const hasTopic = itemTopics.some(
-          (tp) => tp.toLowerCase() === currentTopic.toLowerCase()
-        );
-        if (!hasTopic) {
-          card.classList.add('hidden');
-          return;
-        }
-      }
-
-      // 2. Query Search
-      if (queryTokens.length > 0) {
-        const matchesDirect = queryTokens.every((tok) => cardText.includes(tok));
-        const matchesAlias = expandedAliases.some((alias) =>
-          itemTechs.some((t) => t.toLowerCase().includes(alias))
-        );
-
-        if (!matchesDirect && !matchesAlias) {
-          card.classList.add('hidden');
-          return;
-        }
-      }
-
-      card.classList.remove('hidden');
-      visibleCount++;
-    });
-
-    if (countNumber) {
-      countNumber.textContent = String(visibleCount);
+    function normalizeQuery(q) {
+      const trimmed = q.trim().toLowerCase();
+      return TECH_ALIASES[trimmed] || trimmed;
     }
 
-    if (emptyBox) {
-      if (visibleCount === 0) {
-        emptyBox.classList.remove('hidden');
-      } else {
-        emptyBox.classList.add('hidden');
+    function runFilter() {
+      const q = normalizeQuery(currentQuery);
+      let matchCount = 0;
+
+      cards.forEach((card) => {
+        const id = card.getAttribute('data-item-id') || '';
+        const type = card.getAttribute('data-item-type') || '';
+        const techs = (card.getAttribute('data-item-techs') || '').toLowerCase().split(',');
+        const topics = (card.getAttribute('data-item-topics') || '').toLowerCase().split(',');
+        const cardText = card.textContent?.toLowerCase() || '';
+
+        // Check Type Filter
+        if (currentType !== 'all' && type !== currentType) {
+          card.style.display = 'none';
+          return;
+        }
+
+        // Check Tech Select Filter
+        if (currentTech && !techs.includes(currentTech.toLowerCase())) {
+          card.style.display = 'none';
+          return;
+        }
+
+        // Check Topic Select Filter
+        if (currentTopic && !topics.includes(currentTopic.toLowerCase())) {
+          card.style.display = 'none';
+          return;
+        }
+
+        // Check Text Search Query
+        if (q) {
+          const matchTitleOrDesc = cardText.includes(q);
+          const matchTech = techs.some((t) => t.includes(q));
+          const matchTopic = topics.some((tp) => tp.includes(q));
+          if (!matchTitleOrDesc && !matchTech && !matchTopic) {
+            card.style.display = 'none';
+            return;
+          }
+        }
+
+        // If all conditions pass:
+        card.style.display = 'flex';
+        matchCount++;
+      });
+
+      if (countNumber) countNumber.textContent = matchCount.toString();
+      if (emptyBox) {
+        if (matchCount === 0) {
+          emptyBox.classList.remove('hidden');
+        } else {
+          emptyBox.classList.add('hidden');
+        }
       }
     }
 
-    // Synchronize URL parameters cleanly
-    syncUrlParams();
-  }
-
-  function syncUrlParams() {
-    const url = new URL(window.location);
-    if (currentQuery) url.searchParams.set('q', currentQuery);
-    else url.searchParams.delete('q');
-
-    if (currentType && currentType !== 'all') url.searchParams.set('type', currentType);
-    else url.searchParams.delete('type');
-
-    if (currentTech) url.searchParams.set('tech', currentTech);
-    else url.searchParams.delete('tech');
-
-    if (currentTopic) url.searchParams.set('topic', currentTopic);
-    else url.searchParams.delete('topic');
-
-    window.history.replaceState({}, '', url);
-  }
-
-  function resetAll() {
-    currentQuery = '';
-    currentType = 'all';
-    currentTech = '';
-    currentTopic = '';
-
-    if (searchInput) searchInput.value = '';
-    if (techSelect) techSelect.value = '';
-    if (topicSelect) topicSelect.value = '';
-
-    typeButtons.forEach((btn) => {
-      btn.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-500', 'font-semibold', 'active-type-btn');
-      btn.classList.add('bg-slate-900', 'text-slate-300', 'border-slate-800');
-      btn.setAttribute('aria-pressed', 'false');
-      if (btn.getAttribute('data-type-filter') === 'all') {
-        btn.classList.remove('bg-slate-900', 'text-slate-300', 'border-slate-800');
-        btn.classList.add('bg-indigo-600', 'text-white', 'border-indigo-500', 'font-semibold', 'active-type-btn');
-        btn.setAttribute('aria-pressed', 'true');
-      }
-    });
-
-    updateDiscovery();
-  }
-
-  // Event Listeners
-  if (searchInput) {
+    // Event Listeners
     searchInput.addEventListener('input', (e) => {
       currentQuery = e.target.value;
-      updateDiscovery();
+      runFilter();
     });
-  }
 
-  // Keyboard shortcut '/' to focus search
-  window.addEventListener('keydown', (e) => {
-    if (e.key === '/' && document.activeElement !== searchInput) {
-      e.preventDefault();
-      searchInput?.focus();
-      searchInput?.select();
-    }
-  });
-
-  // Type filter buttons
-  typeButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      typeButtons.forEach((b) => {
-        b.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-500', 'font-semibold', 'active-type-btn');
-        b.classList.add('bg-slate-900', 'text-slate-300', 'border-slate-800');
-        b.setAttribute('aria-pressed', 'false');
-      });
-      btn.classList.remove('bg-slate-900', 'text-slate-300', 'border-slate-800');
-      btn.classList.add('bg-indigo-600', 'text-white', 'border-indigo-500', 'font-semibold', 'active-type-btn');
-      btn.setAttribute('aria-pressed', 'true');
-
-      currentType = btn.getAttribute('data-type-filter') || 'all';
-      updateDiscovery();
-    });
-  });
-
-  // Technology select
-  if (techSelect) {
-    techSelect.addEventListener('change', (e) => {
-      currentTech = e.target.value;
-      updateDiscovery();
-    });
-  }
-
-  // Topic select
-  if (topicSelect) {
-    topicSelect.addEventListener('change', (e) => {
-      currentTopic = e.target.value;
-      updateDiscovery();
-    });
-  }
-
-  // Reset buttons
-  if (resetBtn) resetBtn.addEventListener('click', resetAll);
-  if (emptyClearBtn) emptyClearBtn.addEventListener('click', resetAll);
-
-  // Initialize from URL query parameters
-  const params = new URLSearchParams(window.location.search);
-  const qParam = params.get('q');
-  const typeParam = params.get('type');
-  const techParam = params.get('tech');
-  const topicParam = params.get('topic');
-
-  if (qParam) {
-    currentQuery = qParam;
-    if (searchInput) searchInput.value = qParam;
-  }
-  if (typeParam) {
-    currentType = typeParam;
     typeButtons.forEach((btn) => {
-      if (btn.getAttribute('data-type-filter') === typeParam) {
-        btn.click();
+      btn.addEventListener('click', () => {
+        typeButtons.forEach((b) => {
+          b.classList.remove('active');
+          b.setAttribute('aria-pressed', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
+        currentType = btn.getAttribute('data-type-filter') || 'all';
+        runFilter();
+      });
+    });
+
+    if (techSelect) {
+      techSelect.addEventListener('change', (e) => {
+        currentTech = e.target.value;
+        runFilter();
+      });
+    }
+
+    if (topicSelect) {
+      topicSelect.addEventListener('change', (e) => {
+        currentTopic = e.target.value;
+        runFilter();
+      });
+    }
+
+    function resetAll() {
+      currentQuery = '';
+      currentType = 'all';
+      currentTech = '';
+      currentTopic = '';
+
+      if (searchInput) searchInput.value = '';
+      if (techSelect) techSelect.value = '';
+      if (topicSelect) topicSelect.value = '';
+
+      typeButtons.forEach((b) => {
+        const isAll = b.getAttribute('data-type-filter') === 'all';
+        b.classList.toggle('active', isAll);
+        b.setAttribute('aria-pressed', isAll ? 'true' : 'false');
+      });
+
+      runFilter();
+    }
+
+    if (resetBtn) resetBtn.addEventListener('click', resetAll);
+    if (emptyClearBtn) emptyClearBtn.addEventListener('click', resetAll);
+
+    // Global keyboard shortcut '/' to focus search
+    window.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement !== searchInput) {
+        e.preventDefault();
+        searchInput?.focus();
       }
     });
-  }
-  if (techParam) {
-    currentTech = techParam;
-    if (techSelect) techSelect.value = techParam;
-  }
-  if (topicParam) {
-    currentTopic = topicParam;
-    if (topicSelect) topicSelect.value = topicParam;
+
+    // Handle initial URL queries
+    const params = new URLSearchParams(window.location.search);
+    const qParam = params.get('q');
+    const typeParam = params.get('type');
+    const techParam = params.get('tech');
+
+    if (qParam && searchInput) {
+      searchInput.value = qParam;
+      currentQuery = qParam;
+    }
+
+    if (typeParam) {
+      currentType = typeParam;
+      typeButtons.forEach((b) => {
+        const matches = b.getAttribute('data-type-filter') === typeParam;
+        b.classList.toggle('active', matches);
+        b.setAttribute('aria-pressed', matches ? 'true' : 'false');
+      });
+    }
+
+    if (techParam && techSelect) {
+      techSelect.value = techParam;
+      currentTech = techParam;
+    }
+
+    runFilter();
   }
 
-  updateDiscovery();
+  setupDiscoveryEngine();
+  document.addEventListener('astro:page-load', setupDiscoveryEngine);
 </script>
-
-<style>
-  .discovery-page {
-    color: var(--color-text, #f6f1e8);
-  }
-</style>
