@@ -1,6 +1,7 @@
 ---
 import { primaryNavigation } from '@/data/navigation';
 import { siteConfig } from '@/data/site';
+import ThemeToggle from '@/components/common/ThemeToggle.astro';
 
 export interface Props {
   currentPath?: string;
@@ -21,17 +22,20 @@ const { currentPath = '' } = Astro.props;
   <div class="drawer-content">
     <div class="drawer-header">
       <span class="drawer-brand">{siteConfig.name}</span>
-      <button
-        type="button"
-        class="drawer-close"
-        id="drawer-close-btn"
-        aria-label="Close navigation menu"
-      >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
+      <div class="drawer-header-actions">
+        <ThemeToggle />
+        <button
+          type="button"
+          class="drawer-close"
+          id="drawer-close-btn"
+          aria-label="Close navigation menu"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
     </div>
 
     <nav class="drawer-nav" aria-label="Mobile Primary Navigation">
@@ -93,21 +97,25 @@ const { currentPath = '' } = Astro.props;
     -webkit-backdrop-filter: blur(8px);
   }
 
+  [data-theme="light"] .drawer-backdrop {
+    background: rgba(20, 31, 28, 0.5);
+  }
+
   .drawer-content {
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     width: min(340px, 88vw);
-    background: #0b1513;
-    border-left: 1px solid rgba(126, 216, 196, 0.2);
+    background: var(--color-background-subtle, #0b1513);
+    border-left: 1px solid var(--color-border, rgba(126, 216, 196, 0.2));
     padding: max(1.5rem, env(safe-area-inset-top)) max(1.5rem, env(safe-area-inset-right)) max(1.5rem, env(safe-area-inset-bottom)) 1.5rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     transform: translateX(100%);
-    transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.6);
+    transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1), background-color var(--transition-fast);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.4);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
@@ -121,24 +129,30 @@ const { currentPath = '' } = Astro.props;
     align-items: center;
     justify-content: space-between;
     padding-bottom: 1.25rem;
-    border-bottom: 1px solid rgba(246, 241, 232, 0.1);
+    border-bottom: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.1));
   }
 
   .drawer-brand {
     font-weight: 700;
     font-size: 1.1rem;
-    color: var(--ink, #f6f1e8);
+    color: var(--color-text-primary, #f6f1e8);
+  }
+
+  .drawer-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   .drawer-close {
     background: transparent;
-    border: 1px solid rgba(246, 241, 232, 0.15);
-    color: var(--muted, #a9b8b1);
+    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.15));
+    color: var(--color-text-secondary, #a9b8b1);
     width: 2.75rem;
     height: 2.75rem;
     min-width: var(--touch-target-min, 44px);
     min-height: var(--touch-target-min, 44px);
-    border-radius: 0.5rem;
+    border-radius: var(--radius-md, 8px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -148,8 +162,8 @@ const { currentPath = '' } = Astro.props;
 
   .drawer-close:hover,
   .drawer-close:focus-visible {
-    color: var(--teal, #7ed8c4);
-    border-color: var(--teal, #7ed8c4);
+    color: var(--color-accent, #7ed8c4);
+    border-color: var(--color-accent, #7ed8c4);
     outline: none;
   }
 
@@ -167,24 +181,24 @@ const { currentPath = '' } = Astro.props;
     align-items: center;
     min-height: var(--touch-target-min, 44px);
     padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
+    border-radius: var(--radius-md, 8px);
     font-size: 1.05rem;
     font-weight: 600;
-    color: var(--muted, #a9b8b1);
+    color: var(--color-text-secondary, #a9b8b1);
     text-decoration: none;
     transition: background 150ms ease, color 150ms ease;
   }
 
   .drawer-link:hover,
   .drawer-link:focus-visible {
-    background: rgba(126, 216, 196, 0.08);
-    color: var(--ink, #f6f1e8);
+    background: var(--color-surface-hover, rgba(126, 216, 196, 0.08));
+    color: var(--color-text-primary, #f6f1e8);
     outline: none;
   }
 
   .drawer-link.active {
-    background: rgba(126, 216, 196, 0.14);
-    color: var(--teal, #7ed8c4);
+    background: var(--color-accent-muted, rgba(126, 216, 196, 0.14));
+    color: var(--color-accent, #7ed8c4);
     font-weight: 700;
   }
 
@@ -193,7 +207,7 @@ const { currentPath = '' } = Astro.props;
     flex-direction: column;
     gap: 1.25rem;
     padding-top: 1.25rem;
-    border-top: 1px solid rgba(246, 241, 232, 0.1);
+    border-top: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.1));
   }
 
   .drawer-cta-button {
@@ -201,92 +215,85 @@ const { currentPath = '' } = Astro.props;
     align-items: center;
     justify-content: center;
     min-height: var(--touch-target-min, 44px);
-    text-align: center;
-    padding: 0.85rem 1rem;
-    background: var(--teal, #7ed8c4);
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius-md, 8px);
+    background: var(--color-accent, #7ed8c4);
     color: #07110f;
-    font-weight: 800;
+    font-weight: 700;
     font-size: 0.95rem;
-    border-radius: 0.5rem;
     text-decoration: none;
-    transition: background 150ms ease, box-shadow 150ms ease;
+    transition: opacity 150ms ease, transform 150ms ease;
   }
 
-  .drawer-cta-button:hover,
-  .drawer-cta-button:focus-visible {
-    background: #9bd8cf;
-    box-shadow: 0 0 20px rgba(126, 216, 196, 0.35);
-    outline: none;
+  .drawer-cta-button:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
   }
 
   .drawer-socials {
     display: flex;
+    align-items: center;
     justify-content: space-around;
     gap: 0.5rem;
   }
 
   .social-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: var(--touch-target-min, 44px);
-    padding: 0.5rem 0.75rem;
-    color: var(--text-muted, #94a3b8);
-    font-size: 0.875rem;
-    font-weight: 500;
+    color: var(--color-text-muted, #a9b8b1);
+    font-size: 0.85rem;
     text-decoration: none;
-    transition: color 150ms ease;
+    padding: 0.5rem;
+    min-height: var(--touch-target-min, 44px);
+    display: flex;
+    align-items: center;
   }
 
-  .social-link:hover,
-  .social-link:focus-visible {
-    color: var(--text-primary, #f8fafc);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .mobile-drawer,
-    .drawer-content {
-      transition: none !important;
-    }
+  .social-link:hover {
+    color: var(--color-accent, #7ed8c4);
   }
 </style>
 
 <script>
-  function setupDrawer() {
-    const openBtn = document.getElementById('mobile-menu-trigger');
+  function setupMobileDrawer() {
+    const trigger = document.getElementById('mobile-menu-trigger');
+    const drawer = document.getElementById('mobile-nav-drawer');
     const closeBtn = document.getElementById('drawer-close-btn');
     const backdrop = document.getElementById('drawer-backdrop');
-    const drawer = document.getElementById('mobile-nav-drawer');
 
-    if (!drawer || !openBtn) return;
+    if (!trigger || !drawer || !closeBtn || !backdrop) return;
 
-    function openMenu() {
-      drawer?.classList.add('is-open');
-      drawer?.setAttribute('aria-hidden', 'false');
-      openBtn?.setAttribute('aria-expanded', 'true');
+    function openDrawer() {
+      if (!drawer || !trigger) return;
+      drawer.classList.add('is-open');
+      drawer.setAttribute('aria-hidden', 'false');
+      trigger.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
       closeBtn?.focus();
     }
 
-    function closeMenu() {
-      drawer?.classList.remove('is-open');
-      drawer?.setAttribute('aria-hidden', 'true');
-      openBtn?.setAttribute('aria-expanded', 'false');
+    function closeDrawer() {
+      if (!drawer || !trigger) return;
+      drawer.classList.remove('is-open');
+      drawer.setAttribute('aria-hidden', 'true');
+      trigger.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
-      openBtn?.focus();
+      trigger.focus();
     }
 
-    openBtn.addEventListener('click', openMenu);
-    closeBtn?.addEventListener('click', closeMenu);
-    backdrop?.addEventListener('click', closeMenu);
+    trigger.onclick = openDrawer;
+    closeBtn.onclick = closeDrawer;
+    backdrop.onclick = closeDrawer;
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && drawer?.classList.contains('is-open')) {
-        closeMenu();
+        closeDrawer();
       }
     });
   }
 
-  setupDrawer();
-  document.addEventListener('astro:after-swap', setupDrawer);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupMobileDrawer);
+  } else {
+    setupMobileDrawer();
+  }
+  document.addEventListener('astro:page-load', setupMobileDrawer);
 </script>

@@ -20,7 +20,7 @@ body {
   background-image:
     radial-gradient(circle at 18% 4%, rgba(126, 216, 196, 0.12), transparent 28rem),
     radial-gradient(circle at 86% 16%, rgba(210, 160, 113, 0.08), transparent 24rem),
-    linear-gradient(180deg, #07110f 0%, #0c1714 50%, #07110f 100%);
+    linear-gradient(180deg, var(--color-background, #07110f) 0%, var(--color-background-subtle, #0c1714) 50%, var(--color-background, #07110f) 100%);
   background-attachment: fixed;
   color: var(--color-text-primary, #f6f1e8);
   font-family: var(--font-sans);
@@ -29,6 +29,28 @@ body {
   letter-spacing: var(--letter-spacing-normal, 0);
   overflow-x: hidden;
   min-width: 320px;
+  transition: background-color var(--duration-normal) var(--ease-standard), color var(--duration-normal) var(--ease-standard);
+}
+
+[data-theme="light"] body {
+  background-image:
+    radial-gradient(circle at 18% 4%, rgba(13, 118, 99, 0.06), transparent 28rem),
+    radial-gradient(circle at 86% 16%, rgba(160, 100, 45, 0.05), transparent 24rem),
+    linear-gradient(180deg, var(--color-background, #fbf9f5) 0%, var(--color-background-subtle, #f4f0e8) 50%, var(--color-background, #fbf9f5) 100%);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) body {
+    background-image:
+      radial-gradient(circle at 18% 4%, rgba(13, 118, 99, 0.06), transparent 28rem),
+      radial-gradient(circle at 86% 16%, rgba(160, 100, 45, 0.05), transparent 24rem),
+      linear-gradient(180deg, var(--color-background, #fbf9f5) 0%, var(--color-background-subtle, #f4f0e8) 50%, var(--color-background, #fbf9f5) 100%);
+  }
+}
+
+::selection {
+  background: var(--color-accent-muted, rgba(126, 216, 196, 0.25));
+  color: var(--color-text-primary);
 }
 
 /* Responsive Media & Embeds */
@@ -141,6 +163,7 @@ pre {
   -webkit-overflow-scrolling: touch;
   white-space: pre;
   word-wrap: normal;
+  color: var(--color-text-primary);
 }
 
 pre code {

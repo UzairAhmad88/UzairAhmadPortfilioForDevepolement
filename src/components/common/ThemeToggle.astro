@@ -1,0 +1,163 @@
+---
+/**
+ * ThemeToggle.astro — Accessible Theme Switcher (Theme 2.0)
+ * Allows visitors to toggle between Dark Mode, Light Mode, and System Default.
+ */
+export interface Props {
+  className?: string;
+}
+
+const { className = '' } = Astro.props;
+---
+
+<button
+  type="button"
+  id="theme-toggle-btn"
+  class:list={['theme-toggle-button', className]}
+  aria-label="Switch visual theme"
+  title="Switch visual theme (Light / Dark)"
+>
+  <!-- Sun Icon (shown in Dark Mode to switch to Light) -->
+  <svg class="theme-icon icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="5"></circle>
+    <line x1="12" y1="1" x2="12" y2="3"></line>
+    <line x1="12" y1="21" x2="12" y2="23"></line>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+    <line x1="1" y1="12" x2="3" y2="12"></line>
+    <line x1="21" y1="12" x2="23" y2="12"></line>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+  </svg>
+
+  <!-- Moon Icon (shown in Light Mode to switch to Dark) -->
+  <svg class="theme-icon icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+  </svg>
+</button>
+
+<script>
+  function setupThemeToggle() {
+    const storageKey = 'ua_portfolio_theme';
+    const toggleBtns = document.querySelectorAll<HTMLButtonElement>('#theme-toggle-btn');
+
+    function getCurrentTheme(): 'light' | 'dark' {
+      const current = document.documentElement.getAttribute('data-theme');
+      if (current === 'light') return 'light';
+      return 'dark';
+    }
+
+    function updateButtonUI() {
+      const current = getCurrentTheme();
+      toggleBtns.forEach((btn) => {
+        btn.setAttribute('aria-label', `Current theme: ${current}. Click to switch to ${current === 'dark' ? 'light' : 'dark'} mode.`);
+        btn.setAttribute('title', `Switch to ${current === 'dark' ? 'Light' : 'Dark'} mode`);
+      });
+    }
+
+    function toggleTheme() {
+      const current = getCurrentTheme();
+      const nextTheme = current === 'dark' ? 'light' : 'dark';
+
+      document.documentElement.setAttribute('data-theme', nextTheme);
+      document.documentElement.style.colorScheme = nextTheme;
+
+      try {
+        localStorage.setItem(storageKey, nextTheme);
+      } catch (e) {
+        // LocalStorage access might be restricted in private browsing
+      }
+
+      updateButtonUI();
+
+      // Dispatch custom event for dynamic components (like visualizations/charts)
+      window.dispatchEvent(new CustomEvent('theme-changed', { detail: { theme: nextTheme } }));
+    }
+
+    toggleBtns.forEach((btn) => {
+      // Remove previous listener clone to avoid duplicate listeners on page navigation
+      btn.onclick = toggleTheme;
+    });
+
+    // Listen to OS system preference changes if user has not set an explicit override
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
+    mediaQuery.addEventListener('change', (e) => {
+      const saved = localStorage.getItem(storageKey);
+      if (!saved || saved === 'system') {
+        const newTheme = e.matches ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        document.documentElement.style.colorScheme = newTheme;
+        updateButtonUI();
+      }
+    });
+
+    updateButtonUI();
+  }
+
+  // Setup on initial load and Astro page swaps
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupThemeToggle);
+  } else {
+    setupThemeToggle();
+  }
+  document.addEventListener('astro:page-load', setupThemeToggle);
+</script>
+
+<style>
+  .theme-toggle-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.15));
+    background: var(--color-surface, rgba(255, 255, 255, 0.04));
+    color: var(--color-text-secondary, #a9b8b1);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+  }
+
+  .theme-toggle-button:hover {
+    background: var(--color-surface-hover, rgba(255, 255, 255, 0.08));
+    color: var(--color-text-primary, #f6f1e8);
+    border-color: var(--color-accent, #7ed8c4);
+  }
+
+  .theme-toggle-button:focus-visible {
+    outline: 2px solid var(--color-accent, #7ed8c4);
+    outline-offset: 2px;
+  }
+
+  .theme-icon {
+    transition: transform var(--duration-fast) var(--ease-standard);
+  }
+
+  /* In Dark Theme: show Sun, hide Moon */
+  :root:not([data-theme="light"]) .icon-moon,
+  [data-theme="dark"] .icon-moon {
+    display: none;
+  }
+
+  :root:not([data-theme="light"]) .icon-sun,
+  [data-theme="dark"] .icon-sun {
+    display: block;
+  }
+
+  /* In Light Theme: show Moon, hide Sun */
+  [data-theme="light"] .icon-sun {
+    display: none;
+  }
+
+  [data-theme="light"] .icon-moon {
+    display: block;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .theme-toggle-button, .theme-icon {
+      transition: none;
+    }
+  }
+</style>

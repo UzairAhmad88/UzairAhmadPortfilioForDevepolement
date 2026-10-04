@@ -1,6 +1,8 @@
 :root {
+  color-scheme: dark;
+
   /* ============================================================
-     1. SEMANTIC COLOR SYSTEM
+     1. SEMANTIC COLOR SYSTEM (DARK THEME — DEFAULT)
      ============================================================ */
   /* Backgrounds & Canvas */
   --color-background: #07110f;
@@ -14,6 +16,7 @@
   --color-surface: rgba(255, 255, 255, 0.035);
   --color-surface-hover: rgba(255, 255, 255, 0.06);
   --color-surface-elevated: rgba(255, 255, 255, 0.08);
+  --color-surface-card: #101a17;
 
   /* Typography / Text Colors */
   --color-text-primary: #f6f1e8;
@@ -160,4 +163,143 @@
      8. ACCESSIBILITY & TOUCH TARGETS (WCAG 2.5.5 / 2.5.8)
      ============================================================ */
   --touch-target-min: 44px;
+}
+
+/* ============================================================
+   LIGHT THEME TOKENS
+   Applied via [data-theme="light"] or automatic system preference
+   ============================================================ */
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Backgrounds & Canvas */
+  --color-background: #fbf9f5;
+  --color-background-subtle: #f4f0e8;
+  --color-canvas: #fbf9f5;
+  --color-canvas-subtle: #f4f0e8;
+  --color-canvas-card: #f4f0e8;
+  --bg-surface: #f4f0e8;
+
+  /* Surfaces & Elevation */
+  --color-surface: rgba(20, 31, 28, 0.04);
+  --color-surface-hover: rgba(20, 31, 28, 0.07);
+  --color-surface-elevated: #ffffff;
+  --color-surface-card: #f2ede4;
+
+  /* Typography / Text Colors */
+  --color-text-primary: #141f1c;
+  --color-text-secondary: #465751;
+  --color-text-tertiary: rgba(20, 31, 28, 0.65);
+  --color-text-muted: #5d6f68;
+
+  /* Borders */
+  --color-border: rgba(20, 31, 28, 0.12);
+  --color-border-subtle: rgba(20, 31, 28, 0.08);
+  --color-border-strong: rgba(20, 31, 28, 0.24);
+
+  /* Brand Accents (High Contrast WCAG AA compliant on light canvas) */
+  --color-accent: #0d7663;
+  --color-accent-hover: #09594b;
+  --color-accent-muted: rgba(13, 118, 99, 0.12);
+  --color-accent-teal: #0d7663;
+  --color-accent-deep: #09594b;
+  --color-accent-clay: #a0642d;
+  --color-accent-lavender: #6348a5;
+  --color-accent-rose: #a8433e;
+
+  /* Status & Feedback */
+  --color-success: #059669;
+  --color-warning: #d97706;
+  --color-error: #dc2626;
+  --color-info: #0284c7;
+  --color-focus: rgba(13, 118, 99, 0.45);
+
+  /* Legacy Token Aliases */
+  --paper: #fbf9f5;
+  --ink: #141f1c;
+  --muted: #465751;
+  --line: rgba(20, 31, 28, 0.12);
+  --teal: #0d7663;
+  --deep: #09594b;
+  --clay: #a0642d;
+  --rose: #a8433e;
+  --white: #ffffff;
+  --color-text: #141f1c;
+
+  /* Shadows for Light Background */
+  --shadow-sm: 0 2px 8px rgba(20, 31, 28, 0.05);
+  --shadow-md: 0 8px 24px rgba(20, 31, 28, 0.08);
+  --shadow-lg: 0 16px 48px rgba(20, 31, 28, 0.12);
+  --shadow-surface: 0 16px 40px rgba(20, 31, 28, 0.06);
+  --shadow-card: 0 20px 50px rgba(20, 31, 28, 0.08);
+  --shadow-subtle-glow: 0 0 32px rgba(13, 118, 99, 0.08);
+}
+
+/* Automatic System Light Mode (when user has not explicitly chosen dark) */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+
+    /* Backgrounds & Canvas */
+    --color-background: #fbf9f5;
+    --color-background-subtle: #f4f0e8;
+    --color-canvas: #fbf9f5;
+    --color-canvas-subtle: #f4f0e8;
+    --color-canvas-card: #f4f0e8;
+    --bg-surface: #f4f0e8;
+
+    /* Surfaces & Elevation */
+    --color-surface: rgba(20, 31, 28, 0.04);
+    --color-surface-hover: rgba(20, 31, 28, 0.07);
+    --color-surface-elevated: #ffffff;
+    --color-surface-card: #f2ede4;
+
+    /* Typography / Text Colors */
+    --color-text-primary: #141f1c;
+    --color-text-secondary: #465751;
+    --color-text-tertiary: rgba(20, 31, 28, 0.65);
+    --color-text-muted: #5d6f68;
+
+    /* Borders */
+    --color-border: rgba(20, 31, 28, 0.12);
+    --color-border-subtle: rgba(20, 31, 28, 0.08);
+    --color-border-strong: rgba(20, 31, 28, 0.24);
+
+    /* Brand Accents */
+    --color-accent: #0d7663;
+    --color-accent-hover: #09594b;
+    --color-accent-muted: rgba(13, 118, 99, 0.12);
+    --color-accent-teal: #0d7663;
+    --color-accent-deep: #09594b;
+    --color-accent-clay: #a0642d;
+    --color-accent-lavender: #6348a5;
+    --color-accent-rose: #a8433e;
+
+    /* Status & Feedback */
+    --color-success: #059669;
+    --color-warning: #d97706;
+    --color-error: #dc2626;
+    --color-info: #0284c7;
+    --color-focus: rgba(13, 118, 99, 0.45);
+
+    /* Legacy Token Aliases */
+    --paper: #fbf9f5;
+    --ink: #141f1c;
+    --muted: #465751;
+    --line: rgba(20, 31, 28, 0.12);
+    --teal: #0d7663;
+    --deep: #09594b;
+    --clay: #a0642d;
+    --rose: #a8433e;
+    --white: #ffffff;
+    --color-text: #141f1c;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(20, 31, 28, 0.05);
+    --shadow-md: 0 8px 24px rgba(20, 31, 28, 0.08);
+    --shadow-lg: 0 16px 48px rgba(20, 31, 28, 0.12);
+    --shadow-surface: 0 16px 40px rgba(20, 31, 28, 0.06);
+    --shadow-card: 0 20px 50px rgba(20, 31, 28, 0.08);
+    --shadow-subtle-glow: 0 0 32px rgba(13, 118, 99, 0.08);
+  }
 }
