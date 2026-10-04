@@ -11,19 +11,19 @@ This repository houses the personal engineering platform, case study archives, a
 - **Live Production URL:** [https://uzair-ahmad-portfilio-for-devepolem.vercel.app/](https://uzair-ahmad-portfilio-for-devepolem.vercel.app/)
 - **GitHub Repository:** [github.com/UzairAhmad88/UzairAhmadPortfilioForDevepolement](https://github.com/UzairAhmad88/UzairAhmadPortfilioForDevepolement)
 - **Architecture Standard:** Pure Static Site Generation (SSG), 60 Static Routes, Zero Client Bloat
-- **Quality Status:** **PRODUCTION READY** (244 Unit Tests Passing across 45 Suites, 0 Errors)
+- **Quality Status:** **PRODUCTION READY** (266 Unit Tests Passing across 48 Suites, 0 Errors)
 
 ---
 
 ## 2. Technical Stack
 
-- **Core Framework:** [Astro 4.16.18](https://astro.build/) (Static Site Generation — 100% pre-rendered HTML)
-- **Language:** [TypeScript 5.7.3](https://www.typescriptlang.org/) (Strict Mode across 100% of source files)
+- **Core Framework:** [Astro 5](https://astro.build/) (Static Site Generation — 100% pre-rendered HTML)
+- **Language:** [TypeScript 5](https://www.typescriptlang.org/) (Strict Mode across 100% of source files)
 - **Styling Architecture:** Vanilla CSS Design Tokens, CSS Custom Properties, Scoped Styles, CSS Subgrid
 - **Discovery & Search Engine:** Instant client-side tokenized search index with multi-facet filtering and XSS protection
-- **Knowledge & Graph System:** 2D/3D Force-Directed Entity Graph with accessible HTML semantic table fallback
+- **Knowledge & Graph System:** Force-Directed Entity Graph with accessible HTML semantic table fallback
 - **Signature Interaction:** 6-Lens Engineering Navigator (Overview, Architecture, Constraints, Stack, Evidence, Retrospective)
-- **Testing & QA Suite:** Native Node.js Test Runner (`node:test`) with 244 tests across 45 suites
+- **Testing & QA Suite:** Native Node.js Test Runner (`node:test`) with 266 tests across 48 suites
 - **Hosting & CDN:** Vercel Edge Network with strict HTTP security headers (HSTS, CSP-ready, nosniff, DENY)
 
 ---
@@ -38,10 +38,7 @@ cd UzairAhmadPortfilioForDevepolement
 # 2. Install dependencies cleanly
 npm install
 
-# 3. Setup local environment variables
-cp .env.example .env
-
-# 4. Start local development server
+# 3. Start local development server
 npm run dev
 ```
 
@@ -55,7 +52,7 @@ Open [http://localhost:4321](http://localhost:4321) in your browser.
 # Diagnostic TypeScript and Astro type check (0 errors across 172 files)
 npm run check
 
-# Run all 244 automated unit tests across 45 test suites
+# Run all 266 automated unit tests across 48 test suites
 npm test
 
 # Production build generating 60 static HTML pages into dist/
@@ -69,9 +66,24 @@ npm run preview
 
 ## 5. Master Documentation System
 
-The platform includes a comprehensive, professional 5-layer engineering documentation suite under `docs/`:
+The platform includes a canonical engineering documentation hierarchy under `docs/`:
 
-- **[docs/DOCUMENTATION-INDEX.md](file:///d:/web/protfolio/docs/DOCUMENTATION-INDEX.md)** — Master Navigation Index
+- **[docs/README.md](file:///d:/web/protfolio/docs/README.md)** — Master Documentation Portal & Navigation Map
+- **[docs/DOCUMENTATION-AUDIT.md](file:///d:/web/protfolio/docs/DOCUMENTATION-AUDIT.md)** — Baseline Documentation Audit
+- **[docs/DOCUMENTATION-COMPLETENESS-MATRIX.md](file:///d:/web/protfolio/docs/DOCUMENTATION-COMPLETENESS-MATRIX.md)** — 24-Domain Completeness Matrix
+- **[docs/DOCUMENTATION-TRUTH-AUDIT.md](file:///d:/web/protfolio/docs/DOCUMENTATION-TRUTH-AUDIT.md)** — Codebase Verification & Truth Audit
+- **[docs/DOCUMENTATION-LINK-AUDIT.md](file:///d:/web/protfolio/docs/DOCUMENTATION-LINK-AUDIT.md)** — Link Integrity Report
+- **[docs/getting-started/LOCAL-DEVELOPMENT.md](file:///d:/web/protfolio/docs/getting-started/LOCAL-DEVELOPMENT.md)** — Local Development & Environment Guide
+- **[docs/architecture/SYSTEM-ARCHITECTURE.md](file:///d:/web/protfolio/docs/architecture/SYSTEM-ARCHITECTURE.md)** — 5-Layer Static Pipeline Specification
+- **[docs/architecture/ROUTE-ARCHITECTURE.md](file:///d:/web/protfolio/docs/architecture/ROUTE-ARCHITECTURE.md)** — 60 Static Routes Catalog
+- **[docs/content/CONTENT-ARCHITECTURE.md](file:///d:/web/protfolio/docs/content/CONTENT-ARCHITECTURE.md)** — Entity Graph & Relationship Model
+- **[docs/content/CANONICAL-SOURCES.md](file:///d:/web/protfolio/docs/content/CANONICAL-SOURCES.md)** — Single Source of Truth Map for Data Files
+- **[docs/knowledge/KNOWLEDGE-SYSTEM.md](file:///d:/web/protfolio/docs/knowledge/KNOWLEDGE-SYSTEM.md)** — Graph vs. Engine vs. Discovery Spec
+- **[docs/design-system/DESIGN-SYSTEM.md](file:///d:/web/protfolio/docs/design-system/DESIGN-SYSTEM.md)** — CSS Design Tokens & Layout Architecture
+- **[docs/testing/TESTING-GUIDE.md](file:///d:/web/protfolio/docs/testing/TESTING-GUIDE.md)** — Native Node.js Test Suite & 48 Suites Reference
+- **[docs/deployment/DEPLOYMENT-RUNBOOK.md](file:///d:/web/protfolio/docs/deployment/DEPLOYMENT-RUNBOOK.md)** — Vercel Edge Production Deployment Runbook
+- **[docs/security/SECURITY.md](file:///d:/web/protfolio/docs/security/SECURITY.md)** — Security Policy, Threat Model & Secret Isolation
+- **[docs/troubleshooting/TROUBLESHOOTING.md](file:///d:/web/protfolio/docs/troubleshooting/TROUBLESHOOTING.md)** — Real Diagnostic & Remediation Guide
 - **[docs/ENGINEERING-DOCUMENTATION.md](file:///d:/web/protfolio/docs/ENGINEERING-DOCUMENTATION.md)** — Documentation Hierarchy & Truth Classification Policy
 - **[docs/ARCHITECTURE.md](file:///d:/web/protfolio/docs/ARCHITECTURE.md)** — 5-Layer System Architecture Specification
 - **[docs/REPOSITORY-STRUCTURE.md](file:///d:/web/protfolio/docs/REPOSITORY-STRUCTURE.md)** — Directory Map & File Placement Guide
