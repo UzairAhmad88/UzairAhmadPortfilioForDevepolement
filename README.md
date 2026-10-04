@@ -1,66 +1,44 @@
 # Uzair Ahmad — Quantitative AI & Product Engineer Platform
 
-> Production-quality personal developer and research platform built with Astro, strict TypeScript, and zero-runtime framework overhead.
+> Production-grade personal developer, engineering case study, and research laboratory platform built with Astro, strict TypeScript, and zero-runtime framework overhead.
 
 ---
 
-## Overview
+## 1. Overview
 
-This repository houses the personal professional website, engineering case studies, and research lab index of **Uzair Ahmad**, a Quantitative AI & Product Engineer building systems where finance, intelligence, and software meet.
+This repository houses the personal engineering platform, case study archives, and research laboratory of **Uzair Ahmad**, a Quantitative AI & Product Engineer building high-performance systems where quantitative finance, artificial intelligence, and software engineering meet.
 
-- **Production URL**: [https://uzairahmad.vercel.app](https://uzairahmad.vercel.app)
-- **GitHub Repository**: [github.com/UzairAhmad88/UzairAhmadPortfilioForDevepolement](https://github.com/UzairAhmad88/UzairAhmadPortfilioForDevepolement)
-- **Version**: `v1.0.0` (All 10 Engineering Phases Completed)
-
----
-
-## Technical Stack
-
-- **Core Framework**: [Astro 5](https://astro.build/) (Pure Static Site Generation — Zero client-side JS bloat)
-- **Language**: [TypeScript](https://www.typescriptlang.org/) (Strict Mode across 100% of files)
-- **Styling**: Vanilla CSS Design Tokens with CSS Custom Properties and Scoped Styles
-- **SEO & Structured Data**: `@astrojs/sitemap`, Open Graph, Twitter Cards, Schema.org JSON-LD (`Person`, `WebSite`, `ProfilePage`, `TechArticle`, `SoftwareApplication`, `BreadcrumbList`)
-- **Testing & QA**: Node.js native test runner (`node:test`) with 31 unit tests across 6 suites
-- **DevOps & CI/CD**: GitHub Actions CI (`.github/workflows/ci.yml`), Vercel Edge Hosting with strict security headers (`vercel.json`)
+- **Live Production URL:** [https://uzair-ahmad-portfilio-for-devepolem.vercel.app/](https://uzair-ahmad-portfilio-for-devepolem.vercel.app/)
+- **GitHub Repository:** [github.com/UzairAhmad88/UzairAhmadPortfilioForDevepolement](https://github.com/UzairAhmad88/UzairAhmadPortfilioForDevepolement)
+- **Architecture Standard:** Pure Static Site Generation (SSG), 60 Static Routes, Zero Client Bloat
+- **Quality Status:** **PRODUCTION READY** (244 Unit Tests Passing across 45 Suites, 0 Errors)
 
 ---
 
-## Architecture & Codebase Layout
+## 2. Technical Stack
 
-```text
-portfolio/
-├── .github/workflows/ci.yml       # Automated CI pipeline (Test -> Check -> Build)
-├── docs/                          # Comprehensive documentation index (docs/README.md)
-├── public/                        # Static assets, sitemaps, robots.txt, icons
-├── src/
-│   ├── components/                # Modular UI components (cards, sections, layout, SEO)
-│   ├── data/                      # Strongly-typed static content and site data
-│   ├── layouts/                   # Base and page layouts (BaseLayout.astro)
-│   ├── lib/                       # Analytics, contact helpers, and Schema.org builders
-│   ├── pages/                     # 17 Astro file-based static routes
-│   ├── styles/                    # Global design tokens and typography
-│   └── types/                     # TypeScript domain models and interfaces
-├── tests/unit/                    # 31 unit tests (SEO, projects, research, contact, analytics)
-├── astro.config.mjs               # Astro static build configuration
-├── tsconfig.json                  # Strict TypeScript configuration
-├── package.json                   # Scripts and project dependencies
-├── vercel.json                    # HTTP security headers and caching configuration
-└── README.md
-```
+- **Core Framework:** [Astro 4.16.18](https://astro.build/) (Static Site Generation — 100% pre-rendered HTML)
+- **Language:** [TypeScript 5.7.3](https://www.typescriptlang.org/) (Strict Mode across 100% of source files)
+- **Styling Architecture:** Vanilla CSS Design Tokens, CSS Custom Properties, Scoped Styles, CSS Subgrid
+- **Discovery & Search Engine:** Instant client-side tokenized search index with multi-facet filtering and XSS protection
+- **Knowledge & Graph System:** 2D/3D Force-Directed Entity Graph with accessible HTML semantic table fallback
+- **Signature Interaction:** 6-Lens Engineering Navigator (Overview, Architecture, Constraints, Stack, Evidence, Retrospective)
+- **Testing & QA Suite:** Native Node.js Test Runner (`node:test`) with 244 tests across 45 suites
+- **Hosting & CDN:** Vercel Edge Network with strict HTTP security headers (HSTS, CSP-ready, nosniff, DENY)
 
 ---
 
-## Local Development & Quickstart
+## 3. Quickstart & Local Development
 
 ```bash
-# 1. Clone repository
+# 1. Clone the repository
 git clone https://github.com/UzairAhmad88/UzairAhmadPortfilioForDevepolement.git
 cd UzairAhmadPortfilioForDevepolement
 
-# 2. Install dependencies
+# 2. Install dependencies cleanly
 npm install
 
-# 3. Setup environment variables
+# 3. Setup local environment variables
 cp .env.example .env
 
 # 4. Start local development server
@@ -71,55 +49,55 @@ Open [http://localhost:4321](http://localhost:4321) in your browser.
 
 ---
 
-## Available Commands
+## 4. Verification & QA Pipeline
 
-| Command | Description |
-| :--- | :--- |
-| `npm run dev` | Start local development server on port 4321. |
-| `npm test` | Run all 31 unit tests across 6 suites via `node:test`. |
-| `npm run check` | Run Astro and TypeScript diagnostic type checks across all 77 files. |
-| `npm run build` | Build static production assets and XML sitemaps into `dist/`. |
-| `npm run preview` | Preview the generated production build locally. |
-| `npm run lint` | Run ESLint across `.astro`, `.ts`, and `.js` files. |
-| `npm run format` | Format codebase using Prettier. |
+```bash
+# Diagnostic TypeScript and Astro type check (0 errors across 172 files)
+npm run check
 
----
+# Run all 244 automated unit tests across 45 test suites
+npm test
 
-## Content Collections & Authoring
+# Production build generating 60 static HTML pages into dist/
+npm run build
 
-To add or update projects, research inquiries, services, or contact info:
-- Edit `src/data/projects.ts` for project case studies.
-- Edit `src/data/research.ts` for research inquiries and mathematical formulas.
-- Edit `src/data/site.ts` for profile info, biography, and social links.
-- Edit `src/data/opportunities.ts` for services and collaboration offerings.
-
-Detailed authoring guides are available at [docs/CONTENT-AUTHORING.md](file:///d:/web/protfolio/docs/CONTENT-AUTHORING.md).
+# Preview production build locally
+npm run preview
+```
 
 ---
 
-## Documentation Suite
+## 5. Master Documentation System
 
-The project includes an extensive engineering and product documentation suite under `docs/`:
-- [docs/README.md](file:///d:/web/protfolio/docs/README.md) — Master Documentation Index
-- [docs/RESPONSIVE-AUDIT.md](file:///d:/web/protfolio/docs/RESPONSIVE-AUDIT.md) — Cross-Screen Responsive Audit
-- [docs/RESPONSIVE-DESIGN-SYSTEM.md](file:///d:/web/protfolio/docs/RESPONSIVE-DESIGN-SYSTEM.md) — Fluid Design Tokens & Responsive System
-- [docs/RESPONSIVE-QA-MATRIX.md](file:///d:/web/protfolio/docs/RESPONSIVE-QA-MATRIX.md) — Comprehensive Device & Viewport QA Matrix
-- [docs/DEVICE-BREAKPOINTS.md](file:///d:/web/protfolio/docs/DEVICE-BREAKPOINTS.md) — Space-Adaptive Breakpoint Hierarchy
-- [docs/MOBILE-UX.md](file:///d:/web/protfolio/docs/MOBILE-UX.md) — Mobile UX, Safe-Area & Touch Specifications
-- [docs/DESKTOP-UX.md](file:///d:/web/protfolio/docs/DESKTOP-UX.md) — Desktop, 4K & Ultrawide UX Specifications
-- [docs/RESPONSIVE-FINAL-REPORT.md](file:///d:/web/protfolio/docs/RESPONSIVE-FINAL-REPORT.md) — Final Responsive Optimization Report
-- [docs/RELEASE-NOTES-V1.md](file:///d:/web/protfolio/docs/RELEASE-NOTES-V1.md) — Release Notes v1.0.0
-- [docs/DEVELOPER-ONBOARDING.md](file:///d:/web/protfolio/docs/DEVELOPER-ONBOARDING.md) — Developer Onboarding Guide
-- [docs/MAINTENANCE-PLAN.md](file:///d:/web/protfolio/docs/MAINTENANCE-PLAN.md) — Long-Term Maintenance Plan
-- [docs/LAUNCH-CHECKLIST.md](file:///d:/web/protfolio/docs/LAUNCH-CHECKLIST.md) — Launch Verification Checklist
-- [docs/PRODUCTION-SMOKE-TEST.md](file:///d:/web/protfolio/docs/PRODUCTION-SMOKE-TEST.md) — 14-Point Smoke Test Protocol
-- [docs/SECURITY-AUDIT.md](file:///d:/web/protfolio/docs/SECURITY-AUDIT.md) — Security & Privacy Audit
+The platform includes a comprehensive, professional 5-layer engineering documentation suite under `docs/`:
+
+- **[docs/DOCUMENTATION-INDEX.md](file:///d:/web/protfolio/docs/DOCUMENTATION-INDEX.md)** — Master Navigation Index
+- **[docs/ENGINEERING-DOCUMENTATION.md](file:///d:/web/protfolio/docs/ENGINEERING-DOCUMENTATION.md)** — Documentation Hierarchy & Truth Classification Policy
+- **[docs/ARCHITECTURE.md](file:///d:/web/protfolio/docs/ARCHITECTURE.md)** — 5-Layer System Architecture Specification
+- **[docs/REPOSITORY-STRUCTURE.md](file:///d:/web/protfolio/docs/REPOSITORY-STRUCTURE.md)** — Directory Map & File Placement Guide
+- **[docs/ROUTES-REFERENCE.md](file:///d:/web/protfolio/docs/ROUTES-REFERENCE.md)** — 60 Static Routes Catalog & Parameters
+- **[docs/CONTENT-ARCHITECTURE.md](file:///d:/web/protfolio/docs/CONTENT-ARCHITECTURE.md)** — Entity Graph, Taxonomies & Sources of Truth
+- **[docs/DATA-MODELS-REFERENCE.md](file:///d:/web/protfolio/docs/DATA-MODELS-REFERENCE.md)** — TypeScript Domain Models & Schemas
+- **[docs/KNOWLEDGE-ARCHITECTURE.md](file:///d:/web/protfolio/docs/KNOWLEDGE-ARCHITECTURE.md)** — Knowledge Engine, Graph & Discovery Search
+- **[docs/INTEGRATION-REFERENCE.md](file:///d:/web/protfolio/docs/INTEGRATION-REFERENCE.md)** — External Services, APIs & Security
+- **[docs/GITHUB-VERCEL-OPERATIONS.md](file:///d:/web/protfolio/docs/GITHUB-VERCEL-OPERATIONS.md)** — GitHub & Vercel Intelligence Pipelines
+- **[docs/PROJECT-SYNC-OPERATIONS.md](file:///d:/web/protfolio/docs/PROJECT-SYNC-OPERATIONS.md)** — Project Sync & Curation Operations
+- **[docs/CONTENT-MAINTENANCE.md](file:///d:/web/protfolio/docs/CONTENT-MAINTENANCE.md)** — Content Maintenance & Relationship Governance
+- **[docs/CONTENT-UPDATE-GUIDE.md](file:///d:/web/protfolio/docs/CONTENT-UPDATE-GUIDE.md)** — Step-by-Step Entity Creation Runbooks
+- **[docs/DEVELOPMENT-WORKFLOW.md](file:///d:/web/protfolio/docs/DEVELOPMENT-WORKFLOW.md)** — Local Development & Branching Lifecycle
+- **[docs/COMMANDS-REFERENCE.md](file:///d:/web/protfolio/docs/COMMANDS-REFERENCE.md)** — Verified CLI Scripts Reference Table
+- **[docs/ENVIRONMENT-VARIABLES.md](file:///d:/web/protfolio/docs/ENVIRONMENT-VARIABLES.md)** — Environment Variables & Safe Placeholders
+- **[docs/DEPLOYMENT-RUNBOOK.md](file:///d:/web/protfolio/docs/DEPLOYMENT-RUNBOOK.md)** — Production Edge Deployment Runbook
+- **[docs/QA-RELEASE-CHECKLIST.md](file:///d:/web/protfolio/docs/QA-RELEASE-CHECKLIST.md)** — Pre-Release Quality Assurance Gates
+- **[docs/TROUBLESHOOTING.md](file:///d:/web/protfolio/docs/TROUBLESHOOTING.md)** — Real Observed Issues & Remediation Guide
+- **[docs/SECURITY-OPERATIONS.md](file:///d:/web/protfolio/docs/SECURITY-OPERATIONS.md)** — Threat Model, Invariants & Secret Isolation
+- **[docs/PRIVACY-DATA-HANDLING.md](file:///d:/web/protfolio/docs/PRIVACY-DATA-HANDLING.md)** — Zero-Tracker Privacy Architecture
+- **[docs/BACKUP-RECOVERY.md](file:///d:/web/protfolio/docs/BACKUP-RECOVERY.md)** — Git Source of Truth & Disaster Recovery
+- **[docs/PRODUCTION-QA-REPORT.md](file:///d:/web/protfolio/docs/PRODUCTION-QA-REPORT.md)** — Phase 33 Production QA Final Report
+- **[docs/PHASE-34-IMPLEMENTATION.md](file:///d:/web/protfolio/docs/PHASE-34-IMPLEMENTATION.md)** — Phase 34 Implementation Record
 
 ---
 
-## Deployment & Edge Hosting
+## 6. License & Copyright
 
-- **Platform**: Vercel Edge Hosting
-- **Build Output**: Static HTML (`dist/`)
-- **Security Headers**: HSTS, `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Permissions-Policy`, immutable asset caching
-- **Domain**: `https://uzairahmad.vercel.app`
+Copyright © 2026 Uzair Ahmad. All rights reserved.
