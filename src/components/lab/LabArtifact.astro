@@ -1,0 +1,652 @@
+---
+import type { LabVisualArtifact } from '@/types/labArtifact';
+import LabEvidenceBadge from './LabEvidenceBadge.astro';
+
+export interface Props {
+  artifact: LabVisualArtifact;
+  index?: number;
+  total?: number;
+}
+
+const { artifact, index, total } = Astro.props;
+
+const roleBadgeColorMap: Record<string, string> = {
+  input: 'role-input',
+  process: 'role-process',
+  model: 'role-model',
+  guardrail: 'role-guardrail',
+  storage: 'role-storage',
+  output: 'role-output',
+  router: 'role-router',
+};
+
+const sequenceLabel = typeof index === 'number'
+  ? `FIGURE ${String(index + 1).padStart(2, '0')}${total ? ` OF ${String(total).padStart(2, '0')}` : ''}`
+  : `FIGURE // ${artifact.type.replace('_', ' ')}`;
+---
+
+<figure class="lab-artifact-figure" id={artifact.id} data-artifact-id={artifact.id}>
+  <!-- Artifact Header -->
+  <header class="artifact-header">
+    <div class="artifact-meta-top">
+      <div class="artifact-type-tag">
+        <span class="type-icon" aria-hidden="true">▣</span>
+        <span class="type-text">{sequenceLabel}</span>
+      </div>
+      <LabEvidenceBadge state={artifact.evidenceState} size="sm" />
+    </div>
+
+    <h3 class="artifact-title">{artifact.title}</h3>
+    {artifact.subtitle && <p class="artifact-subtitle">{artifact.subtitle}</p>}
+  </header>
+
+  <!-- Artifact Visual Canvas -->
+  <div class="artifact-canvas" tabindex="0" role="region" aria-label={`Visualization for ${artifact.title}`}>
+    <!-- 1. Node Diagram Flow -->
+    {artifact.visual.kind === 'nodes' && artifact.visual.nodes && (
+      <div class="nodes-flow-container">
+        {artifact.visual.nodes.map((node, nodeIdx) => {
+          const roleClass = node.role ? roleBadgeColorMap[node.role] || 'role-default' : 'role-default';
+          return (
+            <div class="node-wrapper">
+              <div class:list={['artifact-node-card', roleClass]}>
+                <div class="node-header">
+                  <span class="node-badge">{node.badge || `Stage 0${nodeIdx + 1}`}</span>
+                  {node.role && <span class="node-role-label">{node.role}</span>}
+                </div>
+                <h4 class="node-title">{node.label}</h4>
+                {node.subLabel && <p class="node-sublabel">{node.subLabel}</p>}
+                {node.details && node.details.length > 0 && (
+                  <ul class="node-details-list">
+                    {node.details.map((detail) => (
+                      <li>{detail}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              {nodeIdx < (artifact.visual.nodes?.length || 0) - 1 && (
+                <div class="node-connector" aria-hidden="true">
+                  <svg class="connector-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M5 12h14M13 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    )}
+
+    <!-- 2. Comparison Matrix -->
+    {artifact.visual.kind === 'comparison' && artifact.visual.comparisonTracks && (
+      <div class="comparison-grid-container">
+        {artifact.visual.comparisonTracks.map((track) => (
+          <div class:list={['comparison-card', track.verdict ? `verdict-${track.verdict}` : '']}>
+            <div class="comparison-card-header">
+              <h4 class="track-name">{track.name}</h4>
+              {track.delta && <span class="track-delta-badge">{track.delta}</span>}
+            </div>
+            <div class="comparison-metrics-body">
+              <div class="metric-row metric-primary">
+                <span class="metric-icon" aria-hidden="true">▸</span>
+                <span class="metric-val">{track.metricA}</span>
+              </div>
+              <div class="metric-row metric-secondary">
+                <span class="metric-icon" aria-hidden="true">▹</span>
+                <span class="metric-val">{track.metricB}</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+
+  <!-- Technical Interpretation Callout -->
+  <div class="artifact-interpretation">
+    <div class="interpretation-row">
+      <strong class="interp-label label-shows">WHAT THIS SHOWS:</strong>
+      <p class="interp-text">{artifact.whatThisShows}</p>
+    </div>
+    {artifact.whatToNotice && (
+      <div class="interpretation-row row-notice">
+        <strong class="interp-label label-notice">WHAT TO NOTICE:</strong>
+        <p class="interp-text">{artifact.whatToNotice}</p>
+      </div>
+    )}
+  </div>
+
+  <!-- Figcaption & Grounding Evidence -->
+  <figcaption class="artifact-figcaption">
+    <div class="caption-source-row">
+      <span class="caption-text">{artifact.caption}</span>
+      {artifact.sourceEvidence && (
+        <span class="source-evidence-tag">
+          <strong>Source:</strong> {artifact.sourceEvidence}
+        </span>
+      )}
+    </div>
+
+    <!-- Screen-reader & Low-Bandwidth Accessible Text Alternative -->
+    <details class="artifact-a11y-details">
+      <summary class="a11y-summary">
+        <span class="summary-icon" aria-hidden="true">ℹ</span>
+        <span>Text Alternative: Technical Description</span>
+      </summary>
+      <div class="a11y-content">
+        <p>{artifact.textAlternative}</p>
+      </div>
+    </details>
+  </figcaption>
+</figure>
+
+<style>
+  .lab-artifact-figure {
+    margin: 1.5rem 0 2.5rem 0;
+    padding: 0;
+    border-radius: var(--radius-lg, 0.875rem);
+    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.09));
+    background: var(--color-surface-card, rgba(16, 26, 23, 0.75));
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    transition: border-color 200ms ease;
+  }
+
+  .lab-artifact-figure:hover {
+    border-color: var(--color-border-hover, rgba(126, 216, 196, 0.3));
+  }
+
+  /* Header */
+  .artifact-header {
+    padding: 1.25rem 1.5rem 1rem 1.5rem;
+    border-bottom: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
+    background: var(--color-surface, rgba(255, 255, 255, 0.02));
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .artifact-meta-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .artifact-type-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.65rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .type-icon {
+    font-size: 0.8em;
+  }
+
+  .artifact-title {
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    font-weight: 800;
+    color: var(--color-text, #f6f1e8);
+    letter-spacing: -0.015em;
+    margin: 0.15rem 0 0 0;
+    line-height: 1.35;
+  }
+
+  .artifact-subtitle {
+    font-size: 0.85rem;
+    color: var(--color-text-muted, #a9b8b1);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* Visual Canvas */
+  .artifact-canvas {
+    padding: 1.5rem;
+    background: rgba(7, 14, 12, 0.6);
+    overflow-x: auto;
+    border-bottom: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
+  }
+
+  .artifact-canvas:focus-visible {
+    outline: 2px solid var(--color-accent, #7ed8c4);
+    outline-offset: -2px;
+  }
+
+  /* Node Diagram Flows */
+  .nodes-flow-container {
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    min-width: min-content;
+  }
+
+  .node-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .artifact-node-card {
+    min-width: 170px;
+    max-width: 210px;
+    padding: 1rem;
+    border-radius: var(--radius-md, 0.5rem);
+    background: rgba(16, 26, 23, 0.95);
+    border: 1px solid rgba(246, 241, 232, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  }
+
+  .node-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.25rem;
+  }
+
+  .node-badge {
+    font-size: 0.6rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 700;
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.25rem;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--color-text-muted, #a9b8b1);
+    text-transform: uppercase;
+  }
+
+  .node-role-label {
+    font-size: 0.55rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .node-title {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--color-text, #f6f1e8);
+    margin: 0;
+    line-height: 1.25;
+  }
+
+  .node-sublabel {
+    font-size: 0.7rem;
+    color: #83968e;
+    font-family: var(--font-mono, monospace);
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  .node-details-list {
+    margin: 0.4rem 0 0 0;
+    padding-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-size: 0.65rem;
+    font-family: var(--font-mono, monospace);
+    color: #a9b8b1;
+  }
+
+  .node-connector {
+    color: #4a5d55;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Node Role Borders */
+  .role-input { border-left: 3px solid #3b82f6; }
+  .role-process { border-left: 3px solid #7ed8c4; }
+  .role-model { border-left: 3px solid #a855f7; }
+  .role-guardrail { border-left: 3px solid #f59e0b; }
+  .role-output { border-left: 3px solid #10b981; }
+
+  /* Comparison Grid */
+  .comparison-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+
+  .comparison-card {
+    padding: 1.1rem;
+    border-radius: var(--radius-md, 0.5rem);
+    background: rgba(16, 26, 23, 0.9);
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .verdict-advantage {
+    border-left: 3px solid #10b981;
+    background: rgba(16, 185, 129, 0.05);
+  }
+
+  .verdict-drawback {
+    border-left: 3px solid #ef4444;
+    background: rgba(239, 68, 68, 0.05);
+  }
+
+  .verdict-neutral {
+    border-left: 3px solid #64748b;
+  }
+
+  .comparison-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .track-name {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--color-text, #f6f1e8);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .track-delta-badge {
+    font-size: 0.65rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 700;
+    padding: 0.15rem 0.45rem;
+    border-radius: 0.25rem;
+    background: rgba(126, 216, 196, 0.12);
+    color: var(--color-accent, #7ed8c4);
+    white-space: nowrap;
+  }
+
+  .comparison-metrics-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .metric-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+  }
+
+  .metric-primary {
+    color: var(--color-text, #f6f1e8);
+    font-weight: 600;
+  }
+
+  .metric-secondary {
+    color: #83968e;
+  }
+
+  .metric-icon {
+    font-size: 0.8em;
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  /* Interpretation Block */
+  .artifact-interpretation {
+    padding: 1.15rem 1.5rem;
+    background: rgba(16, 26, 23, 0.5);
+    border-bottom: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .interpretation-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .interp-label {
+    font-size: 0.65rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .label-shows {
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .label-notice {
+    color: #fbbf24;
+  }
+
+  .interp-text {
+    font-size: 0.85rem;
+    color: var(--color-text-muted, #d1ded7);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* Figcaption */
+  .artifact-figcaption {
+    padding: 1rem 1.5rem;
+    background: var(--color-surface, rgba(255, 255, 255, 0.02));
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  .caption-source-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .caption-text {
+    color: #83968e;
+    font-style: italic;
+    line-height: 1.45;
+  }
+
+  .source-evidence-tag {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.7rem;
+    color: #64748b;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+  }
+
+  /* Accessible Text Alternative Details */
+  .artifact-a11y-details {
+    border-top: 1px dashed var(--color-border-subtle, rgba(246, 241, 232, 0.08));
+    padding-top: 0.6rem;
+  }
+
+  .a11y-summary {
+    cursor: pointer;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.7rem;
+    color: var(--color-accent, #7ed8c4);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    user-select: none;
+  }
+
+  .a11y-summary:hover {
+    text-decoration: underline;
+  }
+
+  .a11y-content {
+    margin-top: 0.4rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.25rem;
+    background: rgba(0, 0, 0, 0.25);
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    color: #a9b8b1;
+    line-height: 1.5;
+  }
+
+  .a11y-content p {
+    margin: 0;
+  }
+
+  /* Light Theme Styles */
+  :global(html[data-theme="light"]) .lab-artifact-figure {
+    background: #ffffff;
+    border-color: rgba(13, 118, 99, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  }
+
+  :global(html[data-theme="light"]) .artifact-header {
+    background: #f8faf9;
+    border-bottom-color: rgba(13, 118, 99, 0.1);
+  }
+
+  :global(html[data-theme="light"]) .artifact-type-tag {
+    color: #0d7663;
+  }
+
+  :global(html[data-theme="light"]) .artifact-title {
+    color: #1a2621;
+  }
+
+  :global(html[data-theme="light"]) .artifact-subtitle {
+    color: #4a5d55;
+  }
+
+  :global(html[data-theme="light"]) .artifact-canvas {
+    background: #f4f8f6;
+    border-bottom-color: rgba(13, 118, 99, 0.1);
+  }
+
+  :global(html[data-theme="light"]) .artifact-node-card {
+    background: #ffffff;
+    border-color: rgba(13, 118, 99, 0.18);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  :global(html[data-theme="light"]) .node-title {
+    color: #1a2621;
+  }
+
+  :global(html[data-theme="light"]) .node-sublabel {
+    color: #52665e;
+  }
+
+  :global(html[data-theme="light"]) .node-details-list {
+    color: #35453f;
+  }
+
+  :global(html[data-theme="light"]) .node-badge {
+    background: #edf4f1;
+    color: #0d7663;
+  }
+
+  :global(html[data-theme="light"]) .node-connector {
+    color: #8da59c;
+  }
+
+  :global(html[data-theme="light"]) .comparison-card {
+    background: #ffffff;
+    border-color: rgba(13, 118, 99, 0.15);
+  }
+
+  :global(html[data-theme="light"]) .track-name {
+    color: #1a2621;
+  }
+
+  :global(html[data-theme="light"]) .track-delta-badge {
+    background: #e6f7f3;
+    color: #0d7663;
+  }
+
+  :global(html[data-theme="light"]) .metric-primary {
+    color: #1a2621;
+  }
+
+  :global(html[data-theme="light"]) .metric-secondary {
+    color: #52665e;
+  }
+
+  :global(html[data-theme="light"]) .artifact-interpretation {
+    background: #fbfdfc;
+    border-bottom-color: rgba(13, 118, 99, 0.1);
+  }
+
+  :global(html[data-theme="light"]) .label-shows {
+    color: #0d7663;
+  }
+
+  :global(html[data-theme="light"]) .label-notice {
+    color: #b45309;
+  }
+
+  :global(html[data-theme="light"]) .interp-text {
+    color: #22332c;
+  }
+
+  :global(html[data-theme="light"]) .artifact-figcaption {
+    background: #f8faf9;
+  }
+
+  :global(html[data-theme="light"]) .caption-text {
+    color: #52665e;
+  }
+
+  :global(html[data-theme="light"]) .source-evidence-tag {
+    background: #eef4f1;
+    color: #475569;
+  }
+
+  :global(html[data-theme="light"]) .a11y-summary {
+    color: #0d7663;
+  }
+
+  :global(html[data-theme="light"]) .a11y-content {
+    background: #eef4f1;
+    color: #22332c;
+  }
+
+  /* Responsive layout */
+  @media (max-width: 640px) {
+    .nodes-flow-container {
+      flex-direction: column;
+      min-width: 100%;
+    }
+
+    .node-wrapper {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .artifact-node-card {
+      min-width: 100%;
+      max-width: 100%;
+    }
+
+    .node-connector {
+      transform: rotate(90deg);
+      margin: 0.25rem 0;
+    }
+  }
+</style>

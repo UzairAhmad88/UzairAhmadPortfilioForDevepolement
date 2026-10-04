@@ -2,11 +2,14 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
 import ProjectVisualization from '@/components/visualizations/ProjectVisualization.astro';
+import LabArtifact from '@/components/lab/LabArtifact.astro';
+import LabArtifactViewer from '@/components/lab/LabArtifactViewer.astro';
 import RelatedKnowledgeGrid from '@/components/knowledge/RelatedKnowledgeGrid.astro';
 import VercelEvidenceBadge from '@/components/vercel/VercelEvidenceBadge.astro';
 import ContactCallout from '@/components/sections/ContactCallout.astro';
 import { getVercelEvidenceForLab } from '@/lib/vercel/evidence';
 import { getAllLabItems } from '@/data/lab';
+import { getLabVisualArtifactsByExperiment } from '@/data/labArtifacts';
 import { projects } from '@/data/projects';
 import { getTechnologyById } from '@/data/technologies';
 import { siteConfig } from '@/data/site';
@@ -26,6 +29,8 @@ export interface Props {
 }
 
 const { item } = Astro.props;
+
+const visualArtifacts = getLabVisualArtifactsByExperiment(item.slug);
 
 const technologyObjects: Technology[] = (item.technologies || [])
   .map((id) => getTechnologyById(id))
@@ -51,6 +56,7 @@ const stateLabelMap: Record<string, string> = {
   actual: 'ACTUAL SYSTEM',
   prototype: 'WORKING PROTOTYPE',
   concept: 'MATHEMATICAL CONCEPT',
+  simulation: 'SYNTHETIC SIMULATION',
   planned: 'PLANNED EXPERIMENT',
 };
 
@@ -230,15 +236,34 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
           ))}
         </section>
 
-        <!-- Section 04: Visualizations & Architecture -->
-        {item.visualizations && item.visualizations.length > 0 && (
+        <!-- Section 04: Visual Artifacts, Architectures & Technical Evidence -->
+        {(visualArtifacts.length > 0 || (item.visualizations && item.visualizations.length > 0)) && (
           <section class="section-box" aria-labelledby="sec-04-heading">
-            <h2 class="section-heading" id="sec-04-heading">
-              04 / Architecture & Flow Diagrams
-            </h2>
-            {item.visualizations.map((vis) => (
-              <ProjectVisualization visualization={vis} />
-            ))}
+            <div class="section-header-row">
+              <h2 class="section-heading" id="sec-04-heading">
+                04 / Visual Artifacts & Technical Evidence
+              </h2>
+              <span class="evidence-count-pill">
+                {visualArtifacts.length > 0 ? `${visualArtifacts.length} Visual Artifacts` : 'System Diagram'}
+              </span>
+            </div>
+
+            {/* Primary Rich Visual Artifact System */}
+            {visualArtifacts.length > 0 ? (
+              <div class="artifacts-stack">
+                {visualArtifacts.map((artifact, artIdx) => (
+                  <LabArtifact
+                    artifact={artifact}
+                    index={artIdx}
+                    total={visualArtifacts.length}
+                  />
+                ))}
+              </div>
+            ) : (
+              item.visualizations?.map((vis) => (
+                <ProjectVisualization visualization={vis} />
+              ))
+            )}
           </section>
         )}
 
@@ -342,6 +367,9 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
         subtitle="Open to reviewing results, reproducing benchmarks, or exploring extensions."
       />
     </article>
+
+    <!-- Interactive Artifact Viewer Overlay -->
+    <LabArtifactViewer />
   </div>
 </BaseLayout>
 
@@ -671,6 +699,39 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
     margin: 0;
   }
 
+  .section-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .evidence-count-pill {
+    font-size: 0.65rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+    background: rgba(126, 216, 196, 0.1);
+    border: 1px solid rgba(126, 216, 196, 0.25);
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  :global(html[data-theme="light"]) .evidence-count-pill {
+    background: #e6f7f3;
+    border-color: rgba(13, 118, 99, 0.25);
+    color: #0d7663;
+  }
+
+  .artifacts-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
   .section-heading {
     font-size: 0.75rem;
     font-family: var(--font-mono, monospace);
@@ -679,6 +740,10 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
     letter-spacing: 0.08em;
     color: #83968e;
     margin: 0;
+  }
+
+  :global(html[data-theme="light"]) .section-heading {
+    color: #52665e;
   }
 
   .section-card-body {

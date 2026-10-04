@@ -1,0 +1,155 @@
+---
+import type { EvidenceState } from '@/types/labArtifact';
+
+export interface Props {
+  state: EvidenceState;
+  class?: string;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+const { state, class: className = '', size = 'md' } = Astro.props;
+
+const configMap: Record<EvidenceState, { label: string; icon: string; title: string; cssClass: string }> = {
+  actual: {
+    label: 'ACTUAL EVIDENCE',
+    icon: '●',
+    title: 'Backed by live code implementation, execution telemetry, or benchmark logs',
+    cssClass: 'evidence-actual',
+  },
+  prototype: {
+    label: 'WORKING PROTOTYPE',
+    icon: '◆',
+    title: 'Functional experimental prototype subject to further architectural hardening',
+    cssClass: 'evidence-prototype',
+  },
+  concept: {
+    label: 'MATHEMATICAL CONCEPT',
+    icon: '◇',
+    title: 'Theoretical architecture or formulation prior to completed implementation',
+    cssClass: 'evidence-concept',
+  },
+  simulation: {
+    label: 'SYNTHETIC SIMULATION',
+    icon: '▲',
+    title: 'Simulated data workload evaluated against synthetic test inputs',
+    cssClass: 'evidence-simulation',
+  },
+  planned: {
+    label: 'PLANNED EXPERIMENT',
+    icon: '○',
+    title: 'Future planned experiment on the research roadmap',
+    cssClass: 'evidence-planned',
+  },
+};
+
+const config = configMap[state] || configMap.concept;
+---
+
+<span
+  class:list={['lab-evidence-badge', `badge-${size}`, config.cssClass, className]}
+  title={config.title}
+  role="status"
+  aria-label={`Evidence State: ${config.label}`}
+>
+  <span class="badge-icon" aria-hidden="true">{config.icon}</span>
+  <span class="badge-text">{config.label}</span>
+</span>
+
+<style>
+  .lab-evidence-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-radius: var(--radius-sm, 0.25rem);
+    border: 1px solid transparent;
+    user-select: none;
+    white-space: nowrap;
+    line-height: 1;
+  }
+
+  .badge-sm {
+    font-size: 0.6rem;
+    padding: 0.2rem 0.45rem;
+  }
+
+  .badge-md {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.55rem;
+  }
+
+  .badge-lg {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.75rem;
+  }
+
+  .badge-icon {
+    font-size: 0.75em;
+    opacity: 0.9;
+  }
+
+  /* Dark Theme Tokens */
+  .evidence-actual {
+    background: rgba(16, 185, 129, 0.12);
+    color: #6ee7b7;
+    border-color: rgba(16, 185, 129, 0.3);
+  }
+
+  .evidence-prototype {
+    background: rgba(126, 216, 196, 0.12);
+    color: #7ed8c4;
+    border-color: rgba(126, 216, 196, 0.3);
+  }
+
+  .evidence-concept {
+    background: rgba(148, 163, 184, 0.12);
+    color: #cbd5e1;
+    border-color: rgba(148, 163, 184, 0.25);
+  }
+
+  .evidence-simulation {
+    background: rgba(245, 158, 11, 0.12);
+    color: #fcd34d;
+    border-color: rgba(245, 158, 11, 0.3);
+  }
+
+  .evidence-planned {
+    background: rgba(168, 85, 247, 0.12);
+    color: #d8b4fe;
+    border-color: rgba(168, 85, 247, 0.3);
+  }
+
+  /* Light Theme Overrides */
+  :global(html[data-theme="light"]) .evidence-actual {
+    background: #e6f7f3;
+    color: #065f46;
+    border-color: rgba(6, 95, 70, 0.25);
+  }
+
+  :global(html[data-theme="light"]) .evidence-prototype {
+    background: #e6f7f3;
+    color: #0d7663;
+    border-color: rgba(13, 118, 99, 0.25);
+  }
+
+  :global(html[data-theme="light"]) .evidence-concept {
+    background: #f1f5f9;
+    color: #475569;
+    border-color: rgba(71, 85, 105, 0.25);
+  }
+
+  :global(html[data-theme="light"]) .evidence-simulation {
+    background: #fef3c7;
+    color: #92400e;
+    border-color: rgba(146, 64, 14, 0.25);
+  }
+
+  :global(html[data-theme="light"]) .evidence-planned {
+    background: #f3e8ff;
+    color: #6b21a8;
+    border-color: rgba(107, 33, 168, 0.25);
+  }
+</style>
