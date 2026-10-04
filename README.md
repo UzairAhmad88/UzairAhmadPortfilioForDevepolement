@@ -93,6 +93,13 @@ The platform includes a comprehensive, professional 5-layer engineering document
 - **[docs/SECURITY-OPERATIONS.md](file:///d:/web/protfolio/docs/SECURITY-OPERATIONS.md)** — Threat Model, Invariants & Secret Isolation
 - **[docs/PRIVACY-DATA-HANDLING.md](file:///d:/web/protfolio/docs/PRIVACY-DATA-HANDLING.md)** — Zero-Tracker Privacy Architecture
 - **[docs/BACKUP-RECOVERY.md](file:///d:/web/protfolio/docs/BACKUP-RECOVERY.md)** — Git Source of Truth & Disaster Recovery
+- **[docs/FINAL-IDENTITY-BASELINE.md](file:///d:/web/protfolio/docs/FINAL-IDENTITY-BASELINE.md)** — Identity Baseline & 10s/60s Visitor Tests
+- **[docs/FINAL-PLATFORM-MAP.md](file:///d:/web/protfolio/docs/FINAL-PLATFORM-MAP.md)** — Final Platform System Map & Information Architecture
+- **[docs/HUMANITY-AUDIT.md](file:///d:/web/protfolio/docs/HUMANITY-AUDIT.md)** — Humanity, Authenticity & Voice Audit
+- **[docs/FINAL-IDENTITY-REVIEW.md](file:///d:/web/protfolio/docs/FINAL-IDENTITY-REVIEW.md)** — Comprehensive 20-Section Final Identity Review
+- **[docs/FINAL-PLATFORM-SCORECARD.md](file:///d:/web/protfolio/docs/FINAL-PLATFORM-SCORECARD.md)** — Qualitative Maturity Scorecard (31 Dimensions)
+- **[docs/FINAL-CHANGELOG.md](file:///d:/web/protfolio/docs/FINAL-CHANGELOG.md)** — Full Transformation Changelog (Phase 01–35)
+- **[docs/FINAL-COMPLETION-REPORT.md](file:///d:/web/protfolio/docs/FINAL-COMPLETION-REPORT.md)** — Master Platform Completion Report (🟢 PLATFORM COMPLETE)
 - **[docs/PRODUCTION-QA-REPORT.md](file:///d:/web/protfolio/docs/PRODUCTION-QA-REPORT.md)** — Phase 33 Production QA Final Report
 - **[docs/PHASE-34-IMPLEMENTATION.md](file:///d:/web/protfolio/docs/PHASE-34-IMPLEMENTATION.md)** — Phase 34 Implementation Record
 
