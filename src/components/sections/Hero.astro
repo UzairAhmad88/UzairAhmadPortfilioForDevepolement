@@ -10,7 +10,7 @@
     </div>
 
     <h1 class="hero-title">
-      Engineering systems where <span class="highlight-text">statistical rigor</span>, <span class="highlight-alt">AI models</span>, and <span class="highlight-eng">production code</span> meet.
+      Engineering systems where <span class="highlight-text">statistical rigor</span>, AI models, and production code meet.
     </h1>
 
     <p class="hero-lede">
@@ -55,14 +55,6 @@
             <stop offset="0%" stop-color="#7ed8c4"></stop>
             <stop offset="100%" stop-color="#3ca691"></stop>
           </linearGradient>
-          <linearGradient id="aiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#bda6ff"></stop>
-            <stop offset="100%" stop-color="#8c6eff"></stop>
-          </linearGradient>
-          <linearGradient id="prodGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#d2a071"></stop>
-            <stop offset="100%" stop-color="#b88350"></stop>
-          </linearGradient>
         </defs>
 
         <!-- Subtle Grid Matrix -->
@@ -90,7 +82,7 @@
         <g class="topology-node" transform="translate(460, 120)">
           <rect x="-65" y="-24" width="130" height="48" rx="6" class="node-box ai-box" />
           <text x="0" y="-4" class="node-title" text-anchor="middle">AI & NEURAL</text>
-          <text x="0" y="12" class="node-sub" text-anchor="middle">PyTorch · Agents</text>
+          <text x="0" y="12" class="node-sub" text-anchor="middle">PyTorch · Models</text>
         </g>
 
         <!-- Node 3: Full Stack Systems -->
@@ -104,7 +96,7 @@
         <g class="topology-node" transform="translate(460, 340)">
           <rect x="-65" y="-24" width="130" height="48" rx="6" class="node-box prod-box" />
           <text x="0" y="-4" class="node-title" text-anchor="middle">PRODUCTION</text>
-          <text x="0" y="12" class="node-sub" text-anchor="middle">Vercel · SaaS UX</text>
+          <text x="0" y="12" class="node-sub" text-anchor="middle">Vercel · Verified</text>
         </g>
       </svg>
     </div>
@@ -165,27 +157,19 @@
   }
 
   .highlight-text {
-    color: #7ed8c4;
-  }
-
-  .highlight-alt {
-    color: #bda6ff;
-  }
-
-  .highlight-eng {
-    color: #d2a071;
+    color: var(--color-accent, #7ed8c4);
   }
 
   .hero-lede {
     max-width: 640px;
-    color: var(--color-text-muted, #a9b8b1);
+    color: var(--color-text-secondary, #a9b8b1);
     font-size: var(--font-size-lead, 1.125rem);
     line-height: 1.75;
     margin: 0 0 2rem 0;
   }
 
   .hero-lede strong {
-    color: var(--color-text, #f6f1e8);
+    color: var(--color-text-primary, #f6f1e8);
   }
 
   .hero-meta-grid {
@@ -210,13 +194,13 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: #83968e;
+    color: var(--color-text-muted, #83968e);
   }
 
   .meta-v {
     font-size: 0.85rem;
     font-weight: 600;
-    color: var(--color-text, #f6f1e8);
+    color: var(--color-text-primary, #f6f1e8);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -242,36 +226,38 @@
   }
 
   .button.primary {
-    background: #7ed8c4;
-    color: #07110f;
+    background: var(--color-accent, #7ed8c4);
+    color: #07110f !important;
   }
 
   .button.primary:hover {
-    background: #9bd8cf;
+    background: var(--color-accent-hover, #9bd8cf);
+    color: #07110f !important;
     transform: translateY(-1px);
   }
 
   .button.secondary {
-    background: rgba(189, 166, 255, 0.12);
-    border: 1px solid rgba(189, 166, 255, 0.3);
-    color: #bda6ff;
+    background: rgba(126, 216, 196, 0.08);
+    border: 1px solid rgba(126, 216, 196, 0.28);
+    color: var(--color-accent-teal, #7ed8c4);
   }
 
   .button.secondary:hover {
-    background: rgba(189, 166, 255, 0.2);
-    border-color: #bda6ff;
+    background: rgba(126, 216, 196, 0.16);
+    border-color: var(--color-accent-teal, #7ed8c4);
+    color: var(--color-accent-teal, #7ed8c4);
     transform: translateY(-1px);
   }
 
   .button.ghost {
     background: rgba(16, 26, 23, 0.6);
     border: 1px solid rgba(246, 241, 232, 0.12);
-    color: var(--color-text, #f6f1e8);
+    color: var(--color-text-primary, #f6f1e8);
   }
 
   .button.ghost:hover {
-    border-color: #7ed8c4;
-    color: #7ed8c4;
+    border-color: var(--color-accent, #7ed8c4);
+    color: var(--color-accent, #7ed8c4);
     transform: translateY(-1px);
   }
 
@@ -335,15 +321,16 @@
 
   .flow-line {
     fill: none;
-    stroke-width: 2.5;
+    stroke-width: 2;
     stroke-dasharray: 8 6;
+    stroke: rgba(126, 216, 196, 0.35);
     animation: dashFlow 20s linear infinite;
   }
 
-  .flow-1 { stroke: rgba(126, 216, 196, 0.4); }
-  .flow-2 { stroke: rgba(189, 166, 255, 0.4); }
-  .flow-3 { stroke: rgba(210, 160, 113, 0.4); }
-  .flow-4 { stroke: rgba(126, 216, 196, 0.4); }
+  .flow-1 { stroke: rgba(126, 216, 196, 0.45); }
+  .flow-2 { stroke: rgba(126, 216, 196, 0.35); }
+  .flow-3 { stroke: rgba(126, 216, 196, 0.35); }
+  .flow-4 { stroke: rgba(126, 216, 196, 0.45); }
 
   .core-hub {
     fill: rgba(7, 17, 15, 0.95);
@@ -364,11 +351,12 @@
   .node-box {
     stroke-width: 1.5;
     fill: rgba(7, 17, 15, 0.9);
+    stroke: rgba(126, 216, 196, 0.4);
   }
 
   .quant-box { stroke: rgba(126, 216, 196, 0.6); }
-  .ai-box { stroke: rgba(189, 166, 255, 0.6); }
-  .eng-box { stroke: rgba(210, 160, 113, 0.6); }
+  .ai-box { stroke: rgba(126, 216, 196, 0.45); }
+  .eng-box { stroke: rgba(126, 216, 196, 0.45); }
   .prod-box { stroke: rgba(126, 216, 196, 0.6); }
 
   .node-title {

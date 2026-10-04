@@ -117,13 +117,10 @@ const dna = getProjectDNA(project);
 {variant === 'card' && (
   <div class:list={['project-dna-card', className]}>
     <div class="card-dna-meta">
-      <div class="dna-badge-group">
-        <span class="card-dna-type">{dna.type}</span>
-        <span class:list={['card-status-badge', `status-${dna.rawStatus}`]}>
-          {dna.status}
-        </span>
-      </div>
-      {dna.timeline && <span class="card-timeline">{dna.timeline}</span>}
+      <span class="card-dna-type">{dna.type}</span>
+      <span class:list={['card-status-badge', `status-${dna.rawStatus}`]}>
+        {dna.status}
+      </span>
     </div>
 
     {dna.role && (
@@ -266,39 +263,39 @@ const dna = getProjectDNA(project);
   }
 
   .status-active {
-    background: rgba(126, 216, 196, 0.12);
+    background: rgba(126, 216, 196, 0.1);
     color: var(--color-accent, #7ed8c4);
     border: 1px solid rgba(126, 216, 196, 0.28);
   }
 
   .status-academic {
-    background: rgba(189, 166, 255, 0.15);
-    color: #bda6ff;
-    border: 1px solid rgba(189, 166, 255, 0.3);
+    background: rgba(126, 216, 196, 0.1);
+    color: var(--color-accent, #7ed8c4);
+    border: 1px solid rgba(126, 216, 196, 0.25);
   }
 
   .status-completed {
-    background: rgba(16, 185, 129, 0.12);
+    background: rgba(16, 185, 129, 0.1);
     color: #6ee7b7;
     border: 1px solid rgba(16, 185, 129, 0.25);
   }
 
   .status-prototype, .status-research {
-    background: rgba(210, 160, 113, 0.15);
-    color: #d2a071;
-    border: 1px solid rgba(210, 160, 113, 0.3);
+    background: rgba(126, 216, 196, 0.08);
+    color: #9bd8cf;
+    border: 1px solid rgba(126, 216, 196, 0.22);
   }
 
   .status-superseded {
-    background: rgba(189, 166, 255, 0.12);
-    color: #c4b5fd;
-    border: 1px solid rgba(189, 166, 255, 0.28);
+    background: rgba(120, 144, 156, 0.12);
+    color: #94a3b8;
+    border: 1px solid rgba(120, 144, 156, 0.25);
   }
 
   .status-legacy {
-    background: rgba(148, 163, 184, 0.12);
-    color: #cbd5e1;
-    border: 1px solid rgba(148, 163, 184, 0.25);
+    background: rgba(120, 144, 156, 0.12);
+    color: #94a3b8;
+    border: 1px solid rgba(120, 144, 156, 0.25);
   }
 
   .status-archived, .status-paused, .status-abandoned {

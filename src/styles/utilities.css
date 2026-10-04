@@ -55,7 +55,10 @@
 /* ============================================================
    BUTTON SYSTEM (Primary, Secondary, Ghost, Link)
    ============================================================ */
-.button {
+.button,
+.btn-primary,
+.btn-secondary,
+.btn-ghost {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -80,76 +83,83 @@
 }
 
 .button:disabled,
-.button[aria-disabled="true"] {
+.button[aria-disabled="true"],
+.btn-primary:disabled,
+.btn-secondary:disabled {
   opacity: 0.45;
   cursor: not-allowed;
   pointer-events: none;
 }
 
-.button:focus-visible {
+.button:focus-visible,
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.btn-ghost:focus-visible {
   outline: 2px solid var(--color-accent, #7ed8c4);
   outline-offset: 2px;
 }
 
-/* Primary Button: Solid Brand Accent */
+/* Primary Button: Solid Brand Accent with Dark Text */
 .button.primary,
-.primary {
+.btn-primary {
   background: var(--color-accent, #7ed8c4);
-  color: var(--color-background, #07110f);
+  color: #07110f !important;
   border-color: var(--color-accent, #7ed8c4);
 }
 
 .button.primary:hover,
-.primary:hover {
+.btn-primary:hover {
   background: var(--color-accent-hover, #9bd8cf);
   border-color: var(--color-accent-hover, #9bd8cf);
+  color: #07110f !important;
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(126, 216, 196, 0.2);
+  box-shadow: 0 4px 16px rgba(126, 216, 196, 0.25);
 }
 
 .button.primary:active,
-.primary:active {
+.btn-primary:active {
   transform: translateY(0);
 }
 
-/* Secondary Button: Subtle Elevated Surface */
+/* Secondary Button: Subtle Elevated Surface with Accent Border */
 .button.secondary,
-.secondary {
+.btn-secondary {
   background: rgba(126, 216, 196, 0.08);
   border-color: rgba(126, 216, 196, 0.3);
   color: var(--color-accent-teal, #7ed8c4);
 }
 
 .button.secondary:hover,
-.secondary:hover {
+.btn-secondary:hover {
   background: rgba(126, 216, 196, 0.16);
   border-color: var(--color-accent-teal, #7ed8c4);
+  color: var(--color-accent-teal, #7ed8c4);
   transform: translateY(-1px);
 }
 
 .button.secondary:active,
-.secondary:active {
+.btn-secondary:active {
   transform: translateY(0);
 }
 
 /* Ghost Button: Outline / Quiet Surface */
 .button.ghost,
-.ghost {
+.btn-ghost {
   background: var(--color-surface, rgba(255, 255, 255, 0.035));
   border: 1px solid var(--color-border, rgba(246, 241, 232, 0.12));
   color: var(--color-text-primary, #f6f1e8);
 }
 
 .button.ghost:hover,
-.ghost:hover {
+.btn-ghost:hover {
   background: var(--color-surface-hover, rgba(255, 255, 255, 0.06));
-  border-color: rgba(246, 241, 232, 0.24);
-  color: var(--color-text-primary, #f6f1e8);
+  border-color: rgba(126, 216, 196, 0.35);
+  color: var(--color-accent, #7ed8c4);
   transform: translateY(-1px);
 }
 
 .button.ghost:active,
-.ghost:active {
+.btn-ghost:active {
   transform: translateY(0);
 }
 
