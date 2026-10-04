@@ -80,7 +80,7 @@ const { currentPath = '' } = Astro.props;
     display: none;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 200ms ease;
+    transition: opacity var(--motion-duration-normal) var(--motion-ease-standard);
   }
 
   .mobile-drawer.is-open {
@@ -114,7 +114,7 @@ const { currentPath = '' } = Astro.props;
     flex-direction: column;
     justify-content: space-between;
     transform: translateX(100%);
-    transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1), background-color var(--transition-fast);
+    transition: transform var(--motion-duration-slow) var(--motion-ease-emphasized), background-color var(--motion-duration-fast) var(--motion-ease-standard);
     box-shadow: -10px 0 40px rgba(0, 0, 0, 0.4);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -157,7 +157,7 @@ const { currentPath = '' } = Astro.props;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: color 150ms ease, border-color 150ms ease;
+    transition: color var(--motion-duration-fast) var(--motion-ease-standard), border-color var(--motion-duration-fast) var(--motion-ease-standard);
   }
 
   .drawer-close:hover,
@@ -186,7 +186,7 @@ const { currentPath = '' } = Astro.props;
     font-weight: 600;
     color: var(--color-text-secondary, #a9b8b1);
     text-decoration: none;
-    transition: background 150ms ease, color 150ms ease;
+    transition: background-color var(--motion-duration-fast) var(--motion-ease-standard), color var(--motion-duration-fast) var(--motion-ease-standard);
   }
 
   .drawer-link:hover,
@@ -222,12 +222,16 @@ const { currentPath = '' } = Astro.props;
     font-weight: 700;
     font-size: 0.95rem;
     text-decoration: none;
-    transition: opacity 150ms ease, transform 150ms ease;
+    transition: opacity var(--motion-duration-fast) var(--motion-ease-standard), transform var(--motion-duration-instant) var(--motion-ease-standard);
   }
 
   .drawer-cta-button:hover {
     opacity: 0.92;
-    transform: translateY(-1px);
+    transform: translateY(calc(-1 * var(--motion-distance-micro)));
+  }
+
+  .drawer-cta-button:active {
+    transform: translateY(var(--motion-distance-micro)) scale(var(--motion-scale-press));
   }
 
   .drawer-socials {
@@ -245,6 +249,7 @@ const { currentPath = '' } = Astro.props;
     min-height: var(--touch-target-min, 44px);
     display: flex;
     align-items: center;
+    transition: color var(--motion-duration-fast) var(--motion-ease-standard);
   }
 
   .social-link:hover {

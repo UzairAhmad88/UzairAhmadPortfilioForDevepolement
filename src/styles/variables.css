@@ -145,19 +145,49 @@
   --shadow-subtle-glow: 0 0 32px rgba(126, 216, 196, 0.08);
 
   /* ============================================================
-     7. TRANSITIONS & MOTION
+     7. MOTION SYSTEM 2.0 TOKENS (Phase 25)
      ============================================================ */
-  --duration-fast: 150ms;
-  --duration-normal: 240ms;
-  --duration-slow: 400ms;
+  /* Durations */
+  --motion-duration-instant: 50ms;
+  --motion-duration-fast: 120ms;
+  --motion-duration-normal: 220ms;
+  --motion-duration-slow: 350ms;
+  --motion-duration-deliberate: 480ms;
 
-  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  /* Easings */
+  --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --motion-ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
+  --motion-ease-linear: linear;
+
+  /* Distances */
+  --motion-distance-micro: 1px;
+  --motion-distance-sm: 2px;
+  --motion-distance-md: 6px;
+  --motion-distance-lg: 16px;
+
+  /* Scale */
+  --motion-scale-press: 0.98;
+  --motion-scale-card: 1.005;
+
+  /* Composed Transitions */
+  --motion-transition-fast: var(--motion-duration-fast) var(--motion-ease-standard);
+  --motion-transition-base: var(--motion-duration-normal) var(--motion-ease-standard);
+  --motion-transition-emphasized: var(--motion-duration-normal) var(--motion-ease-emphasized);
+  --motion-transition-drawer: var(--motion-duration-slow) var(--motion-ease-emphasized);
+  --motion-transition-deliberate: var(--motion-duration-deliberate) var(--motion-ease-standard);
+
+  /* Legacy Compatibility Aliases */
+  --duration-fast: var(--motion-duration-fast);
+  --duration-normal: var(--motion-duration-normal);
+  --duration-slow: var(--motion-duration-slow);
+  --ease-standard: var(--motion-ease-standard);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-out: cubic-bezier(0, 0, 0.2, 1);
-
-  --transition-fast: var(--duration-fast) var(--ease-standard);
-  --transition-base: var(--duration-normal) var(--ease-standard);
-  --transition-slow: var(--duration-slow) var(--ease-standard);
+  --ease-out: var(--motion-ease-decelerate);
+  --transition-fast: var(--motion-transition-fast);
+  --transition-base: var(--motion-transition-base);
+  --transition-slow: var(--motion-transition-drawer);
 
   /* ============================================================
      8. ACCESSIBILITY & TOUCH TARGETS (WCAG 2.5.5 / 2.5.8)

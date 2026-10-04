@@ -10,7 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "test": "node --test tests/unit/seo.test.ts tests/unit/projects.test.ts tests/unit/research.test.ts tests/unit/contact.test.ts tests/unit/production.test.ts tests/unit/github-sync.test.ts tests/unit/project-dna.test.ts tests/unit/visualizations.test.ts tests/unit/methodology.test.ts tests/unit/technologies.test.ts tests/unit/notes.test.ts tests/unit/lab.test.ts tests/unit/knowledge-graph.test.ts tests/unit/discovery.test.ts tests/unit/vercel-sync.test.ts tests/unit/project-sync.test.ts tests/unit/archive.test.ts tests/unit/timeline.test.ts tests/unit/about.test.ts tests/unit/collaboration.test.ts tests/unit/signatureInteraction.test.ts",
+    "test": "node --test tests/unit/seo.test.ts tests/unit/projects.test.ts tests/unit/research.test.ts tests/unit/contact.test.ts tests/unit/production.test.ts tests/unit/github-sync.test.ts tests/unit/project-dna.test.ts tests/unit/visualizations.test.ts tests/unit/methodology.test.ts tests/unit/technologies.test.ts tests/unit/notes.test.ts tests/unit/lab.test.ts tests/unit/knowledge-graph.test.ts tests/unit/discovery.test.ts tests/unit/vercel-sync.test.ts tests/unit/project-sync.test.ts tests/unit/archive.test.ts tests/unit/timeline.test.ts tests/unit/about.test.ts tests/unit/collaboration.test.ts tests/unit/signatureInteraction.test.ts tests/unit/theme.test.ts tests/unit/motion.test.ts",
     "signature:validate": "node scripts/validate-signature-interaction.mjs",
     "archive:validate": "node scripts/validate-archive.mjs",
     "timeline:validate": "node scripts/validate-timeline.mjs",

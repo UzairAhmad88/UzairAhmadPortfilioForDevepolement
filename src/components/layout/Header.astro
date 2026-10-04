@@ -131,7 +131,7 @@ const { currentPath = '' } = Astro.props;
     font-weight: 600;
     text-decoration: none;
     white-space: nowrap;
-    transition: background 180ms ease, border-color 180ms ease, color 180ms ease, box-shadow 180ms ease;
+    transition: background-color var(--motion-transition-fast), border-color var(--motion-transition-fast), color var(--motion-transition-fast), box-shadow var(--motion-transition-fast);
   }
 
   .header-cta:hover {
@@ -152,7 +152,7 @@ const { currentPath = '' } = Astro.props;
     background: var(--color-surface);
     color: var(--color-text-primary);
     cursor: pointer;
-    transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
+    transition: background-color var(--motion-transition-fast), border-color var(--motion-transition-fast), color var(--motion-transition-fast);
   }
 
   .mobile-trigger:hover {

@@ -47,15 +47,15 @@ const detailUrl = `/work/${project.slug}`;
     justify-content: space-between;
     padding: var(--space-card, 1.5rem);
     background: rgba(16, 26, 23, 0.75);
-    border: 1px solid rgba(246, 241, 232, 0.09);
-    border-radius: 0.75rem;
-    transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+    border: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.09));
+    border-radius: var(--radius-lg, 0.75rem);
+    transition: transform var(--motion-duration-normal) var(--motion-ease-standard), border-color var(--motion-duration-normal) var(--motion-ease-standard), box-shadow var(--motion-duration-normal) var(--motion-ease-standard);
   }
 
   .project-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(126, 216, 196, 0.35);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35), 0 0 24px rgba(126, 216, 196, 0.06);
+    transform: translateY(calc(-1 * var(--motion-distance-sm)));
+    border-color: var(--color-accent-muted, rgba(126, 216, 196, 0.35));
+    box-shadow: var(--shadow-card, 0 16px 40px rgba(0, 0, 0, 0.35));
   }
 
   .project-title {
@@ -66,18 +66,18 @@ const detailUrl = `/work/${project.slug}`;
   }
 
   .title-link {
-    color: var(--ink, #f6f1e8);
+    color: var(--color-text-primary, #f6f1e8);
     text-decoration: none;
-    transition: color 150ms ease;
+    transition: color var(--motion-duration-fast) var(--motion-ease-standard);
   }
 
   .title-link:hover,
   .title-link:focus-visible {
-    color: var(--teal, #7ed8c4);
+    color: var(--color-accent, #7ed8c4);
   }
 
   .project-summary {
-    color: var(--muted, #a9b8b1);
+    color: var(--color-text-secondary, #a9b8b1);
     font-size: 0.925rem;
     line-height: 1.6;
     margin: 0 0 1.25rem 0;
@@ -90,7 +90,7 @@ const detailUrl = `/work/${project.slug}`;
     align-items: center;
     gap: 0.75rem 1rem;
     padding-top: 1rem;
-    border-top: 1px solid rgba(246, 241, 232, 0.08);
+    border-top: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
   }
 
   .action-link {
@@ -100,31 +100,32 @@ const detailUrl = `/work/${project.slug}`;
     font-size: 0.875rem;
     font-weight: 600;
     text-decoration: none;
-    transition: color 150ms ease;
+    transition: color var(--motion-duration-fast) var(--motion-ease-standard);
     white-space: nowrap;
   }
 
   .action-link.primary {
-    color: var(--teal, #7ed8c4);
+    color: var(--color-accent, #7ed8c4);
   }
 
   .action-link.primary:hover {
-    color: #9bd8cf;
+    color: var(--color-accent-hover, #9bd8cf);
     text-decoration: underline;
   }
 
   .action-link.secondary {
-    color: var(--muted, #a9b8b1);
+    color: var(--color-text-secondary, #a9b8b1);
   }
 
   .action-link.secondary:hover {
-    color: var(--ink, #f6f1e8);
+    color: var(--color-text-primary, #f6f1e8);
     text-decoration: underline;
   }
 
   @media (prefers-reduced-motion: reduce) {
     .project-card {
       transition: none !important;
+      transform: none !important;
     }
   }
 </style>
