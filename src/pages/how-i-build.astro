@@ -1109,4 +1109,85 @@ function getProjectBySlug(slug: string) {
       grid-template-columns: 1fr;
     }
   }
+
+  :global(html[data-theme="light"]) .flow-card,
+  :global([data-theme="light"]) .flow-card,
+  :global(html[data-theme="light"]) .decision-card,
+  :global([data-theme="light"]) .decision-card,
+  :global(html[data-theme="light"]) .principle-card,
+  :global([data-theme="light"]) .principle-card,
+  :global(html[data-theme="light"]) .step-card,
+  :global([data-theme="light"]) .step-card {
+    background: var(--color-surface-elevated, #ffffff);
+    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.04);
+  }
+
+  :global(html[data-theme="light"]) .flow-name,
+  :global([data-theme="light"]) .flow-name,
+  :global(html[data-theme="light"]) .decision-title,
+  :global([data-theme="light"]) .decision-title,
+  :global(html[data-theme="light"]) .principle-title,
+  :global([data-theme="light"]) .principle-title,
+  :global(html[data-theme="light"]) .closing-title,
+  :global([data-theme="light"]) .closing-title,
+  :global(html[data-theme="light"]) .bold-text,
+  :global([data-theme="light"]) .bold-text {
+    color: #141f1c;
+  }
+
+  :global(html[data-theme="light"]) .flow-desc,
+  :global([data-theme="light"]) .flow-desc,
+  :global(html[data-theme="light"]) .flow-step-label,
+  :global([data-theme="light"]) .flow-step-label,
+  :global(html[data-theme="light"]) .block-text,
+  :global([data-theme="light"]) .block-text,
+  :global(html[data-theme="light"]) .block-subtext,
+  :global([data-theme="light"]) .block-subtext,
+  :global(html[data-theme="light"]) .principle-desc,
+  :global([data-theme="light"]) .principle-desc,
+  :global(html[data-theme="light"]) .closing-desc,
+  :global([data-theme="light"]) .closing-desc,
+  :global(html[data-theme="light"]) .compact-list li,
+  :global([data-theme="light"]) .compact-list li {
+    color: #35453f;
+  }
+
+  :global(html[data-theme="light"]) .highlight-block,
+  :global([data-theme="light"]) .highlight-block {
+    background: #f7f4ec;
+    border-color: rgba(13, 118, 99, 0.25);
+  }
+
+  :global(html[data-theme="light"]) .principle-statement,
+  :global([data-theme="light"]) .principle-statement {
+    color: #0d7663;
+  }
+
+  :global(html[data-theme="light"]) .evidence-link,
+  :global([data-theme="light"]) .evidence-link {
+    background: rgba(13, 118, 99, 0.08);
+    border-color: rgba(13, 118, 99, 0.25);
+    color: #0d7663;
+  }
+
+  :global(html[data-theme="light"]) .principle-tag,
+  :global([data-theme="light"]) .principle-tag {
+    background: rgba(20, 31, 28, 0.04);
+    border-color: rgba(20, 31, 28, 0.1);
+    color: #141f1c;
+  }
+
+  :global(html[data-theme="light"]) .btn-primary,
+  :global([data-theme="light"]) .btn-primary {
+    background: #0d7663;
+    color: #ffffff;
+  }
+
+  :global(html[data-theme="light"]) .btn-secondary,
+  :global([data-theme="light"]) .btn-secondary {
+    background: #ffffff;
+    border-color: rgba(20, 31, 28, 0.15);
+    color: #141f1c;
+  }
 </style>

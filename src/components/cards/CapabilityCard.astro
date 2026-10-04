@@ -377,4 +377,78 @@ const { capability } = Astro.props;
       text-align: left;
     }
   }
+
+  :global(html[data-theme="light"]) .capability-card,
+  :global([data-theme="light"]) .capability-card {
+    background: #ffffff !important;
+    border: 1px solid rgba(20, 31, 28, 0.12) !important;
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.05) !important;
+  }
+
+  :global(html[data-theme="light"]) .capability-card:hover,
+  :global([data-theme="light"]) .capability-card:hover {
+    border-color: #0d7663 !important;
+    box-shadow: 0 12px 32px rgba(20, 31, 28, 0.09) !important;
+    background: #ffffff !important;
+  }
+
+  :global(html[data-theme="light"]) .capability-card h3,
+  :global([data-theme="light"]) .capability-card h3 {
+    color: #141f1c !important;
+  }
+
+  :global(html[data-theme="light"]) .capability-card:hover h3,
+  :global([data-theme="light"]) .capability-card:hover h3 {
+    color: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .capability-card p,
+  :global([data-theme="light"]) .capability-card p {
+    color: #35453f !important;
+  }
+
+  :global(html[data-theme="light"]) .capability-meta,
+  :global([data-theme="light"]) .capability-meta {
+    color: #4e6059 !important;
+  }
+
+  :global(html[data-theme="light"]) .capability-meta span,
+  :global([data-theme="light"]) .capability-meta span {
+    color: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .capability-visual,
+  :global([data-theme="light"]) .capability-visual {
+    background: #f7f4ec !important;
+    border-color: rgba(20, 31, 28, 0.09) !important;
+  }
+
+  :global(html[data-theme="light"]) .capability-tags span,
+  :global([data-theme="light"]) .capability-tags span {
+    border-color: rgba(20, 31, 28, 0.12) !important;
+    color: #35453f !important;
+    background: rgba(20, 31, 28, 0.04) !important;
+  }
+
+  :global(html[data-theme="light"]) .capability-card strong,
+  :global([data-theme="light"]) .capability-card strong {
+    border-top-color: rgba(20, 31, 28, 0.09) !important;
+    color: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .grid-line,
+  :global([data-theme="light"]) .grid-line {
+    stroke: rgba(20, 31, 28, 0.08) !important;
+  }
+
+  :global(html[data-theme="light"]) .module,
+  :global([data-theme="light"]) .module {
+    fill: #ffffff !important;
+    stroke: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .ui-fragments,
+  :global([data-theme="light"]) .ui-fragments {
+    stroke: #35453f !important;
+  }
 </style>

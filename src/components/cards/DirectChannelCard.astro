@@ -73,4 +73,37 @@ const { title, description, actionLabel, href, isExternal = false } = Astro.prop
     color: #9bd8cf;
     text-decoration: underline;
   }
+
+  :global(html[data-theme="light"]) .channel-card,
+  :global([data-theme="light"]) .channel-card {
+    background: var(--color-surface-elevated, #ffffff);
+    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.04);
+  }
+
+  :global(html[data-theme="light"]) .channel-card:hover,
+  :global([data-theme="light"]) .channel-card:hover {
+    border-color: rgba(13, 118, 99, 0.35);
+    box-shadow: 0 8px 24px rgba(20, 31, 28, 0.08);
+  }
+
+  :global(html[data-theme="light"]) .channel-title,
+  :global([data-theme="light"]) .channel-title {
+    color: #141f1c;
+  }
+
+  :global(html[data-theme="light"]) .channel-description,
+  :global([data-theme="light"]) .channel-description {
+    color: #35453f;
+  }
+
+  :global(html[data-theme="light"]) .channel-action,
+  :global([data-theme="light"]) .channel-action {
+    color: #0d7663;
+  }
+
+  :global(html[data-theme="light"]) .channel-action:hover,
+  :global([data-theme="light"]) .channel-action:hover {
+    color: #0a5c4d;
+  }
 </style>

@@ -393,4 +393,77 @@ function getProjectBySlug(slug: string) {
       align-items: flex-start;
     }
   }
+
+  :global(html[data-theme="light"]) .build-lifecycle-container,
+  :global([data-theme="light"]) .build-lifecycle-container {
+    background: var(--color-surface-elevated, #ffffff);
+    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
+    box-shadow: 0 4px 20px rgba(20, 31, 28, 0.05);
+  }
+
+  :global(html[data-theme="light"]) .stepper-nav,
+  :global([data-theme="light"]) .stepper-nav,
+  :global(html[data-theme="light"]) .lifecycle-footer,
+  :global([data-theme="light"]) .lifecycle-footer {
+    background: #f7f4ec;
+    border-color: rgba(20, 31, 28, 0.1);
+  }
+
+  :global(html[data-theme="light"]) .stage-tab,
+  :global([data-theme="light"]) .stage-tab {
+    border-color: rgba(20, 31, 28, 0.1);
+  }
+
+  :global(html[data-theme="light"]) .stage-tab:hover,
+  :global([data-theme="light"]) .stage-tab:hover {
+    background: rgba(13, 118, 99, 0.06);
+  }
+
+  :global(html[data-theme="light"]) .stage-tab.active-tab,
+  :global([data-theme="light"]) .stage-tab.active-tab {
+    background: #ffffff;
+    border-bottom-color: #0d7663;
+  }
+
+  :global(html[data-theme="light"]) .stage-num,
+  :global([data-theme="light"]) .stage-num,
+  :global(html[data-theme="light"]) .panel-step-badge,
+  :global([data-theme="light"]) .panel-step-badge,
+  :global(html[data-theme="light"]) .full-methodology-btn,
+  :global([data-theme="light"]) .full-methodology-btn {
+    color: #0d7663;
+  }
+
+  :global(html[data-theme="light"]) .stage-name,
+  :global([data-theme="light"]) .stage-name,
+  :global(html[data-theme="light"]) .panel-headline,
+  :global([data-theme="light"]) .panel-headline,
+  :global(html[data-theme="light"]) .practice-list li,
+  :global([data-theme="light"]) .practice-list li {
+    color: #141f1c;
+  }
+
+  :global(html[data-theme="light"]) .panel-desc,
+  :global([data-theme="light"]) .panel-desc,
+  :global(html[data-theme="light"]) .activity-list li,
+  :global([data-theme="light"]) .activity-list li,
+  :global(html[data-theme="light"]) .questions-list li,
+  :global([data-theme="light"]) .questions-list li,
+  :global(html[data-theme="light"]) .method-footnote,
+  :global([data-theme="light"]) .method-footnote {
+    color: #35453f;
+  }
+
+  :global(html[data-theme="light"]) .meta-item-box,
+  :global([data-theme="light"]) .meta-item-box {
+    background: #f7f4ec;
+    border-color: rgba(20, 31, 28, 0.1);
+  }
+
+  :global(html[data-theme="light"]) .evidence-pill,
+  :global([data-theme="light"]) .evidence-pill {
+    background: rgba(13, 118, 99, 0.08);
+    border-color: rgba(13, 118, 99, 0.25);
+    color: #0d7663;
+  }
 </style>

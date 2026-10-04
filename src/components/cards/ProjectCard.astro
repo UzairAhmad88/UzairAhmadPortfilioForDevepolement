@@ -122,38 +122,58 @@ const detailUrl = `/work/${project.slug}`;
   }
 
   .card-action-btn.secondary {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(246, 241, 232, 0.12);
+    background: var(--color-surface, rgba(255, 255, 255, 0.04));
+    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.12));
     color: var(--color-text-primary, #f6f1e8);
   }
 
   .card-action-btn.secondary:hover {
-    background: rgba(126, 216, 196, 0.1);
-    border-color: rgba(126, 216, 196, 0.35);
+    background: var(--color-accent-muted, rgba(126, 216, 196, 0.1));
+    border-color: var(--color-accent, #7ed8c4);
     color: var(--color-accent, #7ed8c4);
     transform: translateY(-1px);
   }
 
-  [data-theme="light"] .project-card {
-    background: var(--color-surface-elevated, #ffffff);
-    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
-    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.05);
+  :global(html[data-theme="light"]) .project-card,
+  :global([data-theme="light"]) .project-card {
+    background: #ffffff !important;
+    border: 1px solid rgba(20, 31, 28, 0.12) !important;
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.05) !important;
   }
 
-  [data-theme="light"] .project-card:hover {
-    box-shadow: 0 12px 32px rgba(20, 31, 28, 0.1);
+  :global(html[data-theme="light"]) .project-card:hover,
+  :global([data-theme="light"]) .project-card:hover {
+    border-color: #0d7663 !important;
+    box-shadow: 0 12px 32px rgba(20, 31, 28, 0.09) !important;
   }
 
-  [data-theme="light"] .card-action-btn.secondary {
-    background: var(--color-surface, rgba(20, 31, 28, 0.04));
-    border-color: var(--color-border, rgba(20, 31, 28, 0.12));
-    color: var(--color-text-primary, #141f1c);
+  :global(html[data-theme="light"]) .title-link,
+  :global([data-theme="light"]) .title-link {
+    color: #141f1c !important;
   }
 
-  [data-theme="light"] .card-action-btn.secondary:hover {
-    background: rgba(13, 118, 99, 0.08);
-    border-color: var(--color-accent-teal, #0d7663);
-    color: var(--color-accent-teal, #0d7663);
+  :global(html[data-theme="light"]) .title-link:hover,
+  :global([data-theme="light"]) .title-link:hover {
+    color: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .project-summary,
+  :global([data-theme="light"]) .project-summary {
+    color: #35453f !important;
+  }
+
+  :global(html[data-theme="light"]) .card-action-btn.secondary,
+  :global([data-theme="light"]) .card-action-btn.secondary {
+    background: rgba(20, 31, 28, 0.04) !important;
+    border-color: rgba(20, 31, 28, 0.12) !important;
+    color: #141f1c !important;
+  }
+
+  :global(html[data-theme="light"]) .card-action-btn.secondary:hover,
+  :global([data-theme="light"]) .card-action-btn.secondary:hover {
+    background: rgba(13, 118, 99, 0.08) !important;
+    border-color: #0d7663 !important;
+    color: #0d7663 !important;
   }
 
   @media (prefers-reduced-motion: reduce) {

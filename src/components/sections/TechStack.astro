@@ -312,96 +312,118 @@ const domainGroups = [
      LIGHT THEME EXPLICIT OVERRIDES
      Ensures crisp contrast, clean surfaces, and zero dark artifacts
      ============================================================ */
-  [data-theme="light"] .universe {
+  /* ============================================================
+     LIGHT THEME EXPLICIT OVERRIDES
+     Ensures crisp contrast, clean surfaces, and zero dark artifacts
+     ============================================================ */
+  :global(html[data-theme="light"]) .universe,
+  :global([data-theme="light"]) .universe {
     background:
       radial-gradient(circle at center, rgba(13, 118, 99, 0.08), transparent 50%),
       linear-gradient(rgba(20, 31, 28, 0.04) 1px, transparent 1px),
       linear-gradient(90deg, rgba(20, 31, 28, 0.04) 1px, transparent 1px),
-      #ffffff;
-    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
-    box-shadow: 0 4px 20px rgba(20, 31, 28, 0.05);
+      #ffffff !important;
+    border-color: rgba(20, 31, 28, 0.14) !important;
+    box-shadow: 0 4px 20px rgba(20, 31, 28, 0.05) !important;
   }
 
-  [data-theme="light"] .universe::before {
-    border-color: rgba(20, 31, 28, 0.08);
+  :global(html[data-theme="light"]) .universe::before,
+  :global([data-theme="light"]) .universe::before {
+    border-color: rgba(20, 31, 28, 0.08) !important;
   }
 
-  [data-theme="light"] .universe::after {
-    border-color: rgba(13, 118, 99, 0.25);
+  :global(html[data-theme="light"]) .universe::after,
+  :global([data-theme="light"]) .universe::after {
+    border-color: rgba(13, 118, 99, 0.25) !important;
   }
 
-  [data-theme="light"] .universe-core {
-    background: #ffffff;
-    border-color: rgba(13, 118, 99, 0.5);
-    box-shadow: 0 8px 30px rgba(13, 118, 99, 0.15);
+  :global(html[data-theme="light"]) .universe-core,
+  :global([data-theme="light"]) .universe-core {
+    background: #ffffff !important;
+    border-color: rgba(13, 118, 99, 0.5) !important;
+    box-shadow: 0 8px 30px rgba(13, 118, 99, 0.15) !important;
   }
 
-  [data-theme="light"] .core-label {
-    color: #5d6f68;
+  :global(html[data-theme="light"]) .core-label,
+  :global([data-theme="light"]) .core-label {
+    color: #4e6059 !important;
   }
 
-  [data-theme="light"] .core-lang {
-    color: #0d7663;
+  :global(html[data-theme="light"]) .core-lang,
+  :global([data-theme="light"]) .core-lang {
+    color: #0d7663 !important;
   }
 
-  [data-theme="light"] .universe-tag {
-    background: #ffffff;
-    border-color: rgba(20, 31, 28, 0.15);
-    color: #141f1c;
-    box-shadow: 0 2px 8px rgba(20, 31, 28, 0.08);
+  :global(html[data-theme="light"]) .universe-tag,
+  :global([data-theme="light"]) .universe-tag {
+    background: #ffffff !important;
+    border-color: rgba(20, 31, 28, 0.15) !important;
+    color: #141f1c !important;
+    box-shadow: 0 2px 8px rgba(20, 31, 28, 0.08) !important;
   }
 
-  [data-theme="light"] .universe-tag:hover {
-    border-color: #0d7663;
-    color: #0d7663;
-    box-shadow: 0 4px 14px rgba(13, 118, 99, 0.18);
+  :global(html[data-theme="light"]) .universe-tag:hover,
+  :global([data-theme="light"]) .universe-tag:hover {
+    border-color: #0d7663 !important;
+    color: #0d7663 !important;
+    box-shadow: 0 4px 14px rgba(13, 118, 99, 0.18) !important;
   }
 
-  [data-theme="light"] .stack-card {
-    background: var(--color-surface-elevated, #ffffff);
-    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
-    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.04);
+  :global(html[data-theme="light"]) .stack-card,
+  :global([data-theme="light"]) .stack-card {
+    background: #ffffff !important;
+    border-color: rgba(20, 31, 28, 0.12) !important;
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.04) !important;
   }
 
-  [data-theme="light"] .stack-card:hover {
-    border-color: rgba(13, 118, 99, 0.4);
-    box-shadow: 0 8px 24px rgba(13, 118, 99, 0.08);
+  :global(html[data-theme="light"]) .stack-card:hover,
+  :global([data-theme="light"]) .stack-card:hover {
+    border-color: rgba(13, 118, 99, 0.4) !important;
+    box-shadow: 0 8px 24px rgba(13, 118, 99, 0.08) !important;
   }
 
-  [data-theme="light"] .stack-role-title {
-    color: var(--color-text-primary, #141f1c);
+  :global(html[data-theme="light"]) .stack-role-title,
+  :global([data-theme="light"]) .stack-role-title {
+    color: #141f1c !important;
   }
 
-  [data-theme="light"] .stack-focus-text {
-    color: var(--color-text-secondary, #465751);
+  :global(html[data-theme="light"]) .stack-focus-text,
+  :global([data-theme="light"]) .stack-focus-text {
+    color: #35453f !important;
   }
 
-  [data-theme="light"] .skill-pill {
-    background: rgba(13, 118, 99, 0.08);
-    border-color: rgba(13, 118, 99, 0.25);
-    color: #0d7663;
+  :global(html[data-theme="light"]) .skill-pill,
+  :global([data-theme="light"]) .skill-pill {
+    background: rgba(13, 118, 99, 0.08) !important;
+    border-color: rgba(13, 118, 99, 0.25) !important;
+    color: #0d7663 !important;
   }
 
-  [data-theme="light"] .skill-pill:hover {
-    background: rgba(13, 118, 99, 0.16);
-    border-color: #0d7663;
+  :global(html[data-theme="light"]) .skill-pill:hover,
+  :global([data-theme="light"]) .skill-pill:hover {
+    background: rgba(13, 118, 99, 0.16) !important;
+    border-color: #0d7663 !important;
   }
 
-  [data-theme="light"] .stack-footer-cta {
-    background: var(--color-surface-elevated, #ffffff);
-    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
-    box-shadow: 0 2px 10px rgba(20, 31, 28, 0.04);
+  :global(html[data-theme="light"]) .stack-footer-cta,
+  :global([data-theme="light"]) .stack-footer-cta {
+    background: #ffffff !important;
+    border-color: rgba(20, 31, 28, 0.12) !important;
+    box-shadow: 0 2px 10px rgba(20, 31, 28, 0.04) !important;
   }
 
-  [data-theme="light"] .footer-note {
-    color: var(--color-text-muted, #5d6f68);
+  :global(html[data-theme="light"]) .footer-note,
+  :global([data-theme="light"]) .footer-note {
+    color: #4e6059 !important;
   }
 
-  [data-theme="light"] .tech-system-link {
-    color: #0d7663;
+  :global(html[data-theme="light"]) .tech-system-link,
+  :global([data-theme="light"]) .tech-system-link {
+    color: #0d7663 !important;
   }
 
-  [data-theme="light"] .tech-system-link:hover {
-    color: #09594b;
+  :global(html[data-theme="light"]) .tech-system-link:hover,
+  :global([data-theme="light"]) .tech-system-link:hover {
+    color: #09594b !important;
   }
 </style>

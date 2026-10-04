@@ -40,9 +40,9 @@ describe('Phase 24: Theme 2.0 Recovery System & Token Architecture', () => {
     const requiredLightTokens = [
       '--color-background: #fbf9f5;',
       '--color-background-subtle: #f4f0e8;',
-      '--color-surface-card: #f2ede4;',
+      '--color-surface-card: #ffffff;',
       '--color-text-primary: #141f1c;',
-      '--color-text-secondary: #465751;',
+      '--color-text-secondary: #35453f;',
       '--color-accent: #0d7663;',
       '--color-border: rgba(20, 31, 28, 0.12);',
     ];

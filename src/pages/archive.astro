@@ -267,6 +267,49 @@ const archiveFilters = [
       grid-template-columns: 1fr;
     }
   }
+
+  :global(html[data-theme="light"]) .archive-summary-ribbon,
+  :global([data-theme="light"]) .archive-summary-ribbon,
+  :global(html[data-theme="light"]) .philosophy-card,
+  :global([data-theme="light"]) .philosophy-card {
+    background: var(--color-surface-elevated, #ffffff);
+    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.04);
+  }
+
+  :global(html[data-theme="light"]) .metric-value,
+  :global([data-theme="light"]) .metric-value,
+  :global(html[data-theme="light"]) .philosophy-title,
+  :global([data-theme="light"]) .philosophy-title {
+    color: #141f1c;
+  }
+
+  :global(html[data-theme="light"]) .metric-label,
+  :global([data-theme="light"]) .metric-label,
+  :global(html[data-theme="light"]) .philosophy-body,
+  :global([data-theme="light"]) .philosophy-body {
+    color: #35453f;
+  }
+
+  :global(html[data-theme="light"]) .filter-pill,
+  :global([data-theme="light"]) .filter-pill {
+    background: #ffffff;
+    border-color: rgba(20, 31, 28, 0.15);
+    color: #35453f;
+  }
+
+  :global(html[data-theme="light"]) .filter-pill:hover,
+  :global([data-theme="light"]) .filter-pill:hover {
+    color: #141f1c;
+    border-color: #0d7663;
+  }
+
+  :global(html[data-theme="light"]) .filter-pill.active,
+  :global([data-theme="light"]) .filter-pill.active {
+    background: rgba(13, 118, 99, 0.12);
+    border-color: rgba(13, 118, 99, 0.35);
+    color: #0d7663;
+  }
 </style>
 
 <script>

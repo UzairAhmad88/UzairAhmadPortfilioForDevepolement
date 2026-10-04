@@ -838,4 +838,91 @@ const contactPageSchema = JSON.stringify({
       grid-template-columns: 1fr;
     }
   }
+
+  :global(html[data-theme="light"]) .form-card,
+  :global([data-theme="light"]) .form-card,
+  :global(html[data-theme="light"]) .response-card,
+  :global([data-theme="light"]) .response-card {
+    background: var(--color-surface-elevated, #ffffff);
+    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.04);
+  }
+
+  :global(html[data-theme="light"]) .form-title,
+  :global([data-theme="light"]) .form-title,
+  :global(html[data-theme="light"]) .field-label,
+  :global([data-theme="light"]) .field-label,
+  :global(html[data-theme="light"]) .sidebar-heading,
+  :global([data-theme="light"]) .sidebar-heading,
+  :global(html[data-theme="light"]) .response-heading,
+  :global([data-theme="light"]) .response-heading,
+  :global(html[data-theme="light"]) .context-name,
+  :global([data-theme="light"]) .context-name {
+    color: #141f1c;
+  }
+
+  :global(html[data-theme="light"]) .form-subtitle,
+  :global([data-theme="light"]) .form-subtitle,
+  :global(html[data-theme="light"]) .field-hint,
+  :global([data-theme="light"]) .field-hint,
+  :global(html[data-theme="light"]) .char-counter,
+  :global([data-theme="light"]) .char-counter,
+  :global(html[data-theme="light"]) .optional,
+  :global([data-theme="light"]) .optional,
+  :global(html[data-theme="light"]) .privacy-note,
+  :global([data-theme="light"]) .privacy-note,
+  :global(html[data-theme="light"]) .response-text,
+  :global([data-theme="light"]) .response-text,
+  :global(html[data-theme="light"]) .direct-fallback,
+  :global([data-theme="light"]) .direct-fallback {
+    color: #35453f;
+  }
+
+  :global(html[data-theme="light"]) .form-input,
+  :global([data-theme="light"]) .form-input,
+  :global(html[data-theme="light"]) .form-select,
+  :global([data-theme="light"]) .form-select,
+  :global(html[data-theme="light"]) .form-textarea,
+  :global([data-theme="light"]) .form-textarea {
+    background: #ffffff;
+    border-color: rgba(20, 31, 28, 0.15);
+    color: #141f1c;
+  }
+
+  :global(html[data-theme="light"]) .form-input::placeholder,
+  :global([data-theme="light"]) .form-input::placeholder,
+  :global(html[data-theme="light"]) .form-textarea::placeholder,
+  :global([data-theme="light"]) .form-textarea::placeholder {
+    color: #5c7068;
+  }
+
+  :global(html[data-theme="light"]) .submit-btn,
+  :global([data-theme="light"]) .submit-btn {
+    background: #0d7663;
+    color: #ffffff;
+  }
+
+  :global(html[data-theme="light"]) .submit-btn:hover:not(:disabled),
+  :global([data-theme="light"]) .submit-btn:hover:not(:disabled) {
+    background: #0a5c4d;
+    box-shadow: 0 4px 16px rgba(13, 118, 99, 0.25);
+  }
+
+  :global(html[data-theme="light"]) .status-indicator-box,
+  :global([data-theme="light"]) .status-indicator-box {
+    background: rgba(13, 118, 99, 0.08);
+    border-color: rgba(13, 118, 99, 0.25);
+    color: #0d7663;
+  }
+
+  :global(html[data-theme="light"]) .status-dot,
+  :global([data-theme="light"]) .status-dot {
+    background: #0d7663;
+    box-shadow: 0 0 8px rgba(13, 118, 99, 0.4);
+  }
+
+  :global(html[data-theme="light"]) .direct-fallback a,
+  :global([data-theme="light"]) .direct-fallback a {
+    color: #0d7663;
+  }
 </style>

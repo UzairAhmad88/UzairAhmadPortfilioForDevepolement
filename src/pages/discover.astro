@@ -536,34 +536,75 @@ const discoveryDataJson = JSON.stringify({
     }
   }
 
-  [data-theme="light"] .search-panel,
-  [data-theme="light"] .bridge-card {
+  :global(html[data-theme="light"]) .search-panel,
+  :global([data-theme="light"]) .search-panel,
+  :global(html[data-theme="light"]) .bridge-card,
+  :global([data-theme="light"]) .bridge-card {
     background: var(--color-surface-elevated, #ffffff);
     border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.04);
   }
 
-  [data-theme="light"] .search-input,
-  [data-theme="light"] .filter-select {
+  :global(html[data-theme="light"]) .search-input,
+  :global([data-theme="light"]) .search-input,
+  :global(html[data-theme="light"]) .filter-select,
+  :global([data-theme="light"]) .filter-select {
     background: #ffffff;
     border-color: rgba(20, 31, 28, 0.15);
     color: #141f1c;
   }
 
-  [data-theme="light"] .type-pill {
-    background: rgba(20, 31, 28, 0.04);
-    border-color: rgba(20, 31, 28, 0.09);
-    color: #465751;
+  :global(html[data-theme="light"]) .search-input::placeholder,
+  :global([data-theme="light"]) .search-input::placeholder {
+    color: #5c7068;
   }
 
-  [data-theme="light"] .type-pill.active {
+  :global(html[data-theme="light"]) .bridge-desc,
+  :global([data-theme="light"]) .bridge-desc {
+    color: #35453f;
+  }
+
+  :global(html[data-theme="light"]) .bridge-btn,
+  :global([data-theme="light"]) .bridge-btn {
     background: rgba(13, 118, 99, 0.12);
     border-color: rgba(13, 118, 99, 0.35);
     color: #0d7663;
   }
 
-  [data-theme="light"] .empty-state-box {
-    background: rgba(20, 31, 28, 0.02);
+  :global(html[data-theme="light"]) .bridge-btn:hover,
+  :global([data-theme="light"]) .bridge-btn:hover {
+    background: #0d7663;
+    color: #ffffff;
+  }
+
+  :global(html[data-theme="light"]) .type-pill,
+  :global([data-theme="light"]) .type-pill {
+    background: rgba(20, 31, 28, 0.04);
+    border-color: rgba(20, 31, 28, 0.09);
+    color: #35453f;
+  }
+
+  :global(html[data-theme="light"]) .type-pill.active,
+  :global([data-theme="light"]) .type-pill.active {
+    background: rgba(13, 118, 99, 0.12);
+    border-color: rgba(13, 118, 99, 0.35);
+    color: #0d7663;
+  }
+
+  :global(html[data-theme="light"]) .empty-state-box,
+  :global([data-theme="light"]) .empty-state-box {
+    background: #ffffff;
     border-color: rgba(20, 31, 28, 0.12);
+  }
+
+  :global(html[data-theme="light"]) .empty-title,
+  :global([data-theme="light"]) .empty-title {
+    color: #141f1c;
+  }
+
+  :global(html[data-theme="light"]) .empty-desc,
+  :global([data-theme="light"]) .empty-desc {
+    color: #4e6059;
   }
 </style>
 

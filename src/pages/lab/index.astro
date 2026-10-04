@@ -142,10 +142,11 @@ const seo = {
   }
 
   .philosophy-box {
-    background: rgba(16, 26, 23, 0.65);
-    border: 1px solid rgba(126, 216, 196, 0.2);
+    background: var(--color-surface-elevated, rgba(16, 26, 23, 0.65));
+    border: 1px solid var(--color-accent-muted, rgba(126, 216, 196, 0.2));
     border-radius: 0.75rem;
     padding: clamp(1.25rem, 2.5vw, 1.75rem);
+    box-shadow: var(--shadow-sm);
   }
 
   .philosophy-header {
@@ -161,7 +162,7 @@ const seo = {
   }
 
   .philosophy-eyebrow {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-family: var(--font-mono, monospace);
     font-weight: 800;
     letter-spacing: 0.08em;
@@ -170,9 +171,9 @@ const seo = {
   }
 
   .philosophy-text {
-    font-size: 0.925rem;
-    color: var(--color-text-muted, #a9b8b1);
-    line-height: 1.6;
+    font-size: 0.95rem;
+    color: var(--color-text-secondary, #a9b8b1);
+    line-height: 1.65;
     margin: 0;
   }
 
@@ -403,25 +404,65 @@ const seo = {
     }
   }
 
-  [data-theme="light"] .philosophy-box,
-  [data-theme="light"] .graduated-card {
-    background: var(--color-surface-elevated, #ffffff);
-    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
+  :global(html[data-theme="light"]) .philosophy-box,
+  :global([data-theme="light"]) .philosophy-box {
+    background: #ffffff !important;
+    border: 1px solid rgba(13, 118, 99, 0.25) !important;
+    box-shadow: 0 4px 20px rgba(20, 31, 28, 0.05) !important;
   }
 
-  [data-theme="light"] .filter-pill {
+  :global(html[data-theme="light"]) .philosophy-eyebrow,
+  :global([data-theme="light"]) .philosophy-eyebrow,
+  :global(html[data-theme="light"]) .philosophy-icon,
+  :global([data-theme="light"]) .philosophy-icon {
+    color: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .philosophy-text,
+  :global([data-theme="light"]) .philosophy-text {
+    color: #35453f !important;
+  }
+
+  :global(html[data-theme="light"]) .graduated-card,
+  :global([data-theme="light"]) .graduated-card {
+    background: #ffffff !important;
+    border-color: rgba(20, 31, 28, 0.12) !important;
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.05) !important;
+  }
+
+  :global(html[data-theme="light"]) .graduated-title,
+  :global([data-theme="light"]) .graduated-title {
+    color: #141f1c !important;
+  }
+
+  :global(html[data-theme="light"]) .graduated-description,
+  :global([data-theme="light"]) .graduated-description {
+    color: #35453f !important;
+  }
+
+  :global(html[data-theme="light"]) .filter-pill,
+  :global([data-theme="light"]) .filter-pill {
     background: rgba(20, 31, 28, 0.04);
-    border-color: rgba(20, 31, 28, 0.09);
-    color: #465751;
+    border-color: rgba(20, 31, 28, 0.12);
+    color: #35453f;
   }
 
-  [data-theme="light"] .filter-pill.active {
-    background: rgba(13, 118, 99, 0.12);
-    border-color: rgba(13, 118, 99, 0.35);
-    color: #0d7663;
+  :global(html[data-theme="light"]) .filter-pill:hover,
+  :global([data-theme="light"]) .filter-pill:hover {
+    background: rgba(20, 31, 28, 0.08);
+    color: #141f1c;
+    border-color: #0d7663;
   }
 
-  [data-theme="light"] .empty-state {
+  :global(html[data-theme="light"]) .filter-pill.active,
+  :global([data-theme="light"]) .filter-pill.active {
+    background: rgba(13, 118, 99, 0.12) !important;
+    border-color: #0d7663 !important;
+    color: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .empty-state,
+  :global([data-theme="light"]) .empty-state {
     background: rgba(20, 31, 28, 0.02);
     border-color: rgba(20, 31, 28, 0.12);
   }

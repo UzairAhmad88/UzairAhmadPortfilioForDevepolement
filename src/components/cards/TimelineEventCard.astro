@@ -383,4 +383,53 @@ const isArchived = event.archiveState && event.archiveState !== 'active';
       margin-left: 0;
     }
   }
+
+  :global(html[data-theme="light"]) .timeline-event-card,
+  :global([data-theme="light"]) .timeline-event-card {
+    background: #ffffff !important;
+    border: 1px solid rgba(20, 31, 28, 0.12) !important;
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.05) !important;
+  }
+
+  :global(html[data-theme="light"]) .timeline-event-card:hover,
+  :global([data-theme="light"]) .timeline-event-card:hover {
+    border-color: #0d7663 !important;
+    box-shadow: 0 12px 32px rgba(20, 31, 28, 0.09) !important;
+  }
+
+  :global(html[data-theme="light"]) .event-title,
+  :global([data-theme="light"]) .event-title,
+  :global(html[data-theme="light"]) .event-link,
+  :global([data-theme="light"]) .event-link {
+    color: #141f1c !important;
+  }
+
+  :global(html[data-theme="light"]) .event-link:hover,
+  :global([data-theme="light"]) .event-link:hover {
+    color: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .event-description,
+  :global([data-theme="light"]) .event-description {
+    color: #35453f !important;
+  }
+
+  :global(html[data-theme="light"]) .event-tagline,
+  :global([data-theme="light"]) .event-tagline,
+  :global(html[data-theme="light"]) .event-date,
+  :global([data-theme="light"]) .event-date {
+    color: #4e6059 !important;
+  }
+
+  :global(html[data-theme="light"]) .action-link,
+  :global([data-theme="light"]) .action-link {
+    color: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .tech-tag,
+  :global([data-theme="light"]) .tech-tag {
+    background: rgba(20, 31, 28, 0.04) !important;
+    border-color: rgba(20, 31, 28, 0.12) !important;
+    color: #35453f !important;
+  }
 </style>

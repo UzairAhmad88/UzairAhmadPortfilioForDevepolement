@@ -135,24 +135,38 @@ const { className = '' } = Astro.props;
     transition: transform var(--duration-fast) var(--ease-standard);
   }
 
-  /* In Dark Theme: show Sun, hide Moon */
-  :root:not([data-theme="light"]) .icon-moon,
-  [data-theme="dark"] .icon-moon {
-    display: none;
+  /* Icon Display Logic based on Active Theme */
+  :global(html:not([data-theme="light"])) .icon-moon,
+  :global([data-theme="dark"]) .icon-moon {
+    display: none !important;
   }
 
-  :root:not([data-theme="light"]) .icon-sun,
-  [data-theme="dark"] .icon-sun {
-    display: block;
+  :global(html:not([data-theme="light"])) .icon-sun,
+  :global([data-theme="dark"]) .icon-sun {
+    display: block !important;
   }
 
-  /* In Light Theme: show Moon, hide Sun */
-  [data-theme="light"] .icon-sun {
-    display: none;
+  :global(html[data-theme="light"]) .icon-sun,
+  :global([data-theme="light"]) .icon-sun {
+    display: none !important;
   }
 
-  [data-theme="light"] .icon-moon {
-    display: block;
+  :global(html[data-theme="light"]) .icon-moon,
+  :global([data-theme="light"]) .icon-moon {
+    display: block !important;
+  }
+
+  :global(html[data-theme="light"]) .theme-toggle-button {
+    background: #ffffff;
+    border-color: rgba(20, 31, 28, 0.15);
+    color: #141f1c;
+    box-shadow: 0 2px 6px rgba(20, 31, 28, 0.05);
+  }
+
+  :global(html[data-theme="light"]) .theme-toggle-button:hover {
+    background: #f7f4ec;
+    border-color: var(--color-accent, #0d7663);
+    color: var(--color-accent, #0d7663);
   }
 
   @media (prefers-reduced-motion: reduce) {

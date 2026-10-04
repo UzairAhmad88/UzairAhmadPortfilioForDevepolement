@@ -236,25 +236,58 @@ const featuredExperiments = getFeaturedLabItems().slice(0, 3);
     transform: translateY(-1px);
   }
 
-  [data-theme="light"] .workbench-card {
-    background: var(--color-surface-elevated, #ffffff);
-    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
-    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.05);
+  :global(html[data-theme="light"]) .workbench-card,
+  :global([data-theme="light"]) .workbench-card {
+    background: #ffffff !important;
+    border: 1px solid rgba(20, 31, 28, 0.12) !important;
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.05) !important;
   }
 
-  [data-theme="light"] .workbench-card:hover {
-    box-shadow: 0 12px 32px rgba(20, 31, 28, 0.1);
+  :global(html[data-theme="light"]) .workbench-card:hover,
+  :global([data-theme="light"]) .workbench-card:hover {
+    border-color: #0d7663 !important;
+    box-shadow: 0 12px 32px rgba(20, 31, 28, 0.09) !important;
   }
 
-  [data-theme="light"] .workbench-question {
-    background: var(--color-surface, rgba(20, 31, 28, 0.04));
-    color: var(--color-text-primary, #141f1c);
+  :global(html[data-theme="light"]) .workbench-title,
+  :global([data-theme="light"]) .workbench-title {
+    color: #141f1c !important;
   }
 
-  [data-theme="light"] .tech-pill {
-    background: var(--color-surface, rgba(20, 31, 28, 0.04));
-    border-color: var(--color-border-subtle, rgba(20, 31, 28, 0.08));
-    color: var(--color-text-secondary, #465751);
+  :global(html[data-theme="light"]) .workbench-title-link:hover,
+  :global([data-theme="light"]) .workbench-title-link:hover {
+    color: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .workbench-desc,
+  :global([data-theme="light"]) .workbench-desc {
+    color: #35453f !important;
+  }
+
+  :global(html[data-theme="light"]) .workbench-question,
+  :global([data-theme="light"]) .workbench-question {
+    background: rgba(13, 118, 99, 0.08) !important;
+    border-left-color: #0d7663 !important;
+    color: #141f1c !important;
+  }
+
+  :global(html[data-theme="light"]) .tech-pill,
+  :global([data-theme="light"]) .tech-pill {
+    background: rgba(20, 31, 28, 0.04) !important;
+    border-color: rgba(20, 31, 28, 0.12) !important;
+    color: #35453f !important;
+  }
+
+  :global(html[data-theme="light"]) .view-all-lab-btn,
+  :global([data-theme="light"]) .view-all-lab-btn {
+    background: rgba(13, 118, 99, 0.08) !important;
+    border-color: rgba(13, 118, 99, 0.3) !important;
+    color: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .view-all-lab-btn:hover,
+  :global([data-theme="light"]) .view-all-lab-btn:hover {
+    background: rgba(13, 118, 99, 0.16) !important;
   }
 
   @media (max-width: 960px) {

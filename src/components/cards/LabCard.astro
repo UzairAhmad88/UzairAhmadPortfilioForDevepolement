@@ -100,42 +100,52 @@ const { item } = Astro.props;
     text-decoration: underline;
   }
 
-  [data-theme="light"] .lab-card {
-    background: var(--color-surface-elevated, #ffffff);
-    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
-    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.04);
+  :global(html[data-theme="light"]) .lab-card,
+  :global([data-theme="light"]) .lab-card {
+    background: #ffffff !important;
+    border: 1px solid rgba(20, 31, 28, 0.12) !important;
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.04) !important;
   }
 
-  [data-theme="light"] .lab-card:hover {
-    background: #ffffff;
-    border-color: var(--color-accent, #0d7663);
-    box-shadow: 0 12px 32px rgba(20, 31, 28, 0.08);
+  :global(html[data-theme="light"]) .lab-card:hover,
+  :global([data-theme="light"]) .lab-card:hover {
+    background: #ffffff !important;
+    border-color: #0d7663 !important;
+    box-shadow: 0 12px 32px rgba(20, 31, 28, 0.08) !important;
   }
 
-  [data-theme="light"] .lab-card h3 {
-    color: var(--color-text-primary, #141f1c);
+  :global(html[data-theme="light"]) .lab-card h3,
+  :global([data-theme="light"]) .lab-card h3 {
+    color: #141f1c !important;
   }
 
-  [data-theme="light"] .question-text,
-  [data-theme="light"] .approach-text {
-    color: var(--color-text-secondary, #465751);
+  :global(html[data-theme="light"]) .question-text,
+  :global([data-theme="light"]) .question-text,
+  :global(html[data-theme="light"]) .approach-text,
+  :global([data-theme="light"]) .approach-text {
+    color: #35453f !important;
   }
 
-  [data-theme="light"] .question-text strong,
-  [data-theme="light"] .approach-text strong {
-    color: var(--color-text-primary, #141f1c);
+  :global(html[data-theme="light"]) .question-text strong,
+  :global([data-theme="light"]) .question-text strong,
+  :global(html[data-theme="light"]) .approach-text strong,
+  :global([data-theme="light"]) .approach-text strong {
+    color: #141f1c !important;
   }
 
-  [data-theme="light"] .badge {
-    color: var(--color-accent, #0d7663);
+  :global(html[data-theme="light"]) .badge,
+  :global([data-theme="light"]) .badge {
+    color: #0d7663 !important;
   }
 
-  [data-theme="light"] .index-num {
-    color: var(--color-text-muted, #5d6f68);
+  :global(html[data-theme="light"]) .index-num,
+  :global([data-theme="light"]) .index-num {
+    color: #4e6059 !important;
   }
 
-  [data-theme="light"] .explore-link {
-    border-top-color: var(--color-border-subtle, rgba(20, 31, 28, 0.08));
-    color: var(--color-accent, #0d7663);
+  :global(html[data-theme="light"]) .explore-link,
+  :global([data-theme="light"]) .explore-link {
+    border-top-color: rgba(20, 31, 28, 0.08) !important;
+    color: #0d7663 !important;
   }
 </style>

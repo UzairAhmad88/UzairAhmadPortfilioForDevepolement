@@ -97,8 +97,67 @@ const { currentPath = '' } = Astro.props;
     -webkit-backdrop-filter: blur(8px);
   }
 
-  [data-theme="light"] .drawer-backdrop {
-    background: rgba(20, 31, 28, 0.5);
+  :global(html[data-theme="light"]) .drawer-backdrop,
+  :global([data-theme="light"]) .drawer-backdrop {
+    background: rgba(20, 31, 28, 0.45);
+  }
+
+  :global(html[data-theme="light"]) .drawer-content,
+  :global([data-theme="light"]) .drawer-content {
+    background: #ffffff;
+    border-left-color: rgba(20, 31, 28, 0.15);
+    box-shadow: -10px 0 40px rgba(20, 31, 28, 0.15);
+  }
+
+  :global(html[data-theme="light"]) .drawer-header,
+  :global([data-theme="light"]) .drawer-header,
+  :global(html[data-theme="light"]) .drawer-footer,
+  :global([data-theme="light"]) .drawer-footer {
+    border-color: rgba(20, 31, 28, 0.1);
+  }
+
+  :global(html[data-theme="light"]) .drawer-brand,
+  :global([data-theme="light"]) .drawer-brand {
+    color: #141f1c;
+  }
+
+  :global(html[data-theme="light"]) .drawer-close,
+  :global([data-theme="light"]) .drawer-close {
+    border-color: rgba(20, 31, 28, 0.15);
+    color: #35453f;
+  }
+
+  :global(html[data-theme="light"]) .drawer-link,
+  :global([data-theme="light"]) .drawer-link {
+    color: #35453f;
+  }
+
+  :global(html[data-theme="light"]) .drawer-link:hover,
+  :global([data-theme="light"]) .drawer-link:hover {
+    background: rgba(20, 31, 28, 0.05);
+    color: #141f1c;
+  }
+
+  :global(html[data-theme="light"]) .drawer-link.active,
+  :global([data-theme="light"]) .drawer-link.active {
+    background: rgba(13, 118, 99, 0.1);
+    color: #0d7663;
+  }
+
+  :global(html[data-theme="light"]) .drawer-cta-button,
+  :global([data-theme="light"]) .drawer-cta-button {
+    background: #0d7663;
+    color: #ffffff;
+  }
+
+  :global(html[data-theme="light"]) .social-link,
+  :global([data-theme="light"]) .social-link {
+    color: #4e6059;
+  }
+
+  :global(html[data-theme="light"]) .social-link:hover,
+  :global([data-theme="light"]) .social-link:hover {
+    color: #0d7663;
   }
 
   .drawer-content {

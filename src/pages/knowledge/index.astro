@@ -890,43 +890,78 @@ const graphDataJson = JSON.stringify({
     }
   }
 
-  [data-theme="light"] .stats-summary-ribbon,
-  [data-theme="light"] .controls-panel,
-  [data-theme="light"] .visualizer-card,
-  [data-theme="light"] .inspector-card,
-  [data-theme="light"] .directory-card {
+  :global(html[data-theme="light"]) .stats-summary-ribbon,
+  :global([data-theme="light"]) .stats-summary-ribbon,
+  :global(html[data-theme="light"]) .controls-panel,
+  :global([data-theme="light"]) .controls-panel,
+  :global(html[data-theme="light"]) .visualizer-card,
+  :global([data-theme="light"]) .visualizer-card,
+  :global(html[data-theme="light"]) .inspector-card,
+  :global([data-theme="light"]) .inspector-card,
+  :global(html[data-theme="light"]) .directory-card,
+  :global([data-theme="light"]) .directory-card {
     background: var(--color-surface-elevated, #ffffff);
     border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.04);
   }
 
-  [data-theme="light"] .graph-search-input {
+  :global(html[data-theme="light"]) .stat-number,
+  :global([data-theme="light"]) .stat-number,
+  :global(html[data-theme="light"]) .inspector-title,
+  :global([data-theme="light"]) .inspector-title,
+  :global(html[data-theme="light"]) .card-title,
+  :global([data-theme="light"]) .card-title {
+    color: #141f1c;
+  }
+
+  :global(html[data-theme="light"]) .stat-label,
+  :global([data-theme="light"]) .stat-label,
+  :global(html[data-theme="light"]) .inspector-summary,
+  :global([data-theme="light"]) .inspector-summary,
+  :global(html[data-theme="light"]) .card-summary,
+  :global([data-theme="light"]) .card-summary {
+    color: #35453f;
+  }
+
+  :global(html[data-theme="light"]) .graph-search-input,
+  :global([data-theme="light"]) .graph-search-input {
     background: #ffffff;
     border-color: rgba(20, 31, 28, 0.15);
     color: #141f1c;
   }
 
-  [data-theme="light"] .filter-pill {
-    background: rgba(20, 31, 28, 0.04);
-    border-color: rgba(20, 31, 28, 0.09);
-    color: #465751;
+  :global(html[data-theme="light"]) .graph-search-input::placeholder,
+  :global([data-theme="light"]) .graph-search-input::placeholder {
+    color: #5c7068;
   }
 
-  [data-theme="light"] .filter-pill.active {
+  :global(html[data-theme="light"]) .filter-pill,
+  :global([data-theme="light"]) .filter-pill {
+    background: rgba(20, 31, 28, 0.04);
+    border-color: rgba(20, 31, 28, 0.09);
+    color: #35453f;
+  }
+
+  :global(html[data-theme="light"]) .filter-pill.active,
+  :global([data-theme="light"]) .filter-pill.active {
     background: rgba(13, 118, 99, 0.12);
     border-color: rgba(13, 118, 99, 0.35);
     color: #0d7663;
   }
 
-  [data-theme="light"] .svg-container {
+  :global(html[data-theme="light"]) .svg-container,
+  :global([data-theme="light"]) .svg-container {
     background: #fbf9f5;
   }
 
-  [data-theme="light"] .visualizer-toolbar {
+  :global(html[data-theme="light"]) .visualizer-toolbar,
+  :global([data-theme="light"]) .visualizer-toolbar {
     background: #ffffff;
     border-color: rgba(20, 31, 28, 0.1);
   }
 
-  [data-theme="light"] .graph-legend {
+  :global(html[data-theme="light"]) .graph-legend,
+  :global([data-theme="light"]) .graph-legend {
     background: rgba(255, 255, 255, 0.95);
     border-color: rgba(20, 31, 28, 0.15);
     color: #141f1c;

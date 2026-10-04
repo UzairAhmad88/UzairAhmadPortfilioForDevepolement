@@ -338,4 +338,69 @@ const yearDisplay = archive?.originalYear || (project.publishedAt ? new Date(pro
     color: var(--color-text, #f6f1e8);
     border-color: rgba(246, 241, 232, 0.25);
   }
+
+  :global(html[data-theme="light"]) .archive-card,
+  :global([data-theme="light"]) .archive-card {
+    background: #ffffff !important;
+    border: 1px solid rgba(20, 31, 28, 0.12) !important;
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.05) !important;
+  }
+
+  :global(html[data-theme="light"]) .archive-card:hover,
+  :global([data-theme="light"]) .archive-card:hover {
+    border-color: #0d7663 !important;
+    box-shadow: 0 12px 32px rgba(20, 31, 28, 0.09) !important;
+  }
+
+  :global(html[data-theme="light"]) .archive-title,
+  :global([data-theme="light"]) .archive-title {
+    color: #141f1c !important;
+  }
+
+  :global(html[data-theme="light"]) .archive-title-link:hover,
+  :global([data-theme="light"]) .archive-title-link:hover {
+    color: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .archive-excerpt,
+  :global([data-theme="light"]) .archive-excerpt {
+    color: #35453f !important;
+  }
+
+  :global(html[data-theme="light"]) .archive-context-box,
+  :global([data-theme="light"]) .archive-context-box {
+    background: rgba(13, 118, 99, 0.06) !important;
+    border-left-color: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .context-label,
+  :global([data-theme="light"]) .context-label {
+    color: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .context-text,
+  :global([data-theme="light"]) .context-text {
+    color: #35453f !important;
+  }
+
+  :global(html[data-theme="light"]) .view-history-btn,
+  :global([data-theme="light"]) .view-history-btn {
+    color: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .repo-ext-link,
+  :global([data-theme="light"]) .repo-ext-link {
+    background: rgba(20, 31, 28, 0.04) !important;
+    border-color: rgba(20, 31, 28, 0.12) !important;
+    color: #35453f !important;
+  }
+
+  :global(html[data-theme="light"]) .archive-year-badge,
+  :global([data-theme="light"]) .archive-year-badge,
+  :global(html[data-theme="light"]) .archived-date-badge,
+  :global([data-theme="light"]) .archived-date-badge {
+    background: rgba(20, 31, 28, 0.04) !important;
+    border-color: rgba(20, 31, 28, 0.12) !important;
+    color: #4e6059 !important;
+  }
 </style>

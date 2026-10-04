@@ -250,8 +250,8 @@
   }
 
   .button.ghost {
-    background: rgba(16, 26, 23, 0.6);
-    border: 1px solid rgba(246, 241, 232, 0.12);
+    background: var(--color-surface, rgba(16, 26, 23, 0.6));
+    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.12));
     color: var(--color-text-primary, #f6f1e8);
   }
 
@@ -267,11 +267,11 @@
     width: 100%;
     max-width: 580px;
     margin: 0 auto;
-    background: rgba(16, 26, 23, 0.85);
-    border: 1px solid rgba(246, 241, 232, 0.1);
+    background: var(--color-surface-elevated, rgba(16, 26, 23, 0.85));
+    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.1));
     border-radius: 0.875rem;
     overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    box-shadow: var(--shadow-card, 0 20px 60px rgba(0, 0, 0, 0.4));
   }
 
   .system-header {
@@ -279,8 +279,8 @@
     align-items: center;
     gap: 0.45rem;
     padding: 0.75rem 1rem;
-    background: rgba(7, 17, 15, 0.95);
-    border-bottom: 1px solid rgba(246, 241, 232, 0.08);
+    background: var(--color-surface-inset, rgba(7, 17, 15, 0.95));
+    border-bottom: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
   }
 
   .sys-dot {
@@ -298,7 +298,7 @@
     font-family: var(--font-mono, monospace);
     font-size: 0.72rem;
     font-weight: 700;
-    color: #83968e;
+    color: var(--color-text-muted, #83968e);
     letter-spacing: 0.05em;
   }
 
@@ -377,15 +377,15 @@
     display: flex;
     justify-content: space-between;
     padding: 0.65rem 1rem;
-    background: rgba(7, 17, 15, 0.95);
-    border-top: 1px solid rgba(246, 241, 232, 0.08);
+    background: var(--color-surface-inset, rgba(7, 17, 15, 0.95));
+    border-top: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
   }
 
   .footer-tag {
     font-family: var(--font-mono, monospace);
     font-size: 0.7rem;
     font-weight: 700;
-    color: #7ed8c4;
+    color: var(--color-accent, #7ed8c4);
     letter-spacing: 0.04em;
   }
 
@@ -398,46 +398,98 @@
     to { stroke-dashoffset: -200; }
   }
 
-  [data-theme="light"] .hero-meta-grid {
-    background: var(--color-surface-elevated, #ffffff);
-    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
+  :global(html[data-theme="light"]) .hero-meta-grid,
+  :global([data-theme="light"]) .hero-meta-grid {
+    background: #ffffff !important;
+    border-color: rgba(20, 31, 28, 0.12) !important;
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.05) !important;
   }
 
-  [data-theme="light"] .meta-v {
-    color: var(--color-text-primary, #141f1c);
+  :global(html[data-theme="light"]) .meta-v,
+  :global([data-theme="light"]) .meta-v {
+    color: #141f1c !important;
   }
 
-  [data-theme="light"] .hero-system {
-    background: var(--color-surface-elevated, #ffffff);
-    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
-    box-shadow: 0 16px 40px rgba(20, 31, 28, 0.08);
+  :global(html[data-theme="light"]) .hero-system,
+  :global([data-theme="light"]) .hero-system {
+    background: #ffffff !important;
+    border: 1px solid rgba(20, 31, 28, 0.12) !important;
+    box-shadow: 0 16px 48px rgba(20, 31, 28, 0.08) !important;
   }
 
-  [data-theme="light"] .system-header,
-  [data-theme="light"] .system-footer {
-    background: var(--color-surface, rgba(20, 31, 28, 0.04));
-    border-color: var(--color-border-subtle, rgba(20, 31, 28, 0.08));
+  :global(html[data-theme="light"]) .system-header,
+  :global([data-theme="light"]) .system-header,
+  :global(html[data-theme="light"]) .system-footer,
+  :global([data-theme="light"]) .system-footer {
+    background: #f7f4ec !important;
+    border-color: rgba(20, 31, 28, 0.09) !important;
   }
 
-  [data-theme="light"] .core-hub {
-    fill: #ffffff;
-    stroke: var(--color-accent-teal, #0d7663);
+  :global(html[data-theme="light"]) .sys-title,
+  :global([data-theme="light"]) .sys-title {
+    color: #35453f !important;
   }
 
-  [data-theme="light"] .hub-text.main {
-    fill: var(--color-text-primary, #141f1c);
+  :global(html[data-theme="light"]) .footer-tag,
+  :global([data-theme="light"]) .footer-tag {
+    color: #0d7663 !important;
   }
 
-  [data-theme="light"] .node-box {
-    fill: #ffffff;
+  :global(html[data-theme="light"]) .core-hub,
+  :global([data-theme="light"]) .core-hub {
+    fill: #ffffff !important;
+    stroke: #0d7663 !important;
+    filter: drop-shadow(0 0 12px rgba(13, 118, 99, 0.18)) !important;
   }
 
-  [data-theme="light"] .node-title {
-    fill: var(--color-text-primary, #141f1c);
+  :global(html[data-theme="light"]) .hub-text.main,
+  :global([data-theme="light"]) .hub-text.main {
+    fill: #141f1c !important;
   }
 
-  [data-theme="light"] .node-sub {
-    fill: var(--color-text-muted, #5d6f68);
+  :global(html[data-theme="light"]) .hub-text.sub,
+  :global([data-theme="light"]) .hub-text.sub {
+    fill: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .node-box,
+  :global([data-theme="light"]) .node-box {
+    fill: #ffffff !important;
+    stroke: rgba(13, 118, 99, 0.35) !important;
+  }
+
+  :global(html[data-theme="light"]) .node-title,
+  :global([data-theme="light"]) .node-title {
+    fill: #141f1c !important;
+  }
+
+  :global(html[data-theme="light"]) .node-sub,
+  :global([data-theme="light"]) .node-sub {
+    fill: #4e6059 !important;
+  }
+
+  :global(html[data-theme="light"]) .sys-grid-lines,
+  :global([data-theme="light"]) .sys-grid-lines {
+    stroke: rgba(20, 31, 28, 0.06) !important;
+  }
+
+  :global(html[data-theme="light"]) .flow-line,
+  :global([data-theme="light"]) .flow-line {
+    stroke: rgba(13, 118, 99, 0.4) !important;
+  }
+
+  :global(html[data-theme="light"]) .button.ghost,
+  :global([data-theme="light"]) .button.ghost {
+    background: #ffffff !important;
+    border-color: rgba(20, 31, 28, 0.15) !important;
+    color: #141f1c !important;
+  }
+
+  :global(html[data-theme="light"]) .button.secondary,
+  :global([data-theme="light"]) .button.secondary {
+    background: rgba(13, 118, 99, 0.08) !important;
+    border-color: rgba(13, 118, 99, 0.3) !important;
+    color: #0d7663 !important;
   }
 
   @media (max-width: 980px) {

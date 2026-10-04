@@ -875,24 +875,63 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
     }
   }
 
-  [data-theme="light"] .hypothesis-box {
-    background: rgba(13, 118, 99, 0.05);
-    border-color: rgba(13, 118, 99, 0.25);
+  :global(html[data-theme="light"]) .hypothesis-box,
+  :global([data-theme="light"]) .hypothesis-box {
+    background: rgba(13, 118, 99, 0.06) !important;
+    border-color: rgba(13, 118, 99, 0.25) !important;
   }
 
-  [data-theme="light"] .hypothesis-highlight,
-  [data-theme="light"] .section-card-body,
-  [data-theme="light"] .outcome-panel,
-  [data-theme="light"] .action-card {
-    background: var(--color-surface-elevated, #ffffff);
-    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
+  :global(html[data-theme="light"]) .question-headline,
+  :global([data-theme="light"]) .question-headline {
+    color: #141f1c !important;
   }
 
-  [data-theme="light"] .type-pill,
-  [data-theme="light"] .state-pill,
-  [data-theme="light"] .ecosystem-tag {
-    background: rgba(20, 31, 28, 0.04);
-    border-color: rgba(20, 31, 28, 0.08);
-    color: #465751;
+  :global(html[data-theme="light"]) .intent-text,
+  :global([data-theme="light"]) .intent-text {
+    color: #35453f !important;
+  }
+
+  :global(html[data-theme="light"]) .hypothesis-highlight,
+  :global([data-theme="light"]) .hypothesis-highlight,
+  :global(html[data-theme="light"]) .section-card-body,
+  :global([data-theme="light"]) .section-card-body,
+  :global(html[data-theme="light"]) .outcome-panel,
+  :global([data-theme="light"]) .outcome-panel,
+  :global(html[data-theme="light"]) .action-card,
+  :global([data-theme="light"]) .action-card {
+    background: #ffffff !important;
+    border-color: rgba(20, 31, 28, 0.12) !important;
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.05) !important;
+    color: #35453f !important;
+  }
+
+  :global(html[data-theme="light"]) .highlight-text,
+  :global([data-theme="light"]) .highlight-text {
+    color: #141f1c !important;
+  }
+
+  :global(html[data-theme="light"]) .section-heading,
+  :global([data-theme="light"]) .section-heading,
+  :global(html[data-theme="light"]) .decisions-title,
+  :global([data-theme="light"]) .decisions-title {
+    color: #141f1c !important;
+  }
+
+  :global(html[data-theme="light"]) .decisions-list,
+  :global([data-theme="light"]) .decisions-list,
+  :global(html[data-theme="light"]) .muted-text,
+  :global([data-theme="light"]) .muted-text {
+    color: #4e6059 !important;
+  }
+
+  :global(html[data-theme="light"]) .type-pill,
+  :global([data-theme="light"]) .type-pill,
+  :global(html[data-theme="light"]) .state-pill,
+  :global([data-theme="light"]) .state-pill,
+  :global(html[data-theme="light"]) .ecosystem-tag,
+  :global([data-theme="light"]) .ecosystem-tag {
+    background: rgba(20, 31, 28, 0.04) !important;
+    border-color: rgba(20, 31, 28, 0.12) !important;
+    color: #35453f !important;
   }
 </style>
