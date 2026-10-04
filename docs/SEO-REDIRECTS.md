@@ -1,22 +1,13 @@
-# SEO Redirect Policy & Legacy Route Mapping
+# Redirect Architecture & Status Codes
 
-This document outlines URL standardization policies, legacy alias mappings, and status code conventions.
+## 1. Status Code Compliance
+- **200 OK:** Served for all 58 valid canonical static HTML pages.
+- **404 Not Found:** Served by `dist/404.html` with explicit recovery links and `noindex, nofollow` metadata.
+- **No Soft 404s:** Unknown or broken route requests cleanly return a 404 status.
+- **Zero Redirect Chains:** Direct routing ensures all internal links point to the final canonical destination without intermediate hops.
 
-## 1. URL Normalization Directives
+---
 
-1. **Protocol**: Force HTTPS (`https://uzairahmad.vercel.app`).
-2. **Trailing Slashes**: Uniformly stripped via canonical generator (`/work` instead of `/work/`).
-3. **Case Sensitivity**: All routes strictly lowercase kebab-case.
-4. **Clean Parameter Strategy**: Query strings (e.g. `?type=project`) are processed client-side while canonical tags point strictly to the parameterless canonical URL.
-
-## 2. Legacy Route Mappings
-
-If legacy routes from earlier prototypes are encountered, 301 permanent redirects should be applied:
-
-| Old / Legacy Route | New Canonical Target | Redirect Type | Reason |
-|---|---|---|---|
-| `/projects` | `/work` | 301 Permanent | Route consolidation to `/work` |
-| `/projects/*` | `/work/*` | 301 Permanent | Slug namespace migration |
-| `/skills` | `/about#skills` | 301 Permanent | Content merged into comprehensive About profile |
-| `/experience` | `/about#experience` | 301 Permanent | Content merged into comprehensive About profile |
-| `/collaborate` | `/services` | 301 Permanent | Unified capabilities and services routing |
+## 2. Legacy Redirect Mappings
+- Legacy alias `/knowledge-graph` redirects or renders the primary `/knowledge` hub without orphaned routes.
+- Legacy project and lab slugs resolve directly to canonical entities.
