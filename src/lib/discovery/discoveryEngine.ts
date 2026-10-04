@@ -576,7 +576,7 @@ export function safeHighlight(text: string, query: string): string {
   return parts
     .map((part) => {
       if (part.toLowerCase() === query.trim().toLowerCase()) {
-        return `<mark class="bg-indigo-500/20 text-indigo-300 font-semibold px-0.5 rounded">${escapeHtml(part)}</mark>`;
+        return `<mark class="discovery-mark" style="background: rgba(126, 216, 196, 0.2); color: var(--color-mint, #7ed8c4); font-weight: 600; padding: 0 0.25rem; border-radius: 3px;">${escapeHtml(part)}</mark>`;
       }
       return escapeHtml(part);
     })
