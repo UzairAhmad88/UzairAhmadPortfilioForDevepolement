@@ -96,8 +96,8 @@ export const methodologySteps: MethodologyStep[] = [
     ],
     projectSlugs: [
       'curasphere-hms',
-      'restaurant-pos',
-      'hayatabad-gym'
+      'rafaqatbaber-co',
+      'healix-platform'
     ]
   },
   {
@@ -129,7 +129,7 @@ export const methodologySteps: MethodologyStep[] = [
       'deep-learning-stock-return-prediction',
       'curasphere-hms',
       'market-regime-engine',
-      'restaurant-pos'
+      'quant-research-portfolio-dashboard'
     ]
   },
   {
@@ -190,7 +190,7 @@ export const methodologySteps: MethodologyStep[] = [
     ],
     projectSlugs: [
       'market-regime-engine',
-      'restaurant-pos',
+      'quant-research-portfolio-dashboard',
       'deep-learning-stock-return-prediction',
       'multi-agent-prospect-intelligence'
     ]
@@ -264,15 +264,15 @@ export const engineeringDecisions: EngineeringDecisionPattern[] = [
   },
   {
     id: 'local-state-cache-for-pos',
-    title: 'Optimized Local State Persistence for Restaurant POS Operations',
-    context: 'Peak restaurant dining periods require instantaneous 1-touch touchscreen feedback without latency or vulnerability to intermittent Wi-Fi hiccups.',
-    decision: 'Engineered a client-first local state architecture with instant visual mutations and reliable transaction ledger caching.',
-    alternatives: ['Synchronous roundtrip network requests on every button click', 'Heavy SPA state frameworks with remote cloud locks'],
-    rationale: 'Provides zero-latency button response and guarantees order continuity even under physical dining room network stress.',
+    title: 'Optimized State Persistence for Client Acquisition Platform',
+    context: 'Lead capture funnels require instantaneous feedback and robust multi-step draft persistence across navigation steps.',
+    decision: 'Engineered a client-first local state architecture with instant visual mutations and reliable form state caching.',
+    alternatives: ['Synchronous roundtrip network requests on every step', 'Uncached form state resetting on refresh'],
+    rationale: 'Provides zero-latency step transitions and prevents user lead capture drop-off.',
     tradeoffs: [
-      'Requires explicit synchronization protocols for multi-terminal concurrency.'
+      'Requires explicit synchronization protocols for session recovery.'
     ],
-    projectSlugs: ['restaurant-pos']
+    projectSlugs: ['north-client-acquisition-platform']
   }
 ];
 
@@ -296,7 +296,7 @@ export const buildPrinciples: BuildPrinciple[] = [
     title: 'Simplicity before Premature Abstraction',
     statement: 'Build the clearest minimal working system before introducing architectural layers or generic abstractions.',
     description: 'Premature generalization creates bloated, fragile software. I write clean, direct implementations with clear domain boundaries, abstracting only when repeated concrete patterns demand it.',
-    evidenceSlugs: ['curasphere-hms', 'restaurant-pos']
+    evidenceSlugs: ['curasphere-hms', 'rafaqatbaber-co']
   },
   {
     id: 'transparent-limitations',

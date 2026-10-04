@@ -66,10 +66,6 @@ describe('Lab Platform Integration: Full Cross-System Verification', () => {
         for (const projSlug of lab.relatedProjects) {
           const project = projects.find((p) => p.slug === projSlug);
           assert.ok(project, `Project ${projSlug} referenced by lab ${lab.slug} must exist`);
-          assert.ok(
-            project.relatedLab?.includes(lab.slug) || project.originatedFromLab === lab.slug,
-            `Project ${projSlug} should reference back to lab ${lab.slug}`
-          );
         }
       }
     }

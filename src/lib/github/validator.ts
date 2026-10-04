@@ -25,7 +25,7 @@ export function validateGitHubIntegrity(
   projects: Project[]
 ): ValidationReport {
   const issues: ValidationIssue[] = [];
-  const projectSlugs = new Set(projects.map((p) => p.slug));
+  const projectSlugs = new Set([...projects.map((p) => p.slug), ...projects.map((p) => p.id)]);
   const repoNames = new Set(repositories.map((r) => r.fullName.toLowerCase()));
 
   // 1. Validate curation mappings

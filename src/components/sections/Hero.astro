@@ -1,507 +1,242 @@
 ---
-// Hero.astro
+import { siteConfig } from '@/data/site';
 ---
 
-<section class="hero section-shell">
-  <div class="hero-copy reveal">
-    <div class="hero-badge-strip">
-      <span class="status-pulse-dot" aria-hidden="true"></span>
-      <span class="hero-badge-text">Available for select engineering & quant collaborations</span>
+<section class="simple-hero">
+  <div class="hero-content">
+    <div class="status-pill">
+      <span class="status-dot"></span>
+      <span>Available for select quantitative & engineering work</span>
     </div>
 
-    <h1 class="hero-title">
-      Engineering systems where <span class="highlight-text">statistical rigor</span>, AI models, and production code meet.
-    </h1>
+    <h1 class="hero-name">Uzair Ahmad</h1>
 
-    <p class="hero-lede">
-      I am <strong>Uzair Ahmad</strong>, an engineer building end-to-end software—from deep learning return prediction pipelines and market regime detection models to resilient full-stack platforms. Every featured project includes public, inspectable code.
+    <p class="hero-title">
+      Quantitative Finance + Full-Stack Engineer
     </p>
 
-    <!-- Technical Metadata Strip -->
-    <div class="hero-meta-grid" aria-label="Core Engineering Attributes">
-      <div class="meta-item">
-        <span class="meta-k">Core Focus</span>
-        <span class="meta-v">PyTorch · Time-Series · Full-Stack</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-k">Verification</span>
-        <span class="meta-v">Public Code & Open Architecture</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-k">Base</span>
-        <span class="meta-v">Pakistan · Remote Worldwide</span>
-      </div>
+    <p class="hero-lede">
+      I build software, data-driven systems, and quantitative research tools.
+    </p>
+
+    <div class="currently-strip">
+      <span class="strip-label">Focus Areas:</span>
+      <span class="strip-item">Quantitative Research</span>
+      <span class="strip-sep">·</span>
+      <span class="strip-item">Financial Engineering</span>
+      <span class="strip-sep">·</span>
+      <span class="strip-item">AI / ML</span>
+      <span class="strip-sep">·</span>
+      <span class="strip-item">Full-Stack Systems</span>
     </div>
 
     <div class="hero-actions">
-      <a class="button primary" href="#work">Explore Verified Systems →</a>
-      <a class="button secondary" href="/research">Read Research Inquiries</a>
-      <a class="button ghost" href="/contact">Start Conversation</a>
-    </div>
-  </div>
-
-  <div class="hero-system reveal" aria-label="Interactive quantitative architecture diagram">
-    <div class="system-header">
-      <span class="sys-dot red"></span>
-      <span class="sys-dot yellow"></span>
-      <span class="sys-dot green"></span>
-      <span class="sys-title">SYSTEM_ARCHITECTURE // PIPELINE_TOPOLOGY</span>
-    </div>
-
-    <div class="topology-container">
-      <svg viewBox="0 0 580 440" role="img" class="topology-svg">
-        <defs>
-          <linearGradient id="quantGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#7ed8c4"></stop>
-            <stop offset="100%" stop-color="#3ca691"></stop>
-          </linearGradient>
-        </defs>
-
-        <!-- Subtle Grid Matrix -->
-        <path class="sys-grid-lines" d="M40 70 H540 M40 150 H540 M40 230 H540 M40 310 H540 M40 390 H540 M100 40 V410 M220 40 V410 M340 40 V410 M460 40 V410" />
-
-        <!-- Connecting Data Flows -->
-        <path class="flow-line flow-1" d="M120 120 C220 90 260 180 290 220" />
-        <path class="flow-line flow-2" d="M460 120 C380 90 320 180 290 220" />
-        <path class="flow-line flow-3" d="M120 340 C200 360 260 280 290 220" />
-        <path class="flow-line flow-4" d="M460 340 C380 360 320 280 290 220" />
-
-        <!-- Core Production Node -->
-        <circle class="core-hub" cx="290" cy="220" r="48" />
-        <text x="290" y="216" class="hub-text main" text-anchor="middle">VERIFIABLE</text>
-        <text x="290" y="232" class="hub-text sub" text-anchor="middle">SYSTEMS</text>
-
-        <!-- Node 1: Quant Research -->
-        <g class="topology-node" transform="translate(120, 120)">
-          <rect x="-65" y="-24" width="130" height="48" rx="6" class="node-box quant-box" />
-          <text x="0" y="-4" class="node-title" text-anchor="middle">QUANT RESEARCH</text>
-          <text x="0" y="12" class="node-sub" text-anchor="middle">Signal & Regime</text>
-        </g>
-
-        <!-- Node 2: Deep Learning -->
-        <g class="topology-node" transform="translate(460, 120)">
-          <rect x="-65" y="-24" width="130" height="48" rx="6" class="node-box ai-box" />
-          <text x="0" y="-4" class="node-title" text-anchor="middle">AI & NEURAL</text>
-          <text x="0" y="12" class="node-sub" text-anchor="middle">PyTorch · Models</text>
-        </g>
-
-        <!-- Node 3: Full Stack Systems -->
-        <g class="topology-node" transform="translate(120, 340)">
-          <rect x="-65" y="-24" width="130" height="48" rx="6" class="node-box eng-box" />
-          <text x="0" y="-4" class="node-title" text-anchor="middle">ARCHITECTURE</text>
-          <text x="0" y="12" class="node-sub" text-anchor="middle">TypeScript · APIs</text>
-        </g>
-
-        <!-- Node 4: Product Delivery -->
-        <g class="topology-node" transform="translate(460, 340)">
-          <rect x="-65" y="-24" width="130" height="48" rx="6" class="node-box prod-box" />
-          <text x="0" y="-4" class="node-title" text-anchor="middle">PRODUCTION</text>
-          <text x="0" y="12" class="node-sub" text-anchor="middle">Vercel · Verified</text>
-        </g>
-      </svg>
-    </div>
-
-    <!-- Live Status Strip -->
-    <div class="system-footer">
-      <span class="footer-tag">STATUS: 100% OPERATIONAL</span>
-      <span class="footer-tag">PIPELINES: DETERMINISTIC</span>
+      <a href="#work" class="btn primary">
+        View Work →
+      </a>
+      <a href={siteConfig.socialLinks.github.url} target="_blank" rel="noopener noreferrer" class="btn secondary">
+        GitHub ↗
+      </a>
+      <a href="/contact" class="btn ghost">
+        Contact
+      </a>
     </div>
   </div>
 </section>
 
 <style>
-  .hero {
-    display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-    gap: clamp(2rem, 4.5vw, 4rem);
-    align-items: center;
-    min-height: calc(100vh - 6.5rem);
-    padding: clamp(3rem, 6vw + 1rem, 5.5rem) 0 clamp(2.5rem, 4vw, 4rem);
+  .simple-hero {
+    padding: clamp(3.5rem, 7vw, 6rem) 0 clamp(2.5rem, 5vw, 4rem);
+    border-bottom: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
   }
 
-  .hero-badge-strip {
+  .hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .status-pill {
     display: inline-flex;
     align-items: center;
-    gap: 0.65rem;
+    gap: 0.5rem;
     padding: 0.35rem 0.85rem;
     background: rgba(126, 216, 196, 0.08);
     border: 1px solid rgba(126, 216, 196, 0.25);
     border-radius: var(--radius-full, 9999px);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-accent, #7ed8c4);
     margin-bottom: 1.5rem;
   }
 
-  .status-pulse-dot {
+  :global(html[data-theme="light"]) .status-pill,
+  :global([data-theme="light"]) .status-pill {
+    background: rgba(13, 118, 99, 0.08);
+    border-color: rgba(13, 118, 99, 0.25);
+    color: #0d7663;
+  }
+
+  .status-dot {
     width: 0.5rem;
     height: 0.5rem;
     border-radius: 50%;
-    background: #7ed8c4;
-    box-shadow: 0 0 10px #7ed8c4;
-    animation: pulseGlow 2s ease-in-out infinite;
+    background: var(--color-accent, #7ed8c4);
+    box-shadow: 0 0 8px var(--color-accent, #7ed8c4);
   }
 
-  .hero-badge-text {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #7ed8c4;
-    letter-spacing: 0.02em;
+  :global(html[data-theme="light"]) .status-dot,
+  :global([data-theme="light"]) .status-dot {
+    background: #0d7663;
+    box-shadow: 0 0 8px rgba(13, 118, 99, 0.4);
+  }
+
+  .hero-name {
+    font-size: clamp(2.5rem, 5vw + 0.5rem, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--color-text-primary, #f6f1e8);
+    margin: 0 0 0.5rem 0;
+  }
+
+  :global(html[data-theme="light"]) .hero-name,
+  :global([data-theme="light"]) .hero-name {
+    color: #141f1c;
   }
 
   .hero-title {
-    font-size: var(--font-size-display, clamp(2.25rem, 4.5vw + 0.5rem, 3.85rem));
-    line-height: 1.12;
-    letter-spacing: -0.025em;
-    font-weight: 800;
-    color: var(--color-text, #f6f1e8);
-    margin: 0 0 1.5rem 0;
-    text-wrap: balance;
+    font-size: clamp(1.25rem, 2.5vw, 1.65rem);
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--color-accent, #7ed8c4);
+    margin: 0 0 1.25rem 0;
+    letter-spacing: -0.01em;
   }
 
-  .highlight-text {
-    color: var(--color-accent, #7ed8c4);
+  :global(html[data-theme="light"]) .hero-title,
+  :global([data-theme="light"]) .hero-title {
+    color: #0d7663;
   }
 
   .hero-lede {
-    max-width: 640px;
+    font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+    line-height: 1.65;
     color: var(--color-text-secondary, #a9b8b1);
-    font-size: var(--font-size-lead, 1.125rem);
-    line-height: 1.75;
-    margin: 0 0 2rem 0;
+    margin: 0 0 1.75rem 0;
+    max-width: 680px;
   }
 
-  .hero-lede strong {
-    color: var(--color-text-primary, #f6f1e8);
+  :global(html[data-theme="light"]) .hero-lede,
+  :global([data-theme="light"]) .hero-lede {
+    color: #4a5c55;
   }
 
-  .hero-meta-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.75rem;
-    padding: 1rem;
-    background: rgba(16, 26, 23, 0.75);
-    border: 1px solid rgba(246, 241, 232, 0.09);
-    border-radius: 0.75rem;
-    margin-bottom: 2rem;
-  }
-
-  .meta-item {
+  .currently-strip {
     display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary, #a9b8b1);
+    margin-bottom: 2rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--color-surface, #0c1815);
+    border: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
+    border-radius: var(--radius-md, 8px);
+    width: fit-content;
   }
 
-  .meta-k {
-    font-size: 0.72rem;
+  :global(html[data-theme="light"]) .currently-strip,
+  :global([data-theme="light"]) .currently-strip {
+    background: #ffffff;
+    border-color: rgba(20, 31, 28, 0.1);
+    color: #4a5c55;
+  }
+
+  .strip-label {
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--color-text-muted, #83968e);
+    color: var(--color-text-primary, #f6f1e8);
+    margin-right: 0.25rem;
   }
 
-  .meta-v {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--color-text-primary, #f6f1e8);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  :global(html[data-theme="light"]) .strip-label,
+  :global([data-theme="light"]) .strip-label {
+    color: #141f1c;
+  }
+
+  .strip-sep {
+    color: var(--color-text-muted, #73847b);
   }
 
   .hero-actions {
     display: flex;
+    align-items: center;
     flex-wrap: wrap;
     gap: 0.85rem;
   }
 
-  .button {
+  .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     min-height: var(--touch-target-min, 44px);
-    padding: 0.75rem 1.4rem;
-    border-radius: 0.5rem;
-    font-size: 0.925rem;
-    font-weight: 700;
+    padding: 0.65rem 1.35rem;
+    border-radius: var(--radius-md, 8px);
+    font-size: 0.95rem;
+    font-weight: 600;
     text-decoration: none;
-    transition: background 150ms ease, border-color 150ms ease, color 150ms ease, transform 150ms ease;
+    transition: all 150ms ease;
   }
 
-  .button.primary {
+  .btn.primary {
     background: var(--color-accent, #7ed8c4);
-    color: #07110f !important;
+    color: #07110f;
+    border: 1px solid var(--color-accent, #7ed8c4);
   }
 
-  .button.primary:hover {
+  .btn.primary:hover {
     background: var(--color-accent-hover, #9bd8cf);
-    color: #07110f !important;
+    border-color: var(--color-accent-hover, #9bd8cf);
     transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(126, 216, 196, 0.25);
   }
 
-  .button.secondary {
+  .btn.secondary {
     background: rgba(126, 216, 196, 0.08);
-    border: 1px solid rgba(126, 216, 196, 0.28);
-    color: var(--color-accent-teal, #7ed8c4);
+    border: 1px solid rgba(126, 216, 196, 0.25);
+    color: var(--color-accent, #7ed8c4);
   }
 
-  .button.secondary:hover {
-    background: rgba(126, 216, 196, 0.16);
-    border-color: var(--color-accent-teal, #7ed8c4);
-    color: var(--color-accent-teal, #7ed8c4);
+  .btn.secondary:hover {
+    background: rgba(126, 216, 196, 0.15);
+    border-color: var(--color-accent, #7ed8c4);
     transform: translateY(-1px);
   }
 
-  .button.ghost {
-    background: var(--color-surface, rgba(16, 26, 23, 0.6));
-    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.12));
+  :global(html[data-theme="light"]) .btn.secondary,
+  :global([data-theme="light"]) .btn.secondary {
+    background: rgba(13, 118, 99, 0.08);
+    border-color: rgba(13, 118, 99, 0.25);
+    color: #0d7663;
+  }
+
+  .btn.ghost {
+    background: transparent;
+    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.15));
     color: var(--color-text-primary, #f6f1e8);
   }
 
-  .button.ghost:hover {
-    border-color: var(--color-accent, #7ed8c4);
-    color: var(--color-accent, #7ed8c4);
+  .btn.ghost:hover {
+    border-color: var(--color-text-primary, #f6f1e8);
     transform: translateY(-1px);
   }
 
-  /* Topology Visual Card */
-  .hero-system {
-    position: relative;
-    width: 100%;
-    max-width: 580px;
-    margin: 0 auto;
-    background: var(--color-surface-elevated, rgba(16, 26, 23, 0.85));
-    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.1));
-    border-radius: 0.875rem;
-    overflow: hidden;
-    box-shadow: var(--shadow-card, 0 20px 60px rgba(0, 0, 0, 0.4));
-  }
-
-  .system-header {
-    display: flex;
-    align-items: center;
-    gap: 0.45rem;
-    padding: 0.75rem 1rem;
-    background: var(--color-surface-inset, rgba(7, 17, 15, 0.95));
-    border-bottom: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
-  }
-
-  .sys-dot {
-    width: 0.6rem;
-    height: 0.6rem;
-    border-radius: 50%;
-  }
-
-  .sys-dot.red { background: #ef4444; opacity: 0.75; }
-  .sys-dot.yellow { background: #f59e0b; opacity: 0.75; }
-  .sys-dot.green { background: #10b981; opacity: 0.75; }
-
-  .sys-title {
-    margin-left: 0.4rem;
-    font-family: var(--font-mono, monospace);
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: var(--color-text-muted, #83968e);
-    letter-spacing: 0.05em;
-  }
-
-  .topology-container {
-    padding: 1.25rem;
-  }
-
-  .topology-svg {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 580 / 440;
-  }
-
-  .sys-grid-lines {
-    fill: none;
-    stroke: rgba(246, 241, 232, 0.04);
-    stroke-width: 1;
-  }
-
-  .flow-line {
-    fill: none;
-    stroke-width: 2;
-    stroke-dasharray: 8 6;
-    stroke: rgba(126, 216, 196, 0.35);
-    animation: dashFlow 20s linear infinite;
-  }
-
-  .flow-1 { stroke: rgba(126, 216, 196, 0.45); }
-  .flow-2 { stroke: rgba(126, 216, 196, 0.35); }
-  .flow-3 { stroke: rgba(126, 216, 196, 0.35); }
-  .flow-4 { stroke: rgba(126, 216, 196, 0.45); }
-
-  .core-hub {
-    fill: rgba(7, 17, 15, 0.95);
-    stroke: #7ed8c4;
-    stroke-width: 2;
-    filter: drop-shadow(0 0 12px rgba(126, 216, 196, 0.25));
-  }
-
-  .hub-text {
-    font-family: var(--font-mono, monospace);
-    font-weight: 800;
-    fill: #f6f1e8;
-  }
-
-  .hub-text.main { font-size: 11px; letter-spacing: 0.05em; }
-  .hub-text.sub { font-size: 9px; fill: #7ed8c4; }
-
-  .node-box {
-    stroke-width: 1.5;
-    fill: rgba(7, 17, 15, 0.9);
-    stroke: rgba(126, 216, 196, 0.4);
-  }
-
-  .quant-box { stroke: rgba(126, 216, 196, 0.6); }
-  .ai-box { stroke: rgba(126, 216, 196, 0.45); }
-  .eng-box { stroke: rgba(126, 216, 196, 0.45); }
-  .prod-box { stroke: rgba(126, 216, 196, 0.6); }
-
-  .node-title {
-    font-family: var(--font-mono, monospace);
-    font-size: 10px;
-    font-weight: 800;
-    fill: #f6f1e8;
-  }
-
-  .node-sub {
-    font-family: var(--font-sans, sans-serif);
-    font-size: 9px;
-    font-weight: 500;
-    fill: #a9b8b1;
-  }
-
-  .system-footer {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.65rem 1rem;
-    background: var(--color-surface-inset, rgba(7, 17, 15, 0.95));
-    border-top: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
-  }
-
-  .footer-tag {
-    font-family: var(--font-mono, monospace);
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: var(--color-accent, #7ed8c4);
-    letter-spacing: 0.04em;
-  }
-
-  @keyframes pulseGlow {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.85); }
-  }
-
-  @keyframes dashFlow {
-    to { stroke-dashoffset: -200; }
-  }
-
-  :global(html[data-theme="light"]) .hero-meta-grid,
-  :global([data-theme="light"]) .hero-meta-grid {
-    background: #ffffff !important;
-    border-color: rgba(20, 31, 28, 0.12) !important;
-    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.05) !important;
-  }
-
-  :global(html[data-theme="light"]) .meta-v,
-  :global([data-theme="light"]) .meta-v {
-    color: #141f1c !important;
-  }
-
-  :global(html[data-theme="light"]) .hero-system,
-  :global([data-theme="light"]) .hero-system {
-    background: #ffffff !important;
-    border: 1px solid rgba(20, 31, 28, 0.12) !important;
-    box-shadow: 0 16px 48px rgba(20, 31, 28, 0.08) !important;
-  }
-
-  :global(html[data-theme="light"]) .system-header,
-  :global([data-theme="light"]) .system-header,
-  :global(html[data-theme="light"]) .system-footer,
-  :global([data-theme="light"]) .system-footer {
-    background: #f7f4ec !important;
-    border-color: rgba(20, 31, 28, 0.09) !important;
-  }
-
-  :global(html[data-theme="light"]) .sys-title,
-  :global([data-theme="light"]) .sys-title {
-    color: #35453f !important;
-  }
-
-  :global(html[data-theme="light"]) .footer-tag,
-  :global([data-theme="light"]) .footer-tag {
-    color: #0d7663 !important;
-  }
-
-  :global(html[data-theme="light"]) .core-hub,
-  :global([data-theme="light"]) .core-hub {
-    fill: #ffffff !important;
-    stroke: #0d7663 !important;
-    filter: drop-shadow(0 0 12px rgba(13, 118, 99, 0.18)) !important;
-  }
-
-  :global(html[data-theme="light"]) .hub-text.main,
-  :global([data-theme="light"]) .hub-text.main {
-    fill: #141f1c !important;
-  }
-
-  :global(html[data-theme="light"]) .hub-text.sub,
-  :global([data-theme="light"]) .hub-text.sub {
-    fill: #0d7663 !important;
-  }
-
-  :global(html[data-theme="light"]) .node-box,
-  :global([data-theme="light"]) .node-box {
-    fill: #ffffff !important;
-    stroke: rgba(13, 118, 99, 0.35) !important;
-  }
-
-  :global(html[data-theme="light"]) .node-title,
-  :global([data-theme="light"]) .node-title {
-    fill: #141f1c !important;
-  }
-
-  :global(html[data-theme="light"]) .node-sub,
-  :global([data-theme="light"]) .node-sub {
-    fill: #4e6059 !important;
-  }
-
-  :global(html[data-theme="light"]) .sys-grid-lines,
-  :global([data-theme="light"]) .sys-grid-lines {
-    stroke: rgba(20, 31, 28, 0.06) !important;
-  }
-
-  :global(html[data-theme="light"]) .flow-line,
-  :global([data-theme="light"]) .flow-line {
-    stroke: rgba(13, 118, 99, 0.4) !important;
-  }
-
-  :global(html[data-theme="light"]) .button.ghost,
-  :global([data-theme="light"]) .button.ghost {
-    background: #ffffff !important;
-    border-color: rgba(20, 31, 28, 0.15) !important;
-    color: #141f1c !important;
-  }
-
-  :global(html[data-theme="light"]) .button.secondary,
-  :global([data-theme="light"]) .button.secondary {
-    background: rgba(13, 118, 99, 0.08) !important;
-    border-color: rgba(13, 118, 99, 0.3) !important;
-    color: #0d7663 !important;
-  }
-
-  @media (max-width: 980px) {
-    .hero {
-      grid-template-columns: 1fr;
-      min-height: auto;
-      padding-top: 3rem;
-    }
-
-    .hero-meta-grid {
-      grid-template-columns: 1fr;
-      gap: 0.5rem;
-    }
+  :global(html[data-theme="light"]) .btn.ghost,
+  :global([data-theme="light"]) .btn.ghost {
+    border-color: rgba(20, 31, 28, 0.2);
+    color: #141f1c;
   }
 </style>

@@ -1,0 +1,256 @@
+---
+import { researchItems } from '@/data/research';
+---
+
+<section id="research" class="simple-research-section">
+  <div class="research-header">
+    <div class="header-left">
+      <span class="section-label">RESEARCH</span>
+      <h2 class="section-title">Quantitative Inquiries & Statistical Modeling</h2>
+    </div>
+    <a href="/research" class="view-all-link">
+      View All Research →
+    </a>
+  </div>
+
+  <div class="research-list">
+    {researchItems.map((item) => (
+      <article class="research-item-row">
+        <div class="research-meta">
+          <span class="topic-tag">{item.domain || 'Quantitative AI'}</span>
+          <span class="status-indicator">{item.status || 'Active'}</span>
+        </div>
+        <div class="research-main">
+          <h3 class="research-item-title">
+            <a href={`/research/${item.slug}`} class="research-link">
+              {item.title}
+            </a>
+          </h3>
+          <p class="research-question">
+            <strong>Inquiry:</strong> {item.hypothesis || item.summary}
+          </p>
+        </div>
+        <div class="research-action">
+          <a href={`/research/${item.slug}`} class="read-more-link">
+            Read Inquiry →
+          </a>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .simple-research-section {
+    padding: clamp(3rem, 6vw, 5rem) 0;
+    border-bottom: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
+  }
+
+  .research-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
+  }
+
+  .header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .section-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  :global(html[data-theme="light"]) .section-label,
+  :global([data-theme="light"]) .section-label {
+    color: #0d7663;
+  }
+
+  .section-title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary, #f6f1e8);
+    margin: 0;
+  }
+
+  :global(html[data-theme="light"]) .section-title,
+  :global([data-theme="light"]) .section-title {
+    color: #141f1c;
+  }
+
+  .view-all-link {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-accent, #7ed8c4);
+    text-decoration: none;
+    transition: transform 150ms ease;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  :global(html[data-theme="light"]) .view-all-link,
+  :global([data-theme="light"]) .view-all-link {
+    color: #0d7663;
+  }
+
+  .view-all-link:hover,
+  .view-all-link:focus-visible {
+    transform: translateX(3px);
+  }
+
+  .research-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .research-item-row {
+    display: grid;
+    grid-template-columns: 180px 1fr auto;
+    gap: 1.5rem;
+    align-items: center;
+    padding: 1.35rem 1.5rem;
+    background: var(--color-surface, #0c1815);
+    border: 1px solid var(--color-border, rgba(126, 216, 196, 0.15));
+    border-radius: var(--radius-lg, 10px);
+    transition: border-color 150ms ease, transform 150ms ease;
+  }
+
+  .research-item-row:hover {
+    border-color: var(--color-accent, #7ed8c4);
+    transform: translateY(-2px);
+  }
+
+  :global(html[data-theme="light"]) .research-item-row,
+  :global([data-theme="light"]) .research-item-row {
+    background: #ffffff;
+    border-color: rgba(20, 31, 28, 0.12);
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.04);
+  }
+
+  :global(html[data-theme="light"]) .research-item-row:hover,
+  :global([data-theme="light"]) .research-item-row:hover {
+    border-color: #0d7663;
+    box-shadow: 0 8px 24px rgba(20, 31, 28, 0.08);
+  }
+
+  .research-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .topic-tag {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  :global(html[data-theme="light"]) .topic-tag,
+  :global([data-theme="light"]) .topic-tag {
+    color: #0d7663;
+  }
+
+  .status-indicator {
+    font-size: 0.75rem;
+    color: var(--color-text-muted, #73847b);
+  }
+
+  .research-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .research-item-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  .research-link {
+    color: var(--color-text-primary, #f6f1e8);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  :global(html[data-theme="light"]) .research-link,
+  :global([data-theme="light"]) .research-link {
+    color: #141f1c;
+  }
+
+  .research-link:hover,
+  .research-link:focus-visible {
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  :global(html[data-theme="light"]) .research-link:hover,
+  :global([data-theme="light"]) .research-link:hover {
+    color: #0d7663;
+  }
+
+  .research-question {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--color-text-secondary, #a9b8b1);
+    margin: 0;
+  }
+
+  :global(html[data-theme="light"]) .research-question,
+  :global([data-theme="light"]) .research-question {
+    color: #4a5c55;
+  }
+
+  .research-question strong {
+    color: var(--color-text-primary, #f6f1e8);
+  }
+
+  :global(html[data-theme="light"]) .research-question strong,
+  :global([data-theme="light"]) .research-question strong {
+    color: #141f1c;
+  }
+
+  .read-more-link {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color-accent, #7ed8c4);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  :global(html[data-theme="light"]) .read-more-link,
+  :global([data-theme="light"]) .read-more-link {
+    color: #0d7663;
+  }
+
+  .read-more-link:hover,
+  .read-more-link:focus-visible {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 820px) {
+    .research-item-row {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+
+    .research-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+  }
+</style>

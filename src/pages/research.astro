@@ -1,319 +1,323 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
-import SectionHeader from '@/components/common/SectionHeader.astro';
-import ResearchInquiryCard from '@/components/cards/ResearchInquiryCard.astro';
-import ContactCallout from '@/components/sections/ContactCallout.astro';
+import SimpleContactCallout from '@/components/sections/SimpleContactCallout.astro';
 import { researchItems } from '@/data/research';
 import { siteConfig } from '@/data/site';
 
 const seo = {
-  title: `Research Platform & Investigations — ${siteConfig.name}`,
-  description: 'Personal research workspace: empirical time-series experiments, unsupervised market regime clustering, and deterministic multi-agent state machines.',
+  title: `Research — ${siteConfig.name}`,
+  description: 'A collection of quantitative, machine-learning, time-series, and financial engineering investigations by Uzair Ahmad.',
   canonical: `${siteConfig.url}/research`,
 };
 ---
 
 <BaseLayout seo={seo}>
-  <div class="page-container">
+  <div class="research-page-container">
     <Breadcrumbs items={[{ label: 'Research', href: '/research' }]} />
 
-    <section class="research-hero">
-      <SectionHeader
-        eyebrow="Research Platform"
-        title="Hypothesis-Driven Technical Investigations"
-        subtitle="Exploring open questions at the intersection of quantitative finance, time-series machine learning, and autonomous agent architectures."
-      />
-    </section>
+    <header class="research-hero-header">
+      <span class="page-eyebrow">RESEARCH</span>
+      <h1 class="page-title">Quantitative & Applied AI Inquiries</h1>
+      <p class="page-subtitle">
+        A collection of quantitative finance, machine-learning, time-series, and financial engineering investigations. Each inquiry is formulated with formal hypotheses, empirical validation, and explicit limitations.
+      </p>
+    </header>
 
-    <!-- Research Philosophy & Lifecycle Banner -->
-    <section class="lifecycle-section">
-      <div class="lifecycle-container">
-        <span class="lifecycle-eyebrow">RESEARCH METHODOLOGY & INVESTIGATION LIFECYCLE</span>
-        <div class="lifecycle-steps">
-          <div class="step-item">
-            <span class="step-idx">01</span>
-            <span class="step-name">Question</span>
+    <div class="research-catalog">
+      {researchItems.map((item) => (
+        <article class="research-card">
+          <div class="card-top">
+            <span class="topic-tag">{item.domain || 'Quantitative AI'}</span>
+            <span class="status-pill">{item.status || 'Active'}</span>
           </div>
-          <span class="step-arr" aria-hidden="true">→</span>
-          <div class="step-item">
-            <span class="step-idx">02</span>
-            <span class="step-name">Hypothesis</span>
-          </div>
-          <span class="step-arr" aria-hidden="true">→</span>
-          <div class="step-item">
-            <span class="step-idx">03</span>
-            <span class="step-name">Experiment</span>
-          </div>
-          <span class="step-arr" aria-hidden="true">→</span>
-          <div class="step-item">
-            <span class="step-idx">04</span>
-            <span class="step-name">Evidence</span>
-          </div>
-          <span class="step-arr" aria-hidden="true">→</span>
-          <div class="step-item">
-            <span class="step-idx">05</span>
-            <span class="step-name">Interpretation</span>
-          </div>
-          <span class="step-arr" aria-hidden="true">→</span>
-          <div class="step-item">
-            <span class="step-idx">06</span>
-            <span class="step-name">Engineering System</span>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Research Domains Overview -->
-    <section class="domains-overview">
-      <div class="domain-grid">
-        <div class="domain-box">
-          <span class="domain-num">01</span>
-          <h3 class="domain-title">Signal & Series Research</h3>
-          <p class="domain-desc">Feature engineering, fractional stationarity transformations, and neural time-series forecasting.</p>
-        </div>
-        <div class="domain-box">
-          <span class="domain-num">02</span>
-          <h3 class="domain-title">Market Regime Intelligence</h3>
-          <p class="domain-desc">Unsupervised clustering and statistical moment tracking for volatility transitions.</p>
-        </div>
-        <div class="domain-box">
-          <span class="domain-num">03</span>
-          <h3 class="domain-title">Agentic Workflow Systems</h3>
-          <p class="domain-desc">Deterministic state graph boundaries and runtime schema guardrails for autonomous LLMs.</p>
-        </div>
-      </div>
-    </section>
+          <h2 class="card-title">
+            <a href={`/research/${item.slug}`} class="title-link">
+              {item.title}
+            </a>
+          </h2>
 
-    <!-- Active Research Investigations Grid -->
-    <section class="inquiries-section">
-      <div class="section-top-row">
-        <h2 class="inquiries-heading">Active Investigations & Empirical Experiments</h2>
-        <span class="inquiries-count">{researchItems.length} Structured Inquiries</span>
-      </div>
-      <div class="inquiries-grid">
-        {researchItems.map((item) => (
-          <ResearchInquiryCard item={item} />
-        ))}
-      </div>
-    </section>
+          <p class="card-summary">{item.summary}</p>
 
-    <!-- Research Integrity Standards -->
-    <section class="methodology-standards">
-      <h2 class="methodology-title">Research Integrity & Epistemic Standards</h2>
-      <div class="standards-grid">
-        <div class="standard-card">
-          <h4>No Lookahead Bias</h4>
-          <p>All feature normalization, stationarity parameters, and statistical moments are calculated strictly on expanding historical windows.</p>
-        </div>
-        <div class="standard-card">
-          <h4>Out-of-Sample Discipline</h4>
-          <p>Models are evaluated exclusively on unseen temporal partitions with strict purge buffers to guard against random k-fold data leakage.</p>
-        </div>
-        <div class="standard-card">
-          <h4>Transparent Limitations</h4>
-          <p>Every investigation explicitly records failure modes, sample size boundaries, and epistemic uncertainty rather than claiming universal superiority.</p>
-        </div>
-      </div>
-    </section>
+          {item.hypothesis && (
+            <div class="hypothesis-box">
+              <span class="box-label">Central Hypothesis:</span>
+              <p class="box-text">{item.hypothesis}</p>
+            </div>
+          )}
 
-    <ContactCallout
-      title="Interested in discussing research or quantitative modeling?"
-      subtitle="Open to technical exchanges, empirical data validation, and joint machine learning architecture discussions."
-    />
+          {item.technologies && item.technologies.length > 0 && (
+            <div class="tech-row">
+              <span class="tech-label">Methods:</span>
+              {item.technologies.map((tech) => (
+                <span class="tech-tag">{tech}</span>
+              ))}
+            </div>
+          )}
+
+          <div class="card-bottom">
+            <a href={`/research/${item.slug}`} class="read-btn">
+              Read Technical Inquiry →
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <SimpleContactCallout />
   </div>
 </BaseLayout>
 
 <style>
-  .page-container {
-    width: min(var(--container-max, 1200px), calc(100% - max(1.5rem, calc(env(safe-area-inset-left) + env(safe-area-inset-right) + 1rem))));
+  .research-page-container {
+    width: min(var(--container-max, 1000px), calc(100% - max(1.5rem, calc(env(safe-area-inset-left) + env(safe-area-inset-right) + 1rem))));
     margin: 0 auto;
-    padding: 1rem 0 5rem;
-    padding-left: env(safe-area-inset-left, 0);
-    padding-right: env(safe-area-inset-right, 0);
+    padding: 1.5rem 0 4rem;
   }
 
-  .research-hero {
-    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  .research-hero-header {
+    margin: 1.5rem 0 2.5rem 0;
   }
 
-  .lifecycle-section {
-    margin-bottom: clamp(2rem, 4vw, 3rem);
-  }
-
-  .lifecycle-container {
-    background: rgba(16, 26, 23, 0.65);
-    border: 1px solid rgba(126, 216, 196, 0.2);
-    border-radius: 0.75rem;
-    padding: clamp(1rem, 2vw, 1.5rem);
-  }
-
-  .lifecycle-eyebrow {
-    display: block;
-    font-size: 0.7rem;
-    font-family: var(--font-mono, monospace);
-    font-weight: 800;
+  .page-eyebrow {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--color-accent, #7ed8c4);
-    margin-bottom: 1rem;
-    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.5rem;
   }
 
-  .lifecycle-steps {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 0.75rem;
+  :global(html[data-theme="light"]) .page-eyebrow,
+  :global([data-theme="light"]) .page-eyebrow {
+    color: #0d7663;
   }
 
-  .step-item {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-
-  .step-idx {
-    font-size: 0.75rem;
-    font-family: var(--font-mono, monospace);
-    font-weight: 700;
-    color: var(--color-accent, #7ed8c4);
-  }
-
-  .step-name {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--color-text, #f6f1e8);
-  }
-
-  .step-arr {
-    color: rgba(246, 241, 232, 0.3);
-    font-size: 0.85rem;
-  }
-
-  .domains-overview {
-    margin-bottom: clamp(2.5rem, 5vw, 4rem);
-  }
-
-  .domain-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
-  }
-
-  .domain-box {
-    background: rgba(16, 26, 23, 0.75);
-    border: 1px solid rgba(246, 241, 232, 0.09);
-    border-radius: 0.75rem;
-    padding: clamp(1.25rem, 2.5vw, 1.75rem);
-  }
-
-  .domain-num {
-    font-size: 0.85rem;
+  .page-title {
+    font-size: clamp(2rem, 4vw, 2.75rem);
     font-weight: 800;
-    color: var(--color-accent, #7ed8c4);
-    font-family: var(--font-mono, monospace);
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary, #f6f1e8);
+    margin: 0 0 0.85rem 0;
   }
 
-  .domain-title {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--color-text, #f6f1e8);
-    margin: 0.5rem 0 0.5rem 0;
-    line-height: 1.35;
+  :global(html[data-theme="light"]) .page-title,
+  :global([data-theme="light"]) .page-title {
+    color: #141f1c;
   }
 
-  .domain-desc {
-    font-size: 0.925rem;
-    color: var(--color-text-muted, #a9b8b1);
-    line-height: 1.5;
+  .page-subtitle {
+    font-size: 1.1rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary, #a9b8b1);
+    max-width: 720px;
     margin: 0;
   }
 
-  .inquiries-section {
-    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  :global(html[data-theme="light"]) .page-subtitle,
+  :global([data-theme="light"]) .page-subtitle {
+    color: #4a5c55;
   }
 
-  .section-top-row {
+  .research-catalog {
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1.75rem;
-  }
-
-  .inquiries-heading {
-    font-size: clamp(1.35rem, 2.5vw, 1.65rem);
-    font-weight: 800;
-    color: var(--color-text, #f6f1e8);
-    margin: 0;
-    letter-spacing: -0.015em;
-  }
-
-  .inquiries-count {
-    font-size: 0.85rem;
-    font-family: var(--font-mono, monospace);
-    color: var(--color-accent, #7ed8c4);
-  }
-
-  .inquiries-grid {
-    display: grid;
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: 1.75rem;
-  }
-
-  .methodology-standards {
-    background: rgba(16, 26, 23, 0.75);
-    border: 1px solid rgba(246, 241, 232, 0.09);
-    border-radius: 1rem;
-    padding: clamp(1.5rem, 3.5vw, 2.5rem);
     margin-bottom: 3.5rem;
   }
 
-  .methodology-title {
-    font-size: clamp(1.2rem, 2vw + 0.1rem, 1.45rem);
-    font-weight: 800;
-    color: var(--color-text, #f6f1e8);
-    margin: 0 0 1.5rem 0;
+  .research-card {
+    padding: clamp(1.5rem, 3vw, 2rem);
+    background: var(--color-surface, #0c1815);
+    border: 1px solid var(--color-border, rgba(126, 216, 196, 0.15));
+    border-radius: var(--radius-lg, 12px);
+    transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
   }
 
-  .standards-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
+  .research-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-accent, #7ed8c4);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
   }
 
-  .standard-card h4 {
-    font-size: 1.05rem;
+  :global(html[data-theme="light"]) .research-card,
+  :global([data-theme="light"]) .research-card {
+    background: #ffffff;
+    border-color: rgba(20, 31, 28, 0.12);
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.04);
+  }
+
+  :global(html[data-theme="light"]) .research-card:hover,
+  :global([data-theme="light"]) .research-card:hover {
+    border-color: #0d7663;
+    box-shadow: 0 12px 30px rgba(20, 31, 28, 0.08);
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .topic-tag {
+    font-size: 0.8rem;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     color: var(--color-accent, #7ed8c4);
-    margin: 0 0 0.5rem 0;
   }
 
-  .standard-card p {
-    font-size: 0.925rem;
-    color: var(--color-text-muted, #a9b8b1);
-    line-height: 1.5;
+  :global(html[data-theme="light"]) .topic-tag,
+  :global([data-theme="light"]) .topic-tag {
+    color: #0d7663;
+  }
+
+  .status-pill {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.15rem 0.55rem;
+    border-radius: var(--radius-full, 9999px);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-text-secondary, #a9b8b1);
+  }
+
+  .card-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 0 0 0.65rem 0;
+    line-height: 1.35;
+  }
+
+  .title-link {
+    color: var(--color-text-primary, #f6f1e8);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  :global(html[data-theme="light"]) .title-link,
+  :global([data-theme="light"]) .title-link {
+    color: #141f1c;
+  }
+
+  .title-link:hover,
+  .title-link:focus-visible {
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  :global(html[data-theme="light"]) .title-link:hover,
+  :global([data-theme="light"]) .title-link:hover {
+    color: #0d7663;
+  }
+
+  .card-summary {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary, #a9b8b1);
+    margin: 0 0 1.25rem 0;
+  }
+
+  :global(html[data-theme="light"]) .card-summary,
+  :global([data-theme="light"]) .card-summary {
+    color: #4a5c55;
+  }
+
+  .hypothesis-box {
+    padding: 1rem 1.25rem;
+    background: rgba(126, 216, 196, 0.05);
+    border-left: 3px solid var(--color-accent, #7ed8c4);
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 1.25rem;
+  }
+
+  :global(html[data-theme="light"]) .hypothesis-box,
+  :global([data-theme="light"]) .hypothesis-box {
+    background: rgba(13, 118, 99, 0.05);
+    border-left-color: #0d7663;
+  }
+
+  .box-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-accent, #7ed8c4);
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  :global(html[data-theme="light"]) .box-label,
+  :global([data-theme="light"]) .box-label {
+    color: #0d7663;
+  }
+
+  .box-text {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--color-text-primary, #f6f1e8);
     margin: 0;
   }
 
-  @media (max-width: 1024px) {
-    .domain-grid, .standards-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
+  :global(html[data-theme="light"]) .box-text,
+  :global([data-theme="light"]) .box-text {
+    color: #141f1c;
   }
 
-  @media (max-width: 640px) {
-    .domain-grid, .standards-grid {
-      grid-template-columns: 1fr;
-    }
-    .lifecycle-steps {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .step-arr {
-      display: none;
-    }
+  .tech-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tech-label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--color-text-muted, #73847b);
+    margin-right: 0.25rem;
+  }
+
+  .tech-tag {
+    font-size: 0.78rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: var(--radius-sm, 4px);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.1));
+    color: var(--color-text-secondary, #a9b8b1);
+  }
+
+  :global(html[data-theme="light"]) .tech-tag,
+  :global([data-theme="light"]) .tech-tag {
+    background: rgba(20, 31, 28, 0.04);
+    border-color: rgba(20, 31, 28, 0.1);
+    color: #4a5c55;
+  }
+
+  .card-bottom {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .read-btn {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--color-accent, #7ed8c4);
+    text-decoration: none;
+    transition: transform 150ms ease;
+  }
+
+  :global(html[data-theme="light"]) .read-btn,
+  :global([data-theme="light"]) .read-btn {
+    color: #0d7663;
+  }
+
+  .read-btn:hover,
+  .read-btn:focus-visible {
+    transform: translateX(3px);
   }
 </style>

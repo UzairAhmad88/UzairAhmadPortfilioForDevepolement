@@ -1,262 +1,114 @@
 ---
-import { currentlyData } from '@/data/currently';
-
-const { updatedAt, statusNote, building, learning, exploring, interestedIn } = currentlyData;
 ---
 
-<section id="currently" class="section-shell currently-section">
-  <div class="section-heading reveal">
-    <div class="heading-row">
-      <p class="eyebrow"><span class="section-number">01 /</span> Currently</p>
-      {updatedAt && <span class="update-badge">Updated // {updatedAt}</span>}
+<section id="currently" class="simple-currently">
+  <div class="currently-container">
+    <div class="section-label">CURRENTLY</div>
+
+    <div class="currently-list">
+      <div class="currently-row">
+        <span class="row-tag">Building</span>
+        <div class="row-content">
+          <strong>Quant Research & Portfolio Dashboard</strong>
+          <span class="row-desc">— Interactive portfolio analytics, factor models, and backtesting visualization platform.</span>
+        </div>
+      </div>
+
+      <div class="currently-row">
+        <span class="row-tag">Exploring</span>
+        <div class="row-content">
+          <strong>Quantitative Finance & Multi-Agent Intelligence</strong>
+          <span class="row-desc">— Market regime clustering, fractional differentiation for memory preservation, and deterministic LLM state machines.</span>
+        </div>
+      </div>
+
+      <div class="currently-row">
+        <span class="row-tag">Learning</span>
+        <div class="row-content">
+          <strong>Stochastic Calculus & Time-Series Microstructure</strong>
+          <span class="row-desc">— Volatility estimation (GARCH/Heston), orderbook modeling, and expanding walk-forward cross-validation.</span>
+        </div>
+      </div>
     </div>
-    <h2>What I am actively building, learning, and exploring.</h2>
-    {statusNote && <p class="status-note">{statusNote}</p>}
-  </div>
-
-  <div class="currently-grid reveal">
-    <!-- 1. BUILDING -->
-    {building && (
-      <article class="currently-card building-card">
-        <div class="card-header">
-          <span class="column-label">BUILDING</span>
-          {building.status && <span class="status-pill active">{building.status}</span>}
-        </div>
-        <h3 class="building-title">
-          {building.href ? (
-            <a href={building.href} class="building-link">{building.title}</a>
-          ) : (
-            building.title
-          )}
-        </h3>
-        <p class="building-desc">{building.description}</p>
-        {building.tag && <span class="tech-tag">{building.tag}</span>}
-        {building.href && (
-          <a href={building.href} class="card-action-link">
-            Inspect System →
-          </a>
-        )}
-      </article>
-    )}
-
-    <!-- 2. LEARNING -->
-    {learning && learning.length > 0 && (
-      <article class="currently-card">
-        <div class="card-header">
-          <span class="column-label">LEARNING</span>
-        </div>
-        <ul class="item-list">
-          {learning.map((item) => (
-            <li class="list-item">
-              <span class="bullet" aria-hidden="true">→</span>
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-      </article>
-    )}
-
-    <!-- 3. EXPLORING -->
-    {exploring && exploring.length > 0 && (
-      <article class="currently-card">
-        <div class="card-header">
-          <span class="column-label">EXPLORING</span>
-        </div>
-        <ul class="item-list">
-          {exploring.map((item) => (
-            <li class="list-item">
-              <span class="bullet" aria-hidden="true">◇</span>
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-      </article>
-    )}
-
-    <!-- 4. INTERESTED IN -->
-    {interestedIn && interestedIn.length > 0 && (
-      <article class="currently-card">
-        <div class="card-header">
-          <span class="column-label">INTERESTED IN</span>
-        </div>
-        <ul class="item-list">
-          {interestedIn.map((item) => (
-            <li class="list-item">
-              <span class="bullet" aria-hidden="true">▪</span>
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-      </article>
-    )}
   </div>
 </section>
 
 <style>
-  .currently-section {
-    padding: clamp(3rem, 5vw, 4.5rem) 0;
+  .simple-currently {
+    padding: clamp(2.5rem, 5vw, 4rem) 0;
     border-bottom: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
   }
 
-  .heading-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-bottom: 0.5rem;
+  .currently-container {
+    max-width: 800px;
+    margin: 0 auto;
   }
 
-  .update-badge {
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs, 0.75rem);
-    color: var(--color-text-muted, #83968e);
-    letter-spacing: 0.05em;
-    padding: 0.2rem 0.6rem;
-    border: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
-    border-radius: var(--radius-sm, 4px);
-    background: rgba(255, 255, 255, 0.02);
-  }
-
-  .status-note {
-    max-width: var(--container-reading, 70ch);
-    color: var(--color-text-secondary, #a9b8b1);
-    font-size: var(--font-size-body, 1.05rem);
-    line-height: var(--line-height-body, 1.68);
-    margin: 0.75rem 0 0;
-  }
-
-  .currently-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: clamp(1rem, 2vw, 1.5rem);
-    margin-top: clamp(1.75rem, 3vw, 2.5rem);
-  }
-
-  .currently-card {
-    display: flex;
-    flex-direction: column;
-    padding: clamp(1.25rem, 2.5vw, 1.6rem);
-    background: var(--color-background-subtle, #101a17);
-    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.1));
-    border-radius: var(--radius-md, 8px);
-    transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
-  }
-
-  .currently-card:hover {
-    transform: translateY(-2px);
-    border-color: rgba(126, 216, 196, 0.35);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
-  }
-
-  .building-card {
-    border-color: rgba(126, 216, 196, 0.28);
-    background:
-      linear-gradient(180deg, rgba(126, 216, 196, 0.04), transparent 40%),
-      var(--color-background-subtle, #101a17);
-  }
-
-  .card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
-    margin-bottom: 0.85rem;
-  }
-
-  .column-label {
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs, 0.75rem);
-    font-weight: 800;
-    color: var(--color-accent-teal, #7ed8c4);
-    letter-spacing: var(--letter-spacing-meta, 0.08em);
-  }
-
-  .building-title {
-    font-size: 1.05rem;
-    font-weight: 800;
-    line-height: 1.35;
-    margin: 0 0 0.5rem 0;
-    color: var(--color-text-primary, #f6f1e8);
-  }
-
-  .building-link {
-    color: var(--color-text-primary, #f6f1e8);
-    text-decoration: none;
-    transition: color var(--transition-fast);
-  }
-
-  .building-link:hover,
-  .building-link:focus-visible {
-    color: var(--color-accent-teal, #7ed8c4);
-  }
-
-  .building-desc {
-    font-size: 0.875rem;
-    color: var(--color-text-secondary, #a9b8b1);
-    line-height: 1.55;
-    margin: 0 0 1rem 0;
-    flex-grow: 1;
-  }
-
-  .card-action-link {
-    display: inline-flex;
-    align-items: center;
-    font-size: 0.825rem;
-    font-weight: 700;
-    color: var(--color-accent-teal, #7ed8c4);
-    margin-top: auto;
-    padding-top: 0.75rem;
-    border-top: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
-    text-decoration: none;
-    transition: color var(--transition-fast);
-  }
-
-  .card-action-link:hover {
-    color: var(--color-accent-hover, #9bd8cf);
-    text-decoration: underline;
-  }
-
-  .item-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .list-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.5rem;
-    font-size: 0.875rem;
-    color: var(--color-text-secondary, #a9b8b1);
-    line-height: 1.5;
-  }
-
-  .bullet {
-    color: var(--color-accent-teal, #7ed8c4);
-    font-family: var(--font-mono);
+  .section-label {
     font-size: 0.8rem;
-    flex-shrink: 0;
-    margin-top: 0.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent, #7ed8c4);
+    margin-bottom: 1.5rem;
   }
 
-  @media (max-width: 1100px) {
-    .currently-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
+  :global(html[data-theme="light"]) .section-label,
+  :global([data-theme="light"]) .section-label {
+    color: #0d7663;
   }
 
-  @media (max-width: 640px) {
-    .currently-grid {
+  .currently-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .currently-row {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 1.25rem;
+    align-items: baseline;
+    padding: 0.75rem 0;
+  }
+
+  .row-tag {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted, #73847b);
+  }
+
+  :global(html[data-theme="light"]) .row-tag,
+  :global([data-theme="light"]) .row-tag {
+    color: #5a6e66;
+  }
+
+  .row-content {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-text-primary, #f6f1e8);
+  }
+
+  :global(html[data-theme="light"]) .row-content,
+  :global([data-theme="light"]) .row-content {
+    color: #141f1c;
+  }
+
+  .row-desc {
+    color: var(--color-text-secondary, #a9b8b1);
+  }
+
+  :global(html[data-theme="light"]) .row-desc,
+  :global([data-theme="light"]) .row-desc {
+    color: #4a5c55;
+  }
+
+  @media (max-width: 600px) {
+    .currently-row {
       grid-template-columns: 1fr;
-    }
-
-    .heading-row {
-      flex-direction: column;
-      align-items: flex-start;
+      gap: 0.35rem;
     }
   }
 </style>

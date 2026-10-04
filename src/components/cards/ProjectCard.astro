@@ -1,74 +1,150 @@
 ---
 import type { Project } from '@/types/project';
-import ProjectDNA from '@/components/common/ProjectDNA.astro';
 
 export interface Props {
   project: Project;
-  viewMode?: 'grid' | 'compact';
 }
 
-const { project, viewMode = 'grid' } = Astro.props;
+const { project } = Astro.props;
 const categoryString = project.category.join(' ');
 const detailUrl = `/work/${project.slug}`;
+const domainLabel = project.domain || project.projectType || 'Engineering';
+const techList = project.technologies?.slice(0, 4) || [];
 ---
 
-<article class:list={['project-card', `mode-${viewMode}`]} data-category={categoryString}>
-  <ProjectDNA project={project} variant="card" />
+<article class="simple-project-card" data-category={categoryString}>
+  <div class="card-header">
+    <span class="domain-tag">{domainLabel}</span>
+    {project.status === 'completed' && <span class="status-pill completed">Completed</span>}
+    {project.status === 'active' && <span class="status-pill active">Active</span>}
+    {project.status === 'academic' && <span class="status-pill academic">Academic</span>}
+  </div>
 
   <h3 class="project-title">
     <a href={detailUrl} class="title-link">{project.title}</a>
   </h3>
 
-  <p class="project-summary">
-    {project.problem}
+  <p class="project-description">
+    {project.shortDescription || project.problem}
   </p>
 
-  <div class="card-actions">
-    <a href={detailUrl} class="card-action-btn primary">
-      Inspect Case Study →
+  {techList.length > 0 && (
+    <div class="tech-stack" aria-label="Technologies used">
+      {techList.map((tech) => (
+        <span class="tech-tag">{tech}</span>
+      ))}
+    </div>
+  )}
+
+  <div class="card-footer">
+    <a href={detailUrl} class="view-link">
+      View Project →
     </a>
-    {project.githubUrl && (
-      <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" class="card-action-btn secondary">
-        GitHub ↗
-      </a>
-    )}
-    {project.liveUrl && (
-      <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" class="card-action-btn secondary">
-        Live Demo ↗
-      </a>
-    )}
+    <div class="external-links">
+      {project.githubUrl && (
+        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" class="ext-link" aria-label={`${project.title} source code on GitHub`}>
+          GitHub ↗
+        </a>
+      )}
+      {project.liveUrl && (
+        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" class="ext-link" aria-label={`${project.title} live demo on Vercel`}>
+          Live Demo ↗
+        </a>
+      )}
+    </div>
   </div>
 </article>
 
 <style>
-  .project-card {
+  .simple-project-card {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    padding: var(--space-card, 1.5rem);
-    background: rgba(16, 26, 23, 0.75);
-    border: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.09));
-    border-radius: var(--radius-lg, 0.75rem);
-    transition: transform var(--motion-duration-normal) var(--motion-ease-standard), border-color var(--motion-duration-normal) var(--motion-ease-standard), box-shadow var(--motion-duration-normal) var(--motion-ease-standard);
+    padding: 1.5rem;
+    background: var(--color-surface, #0c1815);
+    border: 1px solid var(--color-border, rgba(126, 216, 196, 0.15));
+    border-radius: var(--radius-lg, 10px);
+    transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
   }
 
-  .project-card:hover {
-    transform: translateY(calc(-1 * var(--motion-distance-sm)));
-    border-color: var(--color-accent-muted, rgba(126, 216, 196, 0.35));
-    box-shadow: var(--shadow-card, 0 16px 40px rgba(0, 0, 0, 0.35));
+  .simple-project-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-accent, #7ed8c4);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  }
+
+  :global(html[data-theme="light"]) .simple-project-card,
+  :global([data-theme="light"]) .simple-project-card {
+    background: #ffffff;
+    border-color: rgba(20, 31, 28, 0.12);
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.04);
+  }
+
+  :global(html[data-theme="light"]) .simple-project-card:hover,
+  :global([data-theme="light"]) .simple-project-card:hover {
+    border-color: #0d7663;
+    box-shadow: 0 12px 30px rgba(20, 31, 28, 0.08);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .domain-tag {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  :global(html[data-theme="light"]) .domain-tag,
+  :global([data-theme="light"]) .domain-tag {
+    color: #0d7663;
+  }
+
+  .status-pill {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-full, 9999px);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-text-secondary, #a9b8b1);
+    border: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.1));
+  }
+
+  .status-pill.completed {
+    color: var(--color-accent, #7ed8c4);
+    border-color: rgba(126, 216, 196, 0.3);
+    background: rgba(126, 216, 196, 0.08);
+  }
+
+  :global(html[data-theme="light"]) .status-pill.completed,
+  :global([data-theme="light"]) .status-pill.completed {
+    color: #0d7663;
+    border-color: rgba(13, 118, 99, 0.25);
+    background: rgba(13, 118, 99, 0.08);
   }
 
   .project-title {
-    font-size: clamp(1.15rem, 1.5vw, 1.3rem);
+    font-size: 1.25rem;
     font-weight: 700;
-    margin: 0.5rem 0 0.75rem 0;
     line-height: 1.35;
+    margin: 0 0 0.5rem 0;
   }
 
   .title-link {
     color: var(--color-text-primary, #f6f1e8);
     text-decoration: none;
-    transition: color var(--motion-duration-fast) var(--motion-ease-standard);
+    transition: color 150ms ease;
+  }
+
+  :global(html[data-theme="light"]) .title-link,
+  :global([data-theme="light"]) .title-link {
+    color: #141f1c;
   }
 
   .title-link:hover,
@@ -76,110 +152,108 @@ const detailUrl = `/work/${project.slug}`;
     color: var(--color-accent, #7ed8c4);
   }
 
-  .project-summary {
-    color: var(--color-text-secondary, #a9b8b1);
+  :global(html[data-theme="light"]) .title-link:hover,
+  :global([data-theme="light"]) .title-link:hover {
+    color: #0d7663;
+  }
+
+  .project-description {
     font-size: 0.925rem;
     line-height: 1.6;
+    color: var(--color-text-secondary, #a9b8b1);
     margin: 0 0 1.25rem 0;
     flex-grow: 1;
   }
 
-  .card-actions {
+  :global(html[data-theme="light"]) .project-description,
+  :global([data-theme="light"]) .project-description {
+    color: #4a5c55;
+  }
+
+  .tech-stack {
     display: flex;
     flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .tech-tag {
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 0.2rem 0.55rem;
+    border-radius: var(--radius-sm, 4px);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
+    color: var(--color-text-secondary, #a9b8b1);
+  }
+
+  :global(html[data-theme="light"]) .tech-tag,
+  :global([data-theme="light"]) .tech-tag {
+    background: rgba(20, 31, 28, 0.04);
+    border-color: rgba(20, 31, 28, 0.08);
+    color: #4a5c55;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 0.65rem 0.85rem;
     padding-top: 1rem;
     border-top: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
+    flex-wrap: wrap;
+    gap: 0.75rem;
   }
 
-  .card-action-btn {
+  :global(html[data-theme="light"]) .card-footer,
+  :global([data-theme="light"]) .card-footer {
+    border-top-color: rgba(20, 31, 28, 0.08);
+  }
+
+  .view-link {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    min-height: 2.25rem;
-    padding: 0.45rem 0.95rem;
-    border-radius: var(--radius-sm, 6px);
-    font-size: 0.85rem;
-    font-weight: 700;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color-accent, #7ed8c4);
     text-decoration: none;
-    white-space: nowrap;
-    transition: background 150ms ease, border-color 150ms ease, color 150ms ease, transform 150ms ease;
+    transition: color 150ms ease, transform 150ms ease;
   }
 
-  .card-action-btn.primary {
-    background: var(--color-accent, #7ed8c4);
-    color: #07110f !important;
-    border: 1px solid var(--color-accent, #7ed8c4);
+  :global(html[data-theme="light"]) .view-link,
+  :global([data-theme="light"]) .view-link {
+    color: #0d7663;
   }
 
-  .card-action-btn.primary:hover {
-    background: var(--color-accent-hover, #9bd8cf);
-    border-color: var(--color-accent-hover, #9bd8cf);
-    color: #07110f !important;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(126, 216, 196, 0.25);
+  .view-link:hover,
+  .view-link:focus-visible {
+    transform: translateX(2px);
   }
 
-  .card-action-btn.secondary {
-    background: var(--color-surface, rgba(255, 255, 255, 0.04));
-    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.12));
+  .external-links {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .ext-link {
+    font-size: 0.82rem;
+    color: var(--color-text-muted, #73847b);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  :global(html[data-theme="light"]) .ext-link,
+  :global([data-theme="light"]) .ext-link {
+    color: #6a7c75;
+  }
+
+  .ext-link:hover,
+  .ext-link:focus-visible {
     color: var(--color-text-primary, #f6f1e8);
   }
 
-  .card-action-btn.secondary:hover {
-    background: var(--color-accent-muted, rgba(126, 216, 196, 0.1));
-    border-color: var(--color-accent, #7ed8c4);
-    color: var(--color-accent, #7ed8c4);
-    transform: translateY(-1px);
-  }
-
-  :global(html[data-theme="light"]) .project-card,
-  :global([data-theme="light"]) .project-card {
-    background: #ffffff !important;
-    border: 1px solid rgba(20, 31, 28, 0.12) !important;
-    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.05) !important;
-  }
-
-  :global(html[data-theme="light"]) .project-card:hover,
-  :global([data-theme="light"]) .project-card:hover {
-    border-color: #0d7663 !important;
-    box-shadow: 0 12px 32px rgba(20, 31, 28, 0.09) !important;
-  }
-
-  :global(html[data-theme="light"]) .title-link,
-  :global([data-theme="light"]) .title-link {
-    color: #141f1c !important;
-  }
-
-  :global(html[data-theme="light"]) .title-link:hover,
-  :global([data-theme="light"]) .title-link:hover {
-    color: #0d7663 !important;
-  }
-
-  :global(html[data-theme="light"]) .project-summary,
-  :global([data-theme="light"]) .project-summary {
-    color: #35453f !important;
-  }
-
-  :global(html[data-theme="light"]) .card-action-btn.secondary,
-  :global([data-theme="light"]) .card-action-btn.secondary {
-    background: rgba(20, 31, 28, 0.04) !important;
-    border-color: rgba(20, 31, 28, 0.12) !important;
-    color: #141f1c !important;
-  }
-
-  :global(html[data-theme="light"]) .card-action-btn.secondary:hover,
-  :global([data-theme="light"]) .card-action-btn.secondary:hover {
-    background: rgba(13, 118, 99, 0.08) !important;
-    border-color: #0d7663 !important;
-    color: #0d7663 !important;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .project-card {
-      transition: none !important;
-      transform: none !important;
-    }
+  :global(html[data-theme="light"]) .ext-link:hover,
+  :global([data-theme="light"]) .ext-link:hover {
+    color: #141f1c;
   }
 </style>

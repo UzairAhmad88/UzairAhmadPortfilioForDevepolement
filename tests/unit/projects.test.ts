@@ -6,7 +6,7 @@ import { primaryNavigation } from '../../src/data/navigation.ts';
 describe('Project & Navigation Data Integrity', () => {
   it('should have a valid featured project with complete case study', () => {
     assert.ok(featuredProject);
-    assert.strictEqual(featuredProject.slug, 'deep-learning-stock-return-prediction');
+    assert.strictEqual(featuredProject.slug, 'quant-research-portfolio-dashboard');
     assert.ok(featuredProject.caseStudy);
     assert.ok(featuredProject.caseStudy.objectives && featuredProject.caseStudy.objectives.length > 0);
     assert.ok(featuredProject.caseStudy.keyDecisions && featuredProject.caseStudy.keyDecisions.length > 0);

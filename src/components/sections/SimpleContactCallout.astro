@@ -1,0 +1,164 @@
+---
+import { siteConfig } from '@/data/site';
+---
+
+<section id="contact-callout" class="simple-contact-callout">
+  <div class="callout-container">
+    <div class="callout-card">
+      <span class="section-label">GET IN TOUCH</span>
+      <h2 class="callout-title">Let's build something useful together.</h2>
+      <p class="callout-desc">
+        I am available for select quantitative modeling, full-stack software development, and technical collaboration.
+      </p>
+
+      <div class="callout-actions">
+        <a href="/contact" class="btn primary">
+          Start a Conversation →
+        </a>
+        <a href={`mailto:${siteConfig.email}`} class="btn secondary">
+          {siteConfig.email}
+        </a>
+        <a href={siteConfig.socialLinks.linkedin.url} target="_blank" rel="noopener noreferrer" class="btn ghost">
+          LinkedIn ↗
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .simple-contact-callout {
+    padding: clamp(3rem, 6vw, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .callout-container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .callout-card {
+    padding: clamp(2rem, 4vw, 3.5rem);
+    background: var(--color-surface, #0c1815);
+    border: 1px solid var(--color-border, rgba(126, 216, 196, 0.2));
+    border-radius: var(--radius-lg, 12px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  :global(html[data-theme="light"]) .callout-card,
+  :global([data-theme="light"]) .callout-card {
+    background: #ffffff;
+    border-color: rgba(20, 31, 28, 0.15);
+    box-shadow: 0 8px 30px rgba(20, 31, 28, 0.06);
+  }
+
+  .section-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent, #7ed8c4);
+    margin-bottom: 0.75rem;
+  }
+
+  :global(html[data-theme="light"]) .section-label,
+  :global([data-theme="light"]) .section-label {
+    color: #0d7663;
+  }
+
+  .callout-title {
+    font-size: clamp(1.6rem, 3vw, 2.25rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary, #f6f1e8);
+    margin: 0 0 0.85rem 0;
+  }
+
+  :global(html[data-theme="light"]) .callout-title,
+  :global([data-theme="light"]) .callout-title {
+    color: #141f1c;
+  }
+
+  .callout-desc {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary, #a9b8b1);
+    margin: 0 0 2rem 0;
+    max-width: 600px;
+  }
+
+  :global(html[data-theme="light"]) .callout-desc,
+  :global([data-theme="light"]) .callout-desc {
+    color: #4a5c55;
+  }
+
+  .callout-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--touch-target-min, 44px);
+    padding: 0.65rem 1.35rem;
+    border-radius: var(--radius-md, 8px);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 150ms ease;
+  }
+
+  .btn.primary {
+    background: var(--color-accent, #7ed8c4);
+    color: #07110f;
+    border: 1px solid var(--color-accent, #7ed8c4);
+  }
+
+  .btn.primary:hover {
+    background: var(--color-accent-hover, #9bd8cf);
+    border-color: var(--color-accent-hover, #9bd8cf);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(126, 216, 196, 0.25);
+  }
+
+  .btn.secondary {
+    background: rgba(126, 216, 196, 0.08);
+    border: 1px solid rgba(126, 216, 196, 0.25);
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .btn.secondary:hover {
+    background: rgba(126, 216, 196, 0.15);
+    border-color: var(--color-accent, #7ed8c4);
+    transform: translateY(-1px);
+  }
+
+  :global(html[data-theme="light"]) .btn.secondary,
+  :global([data-theme="light"]) .btn.secondary {
+    background: rgba(13, 118, 99, 0.08);
+    border-color: rgba(13, 118, 99, 0.25);
+    color: #0d7663;
+  }
+
+  .btn.ghost {
+    background: transparent;
+    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.15));
+    color: var(--color-text-primary, #f6f1e8);
+  }
+
+  .btn.ghost:hover {
+    border-color: var(--color-text-primary, #f6f1e8);
+    transform: translateY(-1px);
+  }
+
+  :global(html[data-theme="light"]) .btn.ghost,
+  :global([data-theme="light"]) .btn.ghost {
+    border-color: rgba(20, 31, 28, 0.2);
+    color: #141f1c;
+  }
+</style>

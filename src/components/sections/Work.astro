@@ -1,126 +1,154 @@
 ---
-import FeaturedProjectCard from '@/components/cards/FeaturedProjectCard.astro';
 import ProjectCard from '@/components/cards/ProjectCard.astro';
-import { featuredProject, projects, projectFilters } from '@/data/projects';
+import { getFeaturedProjects, projects } from '@/data/projects';
+
+const featuredList = getFeaturedProjects().length > 0 ? getFeaturedProjects() : projects.slice(0, 5);
 ---
 
-<section id="work" class="section-shell">
-  <div class="section-heading reveal">
-    <p class="eyebrow"><span class="section-number">02 /</span> Selected Work</p>
-    <h2>Projects framed as systems, not just repositories.</h2>
+<section id="work" class="simple-work-section">
+  <div class="work-header">
+    <div class="header-left">
+      <span class="section-label">SELECTED WORK</span>
+      <h2 class="section-title">Software, Quantitative Tools & Real-World Platforms</h2>
+    </div>
+    <a href="/work" class="view-all-link">
+      View All Work ({projects.length}) →
+    </a>
   </div>
-
-  <div class="filters reveal" aria-label="Project filters">
-    {
-      projectFilters.map((f, index) => (
-        <button
-          class={`filter ${index === 0 ? 'active' : ''}`}
-          data-filter={f.id}
-        >
-          {f.label}
-        </button>
-      ))
-    }
-  </div>
-
-  <FeaturedProjectCard project={featuredProject} />
 
   <div class="project-grid">
-    {projects.map((project) => <ProjectCard project={project} />)}
+    {featuredList.map((project) => (
+      <ProjectCard project={project} />
+    ))}
   </div>
 
-  <div class="work-footer-cta reveal">
-    <a href="/work" class="button ghost">
-      View All Work & Projects Archive →
+  <div class="work-footer">
+    <a href="/work" class="btn secondary">
+      Explore All Projects & Archives ({projects.length}) →
     </a>
   </div>
 </section>
 
-<script>
-  const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter');
-  const projectCards = document.querySelectorAll<HTMLElement>('.project-card');
-
-  filterButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      const filter = button.dataset.filter || 'all';
-
-      filterButtons.forEach((item) => item.classList.remove('active'));
-      button.classList.add('active');
-
-      projectCards.forEach((card) => {
-        const categories = card.dataset.category || '';
-        card.classList.toggle(
-          'hidden-project',
-          filter !== 'all' && !categories.includes(filter)
-        );
-      });
-    });
-  });
-</script>
-
 <style>
-  #work {
-    padding: var(--space-section, 6.5rem) 0;
+  .simple-work-section {
+    padding: clamp(3rem, 6vw, 5rem) 0;
+    border-bottom: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
   }
 
-  .filters {
+  .work-header {
     display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
     flex-wrap: wrap;
-    gap: 0.6rem;
-    margin-bottom: 1.5rem;
+    gap: 1.5rem;
+    margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
   }
 
-  .filter {
+  .header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .section-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  :global(html[data-theme="light"]) .section-label,
+  :global([data-theme="light"]) .section-label {
+    color: #0d7663;
+  }
+
+  .section-title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary, #f6f1e8);
+    margin: 0;
+  }
+
+  :global(html[data-theme="light"]) .section-title,
+  :global([data-theme="light"]) .section-title {
+    color: #141f1c;
+  }
+
+  .view-all-link {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-accent, #7ed8c4);
+    text-decoration: none;
+    transition: transform 150ms ease;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    min-height: var(--touch-target-min, 44px);
-    padding: 0.5rem 1.15rem;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-full, 999px);
-    color: var(--ink);
-    background: rgba(255, 255, 255, 0.045);
-    font: inherit;
-    font-size: 0.875rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 240ms ease, border-color 240ms ease, transform 240ms ease;
   }
 
-  .filter:hover,
-  .filter:focus-visible,
-  .filter.active {
-    border-color: rgba(126, 216, 196, 0.5);
-    background: rgba(126, 216, 196, 0.12);
-    transform: translateY(-1px);
-    outline: none;
+  :global(html[data-theme="light"]) .view-all-link,
+  :global([data-theme="light"]) .view-all-link {
+    color: #0d7663;
+  }
+
+  .view-all-link:hover,
+  .view-all-link:focus-visible {
+    transform: translateX(3px);
   }
 
   .project-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.25rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1.25rem, 2.5vw, 1.75rem);
   }
 
-  .work-footer-cta {
+  .work-footer {
     display: flex;
     justify-content: center;
     margin-top: clamp(2rem, 4vw, 3rem);
   }
 
-  @media (max-width: 1024px) {
-    .project-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--touch-target-min, 44px);
+    padding: 0.65rem 1.35rem;
+    border-radius: var(--radius-md, 8px);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 150ms ease;
   }
 
-  @media (max-width: 640px) {
+  .btn.secondary {
+    background: rgba(126, 216, 196, 0.08);
+    border: 1px solid rgba(126, 216, 196, 0.25);
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .btn.secondary:hover {
+    background: rgba(126, 216, 196, 0.15);
+    border-color: var(--color-accent, #7ed8c4);
+    transform: translateY(-1px);
+  }
+
+  :global(html[data-theme="light"]) .btn.secondary,
+  :global([data-theme="light"]) .btn.secondary {
+    background: rgba(13, 118, 99, 0.08);
+    border-color: rgba(13, 118, 99, 0.25);
+    color: #0d7663;
+  }
+
+  @media (max-width: 768px) {
     .project-grid {
       grid-template-columns: 1fr;
     }
 
-    .work-footer-cta .button {
-      width: 100%;
+    .work-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
     }
   }
 </style>

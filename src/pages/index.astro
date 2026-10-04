@@ -3,21 +3,15 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Hero from '@/components/sections/Hero.astro';
 import Currently from '@/components/sections/Currently.astro';
 import Work from '@/components/sections/Work.astro';
-import SignatureSection from '@/components/sections/SignatureSection.astro';
-import Systems from '@/components/sections/Systems.astro';
-import TechStack from '@/components/sections/TechStack.astro';
-import ResearchLab from '@/components/sections/ResearchLab.astro';
-import LabSection from '@/components/sections/LabSection.astro';
-import ArchitectureSection from '@/components/sections/ArchitectureSection.astro';
-import About from '@/components/sections/About.astro';
-import TimelinePreview from '@/components/sections/TimelinePreview.astro';
-import Contact from '@/components/sections/Contact.astro';
+import SimpleResearchPreview from '@/components/sections/SimpleResearchPreview.astro';
+import SimpleAboutPreview from '@/components/sections/SimpleAboutPreview.astro';
+import SimpleContactCallout from '@/components/sections/SimpleContactCallout.astro';
 import { getProfilePageSchema, getWebSiteSchema } from '@/lib/seo/jsonld';
 import { siteConfig } from '@/data/site';
 
 const seo = {
-  title: siteConfig.title,
-  description: siteConfig.description,
+  title: `${siteConfig.name} | Quantitative Finance & Full-Stack Engineer`,
+  description: 'Uzair Ahmad is a Quantitative Finance & Full-Stack Software Engineer building data-driven systems, financial modeling tools, and high-performance web platforms.',
   keywords: siteConfig.keywords,
   canonical: siteConfig.url,
   schema: [getWebSiteSchema(), getProfilePageSchema()],
@@ -25,18 +19,21 @@ const seo = {
 ---
 
 <BaseLayout seo={seo}>
-  <main id="top">
+  <main id="top" class="home-container">
     <Hero />
     <Currently />
     <Work />
-    <SignatureSection />
-    <Systems />
-    <TechStack />
-    <ResearchLab />
-    <LabSection />
-    <ArchitectureSection />
-    <About />
-    <TimelinePreview />
-    <Contact />
+    <SimpleResearchPreview />
+    <SimpleAboutPreview />
+    <SimpleContactCallout />
   </main>
 </BaseLayout>
+
+<style>
+  .home-container {
+    width: min(var(--container-max, 1100px), calc(100% - max(1.5rem, calc(env(safe-area-inset-left) + env(safe-area-inset-right) + 1rem))));
+    margin: 0 auto;
+    padding-left: env(safe-area-inset-left, 0);
+    padding-right: env(safe-area-inset-right, 0);
+  }
+</style>

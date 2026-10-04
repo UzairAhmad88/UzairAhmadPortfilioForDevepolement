@@ -16,6 +16,36 @@ import type { ProjectSyncCurationEntry } from '../../types/projectSync.ts';
 
 export const projectSyncCurationRegistry: ProjectSyncCurationEntry[] = [
   {
+    projectId: 'quant-research-dashboard',
+    projectSlug: 'quant-research-portfolio-dashboard',
+    githubRepositoryFullName: 'UzairAhmad88/Quant-Research---Portfolio-Dashboard',
+    preferredLiveUrl: 'https://quant-research-portfolio-dashboard.vercel.app',
+    publishGithubEvidence: true,
+    publishDeploymentEvidence: true,
+    notes: 'Flagship quantitative portfolio research dashboard. Public GitHub repository and live Vercel deployment.',
+    verifiedAt: '2026-10-04T02:00:00Z',
+  },
+  {
+    projectId: 'rafaqatbaber-co',
+    projectSlug: 'rafaqatbaber-co',
+    githubRepositoryFullName: 'UzairAhmad88/RafaqatBaber---Co',
+    preferredLiveUrl: 'https://rafaqatbaber.vercel.app',
+    publishGithubEvidence: true,
+    publishDeploymentEvidence: true,
+    notes: 'Client corporate web application. Public GitHub repository and live Vercel deployment.',
+    verifiedAt: '2026-10-04T02:00:00Z',
+  },
+  {
+    projectId: 'healix-platform',
+    projectSlug: 'healix-platform',
+    githubRepositoryFullName: 'UzairAhmad88/HEALIX-By-Uzaii-',
+    preferredLiveUrl: 'https://healix-by-uzaii.vercel.app',
+    publishGithubEvidence: true,
+    publishDeploymentEvidence: true,
+    notes: 'Healthcare management platform. Public GitHub repository and live Vercel deployment.',
+    verifiedAt: '2026-10-04T02:00:00Z',
+  },
+  {
     projectId: 'stock-return-prediction',
     projectSlug: 'deep-learning-stock-return-prediction',
     githubRepositoryFullName: 'UzairAhmad88/Deep-Learning-Based-Stock-Return-Prediction---Quantitative-Trading-System-ByUzaii',

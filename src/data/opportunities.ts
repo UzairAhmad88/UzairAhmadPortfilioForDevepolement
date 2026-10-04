@@ -15,7 +15,7 @@ export const professionalOpportunities: ProfessionalOpportunity[] = [
       'Database Schema Design & Optimization',
       'High-Performance Static & SSR Applications',
     ],
-    relatedProjects: ['curasphere-hms', 'hayatabad-gym', 'restaurant-pos'],
+    relatedProjects: ['curasphere-hms', 'rafaqatbaber-co', 'healix-platform'],
     expectations: [
       'Clear project brief and target requirements',
       'Defined milestone timelines and deliverables',
