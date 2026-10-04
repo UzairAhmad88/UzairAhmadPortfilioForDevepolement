@@ -1,65 +1,37 @@
-# Device Breakpoints & Space-Adaptive System
+# Device Breakpoints: Rationales, Constraints & Component Boundaries
 
-This document explains the device adaptation rationale and content-driven breakpoint hierarchy implemented across the codebase.
+## 1. Content-Driven Breakpoint Philosophy
+
+Breakpoints are not chosen by marketing names (e.g. "iPad breakpoint") but by **content pressure boundaries** and **layout density thresholds**:
+
+| Boundary | Viewport Range | Content Constraint Trigger | Architectural Adaptation |
+|---|---|---|---|
+| **Mobile Narrow** | `320px – 480px` | Single-column limit; navigation cannot fit inline; touch is primary. | Full-width vertical stacking, off-canvas navigation drawer, full-width buttons. |
+| **Mobile Wide / Phablet** | `480px – 640px` | Horizontal room for 2-column small tags or badge grids. | Multi-column metadata rows, enhanced card margins. |
+| **Tablet Portrait** | `640px – 860px` | Split views become cramped; sidebars collide with main prose. | Sidebars collapse into top/bottom panels, 2-column card grids. |
+| **Tablet Landscape / Small Laptop** | `860px – 1024px` | Desktop horizontal header navigation has ample room. | Inline navigation bar, 2-to-3 column grids, horizontal signature interaction tabs. |
+| **Standard Desktop** | `1024px – 1440px` | Optimal multi-column systems architecture. | Full multi-column topologies, 3-column project grids, side-by-side case study media. |
+| **Large Desktop & Ultrawide** | `1440px – 3840px+` | Content risks excessive horizontal stretching. | Enforced max container widths (`1200px`), centered content shells with balanced whitespace. |
 
 ---
 
-## 1. Design Philosophy: Space-Driven Rather Than Device-Driven
+## 2. Media Query Taxonomy
 
-Rather than targeting specific hardware device labels (e.g. "iPhone 14" or "MacBook Air"), our system responds to **available pixel real estate**:
-
-- **Fluid Typography and Spacing**: Scales proportionally using CSS `clamp()`.
-- **CSS Grid Auto-Fit Tracks**: Grids collapse naturally based on `minmax()` thresholds rather than strict media queries where possible.
-- **Strategic Structural Breakpoints**: Invoked only when component information density requires structural reconfiguration (such as collapsing a 4-item horizontal nav or converting a 2-column sidebar layout into stacked sections).
-
----
-
-## 2. Breakpoint Directory & Implementation Reference
-
+Standardized CSS media queries across the platform:
 ```css
-/* ==========================================================================
-   Breakpoints Reference Map
-   ========================================================================== */
+/* Mobile Narrow */
+@media (max-width: 480px) { ... }
 
-/* 1. Mobile Compact (< 480px) */
-@media (max-width: 480px) {
-  /* Forms stack into single column */
-  /* Buttons become full width */
-  /* Card action buttons wrap vertically */
-}
+/* Mobile Standard / Tablet Boundary */
+@media (max-width: 640px) { ... }
 
-/* 2. Mobile Standard (< 640px) */
-@media (max-width: 640px) {
-  /* Project & capability grids collapse to 1 column */
-  /* Process steps timeline collapse to 1 column */
-  /* Tech orbital badges compress into compact radius */
-}
+/* Tablet Landscape / Sidebar Collisions */
+@media (max-width: 860px) { ... }
 
-/* 3. Tablet Portrait / Navigation Collapse (< 820px) */
-@media (max-width: 820px) {
-  /* Desktop navigation menu hides */
-  /* Mobile drawer trigger button displays (44x44px touch target) */
-  /* Header brand title switches to compact display */
-}
+/* Desktop Transition */
+@media (max-width: 1024px) { ... }
 
-/* 4. Tablet Landscape / Sidebar Stacking (< 1024px) */
-@media (max-width: 1024px) {
-  /* 3-column project grids collapse to 2 columns */
-  /* Sticky two-column article sidebars stack statically above content */
-  /* Capability grid collapses to 1 column */
-  /* Process steps grid collapses to 2 columns */
-}
-
-/* 5. Desktop Baseline (1025px - 1440px) */
-/* Full multi-column grids, sticky sidebars, hover interactions */
-
-/* 6. Ultrawide & 4K Displays (> 1440px) */
-/* Content bounded within --container-max: 1200px centered in viewport */
+/* Pointer & Touch Adaptation */
+@media (hover: hover) and (pointer: fine) { ... }
+@media (hover: none) { ... }
 ```
-
----
-
-## 3. High-DPI & Retina Displays
-
-- All icons and system diagrams are implemented in vector SVG format or responsive CSS, guaranteeing sub-pixel clarity at 2x and 3x device pixel ratios without overhead.
-- Typography is rendered with `-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;` ensuring clean legibility across macOS Retina, iOS, and Windows ClearType.
