@@ -95,4 +95,24 @@ const breadcrumbSchema = {
     color: var(--ink, #f6f1e8);
     font-weight: 600;
   }
+
+  :global(html[data-theme="light"]) .breadcrumb-link,
+  :global([data-theme="light"]) .breadcrumb-link {
+    color: #4e6059;
+  }
+
+  :global(html[data-theme="light"]) .breadcrumb-link:hover,
+  :global([data-theme="light"]) .breadcrumb-link:hover {
+    color: #0d7663;
+  }
+
+  :global(html[data-theme="light"]) .separator,
+  :global([data-theme="light"]) .separator {
+    color: rgba(20, 31, 28, 0.25);
+  }
+
+  :global(html[data-theme="light"]) .breadcrumb-current,
+  :global([data-theme="light"]) .breadcrumb-current {
+    color: #141f1c;
+  }
 </style>

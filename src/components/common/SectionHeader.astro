@@ -58,4 +58,19 @@ const { eyebrow, title, subtitle, align = 'left', id } = Astro.props;
   .align-center .subtitle {
     margin: 0 auto;
   }
+
+  :global(html[data-theme="light"]) .eyebrow,
+  :global([data-theme="light"]) .eyebrow {
+    color: #0d7663;
+  }
+
+  :global(html[data-theme="light"]) .title,
+  :global([data-theme="light"]) .title {
+    color: #141f1c;
+  }
+
+  :global(html[data-theme="light"]) .subtitle,
+  :global([data-theme="light"]) .subtitle {
+    color: #35453f;
+  }
 </style>
