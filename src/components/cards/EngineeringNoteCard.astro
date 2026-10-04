@@ -235,4 +235,16 @@ const typeColorMap: Record<string, string> = {
     color: #9bd8cf;
     text-decoration: underline;
   }
+
+  [data-theme="light"] .note-card {
+    background: var(--color-surface-elevated, #ffffff);
+    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.05);
+  }
+
+  [data-theme="light"] .tech-pill {
+    background: var(--color-surface, rgba(20, 31, 28, 0.04));
+    border-color: var(--color-border-subtle, rgba(20, 31, 28, 0.08));
+    color: var(--color-text-secondary, #465751);
+  }
 </style>

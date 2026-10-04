@@ -115,13 +115,18 @@ const currentYear = new Date().getFullYear();
   .site-footer {
     position: relative;
     z-index: 2;
-    border-top: 1px solid rgba(246, 241, 232, 0.12);
-    background: rgba(7, 17, 15, 0.95);
+    border-top: 1px solid var(--color-border, rgba(246, 241, 232, 0.12));
+    background: var(--color-surface-elevated, rgba(7, 17, 15, 0.95));
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    color: var(--muted, #a9b8b1);
+    color: var(--color-text-secondary, #a9b8b1);
     padding: clamp(3rem, 5vw, 4.5rem) 0 max(2rem, env(safe-area-inset-bottom));
     margin-top: clamp(3rem, 6vw, 5.5rem);
+  }
+
+  [data-theme="light"] .site-footer {
+    background: rgba(251, 249, 245, 0.95);
+    border-top-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
   }
 
   .footer-container {
@@ -136,7 +141,7 @@ const currentYear = new Date().getFullYear();
     grid-template-columns: 1.5fr 2.5fr;
     gap: clamp(2rem, 4vw, 3.5rem);
     padding-bottom: clamp(2rem, 3.5vw, 3rem);
-    border-bottom: 1px solid rgba(246, 241, 232, 0.1);
+    border-bottom: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.1));
   }
 
   .footer-brand-column {

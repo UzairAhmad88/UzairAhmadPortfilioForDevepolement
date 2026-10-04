@@ -93,3 +93,25 @@ const statusClass = statusColors[item.status] || 'bg-slate-500/10 text-slate-400
     </span>
   </div>
 </article>
+
+<style>
+  [data-theme="light"] .lab-card {
+    background-color: var(--color-surface-elevated, #ffffff) !important;
+    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15)) !important;
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.05);
+  }
+
+  [data-theme="light"] .lab-card:hover {
+    background-color: #ffffff !important;
+    border-color: var(--color-accent, #0d7663) !important;
+    box-shadow: 0 12px 32px rgba(20, 31, 28, 0.1);
+  }
+
+  [data-theme="light"] .lab-card h3 a {
+    color: var(--color-text-primary, #141f1c);
+  }
+
+  [data-theme="light"] .lab-card p {
+    color: var(--color-text-secondary, #465751);
+  }
+</style>

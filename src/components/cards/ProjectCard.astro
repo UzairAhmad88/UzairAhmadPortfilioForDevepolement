@@ -122,6 +122,16 @@ const detailUrl = `/work/${project.slug}`;
     text-decoration: underline;
   }
 
+  [data-theme="light"] .project-card {
+    background: var(--color-surface-elevated, #ffffff);
+    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.05);
+  }
+
+  [data-theme="light"] .project-card:hover {
+    box-shadow: 0 12px 32px rgba(20, 31, 28, 0.1);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .project-card {
       transition: none !important;

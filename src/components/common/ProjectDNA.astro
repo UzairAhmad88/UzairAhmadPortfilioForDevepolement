@@ -632,8 +632,33 @@ const dna = getProjectDNA(project);
     color: var(--color-text, #f6f1e8);
   }
 
-  .compact-separator {
-    color: rgba(246, 241, 232, 0.2);
+  [data-theme="light"] .project-dna-detail {
+    background: var(--color-surface-elevated, #ffffff);
+    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
+    box-shadow: 0 8px 24px rgba(20, 31, 28, 0.06);
+  }
+
+  [data-theme="light"] .tech-stack-item {
+    background: var(--color-surface, rgba(20, 31, 28, 0.04));
+    border-color: var(--color-border-subtle, rgba(20, 31, 28, 0.08));
+    color: var(--color-text-primary, #141f1c);
+  }
+
+  [data-theme="light"] .evidence-pill {
+    background: var(--color-surface, rgba(20, 31, 28, 0.04));
+    border-color: var(--color-border, rgba(20, 31, 28, 0.12));
+    color: var(--color-text-primary, #141f1c);
+  }
+
+  [data-theme="light"] .featured-dna-specs {
+    background: var(--color-surface, rgba(20, 31, 28, 0.03));
+    border-color: var(--color-border-subtle, rgba(20, 31, 28, 0.08));
+  }
+
+  [data-theme="light"] .card-tech-pill {
+    background: var(--color-surface, rgba(20, 31, 28, 0.04));
+    border-color: var(--color-border-subtle, rgba(20, 31, 28, 0.08));
+    color: var(--color-text-secondary, #465751);
   }
 
   @media (max-width: 640px) {
