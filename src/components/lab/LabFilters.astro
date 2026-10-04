@@ -1,0 +1,163 @@
+---
+/**
+ * Lab Filters Component
+ * Interactive, accessible filter bar for the Experimental Workbench.
+ */
+export interface Props {
+  types: string[];
+  totalCount: number;
+}
+
+const { types, totalCount } = Astro.props;
+---
+
+<div class="lab-filters-shell" aria-label="Filter Workbench Experiments">
+  <div class="filters-bar">
+    <div class="filter-controls" role="group" aria-label="Filter experiments by type">
+      <span class="filter-label" id="filter-type-label">Category:</span>
+      <div class="filter-pills-list" aria-labelledby="filter-type-label">
+        {types.map((type) => (
+          <button
+            type="button"
+            data-filter-type={type}
+            class:list={['filter-pill', type === 'All' ? 'active' : '']}
+            aria-pressed={type === 'All' ? 'true' : 'false'}
+          >
+            {type}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <div class="item-count-badge" aria-live="polite">
+      Showing <strong id="item-count" class="count-number">{totalCount}</strong> active experiments
+    </div>
+  </div>
+</div>
+
+<style>
+  .lab-filters-shell {
+    margin-bottom: 2rem;
+  }
+
+  .filters-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
+  }
+
+  .filter-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+  }
+
+  .filter-label {
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted, #83968e);
+  }
+
+  .filter-pills-list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .filter-pill {
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 600;
+    padding: 0.4rem 0.85rem;
+    border-radius: 0.375rem;
+    background: var(--color-surface, rgba(255, 255, 255, 0.04));
+    border: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
+    color: var(--color-text-secondary, #a9b8b1);
+    cursor: pointer;
+    transition: all 180ms ease;
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+  }
+
+  .filter-pill:hover {
+    background: var(--color-surface-hover, rgba(255, 255, 255, 0.08));
+    color: var(--color-text-primary, #f6f1e8);
+    border-color: var(--color-accent-muted, rgba(126, 216, 196, 0.3));
+  }
+
+  .filter-pill:focus-visible {
+    outline: 2px solid var(--color-accent, #7ed8c4);
+    outline-offset: 2px;
+  }
+
+  .filter-pill.active {
+    background: var(--color-accent-muted, rgba(126, 216, 196, 0.15)) !important;
+    border-color: var(--color-accent, #7ed8c4) !important;
+    color: var(--color-accent, #7ed8c4) !important;
+    font-weight: 700;
+  }
+
+  .item-count-badge {
+    font-size: 0.8rem;
+    font-family: var(--font-mono, monospace);
+    color: var(--color-text-muted, #83968e);
+  }
+
+  .count-number {
+    color: var(--color-text-primary, #f6f1e8);
+    font-weight: 800;
+  }
+
+  /* Light Theme */
+  :global(html[data-theme="light"]) .filters-bar,
+  :global([data-theme="light"]) .filters-bar {
+    border-bottom-color: rgba(20, 31, 28, 0.1) !important;
+  }
+
+  :global(html[data-theme="light"]) .filter-label,
+  :global([data-theme="light"]) .filter-label {
+    color: #4e6059 !important;
+  }
+
+  :global(html[data-theme="light"]) .filter-pill,
+  :global([data-theme="light"]) .filter-pill {
+    background: rgba(20, 31, 28, 0.04) !important;
+    border-color: rgba(20, 31, 28, 0.12) !important;
+    color: #35453f !important;
+  }
+
+  :global(html[data-theme="light"]) .filter-pill:hover,
+  :global([data-theme="light"]) .filter-pill:hover {
+    background: rgba(20, 31, 28, 0.08) !important;
+    color: #141f1c !important;
+    border-color: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .filter-pill.active,
+  :global([data-theme="light"]) .filter-pill.active {
+    background: rgba(13, 118, 99, 0.12) !important;
+    border-color: #0d7663 !important;
+    color: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .item-count-badge,
+  :global([data-theme="light"]) .item-count-badge {
+    color: #4e6059 !important;
+  }
+
+  :global(html[data-theme="light"]) .count-number,
+  :global([data-theme="light"]) .count-number {
+    color: #141f1c !important;
+  }
+</style>

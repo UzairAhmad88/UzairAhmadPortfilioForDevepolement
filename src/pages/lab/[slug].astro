@@ -47,10 +47,26 @@ const statusClassMap: Record<string, string> = {
   Idea: 'status-idea',
 };
 
+const stateLabelMap: Record<string, string> = {
+  actual: 'ACTUAL SYSTEM',
+  prototype: 'WORKING PROTOTYPE',
+  concept: 'MATHEMATICAL CONCEPT',
+  planned: 'PLANNED EXPERIMENT',
+};
+
 const statusClass = statusClassMap[item.status] || 'status-default';
+const stateLabel = stateLabelMap[item.state] || item.state.toUpperCase();
+
+const cleanTitle = item.title.includes(':')
+  ? item.title.split(':').slice(1).join(':').trim()
+  : item.title;
+
+const identifierPrefix = item.title.includes(':')
+  ? item.title.split(':')[0].trim()
+  : item.slug;
 
 const seo = {
-  title: `${item.title} | Lab Workbench | ${siteConfig.name}`,
+  title: `${cleanTitle} | Lab Workbench | ${siteConfig.name}`,
   description: item.shortDescription,
   canonical: `${siteConfig.url}/lab/${item.slug}`,
 };
@@ -64,7 +80,7 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
     <Breadcrumbs
       items={[
         { label: 'Lab', href: '/lab' },
-        { label: item.title, href: `/lab/${item.slug}` },
+        { label: cleanTitle, href: `/lab/${item.slug}` },
       ]}
     />
 
@@ -73,14 +89,15 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
       <header class="lab-header">
         <div class="header-meta-row">
           <div class="header-badges">
-            <span class:list={['status-pill', statusClass]}>
-              {item.status.toUpperCase()}
-            </span>
             <span class="type-pill">
               {item.type}
             </span>
+            <span class:list={['status-pill', statusClass]}>
+              <span class="status-dot" aria-hidden="true"></span>
+              {item.status.toUpperCase()}
+            </span>
             <span class="state-pill">
-              STATE: {item.state.toUpperCase()}
+              {stateLabel}
             </span>
           </div>
           <span class="timestamp-label">
@@ -88,9 +105,12 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
           </span>
         </div>
 
-        <h1 class="lab-title">
-          {item.title}
-        </h1>
+        <div class="header-title-block">
+          <span class="item-identifier">EXP // {identifierPrefix}</span>
+          <h1 class="lab-title">
+            {cleanTitle}
+          </h1>
+        </div>
 
         <p class="lab-lead">
           {item.description}
@@ -98,7 +118,7 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
 
         <!-- Promoted Callout if applicable -->
         {promotedProject && (
-          <div class="promoted-callout">
+          <div class="promoted-callout" role="note" aria-label="Graduation notice">
             <div class="promoted-content">
               <span class="promoted-icon" aria-hidden="true">🚀</span>
               <span class="promoted-text">
@@ -106,24 +126,25 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
               </span>
             </div>
             <a href={`/work/${promotedProject.slug}`} class="promoted-link">
-              Inspect Project Case Study →
+              Inspect Case Study →
             </a>
           </div>
         )}
 
+        <!-- Verified Deployment Evidence if available -->
         {vercelEvidence && (
           <div class="evidence-wrapper">
             <VercelEvidenceBadge evidence={vercelEvidence} showGitLink={true} />
           </div>
         )}
 
-        <!-- Technology Pills -->
+        <!-- Technology Ecosystem Strip -->
         {technologyObjects.length > 0 && (
           <div class="ecosystem-strip">
             <span class="ecosystem-label">Ecosystem:</span>
             <div class="ecosystem-tags">
               {technologyObjects.map((tech) => (
-                <a href={`/technology/${tech.id}`} class="ecosystem-tag">
+                <a href={`/technology/${tech.id}`} class="ecosystem-tag" title={`View technology documentation for ${tech.name}`}>
                   {tech.name}
                 </a>
               ))}
@@ -132,16 +153,19 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
         )}
       </header>
 
-      <!-- Main Body Layout -->
+      <!-- Main Technical Flow -->
       <div class="lab-body-layout">
         <!-- Section 01: Question & Hypothesis -->
-        <section class="section-box hypothesis-box">
-          <div class="section-eyebrow accent-text">
+        <section class="section-box hypothesis-box" aria-labelledby="sec-01-heading">
+          <div class="section-eyebrow accent-text" id="sec-01-heading">
             01 / Core Question & Hypothesis
           </div>
-          <h2 class="question-headline">
-            {item.question}
-          </h2>
+          <div class="question-callout-inner">
+            <span class="q-tag">CENTRAL INQUIRY</span>
+            <h2 class="question-headline">
+              {item.question}
+            </h2>
+          </div>
           {item.hypothesis && (
             <div class="hypothesis-highlight">
               <strong class="highlight-label">Hypothesis:</strong>
@@ -156,8 +180,8 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
         </section>
 
         <!-- Section 02: Context & Motivation -->
-        <section class="section-box">
-          <h2 class="section-heading">
+        <section class="section-box" aria-labelledby="sec-02-heading">
+          <h2 class="section-heading" id="sec-02-heading">
             02 / Context & Technical Motivation
           </h2>
           <div class="section-card-body">
@@ -167,8 +191,8 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
         </section>
 
         <!-- Section 03: Experiment & Implementation -->
-        <section class="section-box">
-          <h2 class="section-heading">
+        <section class="section-box" aria-labelledby="sec-03-heading">
+          <h2 class="section-heading" id="sec-03-heading">
             03 / Experimentation & Implementation
           </h2>
           <div class="section-card-body">
@@ -208,8 +232,8 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
 
         <!-- Section 04: Visualizations & Architecture -->
         {item.visualizations && item.visualizations.length > 0 && (
-          <section class="section-box">
-            <h2 class="section-heading">
+          <section class="section-box" aria-labelledby="sec-04-heading">
+            <h2 class="section-heading" id="sec-04-heading">
               04 / Architecture & Flow Diagrams
             </h2>
             {item.visualizations.map((vis) => (
@@ -219,8 +243,8 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
         )}
 
         <!-- Section 05: Observations & Empirical Results -->
-        <section class="section-box">
-          <h2 class="section-heading">
+        <section class="section-box" aria-labelledby="sec-05-heading">
+          <h2 class="section-heading" id="sec-05-heading">
             05 / Observations & Empirical Results
           </h2>
           <div class="section-card-body">
@@ -237,7 +261,7 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
                 <ul class="observations-list">
                   {item.observations.map((obs) => (
                     <li>
-                      <span class="bullet-arrow">→</span>
+                      <span class="bullet-arrow" aria-hidden="true">→</span>
                       <span>{obs}</span>
                     </li>
                   ))}
@@ -248,7 +272,7 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
         </section>
 
         <!-- Section 06: Limitations & Lessons Learned -->
-        <section class="outcomes-grid-section">
+        <section class="outcomes-grid-section" aria-label="Limitations and Lessons Learned">
           {item.limitations && item.limitations.length > 0 && (
             <div class="outcome-panel limitations-panel">
               <h2 class="panel-heading limitations-heading">
@@ -257,7 +281,7 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
               <ul class="panel-list">
                 {item.limitations.map((lim) => (
                   <li>
-                    <span class="panel-bullet bullet-amber">•</span>
+                    <span class="panel-bullet bullet-amber" aria-hidden="true">•</span>
                     <span>{lim}</span>
                   </li>
                 ))}
@@ -273,7 +297,7 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
               <ul class="panel-list">
                 {item.lessonsLearned.map((lesson) => (
                   <li>
-                    <span class="panel-bullet bullet-emerald">✓</span>
+                    <span class="panel-bullet bullet-emerald" aria-hidden="true">✓</span>
                     <span>{lesson}</span>
                   </li>
                 ))}
@@ -284,8 +308,8 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
 
         <!-- Section 07: Next Steps -->
         {item.nextStep && (
-          <section class="section-box">
-            <h2 class="section-heading">
+          <section class="section-box" aria-labelledby="sec-07-heading">
+            <h2 class="section-heading" id="sec-07-heading">
               07 / Next Step & Evolution
             </h2>
             <div class="action-card">
@@ -331,13 +355,13 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
   }
 
   .lab-detail-container {
-    max-width: 900px;
+    max-width: 920px;
     margin: 0 auto;
   }
 
   .lab-header {
     padding: 1.5rem 0 clamp(2rem, 4vw, 3rem);
-    border-bottom: 1px solid rgba(246, 241, 232, 0.09);
+    border-bottom: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.09));
     margin-bottom: clamp(2rem, 4vw, 3rem);
   }
 
@@ -347,7 +371,7 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 0.75rem;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
   }
 
   .header-badges {
@@ -357,7 +381,23 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
     gap: 0.5rem;
   }
 
+  .type-pill {
+    font-size: 0.65rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.6rem;
+    border-radius: 0.25rem;
+    background: var(--color-surface, rgba(255, 255, 255, 0.05));
+    border: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.09));
+    color: var(--color-accent, #7ed8c4);
+  }
+
   .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
     font-size: 0.65rem;
     font-family: var(--font-mono, monospace);
     font-weight: 700;
@@ -365,6 +405,13 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
     padding: 0.25rem 0.65rem;
     border-radius: 9999px;
     border: 1px solid transparent;
+  }
+
+  .status-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
   }
 
   .status-completed {
@@ -402,7 +449,6 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
     border-color: rgba(239, 68, 68, 0.3);
   }
 
-  .type-pill,
   .state-pill {
     font-size: 0.65rem;
     font-family: var(--font-mono, monospace);
@@ -422,13 +468,29 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
     color: #83968e;
   }
 
+  .header-title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .item-identifier {
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 700;
+    color: var(--color-accent, #7ed8c4);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
   .lab-title {
     font-size: var(--font-size-h1, clamp(2rem, 3.8vw, 2.75rem));
     font-weight: 800;
     color: var(--color-text, #f6f1e8);
     letter-spacing: -0.025em;
     line-height: 1.2;
-    margin: 0 0 1.25rem 0;
+    margin: 0;
   }
 
   .lab-lead {
@@ -486,7 +548,7 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
     gap: 0.5rem;
     margin-top: 1.5rem;
     padding-top: 1.25rem;
-    border-top: 1px solid rgba(246, 241, 232, 0.08);
+    border-top: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
   }
 
   .ecosystem-label {
@@ -536,7 +598,7 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
   .hypothesis-box {
     background: rgba(126, 216, 196, 0.05);
     border: 1px solid rgba(126, 216, 196, 0.25);
-    border-radius: 0.75rem;
+    border-radius: 0.875rem;
     padding: clamp(1.25rem, 3vw, 2rem);
   }
 
@@ -550,6 +612,21 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
 
   .accent-text {
     color: var(--color-accent, #7ed8c4);
+  }
+
+  .question-callout-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin: 0.5rem 0;
+  }
+
+  .q-tag {
+    font-size: 0.65rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 800;
+    color: var(--color-accent, #7ed8c4);
+    letter-spacing: 0.05em;
   }
 
   .question-headline {
@@ -605,9 +682,9 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
   }
 
   .section-card-body {
-    background: rgba(16, 26, 23, 0.75);
-    border: 1px solid rgba(246, 241, 232, 0.09);
-    border-radius: 0.75rem;
+    background: var(--color-surface-card, rgba(16, 26, 23, 0.75));
+    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.09));
+    border-radius: 0.875rem;
     padding: clamp(1.25rem, 2.5vw, 1.75rem);
     display: flex;
     flex-direction: column;
@@ -615,6 +692,7 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
     font-size: 0.95rem;
     color: var(--color-text-muted, #a9b8b1);
     line-height: 1.65;
+    box-shadow: var(--shadow-sm);
   }
 
   .section-card-body p {
@@ -628,7 +706,7 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
   .decisions-block {
     margin-top: 0.5rem;
     padding-top: 1rem;
-    border-top: 1px solid rgba(246, 241, 232, 0.08);
+    border-top: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
   }
 
   .decisions-title {
@@ -654,7 +732,7 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
 
   .code-snippet-box {
     background: rgba(7, 17, 15, 0.95);
-    border: 1px solid rgba(246, 241, 232, 0.09);
+    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.09));
     border-radius: 0.75rem;
     overflow: hidden;
     margin-top: 0.5rem;
@@ -676,6 +754,7 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
     text-transform: uppercase;
     font-size: 0.7rem;
     color: var(--color-accent, #7ed8c4);
+    font-weight: 700;
   }
 
   .snippet-code {
@@ -702,7 +781,7 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
     align-items: center;
     gap: 0.75rem;
     padding-bottom: 0.75rem;
-    border-bottom: 1px solid rgba(246, 241, 232, 0.08);
+    border-bottom: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
     font-size: 0.8rem;
     font-family: var(--font-mono, monospace);
   }
@@ -712,12 +791,12 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
   }
 
   .classification-value {
-    color: var(--color-text, #f6f1e8);
+    color: var(--color-accent, #7ed8c4);
     font-weight: 700;
-    background: rgba(255, 255, 255, 0.04);
+    background: var(--color-surface, rgba(255, 255, 255, 0.04));
     padding: 0.2rem 0.55rem;
     border-radius: 0.25rem;
-    border: 1px solid rgba(246, 241, 232, 0.08);
+    border: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
   }
 
   .observations-block {
@@ -765,13 +844,14 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
   }
 
   .outcome-panel {
-    background: rgba(16, 26, 23, 0.75);
-    border: 1px solid rgba(246, 241, 232, 0.09);
-    border-radius: 0.75rem;
+    background: var(--color-surface-card, rgba(16, 26, 23, 0.75));
+    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.09));
+    border-radius: 0.875rem;
     padding: clamp(1.25rem, 2vw, 1.5rem);
     display: flex;
     flex-direction: column;
     gap: 0.85rem;
+    box-shadow: var(--shadow-sm);
   }
 
   .panel-heading {
@@ -822,13 +902,14 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
   }
 
   .action-card {
-    background: rgba(16, 26, 23, 0.75);
-    border: 1px solid rgba(246, 241, 232, 0.09);
-    border-radius: 0.75rem;
+    background: var(--color-surface-card, rgba(16, 26, 23, 0.75));
+    border: 1px solid var(--color-border, rgba(246, 241, 232, 0.09));
+    border-radius: 0.875rem;
     padding: 1.25rem;
     font-size: 0.85rem;
     font-family: var(--font-mono, monospace);
     color: var(--color-text-muted, #a9b8b1);
+    box-shadow: var(--shadow-sm);
   }
 
   .action-card p {
@@ -840,7 +921,7 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
   }
 
   .back-nav-bar {
-    border-top: 1px solid rgba(246, 241, 232, 0.08);
+    border-top: 1px solid var(--color-border-subtle, rgba(246, 241, 232, 0.08));
     padding-top: 1.5rem;
     margin-top: 3rem;
     display: flex;
@@ -875,10 +956,38 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
     }
   }
 
+  /* ==========================================================================
+     LIGHT THEME STYLING
+     ========================================================================== */
+  :global(html[data-theme="light"]) .lab-header,
+  :global([data-theme="light"]) .lab-header {
+    border-bottom-color: rgba(20, 31, 28, 0.1) !important;
+  }
+
+  :global(html[data-theme="light"]) .lab-title,
+  :global([data-theme="light"]) .lab-title {
+    color: #141f1c !important;
+  }
+
+  :global(html[data-theme="light"]) .item-identifier,
+  :global([data-theme="light"]) .item-identifier {
+    color: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .lab-lead,
+  :global([data-theme="light"]) .lab-lead {
+    color: #35453f !important;
+  }
+
   :global(html[data-theme="light"]) .hypothesis-box,
   :global([data-theme="light"]) .hypothesis-box {
-    background: rgba(13, 118, 99, 0.06) !important;
+    background: rgba(13, 118, 99, 0.05) !important;
     border-color: rgba(13, 118, 99, 0.25) !important;
+  }
+
+  :global(html[data-theme="light"]) .q-tag,
+  :global([data-theme="light"]) .q-tag {
+    color: #0d7663 !important;
   }
 
   :global(html[data-theme="light"]) .question-headline,
@@ -892,7 +1001,22 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
   }
 
   :global(html[data-theme="light"]) .hypothesis-highlight,
-  :global([data-theme="light"]) .hypothesis-highlight,
+  :global([data-theme="light"]) .hypothesis-highlight {
+    background: #ffffff !important;
+    border-color: rgba(13, 118, 99, 0.25) !important;
+    box-shadow: 0 2px 10px rgba(20, 31, 28, 0.04) !important;
+  }
+
+  :global(html[data-theme="light"]) .highlight-label,
+  :global([data-theme="light"]) .highlight-label {
+    color: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .highlight-text,
+  :global([data-theme="light"]) .highlight-text {
+    color: #141f1c !important;
+  }
+
   :global(html[data-theme="light"]) .section-card-body,
   :global([data-theme="light"]) .section-card-body,
   :global(html[data-theme="light"]) .outcome-panel,
@@ -905,33 +1029,88 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
     color: #35453f !important;
   }
 
-  :global(html[data-theme="light"]) .highlight-text,
-  :global([data-theme="light"]) .highlight-text {
-    color: #141f1c !important;
-  }
-
   :global(html[data-theme="light"]) .section-heading,
   :global([data-theme="light"]) .section-heading,
   :global(html[data-theme="light"]) .decisions-title,
-  :global([data-theme="light"]) .decisions-title {
+  :global([data-theme="light"]) .decisions-title,
+  :global(html[data-theme="light"]) .observations-title,
+  :global([data-theme="light"]) .observations-title {
     color: #141f1c !important;
   }
 
   :global(html[data-theme="light"]) .decisions-list,
   :global([data-theme="light"]) .decisions-list,
+  :global(html[data-theme="light"]) .observations-list,
+  :global([data-theme="light"]) .observations-list,
+  :global(html[data-theme="light"]) .panel-list,
+  :global([data-theme="light"]) .panel-list,
   :global(html[data-theme="light"]) .muted-text,
   :global([data-theme="light"]) .muted-text {
     color: #4e6059 !important;
   }
 
+  :global(html[data-theme="light"]) .code-snippet-box,
+  :global([data-theme="light"]) .code-snippet-box {
+    background: #0f172a !important;
+    border-color: rgba(20, 31, 28, 0.15) !important;
+  }
+
+  :global(html[data-theme="light"]) .snippet-header,
+  :global([data-theme="light"]) .snippet-header {
+    background: #1e293b !important;
+    border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+    color: #94a3b8 !important;
+  }
+
+  :global(html[data-theme="light"]) .snippet-code,
+  :global([data-theme="light"]) .snippet-code {
+    color: #f8fafc !important;
+  }
+
+  :global(html[data-theme="light"]) .snippet-caption,
+  :global([data-theme="light"]) .snippet-caption {
+    background: #1e293b !important;
+    border-top-color: rgba(255, 255, 255, 0.08) !important;
+    color: #94a3b8 !important;
+  }
+
   :global(html[data-theme="light"]) .type-pill,
-  :global([data-theme="light"]) .type-pill,
+  :global([data-theme="light"]) .type-pill {
+    background: rgba(13, 118, 99, 0.08) !important;
+    border-color: rgba(13, 118, 99, 0.2) !important;
+    color: #0d7663 !important;
+  }
+
   :global(html[data-theme="light"]) .state-pill,
   :global([data-theme="light"]) .state-pill,
   :global(html[data-theme="light"]) .ecosystem-tag,
-  :global([data-theme="light"]) .ecosystem-tag {
+  :global([data-theme="light"]) .ecosystem-tag,
+  :global(html[data-theme="light"]) .classification-value,
+  :global([data-theme="light"]) .classification-value {
     background: rgba(20, 31, 28, 0.04) !important;
     border-color: rgba(20, 31, 28, 0.12) !important;
     color: #35453f !important;
+  }
+
+  :global(html[data-theme="light"]) .ecosystem-tag:hover,
+  :global([data-theme="light"]) .ecosystem-tag:hover {
+    background: rgba(13, 118, 99, 0.1) !important;
+    border-color: #0d7663 !important;
+    color: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .back-link,
+  :global([data-theme="light"]) .back-link {
+    color: #0d7663 !important;
+  }
+
+  :global(html[data-theme="light"]) .top-link,
+  :global([data-theme="light"]) .top-link {
+    color: #4e6059 !important;
+  }
+
+  :global(html[data-theme="light"]) .top-link:hover,
+  :global([data-theme="light"]) .top-link:hover {
+    color: #141f1c !important;
   }
 </style>
