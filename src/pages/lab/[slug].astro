@@ -1,8 +1,10 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
 import ProjectVisualization from '@/components/visualizations/ProjectVisualization.astro';
 import RelatedKnowledgeGrid from '@/components/knowledge/RelatedKnowledgeGrid.astro';
 import VercelEvidenceBadge from '@/components/vercel/VercelEvidenceBadge.astro';
+import ContactCallout from '@/components/sections/ContactCallout.astro';
 import { getVercelEvidenceForLab } from '@/lib/vercel/evidence';
 import { getAllLabItems } from '@/data/lab';
 import { projects } from '@/data/projects';
@@ -33,19 +35,19 @@ const promotedProject = item.promotedToProject
   ? projects.find((p) => p.slug === item.promotedToProject)
   : undefined;
 
-const statusColors: Record<string, string> = {
-  Completed: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
-  Active: 'bg-[rgba(126,216,196,0.1)] text-[#7ed8c4] border-[rgba(126,216,196,0.3)]',
-  Prototype: 'bg-[rgba(126,216,196,0.08)] text-[#9bd8cf] border-[rgba(126,216,196,0.22)]',
-  Validating: 'bg-[rgba(126,216,196,0.08)] text-[#9bd8cf] border-[rgba(126,216,196,0.22)]',
-  Exploring: 'bg-[rgba(126,216,196,0.08)] text-[#9bd8cf] border-[rgba(126,216,196,0.22)]',
-  Paused: 'bg-slate-500/10 text-slate-400 border-slate-500/30',
-  Archived: 'bg-slate-500/10 text-slate-400 border-slate-500/30',
-  Abandoned: 'bg-rose-500/10 text-rose-400 border-rose-500/30',
-  Idea: 'bg-slate-500/10 text-slate-400 border-slate-500/30',
+const statusClassMap: Record<string, string> = {
+  Completed: 'status-completed',
+  Active: 'status-active',
+  Prototype: 'status-prototype',
+  Validating: 'status-validating',
+  Exploring: 'status-exploring',
+  Paused: 'status-paused',
+  Archived: 'status-archived',
+  Abandoned: 'status-abandoned',
+  Idea: 'status-idea',
 };
 
-const statusClass = statusColors[item.status] || 'bg-slate-500/10 text-slate-400 border-slate-500/30';
+const statusClass = statusClassMap[item.status] || 'status-default';
 
 const seo = {
   title: `${item.title} | Lab Workbench | ${siteConfig.name}`,
@@ -57,237 +59,241 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
 ---
 
 <BaseLayout seo={seo}>
-  <main id="top" class="lab-detail-page py-12">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-      <!-- Breadcrumb Navigation -->
-      <nav class="mb-8" aria-label="Breadcrumbs">
-        <ol class="flex items-center space-x-2 text-xs font-mono text-[#83968e]">
-          <li><a href="/" class="hover:text-[#7ed8c4] transition-colors">Home</a></li>
-          <li class="text-[#83968e]">/</li>
-          <li><a href="/lab" class="hover:text-[#7ed8c4] transition-colors">Lab</a></li>
-          <li class="text-[#83968e]">/</li>
-          <li class="text-[#f6f1e8] truncate max-w-[200px] sm:max-w-xs" aria-current="page">{item.slug}</li>
-        </ol>
-      </nav>
+  <div class="page-container">
+    <!-- Breadcrumb Navigation -->
+    <Breadcrumbs
+      items={[
+        { label: 'Lab', href: '/lab' },
+        { label: item.title, href: `/lab/${item.slug}` },
+      ]}
+    />
 
+    <article class="lab-detail-container">
       <!-- Experiment Header -->
-      <header class="mb-12 border-b border-[rgba(246,241,232,0.08)] pb-10">
-        <div class="flex flex-wrap items-center gap-2 mb-4">
-          <span class={`px-2.5 py-1 rounded-full border text-xs font-mono font-semibold tracking-wider ${statusClass}`}>
-            {item.status.toUpperCase()}
-          </span>
-          <span class="px-2.5 py-1 rounded border border-[rgba(246,241,232,0.08)] bg-[rgba(255,255,255,0.04)] text-xs font-mono text-[#83968e] uppercase tracking-wider font-semibold">
-            {item.type}
-          </span>
-          <span class="px-2.5 py-1 rounded border border-[rgba(246,241,232,0.08)] bg-[rgba(16,26,23,0.75)] text-xs font-mono text-[#83968e]">
-            STATE: {item.state.toUpperCase()}
-          </span>
-          <span class="text-xs font-mono text-[#83968e] ml-auto">
+      <header class="lab-header">
+        <div class="header-meta-row">
+          <div class="header-badges">
+            <span class:list={['status-pill', statusClass]}>
+              {item.status.toUpperCase()}
+            </span>
+            <span class="type-pill">
+              {item.type}
+            </span>
+            <span class="state-pill">
+              STATE: {item.state.toUpperCase()}
+            </span>
+          </div>
+          <span class="timestamp-label">
             {item.date} {item.updatedAt ? `(Updated: ${item.updatedAt})` : ''}
           </span>
         </div>
 
-        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#f6f1e8] mb-4 leading-tight">
+        <h1 class="lab-title">
           {item.title}
         </h1>
 
-        <p class="text-base sm:text-lg text-[#a9b8b1] leading-relaxed">
+        <p class="lab-lead">
           {item.description}
         </p>
 
         <!-- Promoted Callout if applicable -->
         {promotedProject && (
-          <div class="mt-6 rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-4 text-xs font-mono text-emerald-300 flex items-center justify-between gap-4">
-            <div class="flex items-center gap-2">
-              <span class="text-base">🚀</span>
-              <span><strong>Evolution:</strong> This experiment successfully graduated into the production system: <strong>{promotedProject.title}</strong></span>
+          <div class="promoted-callout">
+            <div class="promoted-content">
+              <span class="promoted-icon" aria-hidden="true">🚀</span>
+              <span class="promoted-text">
+                <strong>Evolution:</strong> This experiment successfully graduated into the production system: <strong>{promotedProject.title}</strong>
+              </span>
             </div>
-            <a href={`/work/${promotedProject.slug}`} class="text-emerald-400 underline font-semibold hover:text-emerald-300 shrink-0">
+            <a href={`/work/${promotedProject.slug}`} class="promoted-link">
               Inspect Project Case Study →
             </a>
           </div>
         )}
 
         {vercelEvidence && (
-          <div class="mt-6">
+          <div class="evidence-wrapper">
             <VercelEvidenceBadge evidence={vercelEvidence} showGitLink={true} />
           </div>
         )}
 
         <!-- Technology Pills -->
-        <div class="mt-6 flex flex-wrap items-center gap-2 pt-4 border-t border-[rgba(246,241,232,0.08)]">
-          <span class="text-xs font-mono text-[#83968e] mr-2">Ecosystem:</span>
-          {technologyObjects.map((tech) => (
-            <a
-              href={`/technology/${tech.id}`}
-              class="rounded bg-[rgba(255,255,255,0.04)] hover:bg-[rgba(126,216,196,0.1)] hover:text-[#7ed8c4] hover:border-[rgba(126,216,196,0.35)] border border-[rgba(246,241,232,0.08)] px-2.5 py-1 font-mono text-xs text-[#f6f1e8] transition-colors"
-            >
-              {tech.name}
-            </a>
-          ))}
-        </div>
+        {technologyObjects.length > 0 && (
+          <div class="ecosystem-strip">
+            <span class="ecosystem-label">Ecosystem:</span>
+            <div class="ecosystem-tags">
+              {technologyObjects.map((tech) => (
+                <a href={`/technology/${tech.id}`} class="ecosystem-tag">
+                  {tech.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
       </header>
 
-      <!-- Section 01: Question & Hypothesis -->
-      <section class="mb-10 rounded-xl border border-[rgba(126,216,196,0.25)] bg-[rgba(126,216,196,0.05)] p-6 sm:p-8">
-        <div class="flex items-center gap-2 text-xs font-mono text-[#7ed8c4] font-semibold uppercase tracking-wider mb-3">
-          <span>01 / Core Question & Hypothesis</span>
-        </div>
-        <h2 class="text-xl sm:text-2xl font-bold text-[#f6f1e8] mb-3">
-          {item.question}
-        </h2>
-        {item.hypothesis && (
-          <p class="text-sm text-[#f6f1e8] leading-relaxed font-mono bg-[rgba(16,26,23,0.85)] p-3.5 rounded border border-[rgba(126,216,196,0.2)] mt-4">
-            <strong class="text-[#7ed8c4]">Hypothesis:</strong> {item.hypothesis}
-          </p>
-        )}
-        {item.intent && (
-          <p class="text-sm text-[#a9b8b1] leading-relaxed mt-4">
-            <strong class="text-[#f6f1e8]">Intent:</strong> {item.intent}
-          </p>
-        )}
-      </section>
-
-      <!-- Section 02: Context & Motivation -->
-      <section class="mb-12 space-y-4">
-        <h2 class="text-xs font-mono text-[#83968e] uppercase tracking-widest">
-          02 / Context & Technical Motivation
-        </h2>
-        <div class="rounded-xl border border-[rgba(246,241,232,0.09)] bg-[rgba(16,26,23,0.75)] p-6 space-y-4 text-sm text-[#a9b8b1] leading-relaxed">
-          <p>{item.context}</p>
-          {item.motivation && <p class="text-[#83968e]">{item.motivation}</p>}
-        </div>
-      </section>
-
-      <!-- Section 03: Experiment & Implementation -->
-      <section class="mb-12 space-y-4">
-        <h2 class="text-xs font-mono text-[#83968e] uppercase tracking-widest">
-          03 / Experimentation & Implementation
-        </h2>
-        <div class="rounded-xl border border-[rgba(246,241,232,0.09)] bg-[rgba(16,26,23,0.75)] p-6 space-y-4 text-sm text-[#a9b8b1] leading-relaxed">
-          <p>{item.experiment}</p>
-          {item.implementation && <p class="text-[#83968e]">{item.implementation}</p>}
-
-          {item.technicalDecisions && item.technicalDecisions.length > 0 && (
-            <div class="mt-4 pt-4 border-t border-[rgba(246,241,232,0.08)]">
-              <h3 class="text-xs font-mono text-[#f6f1e8] uppercase tracking-wider mb-2">Key Technical Decisions:</h3>
-              <ul class="space-y-2 list-disc list-inside text-xs font-mono text-[#83968e]">
-                {item.technicalDecisions.map((decision) => (
-                  <li>{decision}</li>
-                ))}
-              </ul>
+      <!-- Main Body Layout -->
+      <div class="lab-body-layout">
+        <!-- Section 01: Question & Hypothesis -->
+        <section class="section-box hypothesis-box">
+          <div class="section-eyebrow accent-text">
+            01 / Core Question & Hypothesis
+          </div>
+          <h2 class="question-headline">
+            {item.question}
+          </h2>
+          {item.hypothesis && (
+            <div class="hypothesis-highlight">
+              <strong class="highlight-label">Hypothesis:</strong>
+              <p class="highlight-text">{item.hypothesis}</p>
             </div>
           )}
-        </div>
+          {item.intent && (
+            <p class="intent-text">
+              <strong>Intent:</strong> {item.intent}
+            </p>
+          )}
+        </section>
 
-        <!-- Code Snippets if present -->
-        {item.codeSnippets && item.codeSnippets.map((snippet) => (
-          <div class="rounded-xl border border-[rgba(246,241,232,0.09)] bg-[rgba(16,26,23,0.9)] overflow-hidden my-6">
-            {snippet.title && (
-              <div class="bg-[rgba(7,17,15,0.95)] px-4 py-2 text-xs font-mono text-[#83968e] border-b border-[rgba(246,241,232,0.08)] flex items-center justify-between">
-                <span>{snippet.title}</span>
-                <span class="text-[10px] uppercase text-[#83968e]">{snippet.language}</span>
-              </div>
-            )}
-            <pre class="p-4 overflow-x-auto text-xs font-mono text-[#f6f1e8] leading-relaxed bg-[rgba(7,17,15,0.95)]"><code>{snippet.code}</code></pre>
-            {snippet.caption && (
-              <div class="px-4 py-2 text-[11px] font-mono text-[#83968e] bg-[rgba(7,17,15,0.8)] border-t border-[rgba(246,241,232,0.06)]">
-                {snippet.caption}
+        <!-- Section 02: Context & Motivation -->
+        <section class="section-box">
+          <h2 class="section-heading">
+            02 / Context & Technical Motivation
+          </h2>
+          <div class="section-card-body">
+            <p>{item.context}</p>
+            {item.motivation && <p class="muted-text">{item.motivation}</p>}
+          </div>
+        </section>
+
+        <!-- Section 03: Experiment & Implementation -->
+        <section class="section-box">
+          <h2 class="section-heading">
+            03 / Experimentation & Implementation
+          </h2>
+          <div class="section-card-body">
+            <p>{item.experiment}</p>
+            {item.implementation && <p class="muted-text">{item.implementation}</p>}
+
+            {item.technicalDecisions && item.technicalDecisions.length > 0 && (
+              <div class="decisions-block">
+                <h3 class="decisions-title">Key Technical Decisions:</h3>
+                <ul class="decisions-list">
+                  {item.technicalDecisions.map((decision) => (
+                    <li>{decision}</li>
+                  ))}
+                </ul>
               </div>
             )}
           </div>
-        ))}
-      </section>
 
-      <!-- Section 04: Visualizations & Architecture -->
-      {item.visualizations && item.visualizations.length > 0 && (
-        <section class="mb-12 space-y-4">
-          <h2 class="text-xs font-mono text-[#83968e] uppercase tracking-widest">
-            04 / Architecture & Flow Diagrams
-          </h2>
-          {item.visualizations.map((vis) => (
-            <ProjectVisualization visualization={vis} />
+          <!-- Code Snippets if present -->
+          {item.codeSnippets && item.codeSnippets.map((snippet) => (
+            <div class="code-snippet-box">
+              {snippet.title && (
+                <div class="snippet-header">
+                  <span class="snippet-title">{snippet.title}</span>
+                  <span class="snippet-lang">{snippet.language}</span>
+                </div>
+              )}
+              <pre class="snippet-code"><code>{snippet.code}</code></pre>
+              {snippet.caption && (
+                <div class="snippet-caption">
+                  {snippet.caption}
+                </div>
+              )}
+            </div>
           ))}
         </section>
-      )}
 
-      <!-- Section 05: Observations & Empirical Results -->
-      <section class="mb-12 space-y-4">
-        <h2 class="text-xs font-mono text-[#83968e] uppercase tracking-widest">
-          05 / Observations & Empirical Results
-        </h2>
-        <div class="rounded-xl border border-[rgba(246,241,232,0.09)] bg-[rgba(16,26,23,0.75)] p-6 space-y-4">
-          <div class="flex items-center gap-3 border-b border-[rgba(246,241,232,0.08)] pb-3">
-            <span class="text-xs font-mono text-[#83968e]">Outcome Classification:</span>
-            <span class="text-xs font-mono font-semibold text-[#f6f1e8] bg-[rgba(255,255,255,0.04)] px-2.5 py-1 rounded border border-[rgba(246,241,232,0.08)]">
-              {item.resultOutcome}
-            </span>
+        <!-- Section 04: Visualizations & Architecture -->
+        {item.visualizations && item.visualizations.length > 0 && (
+          <section class="section-box">
+            <h2 class="section-heading">
+              04 / Architecture & Flow Diagrams
+            </h2>
+            {item.visualizations.map((vis) => (
+              <ProjectVisualization visualization={vis} />
+            ))}
+          </section>
+        )}
+
+        <!-- Section 05: Observations & Empirical Results -->
+        <section class="section-box">
+          <h2 class="section-heading">
+            05 / Observations & Empirical Results
+          </h2>
+          <div class="section-card-body">
+            <div class="outcome-classification-row">
+              <span class="classification-label">Outcome Classification:</span>
+              <span class="classification-value">{item.resultOutcome}</span>
+            </div>
+
+            <p>{item.result}</p>
+
+            {item.observations && item.observations.length > 0 && (
+              <div class="observations-block">
+                <h3 class="observations-title">Empirical Observations:</h3>
+                <ul class="observations-list">
+                  {item.observations.map((obs) => (
+                    <li>
+                      <span class="bullet-arrow">→</span>
+                      <span>{obs}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
+        </section>
 
-          <p class="text-sm text-[#a9b8b1] leading-relaxed">{item.result}</p>
-
-          {item.observations && item.observations.length > 0 && (
-            <div class="pt-2">
-              <h3 class="text-xs font-mono text-[#f6f1e8] uppercase tracking-wider mb-2">Empirical Observations:</h3>
-              <ul class="space-y-2 text-xs font-mono text-[#83968e]">
-                {item.observations.map((obs) => (
-                  <li class="flex items-start gap-2">
-                    <span class="text-[#7ed8c4]">→</span>
-                    <span>{obs}</span>
+        <!-- Section 06: Limitations & Lessons Learned -->
+        <section class="outcomes-grid-section">
+          {item.limitations && item.limitations.length > 0 && (
+            <div class="outcome-panel limitations-panel">
+              <h2 class="panel-heading limitations-heading">
+                Known Limitations & Caveats
+              </h2>
+              <ul class="panel-list">
+                {item.limitations.map((lim) => (
+                  <li>
+                    <span class="panel-bullet bullet-amber">•</span>
+                    <span>{lim}</span>
                   </li>
                 ))}
               </ul>
             </div>
           )}
-        </div>
-      </section>
 
-      <!-- Section 06: Limitations & Lessons Learned -->
-      <section class="mb-12 grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {item.limitations && item.limitations.length > 0 && (
-          <div class="rounded-xl border border-[rgba(246,241,232,0.09)] bg-[rgba(16,26,23,0.75)] p-6 space-y-3">
-            <h2 class="text-xs font-mono text-amber-400 uppercase tracking-wider font-semibold">
-              Known Limitations & Caveats
-            </h2>
-            <ul class="space-y-2 text-xs font-mono text-[#83968e]">
-              {item.limitations.map((lim) => (
-                <li class="flex items-start gap-2">
-                  <span class="text-amber-500">•</span>
-                  <span>{lim}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {item.lessonsLearned && item.lessonsLearned.length > 0 && (
-          <div class="rounded-xl border border-[rgba(246,241,232,0.09)] bg-[rgba(16,26,23,0.75)] p-6 space-y-3">
-            <h2 class="text-xs font-mono text-emerald-400 uppercase tracking-wider font-semibold">
-              Lessons Learned
-            </h2>
-            <ul class="space-y-2 text-xs font-mono text-[#83968e]">
-              {item.lessonsLearned.map((lesson) => (
-                <li class="flex items-start gap-2">
-                  <span class="text-emerald-400">✓</span>
-                  <span>{lesson}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </section>
-
-      <!-- Section 07: Next Steps -->
-      {item.nextStep && (
-        <section class="mb-12">
-          <h2 class="text-xs font-mono text-[#83968e] uppercase tracking-widest mb-3">
-            07 / Next Step & Evolution
-          </h2>
-          <div class="rounded-xl border border-[rgba(246,241,232,0.09)] bg-[rgba(16,26,23,0.75)] p-5 text-xs font-mono text-[#a9b8b1]">
-            <p><strong class="text-[#7ed8c4]">Workbench Action:</strong> {item.nextStep}</p>
-          </div>
+          {item.lessonsLearned && item.lessonsLearned.length > 0 && (
+            <div class="outcome-panel lessons-panel">
+              <h2 class="panel-heading lessons-heading">
+                Lessons Learned
+              </h2>
+              <ul class="panel-list">
+                {item.lessonsLearned.map((lesson) => (
+                  <li>
+                    <span class="panel-bullet bullet-emerald">✓</span>
+                    <span>{lesson}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </section>
-      )}
+
+        <!-- Section 07: Next Steps -->
+        {item.nextStep && (
+          <section class="section-box">
+            <h2 class="section-heading">
+              07 / Next Step & Evolution
+            </h2>
+            <div class="action-card">
+              <p><strong class="action-highlight">Workbench Action:</strong> {item.nextStep}</p>
+            </div>
+          </section>
+        )}
+      </div>
 
       <!-- Section 08: Knowledge Graph & Cross-System Bidirectional Relationships -->
       <RelatedKnowledgeGrid
@@ -298,14 +304,595 @@ const vercelEvidence = getVercelEvidenceForLab(item.id || item.slug);
       />
 
       <!-- Back Navigation Bar -->
-      <div class="border-t border-[rgba(246,241,232,0.08)] pt-6 flex items-center justify-between text-xs font-mono">
-        <a href="/lab" class="text-[#7ed8c4] hover:underline font-semibold">
+      <nav class="back-nav-bar" aria-label="Bottom Navigation">
+        <a href="/lab" class="back-link">
           ← Back to Experimental Workbench
         </a>
-        <a href="#top" class="text-[#83968e] hover:text-[#f6f1e8]">
+        <a href="#top" class="top-link">
           Back to Top ↑
         </a>
-      </div>
-    </div>
-  </main>
+      </nav>
+
+      <ContactCallout
+        title="Want to discuss this experiment?"
+        subtitle="Open to reviewing results, reproducing benchmarks, or exploring extensions."
+      />
+    </article>
+  </div>
 </BaseLayout>
+
+<style>
+  .page-container {
+    width: min(var(--container-max, 1200px), calc(100% - max(1.5rem, calc(env(safe-area-inset-left) + env(safe-area-inset-right) + 1rem))));
+    margin: 0 auto;
+    padding: 1rem 0 5rem;
+    padding-left: env(safe-area-inset-left, 0);
+    padding-right: env(safe-area-inset-right, 0);
+  }
+
+  .lab-detail-container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .lab-header {
+    padding: 1.5rem 0 clamp(2rem, 4vw, 3rem);
+    border-bottom: 1px solid rgba(246, 241, 232, 0.09);
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+
+  .header-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .header-badges {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .status-pill {
+    font-size: 0.65rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    border: 1px solid transparent;
+  }
+
+  .status-completed {
+    background: rgba(16, 185, 129, 0.15);
+    color: #6ee7b7;
+    border-color: rgba(16, 185, 129, 0.35);
+  }
+
+  .status-active {
+    background: rgba(126, 216, 196, 0.15);
+    color: #7ed8c4;
+    border-color: rgba(126, 216, 196, 0.4);
+  }
+
+  .status-prototype,
+  .status-validating,
+  .status-exploring {
+    background: rgba(126, 216, 196, 0.1);
+    color: #9bd8cf;
+    border-color: rgba(126, 216, 196, 0.25);
+  }
+
+  .status-paused,
+  .status-archived,
+  .status-idea,
+  .status-default {
+    background: rgba(148, 163, 184, 0.12);
+    color: #cbd5e1;
+    border-color: rgba(148, 163, 184, 0.25);
+  }
+
+  .status-abandoned {
+    background: rgba(239, 68, 68, 0.12);
+    color: #fca5a5;
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+
+  .type-pill,
+  .state-pill {
+    font-size: 0.65rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.55rem;
+    border-radius: 0.25rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    color: #83968e;
+  }
+
+  .timestamp-label {
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    color: #83968e;
+  }
+
+  .lab-title {
+    font-size: var(--font-size-h1, clamp(2rem, 3.8vw, 2.75rem));
+    font-weight: 800;
+    color: var(--color-text, #f6f1e8);
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    margin: 0 0 1.25rem 0;
+  }
+
+  .lab-lead {
+    font-size: var(--font-size-lead, 1.15rem);
+    color: var(--color-text-muted, #a9b8b1);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .promoted-callout {
+    margin-top: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    background: rgba(16, 185, 129, 0.1);
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.85rem;
+    font-family: var(--font-mono, monospace);
+    color: #a7f3d0;
+  }
+
+  .promoted-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .promoted-icon {
+    font-size: 1.15rem;
+  }
+
+  .promoted-link {
+    color: #6ee7b7;
+    text-decoration: underline;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .promoted-link:hover {
+    color: #a7f3d0;
+  }
+
+  .evidence-wrapper {
+    margin-top: 1.25rem;
+  }
+
+  .ecosystem-strip {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(246, 241, 232, 0.08);
+  }
+
+  .ecosystem-label {
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    color: #83968e;
+    margin-right: 0.25rem;
+  }
+
+  .ecosystem-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .ecosystem-tag {
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    padding: 0.25rem 0.6rem;
+    border-radius: 0.25rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(246, 241, 232, 0.08);
+    color: var(--color-text, #f6f1e8);
+    text-decoration: none;
+    transition: all 150ms ease;
+  }
+
+  .ecosystem-tag:hover {
+    background: rgba(126, 216, 196, 0.1);
+    color: var(--color-accent, #7ed8c4);
+    border-color: rgba(126, 216, 196, 0.35);
+  }
+
+  .lab-body-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .section-box {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .hypothesis-box {
+    background: rgba(126, 216, 196, 0.05);
+    border: 1px solid rgba(126, 216, 196, 0.25);
+    border-radius: 0.75rem;
+    padding: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .section-eyebrow {
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .accent-text {
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .question-headline {
+    font-size: clamp(1.25rem, 2.5vw, 1.65rem);
+    font-weight: 800;
+    color: var(--color-text, #f6f1e8);
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  .hypothesis-highlight {
+    background: rgba(16, 26, 23, 0.85);
+    border: 1px solid rgba(126, 216, 196, 0.2);
+    border-radius: 0.5rem;
+    padding: 1rem 1.25rem;
+    margin-top: 0.5rem;
+  }
+
+  .highlight-label {
+    display: block;
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 800;
+    color: var(--color-accent, #7ed8c4);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.35rem;
+  }
+
+  .highlight-text {
+    font-size: 0.95rem;
+    font-family: var(--font-mono, monospace);
+    color: var(--color-text, #f6f1e8);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .intent-text {
+    font-size: 0.95rem;
+    color: var(--color-text-muted, #a9b8b1);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .section-heading {
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #83968e;
+    margin: 0;
+  }
+
+  .section-card-body {
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(246, 241, 232, 0.09);
+    border-radius: 0.75rem;
+    padding: clamp(1.25rem, 2.5vw, 1.75rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 0.95rem;
+    color: var(--color-text-muted, #a9b8b1);
+    line-height: 1.65;
+  }
+
+  .section-card-body p {
+    margin: 0;
+  }
+
+  .muted-text {
+    color: #83968e;
+  }
+
+  .decisions-block {
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(246, 241, 232, 0.08);
+  }
+
+  .decisions-title {
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text, #f6f1e8);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .decisions-list {
+    margin: 0;
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-family: var(--font-mono, monospace);
+    color: #83968e;
+  }
+
+  .code-snippet-box {
+    background: rgba(7, 17, 15, 0.95);
+    border: 1px solid rgba(246, 241, 232, 0.09);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    margin-top: 0.5rem;
+  }
+
+  .snippet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1rem;
+    background: rgba(16, 26, 23, 0.8);
+    border-bottom: 1px solid rgba(246, 241, 232, 0.08);
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    color: #83968e;
+  }
+
+  .snippet-lang {
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .snippet-code {
+    padding: 1.25rem;
+    margin: 0;
+    overflow-x: auto;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.85rem;
+    color: #f6f1e8;
+    line-height: 1.6;
+  }
+
+  .snippet-caption {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    color: #83968e;
+    background: rgba(16, 26, 23, 0.6);
+    border-top: 1px solid rgba(246, 241, 232, 0.06);
+  }
+
+  .outcome-classification-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(246, 241, 232, 0.08);
+    font-size: 0.8rem;
+    font-family: var(--font-mono, monospace);
+  }
+
+  .classification-label {
+    color: #83968e;
+  }
+
+  .classification-value {
+    color: var(--color-text, #f6f1e8);
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 0.2rem 0.55rem;
+    border-radius: 0.25rem;
+    border: 1px solid rgba(246, 241, 232, 0.08);
+  }
+
+  .observations-block {
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+  }
+
+  .observations-title {
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text, #f6f1e8);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .observations-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-family: var(--font-mono, monospace);
+    color: #83968e;
+  }
+
+  .observations-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .bullet-arrow {
+    color: var(--color-accent, #7ed8c4);
+    font-weight: 800;
+  }
+
+  .outcomes-grid-section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .outcome-panel {
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(246, 241, 232, 0.09);
+    border-radius: 0.75rem;
+    padding: clamp(1.25rem, 2vw, 1.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .panel-heading {
+    font-size: 0.75rem;
+    font-family: var(--font-mono, monospace);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0;
+  }
+
+  .limitations-heading {
+    color: #fbbf24;
+  }
+
+  .lessons-heading {
+    color: #34d399;
+  }
+
+  .panel-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-family: var(--font-mono, monospace);
+    color: #83968e;
+  }
+
+  .panel-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .panel-bullet {
+    font-weight: 800;
+  }
+
+  .bullet-amber {
+    color: #f59e0b;
+  }
+
+  .bullet-emerald {
+    color: #10b981;
+  }
+
+  .action-card {
+    background: rgba(16, 26, 23, 0.75);
+    border: 1px solid rgba(246, 241, 232, 0.09);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    font-size: 0.85rem;
+    font-family: var(--font-mono, monospace);
+    color: var(--color-text-muted, #a9b8b1);
+  }
+
+  .action-card p {
+    margin: 0;
+  }
+
+  .action-highlight {
+    color: var(--color-accent, #7ed8c4);
+  }
+
+  .back-nav-bar {
+    border-top: 1px solid rgba(246, 241, 232, 0.08);
+    padding-top: 1.5rem;
+    margin-top: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    font-family: var(--font-mono, monospace);
+  }
+
+  .back-link {
+    color: var(--color-accent, #7ed8c4);
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .back-link:hover {
+    text-decoration: underline;
+  }
+
+  .top-link {
+    color: #83968e;
+    text-decoration: none;
+  }
+
+  .top-link:hover {
+    color: var(--color-text, #f6f1e8);
+  }
+
+  @media (max-width: 768px) {
+    .outcomes-grid-section {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  [data-theme="light"] .hypothesis-box {
+    background: rgba(13, 118, 99, 0.05);
+    border-color: rgba(13, 118, 99, 0.25);
+  }
+
+  [data-theme="light"] .hypothesis-highlight,
+  [data-theme="light"] .section-card-body,
+  [data-theme="light"] .outcome-panel,
+  [data-theme="light"] .action-card {
+    background: var(--color-surface-elevated, #ffffff);
+    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
+  }
+
+  [data-theme="light"] .type-pill,
+  [data-theme="light"] .state-pill,
+  [data-theme="light"] .ecosystem-tag {
+    background: rgba(20, 31, 28, 0.04);
+    border-color: rgba(20, 31, 28, 0.08);
+    color: #465751;
+  }
+</style>
