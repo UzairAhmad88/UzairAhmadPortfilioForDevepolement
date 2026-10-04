@@ -110,6 +110,7 @@ const domainGroups = [
       rgba(16, 26, 23, 0.75);
     background-size: auto, 36px 36px, 36px 36px, auto;
     overflow: hidden;
+    transition: background 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
   }
 
   .universe::before,
@@ -120,6 +121,7 @@ const domainGroups = [
     border: 1px solid rgba(246, 241, 232, 0.06);
     border-radius: 50%;
     pointer-events: none;
+    transition: border-color 200ms ease;
   }
 
   .universe::after {
@@ -143,6 +145,7 @@ const domainGroups = [
     justify-content: center;
     text-align: center;
     z-index: 2;
+    transition: background 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
   }
 
   .core-label {
@@ -168,22 +171,24 @@ const domainGroups = [
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.3rem 0.65rem;
-    border: 1px solid rgba(246, 241, 232, 0.1);
+    padding: 0.35rem 0.75rem;
+    border: 1px solid rgba(246, 241, 232, 0.12);
     border-radius: var(--radius-full, 9999px);
-    background: rgba(7, 17, 15, 0.85);
+    background: rgba(7, 17, 15, 0.9);
     color: var(--color-text, #f6f1e8);
     font-family: var(--font-mono, monospace);
     font-size: clamp(0.7rem, 1.2vw, 0.8rem);
     font-weight: 700;
     white-space: nowrap;
     z-index: 1;
-    transition: transform 150ms ease, border-color 150ms ease;
+    transition: transform 150ms ease, border-color 150ms ease, background 150ms ease, color 150ms ease, box-shadow 150ms ease;
   }
 
   .universe-tag:hover {
     border-color: #7ed8c4;
-    transform: scale(1.06);
+    color: #7ed8c4;
+    transform: scale(1.08);
+    box-shadow: 0 4px 16px rgba(126, 216, 196, 0.2);
   }
 
   .role-stack-grid {
@@ -199,7 +204,7 @@ const domainGroups = [
     padding: clamp(1.25rem, 2.5vw, 1.6rem);
     display: flex;
     flex-direction: column;
-    transition: border-color 150ms ease;
+    transition: border-color 150ms ease, background 150ms ease, box-shadow 150ms ease;
   }
 
   .stack-card:hover {
@@ -244,7 +249,7 @@ const domainGroups = [
     border-radius: var(--radius-full, 9999px);
     white-space: nowrap;
     text-decoration: none;
-    transition: background 150ms ease, border-color 150ms ease;
+    transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
   }
 
   .skill-pill:hover,
@@ -264,6 +269,7 @@ const domainGroups = [
     border: 1px solid rgba(246, 241, 232, 0.08);
     border-radius: 0.75rem;
     flex-wrap: wrap;
+    transition: background 150ms ease, border-color 150ms ease;
   }
 
   .footer-note {
@@ -300,5 +306,102 @@ const domainGroups = [
       flex-direction: column;
       align-items: flex-start;
     }
+  }
+
+  /* ============================================================
+     LIGHT THEME EXPLICIT OVERRIDES
+     Ensures crisp contrast, clean surfaces, and zero dark artifacts
+     ============================================================ */
+  [data-theme="light"] .universe {
+    background:
+      radial-gradient(circle at center, rgba(13, 118, 99, 0.08), transparent 50%),
+      linear-gradient(rgba(20, 31, 28, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(20, 31, 28, 0.04) 1px, transparent 1px),
+      #ffffff;
+    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
+    box-shadow: 0 4px 20px rgba(20, 31, 28, 0.05);
+  }
+
+  [data-theme="light"] .universe::before {
+    border-color: rgba(20, 31, 28, 0.08);
+  }
+
+  [data-theme="light"] .universe::after {
+    border-color: rgba(13, 118, 99, 0.25);
+  }
+
+  [data-theme="light"] .universe-core {
+    background: #ffffff;
+    border-color: rgba(13, 118, 99, 0.5);
+    box-shadow: 0 8px 30px rgba(13, 118, 99, 0.15);
+  }
+
+  [data-theme="light"] .core-label {
+    color: #5d6f68;
+  }
+
+  [data-theme="light"] .core-lang {
+    color: #0d7663;
+  }
+
+  [data-theme="light"] .universe-tag {
+    background: #ffffff;
+    border-color: rgba(20, 31, 28, 0.15);
+    color: #141f1c;
+    box-shadow: 0 2px 8px rgba(20, 31, 28, 0.08);
+  }
+
+  [data-theme="light"] .universe-tag:hover {
+    border-color: #0d7663;
+    color: #0d7663;
+    box-shadow: 0 4px 14px rgba(13, 118, 99, 0.18);
+  }
+
+  [data-theme="light"] .stack-card {
+    background: var(--color-surface-elevated, #ffffff);
+    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.04);
+  }
+
+  [data-theme="light"] .stack-card:hover {
+    border-color: rgba(13, 118, 99, 0.4);
+    box-shadow: 0 8px 24px rgba(13, 118, 99, 0.08);
+  }
+
+  [data-theme="light"] .stack-role-title {
+    color: var(--color-text-primary, #141f1c);
+  }
+
+  [data-theme="light"] .stack-focus-text {
+    color: var(--color-text-secondary, #465751);
+  }
+
+  [data-theme="light"] .skill-pill {
+    background: rgba(13, 118, 99, 0.08);
+    border-color: rgba(13, 118, 99, 0.25);
+    color: #0d7663;
+  }
+
+  [data-theme="light"] .skill-pill:hover {
+    background: rgba(13, 118, 99, 0.16);
+    border-color: #0d7663;
+  }
+
+  [data-theme="light"] .stack-footer-cta {
+    background: var(--color-surface-elevated, #ffffff);
+    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
+    box-shadow: 0 2px 10px rgba(20, 31, 28, 0.04);
+  }
+
+  [data-theme="light"] .footer-note {
+    color: var(--color-text-muted, #5d6f68);
+  }
+
+  [data-theme="light"] .tech-system-link {
+    color: #0d7663;
+  }
+
+  [data-theme="light"] .tech-system-link:hover {
+    color: #09594b;
   }
 </style>

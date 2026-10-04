@@ -33,13 +33,14 @@ const { item } = Astro.props;
     background: rgba(16, 26, 23, 0.75);
     display: flex;
     flex-direction: column;
-    transition: transform 200ms ease, border-color 200ms ease, background 200ms ease;
+    transition: transform 200ms ease, border-color 200ms ease, background 200ms ease, box-shadow 200ms ease;
   }
 
   .lab-card:hover {
     transform: translateY(-3px);
     border-color: rgba(126, 216, 196, 0.35);
     background: rgba(16, 26, 23, 0.9);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
   }
 
   .card-top {
@@ -50,7 +51,7 @@ const { item } = Astro.props;
   }
 
   .badge {
-    color: #7ed8c4;
+    color: var(--color-accent, #7ed8c4);
     font-family: var(--font-mono, monospace);
     font-size: 0.75rem;
     font-weight: 800;
@@ -87,7 +88,7 @@ const { item } = Astro.props;
     margin-top: auto;
     padding-top: 0.85rem;
     border-top: 1px solid rgba(246, 241, 232, 0.08);
-    color: #7ed8c4;
+    color: var(--color-accent, #7ed8c4);
     font-size: 0.875rem;
     font-weight: 700;
     text-decoration: none;
@@ -95,7 +96,46 @@ const { item } = Astro.props;
   }
 
   .explore-link:hover {
-    color: #9bd8cf;
+    color: var(--color-accent-hover, #9bd8cf);
     text-decoration: underline;
+  }
+
+  [data-theme="light"] .lab-card {
+    background: var(--color-surface-elevated, #ffffff);
+    border-color: var(--color-border-strong, rgba(20, 31, 28, 0.15));
+    box-shadow: 0 4px 16px rgba(20, 31, 28, 0.04);
+  }
+
+  [data-theme="light"] .lab-card:hover {
+    background: #ffffff;
+    border-color: var(--color-accent, #0d7663);
+    box-shadow: 0 12px 32px rgba(20, 31, 28, 0.08);
+  }
+
+  [data-theme="light"] .lab-card h3 {
+    color: var(--color-text-primary, #141f1c);
+  }
+
+  [data-theme="light"] .question-text,
+  [data-theme="light"] .approach-text {
+    color: var(--color-text-secondary, #465751);
+  }
+
+  [data-theme="light"] .question-text strong,
+  [data-theme="light"] .approach-text strong {
+    color: var(--color-text-primary, #141f1c);
+  }
+
+  [data-theme="light"] .badge {
+    color: var(--color-accent, #0d7663);
+  }
+
+  [data-theme="light"] .index-num {
+    color: var(--color-text-muted, #5d6f68);
+  }
+
+  [data-theme="light"] .explore-link {
+    border-top-color: var(--color-border-subtle, rgba(20, 31, 28, 0.08));
+    color: var(--color-accent, #0d7663);
   }
 </style>

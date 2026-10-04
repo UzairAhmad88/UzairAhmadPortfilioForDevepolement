@@ -15,16 +15,16 @@ export const tickerSkills: string[] = [
 ];
 
 export const universeNodes: UniverseNode[] = [
-  { label: 'QUANT', x: '12%', y: '18%' },
-  { label: 'AI', x: '74%', y: '16%' },
-  { label: 'ML', x: '56%', y: '8%' },
-  { label: 'HFT', x: '20%', y: '72%' },
-  { label: 'PRODUCTS', x: '78%', y: '70%' },
-  { label: 'FULL STACK', x: '42%', y: '78%' },
-  { label: 'FINTECH', x: '8%', y: '48%' },
-  { label: 'AGENTS', x: '68%', y: '44%' },
-  { label: 'DL', x: '38%', y: '24%' },
-  { label: 'GENAI', x: '52%', y: '56%' },
+  { label: 'QUANT', x: '10%', y: '20%' },
+  { label: 'AI', x: '78%', y: '18%' },
+  { label: 'ML', x: '56%', y: '10%' },
+  { label: 'HFT', x: '16%', y: '74%' },
+  { label: 'PRODUCTS', x: '80%', y: '72%' },
+  { label: 'FULL STACK', x: '34%', y: '82%' },
+  { label: 'FINTECH', x: '6%', y: '48%' },
+  { label: 'AGENTS', x: '72%', y: '46%' },
+  { label: 'DL', x: '32%', y: '20%' },
+  { label: 'GENAI', x: '60%', y: '78%' },
 ];
 
 export const stackMap: SkillCategory[] = [
