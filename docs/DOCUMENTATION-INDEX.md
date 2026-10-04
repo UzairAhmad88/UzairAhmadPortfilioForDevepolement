@@ -78,6 +78,17 @@ Project Documentation Hub
 | [FINAL-PLATFORM-SCORECARD.md](file:///d:/web/protfolio/docs/FINAL-PLATFORM-SCORECARD.md) | Qualitative scorecard across all 31 platform dimensions | QA & Executive Review | Platform Scorecard |
 | [FINAL-CHANGELOG.md](file:///d:/web/protfolio/docs/FINAL-CHANGELOG.md) | Full evolutionary changelog from initial portfolio to final platform | Historical Record | Changelog |
 | [FINAL-COMPLETION-REPORT.md](file:///d:/web/protfolio/docs/FINAL-COMPLETION-REPORT.md) | Master completion report and final roadmap verdict (🟢 PLATFORM COMPLETE) | Project Lead & Public | Platform Completion |
+| [POST-PRODUCTION-GOVERNANCE.md](file:///d:/web/protfolio/docs/POST-PRODUCTION-GOVERNANCE.md) | Post-production governance rules, change evaluation gates, and evolution lifecycle | Maintainers & Stewards | Platform Governance |
+| [CHANGE-RISK-MODEL.md](file:///d:/web/protfolio/docs/CHANGE-RISK-MODEL.md) | P0 to P4 risk tiers and change classification taxonomy | Maintainers & DevOps | Change Management |
+| [CONTENT-GOVERNANCE.md](file:///d:/web/protfolio/docs/CONTENT-GOVERNANCE.md) | 10 content invariants and canonical 8-stage project lifecycle | Content Authors | Content Policy |
+| [IDENTITY-GOVERNANCE.md](file:///d:/web/protfolio/docs/IDENTITY-GOVERNANCE.md) | Brand integrity guardrails, authentic voice standards, and anti-cliché policy | Editorial Leads | Brand Governance |
+| [DEPENDENCY-GOVERNANCE.md](file:///d:/web/protfolio/docs/DEPENDENCY-GOVERNANCE.md) | 9-point dependency evaluation checklist and zero-bloat supply chain policy | Architects & DevOps | Dependency Policy |
+| [SECURITY-GOVERNANCE.md](file:///d:/web/protfolio/docs/SECURITY-GOVERNANCE.md) | Security review gates, secret isolation rules, and threat mitigation standards | Security Engineers | Security Policy |
+| [INCIDENT-RESPONSE.md](file:///d:/web/protfolio/docs/INCIDENT-RESPONSE.md) | Outage recovery lifecycle, playbooks, and post-mortem procedures | On-call Maintainers | Incident Response |
+| [PRODUCTION-BASELINE.md](file:///d:/web/protfolio/docs/PRODUCTION-BASELINE.md) | Final technical baseline snapshot across all 16 core systems and dependencies | Architects & Maintainers | Production Baseline |
+| [MAINTAINER-CHECKLIST.md](file:///d:/web/protfolio/docs/MAINTAINER-CHECKLIST.md) | Pre-modification checklist for future engineers before writing code | All Maintainers | Maintenance Guide |
+| [POST-PRODUCTION-OPERATIONS.md](file:///d:/web/protfolio/docs/POST-PRODUCTION-OPERATIONS.md) | Practical operations manual for recurring content, sync, and bug fix workflows | All Maintainers | Operations Manual |
+| [POST-PRODUCTION-STATUS.md](file:///d:/web/protfolio/docs/POST-PRODUCTION-STATUS.md) | Master governance sign-off report and long-term platform status | Project Lead & Public | Governance Status |
 | [PHASE-34-IMPLEMENTATION.md](file:///d:/web/protfolio/docs/PHASE-34-IMPLEMENTATION.md) | Phase 34 implementation log, consistency audit, and completion record | Lead Architect | Phase 34 Audit |
 
 ---

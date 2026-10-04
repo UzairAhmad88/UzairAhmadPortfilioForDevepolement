@@ -100,6 +100,17 @@ The platform includes a comprehensive, professional 5-layer engineering document
 - **[docs/FINAL-PLATFORM-SCORECARD.md](file:///d:/web/protfolio/docs/FINAL-PLATFORM-SCORECARD.md)** — Qualitative Maturity Scorecard (31 Dimensions)
 - **[docs/FINAL-CHANGELOG.md](file:///d:/web/protfolio/docs/FINAL-CHANGELOG.md)** — Full Transformation Changelog (Phase 01–35)
 - **[docs/FINAL-COMPLETION-REPORT.md](file:///d:/web/protfolio/docs/FINAL-COMPLETION-REPORT.md)** — Master Platform Completion Report (🟢 PLATFORM COMPLETE)
+- **[docs/POST-PRODUCTION-GOVERNANCE.md](file:///d:/web/protfolio/docs/POST-PRODUCTION-GOVERNANCE.md)** — Post-Production Governance & Stewardship Policy
+- **[docs/CHANGE-RISK-MODEL.md](file:///d:/web/protfolio/docs/CHANGE-RISK-MODEL.md)** — Change Classification & P0–P4 Risk Model
+- **[docs/CONTENT-GOVERNANCE.md](file:///d:/web/protfolio/docs/CONTENT-GOVERNANCE.md)** — 10 Content Invariants & Project Lifecycle
+- **[docs/IDENTITY-GOVERNANCE.md](file:///d:/web/protfolio/docs/IDENTITY-GOVERNANCE.md)** — Personal Voice & Brand Protection Policy
+- **[docs/DEPENDENCY-GOVERNANCE.md](file:///d:/web/protfolio/docs/DEPENDENCY-GOVERNANCE.md)** — 9-Point Dependency Evaluation Gate
+- **[docs/SECURITY-GOVERNANCE.md](file:///d:/web/protfolio/docs/SECURITY-GOVERNANCE.md)** — Secret Isolation & Security Review Protocol
+- **[docs/INCIDENT-RESPONSE.md](file:///d:/web/protfolio/docs/INCIDENT-RESPONSE.md)** — Incident Response Playbook & Outage Recovery
+- **[docs/PRODUCTION-BASELINE.md](file:///d:/web/protfolio/docs/PRODUCTION-BASELINE.md)** — Production Platform Technical Baseline Snapshot
+- **[docs/MAINTAINER-CHECKLIST.md](file:///d:/web/protfolio/docs/MAINTAINER-CHECKLIST.md)** — Maintainer Pre-Modification Checklist
+- **[docs/POST-PRODUCTION-OPERATIONS.md](file:///d:/web/protfolio/docs/POST-PRODUCTION-OPERATIONS.md)** — Post-Production Practical Operations Manual
+- **[docs/POST-PRODUCTION-STATUS.md](file:///d:/web/protfolio/docs/POST-PRODUCTION-STATUS.md)** — Master Governance Sign-Off Report
 - **[docs/PRODUCTION-QA-REPORT.md](file:///d:/web/protfolio/docs/PRODUCTION-QA-REPORT.md)** — Phase 33 Production QA Final Report
 - **[docs/PHASE-34-IMPLEMENTATION.md](file:///d:/web/protfolio/docs/PHASE-34-IMPLEMENTATION.md)** — Phase 34 Implementation Record
 
