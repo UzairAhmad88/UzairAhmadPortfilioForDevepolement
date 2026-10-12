@@ -12,7 +12,6 @@ export const researchItems: ResearchItem[] = [
     publishedAt: '2024-09-15',
     updatedAt: '2025-01-20',
     githubUrl: 'https://github.com/UzairAhmad88/Deep-Learning-Based-Stock-Return-Prediction---Quantitative-Trading-System-ByUzaii',
-    githubRepo: 'UzairAhmad88/Deep-Learning-Based-Stock-Return-Prediction---Quantitative-Trading-System-ByUzaii',
     question: 'Which statistical transformations preserve meaningful long-range temporal memory while satisfying stationarity constraints for deep neural networks in financial time series?',
     context: 'Standard integer differencing (d=1) completely removes trend and unit roots from financial price series, but destroys virtually all historical memory and autocorrelation structure necessary for multi-horizon predictive models.',
     motivation: 'The investigation began after observing that standard log-returns fed into LSTM models suffered from poor signal-to-noise ratios, while raw price levels violated the stationarity assumption necessary for statistical learning generalization.',

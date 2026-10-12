@@ -63,7 +63,7 @@ export const featuredProject: Project = {
       {
         decision: 'Decoupled Python Analytics Microservice',
         rationale: 'Heavy matrix calculations and portfolio optimization routines execute in NumPy/Python rather than blocking the Node.js or browser UI thread.',
-        tradeoffs: 'Introduces a lightweight HTTP API contract between the client dashboard and analytics server.'
+        tradeOff: 'Introduces a lightweight HTTP API contract between the client dashboard and analytics server.'
       }
     ],
     results: [

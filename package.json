@@ -9,7 +9,7 @@
     "start": "astro dev",
     "build": "astro build",
     "check": "astro check",
-    "test": "node --test tests/unit/seo.test.ts tests/unit/projects.test.ts tests/unit/research.test.ts tests/unit/contact.test.ts tests/unit/production.test.ts tests/unit/github-sync.test.ts tests/unit/project-dna.test.ts tests/unit/visualizations.test.ts tests/unit/methodology.test.ts tests/unit/technologies.test.ts tests/unit/notes.test.ts tests/unit/lab.test.ts tests/unit/lab-artifacts.test.ts tests/unit/lab-platform-integration.test.ts tests/unit/lab-curation.test.ts tests/unit/knowledge-graph.test.ts tests/unit/discovery.test.ts tests/unit/vercel-sync.test.ts tests/unit/project-sync.test.ts tests/unit/archive.test.ts tests/unit/timeline.test.ts tests/unit/about.test.ts tests/unit/collaboration.test.ts tests/unit/signatureInteraction.test.ts tests/unit/theme.test.ts tests/unit/motion.test.ts tests/unit/responsive.test.ts tests/unit/accessibility.test.ts tests/unit/performance.test.ts tests/unit/knowledge-engine.test.ts tests/unit/visual-polish.test.ts tests/unit/content-truth.test.ts tests/unit/production-qa.test.ts",
+    "test": "tsx --test tests/unit/seo.test.ts tests/unit/projects.test.ts tests/unit/research.test.ts tests/unit/contact.test.ts tests/unit/production.test.ts tests/unit/github-sync.test.ts tests/unit/project-dna.test.ts tests/unit/visualizations.test.ts tests/unit/methodology.test.ts tests/unit/technologies.test.ts tests/unit/notes.test.ts tests/unit/lab.test.ts tests/unit/lab-artifacts.test.ts tests/unit/lab-platform-integration.test.ts tests/unit/lab-curation.test.ts tests/unit/knowledge-graph.test.ts tests/unit/discovery.test.ts tests/unit/vercel-sync.test.ts tests/unit/project-sync.test.ts tests/unit/archive.test.ts tests/unit/timeline.test.ts tests/unit/about.test.ts tests/unit/collaboration.test.ts tests/unit/signatureInteraction.test.ts tests/unit/theme.test.ts tests/unit/motion.test.ts tests/unit/responsive.test.ts tests/unit/accessibility.test.ts tests/unit/performance.test.ts tests/unit/knowledge-engine.test.ts tests/unit/visual-polish.test.ts tests/unit/content-truth.test.ts tests/unit/production-qa.test.ts",
     "signature:validate": "node scripts/validate-signature-interaction.mjs",
     "archive:validate": "node scripts/validate-archive.mjs",
     "timeline:validate": "node scripts/validate-timeline.mjs",
@@ -17,7 +17,6 @@
     "collaborate:validate": "node scripts/validate-collaboration.mjs",
     "contact:validate": "node scripts/validate-contact.mjs",
     "projects:sync": "node scripts/sync-projects.mjs",
-
     "projects:sync:dry": "node scripts/sync-projects.mjs --dry-run",
     "projects:validate": "node scripts/validate-project-sync.mjs",
     "sync:github": "node scripts/sync-projects.mjs",
@@ -45,6 +44,7 @@
     "eslint": "^9.18.0",
     "eslint-plugin-astro": "^1.3.1",
     "prettier": "^3.4.2",
-    "prettier-plugin-astro": "^0.14.1"
+    "prettier-plugin-astro": "^0.14.1",
+    "tsx": "^4.23.15"
   }
 }
