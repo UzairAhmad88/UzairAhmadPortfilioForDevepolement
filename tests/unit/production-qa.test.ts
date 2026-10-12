@@ -2,6 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import { projects } from '../../src/data/projects';
 
 describe('Phase 33: Production QA & Complete Verification Invariants', () => {
   const distDir = path.resolve(process.cwd(), 'dist');
@@ -39,17 +40,8 @@ describe('Phase 33: Production QA & Complete Verification Invariants', () => {
     }
   });
 
-  it('should verify all 8 project detail routes exist and contain non-empty semantic HTML', () => {
-    const projectSlugs = [
-      'deep-learning-stock-return-prediction',
-      'multi-agent-prospect-intelligence',
-      'curasphere-hms',
-      'market-regime-engine',
-      'restaurant-pos',
-      'hayatabad-gym',
-      'online-complaint-system',
-      'event-management-system'
-    ];
+  it('should verify all active project detail routes exist and contain non-empty semantic HTML', () => {
+    const projectSlugs = projects.map((p) => p.slug);
 
     for (const slug of projectSlugs) {
       const filePath = path.join(distDir, 'work', slug, 'index.html');
